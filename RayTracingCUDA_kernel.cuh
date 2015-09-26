@@ -6,13 +6,55 @@
 __device__
 float3 findAlpha( float3 n, float3 v, float p, float m2 )
 {
-
+    float al1=acos(dot(n,v));
+    float al2;
+    if(p==1)
+    {
+        al2=asin(sin(al1)/m2);
+    }
+    else
+    {
+        al2=asin(m2*sin(al1));
+    }
+    float bet=al1-al2;
+    float3 S=cross(v,n);
+    float3 V2;
+    if(length(S)==0.0f)
+    {
+        V2=v;
+    }
+    else
+    {
+        float W=S.x*S.x+S.y*S.y+S.z*S.z;
+        float2 B=make_float2(cos(bet),cos(al2));
+        float Wx=(B.x*n.y-B.y*v.y)*S.z+(B.y*v.z-B.x*n.z)*S.y;
+        float Wy=(B.y*v.x-B.x*n.x)*S.z+(B.x*n.z-B.y*v.z)*S.x;
+        float Wz=(B.y*v.y-B.x*n.y)*S.x+(B.x*n.x-B.y*v.x)*S.y
+        V2=make_float3(Wx/W,Wy/W,Wz/W);
+    }
+    return V2;
 }
 
 __device__
 rcstruct SphereCross( float3 r, float3 V, float R )
 {
-
+    float A=V.x*V.x+V.y*V.y+V.z*V.z;
+    float B=2.0f*dot(r,V);
+    float C=r.x*r.x+r.y*r.y+r.z*r.z-R*R;
+    float D=B*B-4.0f*A*C;
+    if(D<0.0f)
+    {
+        rc.a=make_float3(NAN,NAN,NAN);
+        rc.b=make_float3(NAN,NAN,NAN);
+    }
+    else
+    {
+        float t1=(-B+sqrt(D))/2.0f/A;
+        float t2=(-B-sqrt(D))/2.0f/A;
+        rc.a=r+V*t1;
+        rc.b=r+V*t2;
+    }
+    return rc;
 }
 
 __global__

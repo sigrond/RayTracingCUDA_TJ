@@ -20,6 +20,7 @@
 		<Unit filename="RayTracingCUDA.cu" />
 		<Unit filename="RayTracingCUDA.cuh" />
 		<Unit filename="RayTracingCUDA_kernel.cuh" />
+		<Unit filename="rcstruct.cuh" />
 		<Extensions>
 			<code_completion />
 			<envvars />
