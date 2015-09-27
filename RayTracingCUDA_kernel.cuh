@@ -1,3 +1,8 @@
+/** \file RayTracingCUDA_kernel.cuh
+ * \author Tomasz Jakubczyk
+ * \brief RayTrace CUDA kernel function & helpers
+ */
+
 #include <math.h>
 #include <float.h>
 #include "helper_math.h"
@@ -58,12 +63,27 @@ rcstruct SphereCross( float3 r, float3 V, float R )
 }
 
 __global__
-void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, float* IM)
+/** \brief RayTrace CUDA kernel function.
+ *
+ * \param P2 float3* point on the surface of the first diaphragm
+ * \param VH_length int
+ * \param Vb_length int
+ * \param S HandlesStructures structure contains the parameters of the lens
+ * \param IM float*
+ * \param P float3* coordinates of successive intersection ray with  surfaces
+ * \return void
+ *
+ */
+void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, float* IM, float3* P)
 {
-    uint indexi = (__mul24(blockIdx.x,blockDim.x) + threadIdx.x)/Vb_length;
+    uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
+    uint indexi = index/Vb_length;
     if (indexi >= VH_length) return;//empty kernel
-    uint indexj = (__mul24(blockIdx.x,blockDim.x) + threadIdx.x)%Vb_length;
+    uint indexj = index%Vb_length;
     if (indexj >= Vb_length) return;//critical error
+
+    uint p=0;
+    float3 nan3=make_float(NAN,NAN,NAN);
 
     //Calculation of the position of the sphere's center
     S.Cs1=S.l1-S.R1+S.g;
@@ -71,10 +91,10 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     float3 P1 = S.Pk;//droplet coordinates
 
-    float3 v = normalize(P2 - P1);//direction vector of the line
+    float3 v = normalize(P2[index] - P1);//direction vector of the line
     //looking for the point of intersection of the line and lenses
-    float t = (S.l1 - P2[j].x))/v.x;
-    float3 P3 = P2 + t*v;//Point in the plane parallel to the flat surface of the lens
+    float t = (S.l1 - P2[index].x))/v.x;
+    float3 P3 = P2[index] + t*v;//Point in the plane parallel to the flat surface of the lens
 
     if (length(make_float2(P3.y,P3.z)) > (S.efD/2))//verification whether  the point inside the aperture of the lens or not
     {
@@ -94,6 +114,14 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     if(isnan(rc.a.x))
     {
+        p=0;
+        P[index*7+p++]=P1;
+        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P3;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
         return;
     }
 
@@ -104,12 +132,28 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     if(length(make_float2(rc.a.y,rc.a.z)) > S.D/2)
     {
+        p=0;
+        P[index*7+p++]=P1;
+        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P3;
+        P[index*7+p++]=P4;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
         return;
     }
 
     rcstruct rc1 = SphereCross( make_float3(P4.x-S.Cs2,P4.y,P4.z), v4,S.R2 );
     if(isnan( rc1.a.x ))
     {
+        p=0;
+        P[index*7+p++]=P1;
+        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P3;
+        P[index*7+p++]=P4;
+        P[index*7+p++]=P5;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
         return;
     }
 
@@ -136,12 +180,21 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     float3 P7 = P6 + v6*t;
 
-    float dist=length(P1-P2)+length(P2-P3)+
+    p=0;
+    P[index*7+p++]=P1;
+    P[index*7+p++]=P2[index];
+    P[index*7+p++]=P3;
+    P[index*7+p++]=P4;
+    P[index*7+p++]=P5;
+    P[index*7+p++]=P6;
+    P[index*7+p++]=P7;
+
+    float dist=length(P1-P2[index])+length(P2[index]-P3)+
                 length(P3-P4)+length(P4-P5)+
                 length(P5-P6)+length(P6-P7);
     float3 vR = normalize(P7-P6);
     float alp = acos(dot(make_float3(1,0,0),vR));
-    float W =  handles.shX + ( handles.S.CCDW/2 +P7.y)/handles.S.PixSize;
-    float Hi =  handles.shY + (handles.S.CCDH/2 +P7.z)/handles.S.PixSize;
+    float W =  S.shX + ( S.CCDW/2 +P7.y)/S.PixSize;
+    float Hi =  S.shY + (S.CCDH/2 +P7.z)/S.PixSize;
     atomicAdd(&(IM[round(Hi)][round(W)]), cos(alp)/(dist*dist));
 }
