@@ -1,3 +1,4 @@
+#define WIN32
 #include "mex.h"
 #include<stdio.h>
 #include<stdlib.h>
@@ -45,7 +46,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             printf("IM is not a float array");
             return;
         }
-        IM=(float*)mxGetPr(plhs[1]);
+        IM=(float3*)mxGetPr(plhs[1]);
         IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
     }
     if(nrhs<4)
@@ -67,7 +68,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     Br_size=mxGetN(prhs[0])*mxGetM(prhs[0]);
     Vb=(int*)mxGetPr(prhs[1]);
     Vb_length=mxGetN(prhs[1])*mxGetM(prhs[1]);
-    VH=(int*)mxGetPr(prhs[2]);
+    VH=(float*)mxGetPr(prhs[2]);
     VH_length=mxGetN(prhs[2])*mxGetM(prhs[2]);
     mxArray* tmp;
     mxArray* tmp2;
@@ -98,7 +99,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     tmp2=mxGetField(tmp,0,"CCDH");
     S.CCDH=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"CCDW");
-    fS.CCDW=(float)mxGetScalar(tmp2);
+    S.CCDW=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"Pk");
     S.Pk.x=(float)((double*)mxGetPr(tmp2))[0];
     S.Pk.y=(float)((double*)mxGetPr(tmp2))[1];
@@ -112,6 +113,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
-    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IM, P);
+    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IM, IM_size, P);
 
 }

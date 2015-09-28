@@ -2,13 +2,21 @@
  * \author Tomasz Jakubczyk
  * \brief RayTrace CUDA kernel function & helpers
  */
-
+#define WIN32
+#include<stdlib.h>
 #include <math.h>
 #include <float.h>
+#include <cuda_runtime.h>
+#include <helper_functions.h>
+#include <helper_cuda.h>
+#include <vector_types.h>
 #include "helper_math.h"
+#include "math_constants.h"
 #include "rcstruct.cuh"
 #include "HandlesStructures.cuh"
 
+extern "C"
+{
 __device__
 float3 findAlpha( float3 n, float3 v, float p, float m2 )
 {
@@ -35,7 +43,7 @@ float3 findAlpha( float3 n, float3 v, float p, float m2 )
         float2 B=make_float2(cos(bet),cos(al2));
         float Wx=(B.x*n.y-B.y*v.y)*S.z+(B.y*v.z-B.x*n.z)*S.y;
         float Wy=(B.y*v.x-B.x*n.x)*S.z+(B.x*n.z-B.y*v.z)*S.x;
-        float Wz=(B.y*v.y-B.x*n.y)*S.x+(B.x*n.x-B.y*v.x)*S.y
+        float Wz=(B.y*v.y-B.x*n.y)*S.x+(B.x*n.x-B.y*v.x)*S.y;
         V2=make_float3(Wx/W,Wy/W,Wz/W);
     }
     return V2;
@@ -48,10 +56,11 @@ rcstruct SphereCross( float3 r, float3 V, float R )
     float B=2.0f*dot(r,V);
     float C=r.x*r.x+r.y*r.y+r.z*r.z-R*R;
     float D=B*B-4.0f*A*C;
+    rcstruct rc;
     if(D<0.0f)
     {
-        rc.a=make_float3(NAN,NAN,NAN);
-        rc.b=make_float3(NAN,NAN,NAN);
+        rc.a=make_float3(CUDART_NAN_F,CUDART_NAN_F,CUDART_NAN_F);
+        rc.b=make_float3(CUDART_NAN_F,CUDART_NAN_F,CUDART_NAN_F);
     }
     else
     {
@@ -88,7 +97,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     float3 P2=make_float3(Br[Vb[indexj]].x,Br[Vb[indexj]].y,VH[indexi]);/**< point on the surface of the first diaphragm */
 
     uint p=0;
-    float3 nan3=make_float(NAN,NAN,NAN);
+    float3 nan3=make_float3(CUDART_NAN_F,CUDART_NAN_F,CUDART_NAN_F);
 
     //Calculation of the position of the sphere's center
     S.Cs1=S.l1-S.R1+S.g;
@@ -98,7 +107,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
 
     float3 v = normalize(P2 - P1);//direction vector of the line
     //looking for the point of intersection of the line and lenses
-    float t = (S.l1 - P2.x))/v.x;
+    float t = (S.l1 - P2.x)/v.x;
     float3 P3 = P2 + t*v;//Point in the plane parallel to the flat surface of the lens
 
     if (length(make_float2(P3.y,P3.z)) > (S.efD/2))//verification whether  the point inside the aperture of the lens or not
@@ -149,6 +158,8 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     }
 
     rcstruct rc1 = SphereCross( make_float3(P4.x-S.Cs2,P4.y,P4.z), v4,S.R2 );
+    float3 P5 = rc1.b;
+    P5.x = P5.x + S.Cs2;
     if(isnan( rc1.a.x ))
     {
         p=0;
@@ -162,8 +173,6 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
         return;
     }
 
-    float3 P5 = rc1.b;
-    P5.x = P5.x + S.Cs2;
 
     if(length(make_float2(rc1.b.y,rc1.b.z)) > S.D/2)
     {
@@ -174,8 +183,8 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
 
     float3 v5 = findAlpha( -ns, v4,1,S.m2 );
 
-    float X = S.l1 + 2*S.g + S.ll;
-    float t = ( X - P5.x ) / v5.x;
+    float X = S.l1 + 2*S.g + S.l1;
+    t = ( X - P5.x ) / v5.x;
 
     float3 P6 = P5 + v5*t;
 
@@ -206,5 +215,8 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     float alp = acos(dot(make_float3(1,0,0),vR));
     float W =  S.shX + ( S.CCDW/2 +P7.y)/S.PixSize;
     float Hi =  S.shY + (S.CCDH/2 +P7.z)/S.PixSize;
-    atomicAdd(&(IM[round(Hi)][round(W)]), cos(alp)/(dist*dist));
+    float value=cos(alp)/(dist*dist);
+    float* val0=IM+(unsigned int)round(Hi)*640+(unsigned int)round(W);
+    atomicAdd(val0, value);
+}
 }
