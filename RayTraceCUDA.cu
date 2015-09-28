@@ -6,6 +6,10 @@
 
 #include "HandlesStructures.cuh"
 #include "RayTraceCUDA_kernel.cuh"
+#include <cuda_runtime.h>
+#include <helper_functions.h>
+#include <helper_cuda.h>
+#include <vector_types.h>
 
 extern "C"
 {
@@ -28,7 +32,7 @@ extern "C"
     __host__
     /** \brief calculate ray tracing.
      * call RayTraceD CUDA kernels
-     * \param Br float3*
+     * \param Br float*
      * \param Vb int*
      * \param VH float*
      * \param Vb_length int
@@ -40,10 +44,40 @@ extern "C"
      * \return void
      *
      */
-    void RayTrace(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P)
+    void RayTrace(float* Br, int Br_size, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, int IM_size, float3* P)
     {
+        float3* dev_Br=0;
+        int* dev_Vb=0;
+        float* dev_VH=0;
+        float3* dev_IM=0;
+        float3* dev_P=0;
+        checkCudaErrors(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size));
+        checkCudaErrors(cudaMemcpy((void*)dev_Br, Br, sizeof(float)*Br_size, cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMalloc((void**)&dev_Vb, sizeof(int)*Vb_length));
+        checkCudaErrors(cudaMemcpy((void*)dev_Vb, Vb, sizeof(int)*Vb_length, cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMalloc((void**)&dev_VH, sizeof(float)*VH_length));
+        checkCudaErrors(cudaMemcpy((void*)dev_VH, VH, sizeof(float)*VH_length, cudaMemcpyHostToDevice));
+        if(IM!=NULL && IM_size>0)
+        {
+            checkCudaErrors(cudaMalloc((void**)&dev_IM, sizeof(float)*IM_size));
+            checkCudaErrors(cudaMemset(dev_IM,0,sizeof(float)*IM_size));
+        }
+        checkCudaErrors(cudaMalloc((void**)&dev_P, sizeof(float)*VH_length*Vb_length*3*7));
+
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 256, numBlocks, numThreads);
         RayTraceD<<< numBlocks, numThreads >>>(Br,Vb,VH,Vb_length,VH_length,S,IM,P);
+
+        checkCudaErrors(cudaMemcpy((void*)P,dev_P,sizeof(float)*VH_length*Vb_length*3*7,cudaMemcpyDeviceToHost));
+        if(IM!=NULL && IM_size>0)
+        {
+            checkCudaErrors(cudaMemcpy((void*)IM,dev_IM,sizeof(float)*IM_size,cudaMemcpyDeviceToHost));
+            checkCudaErrors(cudaFree(dev_IM));
+        }
+
+        checkCudaErrors(cudaFree(dev_P));
+        checkCudaErrors(cudaFree(dev_VH));
+        checkCudaErrors(cudaFree(dev_Vb));
+        checkCudaErrors(cudaFree(dev_Br));
     }
 }

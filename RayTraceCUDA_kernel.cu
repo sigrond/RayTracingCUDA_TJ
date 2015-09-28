@@ -194,7 +194,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     P[index*7+p++]=P6;
     P[index*7+p++]=P7;
 
-    if(IM==NULL)
+    if(IM==NULL || IM==0)
     {
         return;//no need to calculate image
     }
