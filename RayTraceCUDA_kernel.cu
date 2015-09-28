@@ -1,4 +1,4 @@
-/** \file RayTracingCUDA_kernel.cuh
+/** \file RayTraceCUDA_kernel.cu
  * \author Tomasz Jakubczyk
  * \brief RayTrace CUDA kernel function & helpers
  */
@@ -7,6 +7,7 @@
 #include <float.h>
 #include "helper_math.h"
 #include "rcstruct.cuh"
+#include "HandlesStructures.cuh"
 
 __device__
 float3 findAlpha( float3 n, float3 v, float p, float m2 )
@@ -65,22 +66,26 @@ rcstruct SphereCross( float3 r, float3 V, float R )
 __global__
 /** \brief RayTrace CUDA kernel function.
  *
- * \param P2 float3* point on the surface of the first diaphragm
- * \param VH_length int
+ * \param Br float3*
+ * \param Vb int*
+ * \param VH float*
  * \param Vb_length int
+ * \param VH_length int
  * \param S HandlesStructures structure contains the parameters of the lens
- * \param IM float*
+ * \param IM float* if pointer is null image shall not be calculated
  * \param P float3* coordinates of successive intersection ray with  surfaces
  * \return void
  *
  */
-void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, float* IM, float3* P)
+void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IM, float3* P)
 {
     uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
     uint indexi = index/Vb_length;
     if (indexi >= VH_length) return;//empty kernel
     uint indexj = index%Vb_length;
     if (indexj >= Vb_length) return;//critical error
+
+    float3 P2=make_float3(Br[Vb[indexj]].x,Br[Vb[indexj]].y,VH[indexi]);/**< point on the surface of the first diaphragm */
 
     uint p=0;
     float3 nan3=make_float(NAN,NAN,NAN);
@@ -91,10 +96,10 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     float3 P1 = S.Pk;//droplet coordinates
 
-    float3 v = normalize(P2[index] - P1);//direction vector of the line
+    float3 v = normalize(P2 - P1);//direction vector of the line
     //looking for the point of intersection of the line and lenses
-    float t = (S.l1 - P2[index].x))/v.x;
-    float3 P3 = P2[index] + t*v;//Point in the plane parallel to the flat surface of the lens
+    float t = (S.l1 - P2.x))/v.x;
+    float3 P3 = P2 + t*v;//Point in the plane parallel to the flat surface of the lens
 
     if (length(make_float2(P3.y,P3.z)) > (S.efD/2))//verification whether  the point inside the aperture of the lens or not
     {
@@ -116,7 +121,7 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
     {
         p=0;
         P[index*7+p++]=P1;
-        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P2;
         P[index*7+p++]=P3;
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
@@ -134,7 +139,7 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
     {
         p=0;
         P[index*7+p++]=P1;
-        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P2;
         P[index*7+p++]=P3;
         P[index*7+p++]=P4;
         P[index*7+p++]=nan3;
@@ -148,7 +153,7 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
     {
         p=0;
         P[index*7+p++]=P1;
-        P[index*7+p++]=P2[index];
+        P[index*7+p++]=P2;
         P[index*7+p++]=P3;
         P[index*7+p++]=P4;
         P[index*7+p++]=P5;
@@ -182,14 +187,19 @@ void RayTraceD(float3* P2, int VH_length, int Vb_length, HandlesStructures S, fl
 
     p=0;
     P[index*7+p++]=P1;
-    P[index*7+p++]=P2[index];
+    P[index*7+p++]=P2;
     P[index*7+p++]=P3;
     P[index*7+p++]=P4;
     P[index*7+p++]=P5;
     P[index*7+p++]=P6;
     P[index*7+p++]=P7;
 
-    float dist=length(P1-P2[index])+length(P2[index]-P3)+
+    if(IM==NULL)
+    {
+        return;//no need to calculate image
+    }
+
+    float dist=length(P1-P2)+length(P2-P3)+
                 length(P3-P4)+length(P4-P5)+
                 length(P5-P6)+length(P6-P7);
     float3 vR = normalize(P7-P6);
