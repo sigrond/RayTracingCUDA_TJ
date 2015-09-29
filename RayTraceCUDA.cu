@@ -11,6 +11,7 @@
 #include <helper_cuda.h>
 #include <vector_types.h>
 #include "helper_math.h"
+#include <stdlib.h>
 
 extern "C"
 {
@@ -74,6 +75,7 @@ extern "C"
 
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 256, numBlocks, numThreads);
+        system("pause");
         RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
 
         checkCudaErrors(cudaMemcpy((void*)P,dev_P,sizeof(float)*VH_length*Vb_length*3*7,cudaMemcpyDeviceToHost));

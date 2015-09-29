@@ -26,14 +26,15 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int* Vb;
     float* VH;
     int Br_size;
-    int Vb_length;
-    int VH_length;
+    int Vb_length=0;
+    int VH_length=0;
     HandlesStructures S;
     float3* IM;
     int IM_size;
     float3* P;
 
     /**< get data */
+    printf("nlhs:%d\n",nlhs);
     if(nlhs<=1)//no place for IM output
     {
         IM=NULL;//don't calculate IM
@@ -41,13 +42,15 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     else
     {
-        if(!mxIsSingle(plhs[1]))
+        /*if(!mxIsSingle(plhs[1]))
         {
             printf("IM is not a float array");
             return;
-        }
-        IM=(float3*)mxGetPr(plhs[1]);
-        IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
+        }*/
+        int dimsIM[2]={480,640};
+        plhs[1]=mxCreateNumericArray(2,dimsIM,mxSINGLE_CLASS,mxREAL);
+//        IM=(float3*)mxGetPr(plhs[1]);
+//        IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
     }
     if(nrhs<4)
     {
@@ -61,7 +64,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     if(!mxIsSingle(prhs[0]))
     {
-        printf("1st argument needs to be single precision floating point vector of 3d points");
+        printf("1st argument needs to be single precision floating point vector of 3d points\n");
         return;
     }
     Br=(float*)mxGetPr(prhs[0]);
@@ -70,20 +73,32 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     Vb_length=mxGetN(prhs[1])*mxGetM(prhs[1]);
     VH=(float*)mxGetPr(prhs[2]);
     VH_length=mxGetN(prhs[2])*mxGetM(prhs[2]);
+
     mxArray* tmp;
     mxArray* tmp2;
+    int tmpb=mxIsStruct(prhs[3]);
+    printf("mxIsStruct:%d\n",tmpb);
+    if(!tmpb)
+    {
+        printf("4th argument must be a struct\n");
+        return;
+    }
     tmp=mxGetField(prhs[3],0,"shX");//handles.shX
     S.shX=(float)mxGetScalar(tmp);
+    printf("S.shX:%f\n",S.shX);
     tmp=mxGetField(prhs[3],0,"shY");
     S.shY=(float)mxGetScalar(tmp);
+    printf("S.shY:%f\n",S.shY);
     tmp=mxGetField(prhs[3],0,"S");//handles.S
     tmp2=mxGetField(tmp,0,"D");//handles.S.D
     S.D=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"efD");
     S.efD=(float)mxGetScalar(tmp2);
+    printf("S.D.efD:%f\n",S.efD);
     tmp2=mxGetField(tmp,0,"R");
     S.R1=(float)((double*)mxGetPr(tmp2))[0];
     S.R2=(float)((double*)mxGetPr(tmp2))[1];
+    printf("S.R1:%f,S.R2:%f\n",S.R1,S.R2);
     tmp2=mxGetField(tmp,0,"g");
     S.g=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"l1");
@@ -106,10 +121,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.Pk.z=(float)((double*)mxGetPr(tmp2))[2];
     tmp2=mxGetField(tmp,0,"m2");
     S.m2=(float)mxGetScalar(tmp2);
+    printf("S.m2:%f\n",S.m2);
 
     int dims[4]={VH_length,Vb_length,7,3};
     plhs[0]=mxCreateNumericArray(4,dims,mxSINGLE_CLASS,mxREAL);
     P=(float3*)mxGetPr(plhs[0]);
+    //system("pause");
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P

@@ -1,0 +1,12 @@
+matlab rzuca b³¹d naruszenia pamiêci, trzeba ustaliæ czemu.
+ray tracing jest zbyt skomplikowany, ¿eby zgadywaæ co jest nie tak.
+pomys³:
+skompilowaæ do mexa sam RayTracing.cu z fakeRaytraceCUDA.cu, ¿eby zobaczyæ czy b³¹d nie jest zwi¹zany
+z mex.h i funkcjami matlaba.
+skompilowaæ do exe RayTraceCUDA.cu i RayTraceCUDA_kernel.cu z testowanieRayTracing.cu,
+¿eby sprawdziæ czy problem nie le¿y po stronie CUDy.
+
+nvmex -f nvmexopts.bat fakeRayTraceCUDA.cu RayTracing.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\win32 -lcufft -lcudart -lcuda
+b³¹d zdaje siê byæ w czesci mexa
+okazuje siê, ¿e nie wolno sprawdzaæ l-wartoœci
+jest te¿ problem z m2. m2 nie by³o odrazu zainicjalizowane w matlabie, teraz jest w setsystem
