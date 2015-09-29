@@ -14,12 +14,11 @@
 			</Target>
 		</Build>
 		<Unit filename="HandlesStructures.cuh" />
-		<Unit filename="RayTracing.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="RayTracingCUDA.cu" />
-		<Unit filename="RayTracingCUDA.cuh" />
-		<Unit filename="RayTracingCUDA_kernel.cuh" />
+		<Unit filename="RayTraceCUDA.cu" />
+		<Unit filename="RayTraceCUDA.cuh" />
+		<Unit filename="RayTraceCUDA_kernel.cu" />
+		<Unit filename="RayTraceCUDA_kernel.cuh" />
+		<Unit filename="RayTracing.cu" />
 		<Unit filename="rcstruct.cuh" />
 		<Extensions>
 			<code_completion />
