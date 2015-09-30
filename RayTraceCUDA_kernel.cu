@@ -136,6 +136,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
+        //P[index*7]=make_float3(100,100,100);//error1
         return;
     }
 
@@ -154,6 +155,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
+        //P[index*7]=make_float3(200,200,200);//error2
         return;
     }
 
@@ -167,15 +169,25 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
         P[index*7+p++]=P2;
         P[index*7+p++]=P3;
         P[index*7+p++]=P4;
-        P[index*7+p++]=P5;
         P[index*7+p++]=nan3;
         P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        //P[index*7]=make_float3(300,300,300);//error3
         return;
     }
 
 
     if(length(make_float2(rc1.b.y,rc1.b.z)) > S.D/2)
     {
+        p=0;
+        P[index*7+p++]=P1;
+        P[index*7+p++]=P2;
+        P[index*7+p++]=P3;
+        P[index*7+p++]=P5;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        P[index*7+p++]=nan3;
+        //P[index*7]=make_float3(400,400,400);//error4
         return;
     }
 
@@ -205,6 +217,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
 
     if(IM==NULL || IM==0)
     {
+        P[index*7]=make_float3(500,500,500);//error5
         return;//no need to calculate image
     }
 
@@ -216,7 +229,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     float W =  S.shX + ( S.CCDW/2 +P7.y)/S.PixSize;
     float Hi =  S.shY + (S.CCDH/2 +P7.z)/S.PixSize;
     float value=cos(alp)/(dist*dist);
-    float* val0=IM+(unsigned int)round(Hi)*640+(unsigned int)round(W);
+    float* val0=IM+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
     atomicAdd(val0, value);
 }
-}
+}//extern "C"

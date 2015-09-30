@@ -49,8 +49,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         }*/
         int dimsIM[2]={480,640};
         plhs[1]=mxCreateNumericArray(2,dimsIM,mxSINGLE_CLASS,mxREAL);
-//        IM=(float3*)mxGetPr(plhs[1]);
-//        IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
+        IM=(float3*)mxGetPr(plhs[1]);
+        IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
     }
     if(nrhs<4)
     {
@@ -123,10 +123,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.m2=(float)mxGetScalar(tmp2);
     printf("S.m2:%f\n",S.m2);
 
-    int dims[4]={VH_length,Vb_length,7,3};
+    int dims[4]={3,7,VH_length,Vb_length};
     plhs[0]=mxCreateNumericArray(4,dims,mxSINGLE_CLASS,mxREAL);
     P=(float3*)mxGetPr(plhs[0]);
     //system("pause");
+    printf("IM:%d\n",IM);
+    printf("IM_size:%d\n",IM_size);
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
