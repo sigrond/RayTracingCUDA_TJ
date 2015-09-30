@@ -75,8 +75,8 @@ rcstruct SphereCross( float3 r, float3 V, float R )
 __global__
 /** \brief RayTrace CUDA kernel function.
  *
- * \param Br float3*
- * \param Vb int*
+ * \param Br float*
+ * \param Vb float*
  * \param VH float*
  * \param Vb_length int
  * \param VH_length int
@@ -86,7 +86,7 @@ __global__
  * \return void
  *
  */
-void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IM, float3* P)
+void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IM, float3* P)
 {
     uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
     uint indexi = index/Vb_length;
@@ -94,7 +94,7 @@ void RayTraceD(float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, Han
     uint indexj = index%Vb_length;
     if (indexj >= Vb_length) return;//critical error
 
-    float3 P2=make_float3(Br[Vb[indexj]].x,Br[Vb[indexj]].y,VH[indexi]);/**< point on the surface of the first diaphragm */
+    float3 P2=make_float3(Br[indexj],Vb[indexj],VH[indexi]);/**< point on the surface of the first diaphragm */
 
     uint p=0;
     float3 nan3=make_float3(CUDART_NAN_F,CUDART_NAN_F,CUDART_NAN_F);

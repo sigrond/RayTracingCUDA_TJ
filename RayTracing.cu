@@ -23,7 +23,7 @@
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     float* Br;
-    int* Vb;
+    float* Vb;
     float* VH;
     int Br_size;
     int Vb_length=0;
@@ -69,7 +69,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     Br=(float*)mxGetPr(prhs[0]);
     Br_size=mxGetN(prhs[0])*mxGetM(prhs[0]);
-    Vb=(int*)mxGetPr(prhs[1]);
+    Vb=(float*)mxGetPr(prhs[1]);
     Vb_length=mxGetN(prhs[1])*mxGetM(prhs[1]);
     VH=(float*)mxGetPr(prhs[2]);
     VH_length=mxGetN(prhs[2])*mxGetM(prhs[2]);

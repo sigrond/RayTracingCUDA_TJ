@@ -54,17 +54,17 @@ extern "C"
      * \return void
      *
      */
-    void RayTrace(float* Br, int Br_size, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, int IM_size, float3* P)
+    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, int IM_size, float3* P)
     {
-        float3* dev_Br=0;
-        int* dev_Vb=0;
+        float* dev_Br=0;
+        float* dev_Vb=0;
         float* dev_VH=0;
         float* dev_IM=0;
         float3* dev_P=0;
         checkCudaErrors(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size));
         checkCudaErrors(cudaMemcpy((void*)dev_Br, Br, sizeof(float)*Br_size, cudaMemcpyHostToDevice));
-        checkCudaErrors(cudaMalloc((void**)&dev_Vb, sizeof(int)*Vb_length));
-        checkCudaErrors(cudaMemcpy((void*)dev_Vb, Vb, sizeof(int)*Vb_length, cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMalloc((void**)&dev_Vb, sizeof(float)*Vb_length));
+        checkCudaErrors(cudaMemcpy((void*)dev_Vb, Vb, sizeof(float)*Vb_length, cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMalloc((void**)&dev_VH, sizeof(float)*VH_length));
         checkCudaErrors(cudaMemcpy((void*)dev_VH, VH, sizeof(float)*VH_length, cudaMemcpyHostToDevice));
         if(IM!=NULL && IM_size>0)
@@ -77,7 +77,7 @@ extern "C"
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
         //system("pause");
-        printf("dev_IM:%d\n",dev_IM);
+        //printf("dev_IM:%d\n",dev_IM);
         RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
 
         checkCudaErrors(cudaMemcpy((void*)P,dev_P,sizeof(float)*VH_length*Vb_length*3*7,cudaMemcpyDeviceToHost));

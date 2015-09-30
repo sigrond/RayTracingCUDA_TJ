@@ -8,7 +8,7 @@
  */
 extern "C"
 {
-void RayTrace(float* Br, int Br_size, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, int IM_size, float3* P);
+void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, int IM_size, float3* P);
 }
 //extern "C"
 //{
