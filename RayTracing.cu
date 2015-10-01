@@ -64,7 +64,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     if(!mxIsSingle(prhs[0]))
     {
-        printf("1st argument needs to be single precision floating point vector of 3d points\n");
+        printf("1st argument needs to be single precision vector\n");
+        return;
+    }
+    if(!mxIsSingle(prhs[1]))
+    {
+        printf("2nd argument needs to be single precision vector\n");
+        return;
+    }
+    if(!mxIsSingle(prhs[2]))
+    {
+        printf("3rd argument needs to be single precision vector\n");
         return;
     }
     Br=(float*)mxGetPr(prhs[0]);
@@ -73,6 +83,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     Vb_length=mxGetN(prhs[1])*mxGetM(prhs[1]);
     VH=(float*)mxGetPr(prhs[2]);
     VH_length=mxGetN(prhs[2])*mxGetM(prhs[2]);
+    printf("Br_size:%d,Vb_length:%d,VH_length:%d\n",Br_size,Vb_length,VH_length);
 
     mxArray* tmp;
     mxArray* tmp2;
@@ -103,6 +114,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.g=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"l1");
     S.l1=(float)mxGetScalar(tmp2);
+    printf("S.l1: %f\n",S.l1);//eL jeden !!!
+    tmp2=mxGetField(tmp,0,"ll");
+    S.ll=(float)mxGetScalar(tmp2);
+    printf("S.ll: %f\n",S.ll);//eL eL !!!
     tmp2=mxGetField(tmp,0,"lCCD");
     S.lCCD=(float)mxGetScalar(tmp2);
     tmp2=mxGetField(tmp,0,"CCDPH");
@@ -119,6 +134,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.Pk.x=(float)((double*)mxGetPr(tmp2))[0];
     S.Pk.y=(float)((double*)mxGetPr(tmp2))[1];
     S.Pk.z=(float)((double*)mxGetPr(tmp2))[2];
+    printf("S.Pk:(%f, %f, %f)\n",S.Pk.x,S.Pk.y,S.Pk.z);
     tmp2=mxGetField(tmp,0,"m2");
     S.m2=(float)mxGetScalar(tmp2);
     printf("S.m2:%f\n",S.m2);
@@ -129,6 +145,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     //system("pause");
     printf("IM:%d\n",IM);
     printf("IM_size:%d\n",IM_size);
+
+    printf("Br: ");
+    for(int i=0;i<Br_size;i++)
+    printf("%f ",Br[i]);
+    printf("\nVb: ");
+    for(int i=0;i<Vb_length;i++)
+    printf("%f ",Vb[i]);
+    printf("\nVH: ");
+    for(int i=0;i<VH_length;i++)
+    printf("%f ",VH[i]);
+    printf("\n");
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P

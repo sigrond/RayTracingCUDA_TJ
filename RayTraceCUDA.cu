@@ -13,6 +13,7 @@
 #include "helper_math.h"
 #include <stdlib.h>
 #include<stdio.h>
+#include "mex.h"
 
 extern "C"
 {
@@ -73,12 +74,23 @@ extern "C"
             checkCudaErrors(cudaMemset(dev_IM,0,sizeof(float)*IM_size));
         }
         checkCudaErrors(cudaMalloc((void**)&dev_P, sizeof(float)*VH_length*Vb_length*3*7));
+        checkCudaErrors(cudaMemset(dev_P,-2,sizeof(float)*VH_length*Vb_length*3*7));
 
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
+
+        cudaError_t err = cudaGetLastError();
+        if (err != cudaSuccess)
+        printf("1cudaError: %s\n", cudaGetErrorString(err));
+
         //system("pause");
-        //printf("dev_IM:%d\n",dev_IM);
+        printf("dev_IM:%d\n",dev_IM);
         RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
+        //RayTraceD<<< 2, 25 >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        printf("2cudaError: %s\n", cudaGetErrorString(err));
 
         checkCudaErrors(cudaMemcpy((void*)P,dev_P,sizeof(float)*VH_length*Vb_length*3*7,cudaMemcpyDeviceToHost));
         if(IM!=NULL && IM_size>0)

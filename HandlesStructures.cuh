@@ -3,7 +3,7 @@
 /** \brief Structure with handles data used by raytracing.
  * Structure should be filled with data from matlab on initialization.
  */
-typedef struct
+typedef struct HandlesStructures
 {
     //Parameters of lens:
     float D;//=15;/**< lens diametr. Set 15 instead of 12 (real aperture) is convenient for calculations */
@@ -13,6 +13,7 @@ typedef struct
     float g;//=4;/**< thickness of the whole lens along optical axes */
     //Distances:
     float l1;//=17;/**< Distance between center of the trap and  first lens */
+    float ll;
     //CCD parameters
     float lCCD;// = 82.8;/**< Distance to CCD detector */
     float CCDPH;// = 480;/**< width of CCD [ Pix ] */

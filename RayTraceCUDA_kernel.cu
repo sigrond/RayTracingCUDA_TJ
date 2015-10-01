@@ -89,10 +89,22 @@ __global__
 void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IM, float3* P)
 {
     uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
+    if(index==0)
+    {
+        P[0]=make_float3(-1,-1,-1);//error1
+    }
     uint indexi = index/Vb_length;
-    if (indexi >= VH_length) return;//empty kernel
+    if (indexi >= VH_length)
+    {
+        P[index*7]=make_float3(-100,-100,-100);//error1
+        return;//empty kernel
+    }
     uint indexj = index%Vb_length;
-    if (indexj >= Vb_length) return;//critical error
+    if (indexj >= Vb_length)
+    {
+        P[index*7]=make_float3(-200,-200,-200);//error1
+        return;//critical error
+    }
 
     float3 P2=make_float3(Br[indexj],Vb[indexj],VH[indexi]);/**< point on the surface of the first diaphragm */
 
@@ -101,7 +113,7 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     //Calculation of the position of the sphere's center
     S.Cs1=S.l1-S.R1+S.g;
-    S.Cs2=S.Cs1+S.l1+2.0f*S.R2;
+    S.Cs2=S.Cs1+S.ll+2.0f*S.R2;
 
     float3 P1 = S.Pk;//droplet coordinates
 
@@ -160,8 +172,6 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     }
 
     rcstruct rc1 = SphereCross( make_float3(P4.x-S.Cs2,P4.y,P4.z), v4,S.R2 );
-    float3 P5 = rc1.b;
-    P5.x = P5.x + S.Cs2;
     if(isnan( rc1.a.x ))
     {
         p=0;
@@ -175,6 +185,8 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
         //P[index*7]=make_float3(300,300,300);//error3
         return;
     }
+    float3 P5 = rc1.b;
+    P5.x = P5.x + S.Cs2;
 
 
     if(length(make_float2(rc1.b.y,rc1.b.z)) > S.D/2)
@@ -195,7 +207,7 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     float3 v5 = findAlpha( -ns, v4,1,S.m2 );
 
-    float X = S.l1 + 2*S.g + S.l1;
+    float X = S.l1 + 2*S.g + S.ll;
     t = ( X - P5.x ) / v5.x;
 
     float3 P6 = P5 + v5*t;
@@ -217,7 +229,7 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     if(IM==NULL || IM==0)
     {
-        P[index*7]=make_float3(500,500,500);//error5
+        //P[index*7]=make_float3(500,500,500);//error5
         return;//no need to calculate image
     }
 
