@@ -6,3 +6,6 @@ Instead of executing one raytracing function at a time they will be all executed
 
 cmopilation line:
 nvmex -f nvmexopts.bat RayTracing.cu RayTraceCUDA.cu RayTraceCUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\win32 -lcufft -lcudart -lcuda
+
+TODO:
+for each ray, if it hits pixel calculate average ray's y & z for that pixel
