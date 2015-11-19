@@ -1,0 +1,17 @@
+How we used CUDA to run ray-tracing - main steps of CUDA algorythm.
+Author: Tomasz Jakubczyk
+1. Ray-tracing data is loaded from matlab memory to graphic card memmory.
+2. Ray-tracing function, called kernel, is executed on graphic card in 
+masivly multiple threads. Each thread has pointer to data and its own, 
+unique in single kernel call, number so each thread can access different part of data
+and each piece of data has its own thread executing ray-tracing function. 
+For best performence and to avoid collisions differet threads shuldn't write 
+at same memmory address.
+3. To produce values of immage matrix addition of values from different threads is needed.
+The result of unsychronized additions in simultaneous threads to value at one address may
+be undeterministic.
+To avoid undeterministic results atomic addition is used. Atomic function is special
+function witch guarantees indivisible access to variable at specific address.
+Fortunetly in our case this synchronization operation isn't very costly becase only few
+threads needs to access the same cell of immage matrix.
+4. Results are copied from graphic cards memmory to matlab memmory.

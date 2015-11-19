@@ -1,3 +1,7 @@
+/** \file RayTracing.cu
+ * \brief this file contains calls to matlab and main function
+ *
+ */
 #define WIN32
 #include "mex.h"
 #include<stdio.h>
