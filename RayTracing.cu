@@ -15,7 +15,7 @@
 #include "helper_math.h"
 
 /** \brief RayTracing mex function
- * function [P,IM] = RayTracing(Br,Vb,VH,handles)
+ * function [IC, PX] = RayTracing(Br,Vb,VH,handles)
  * function P = RayTracing(Br,Vb,VH,handles)
  * \param nlhs int
  * \param plhs[] mxArray*
@@ -33,16 +33,17 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int Vb_length=0;
     int VH_length=0;
     HandlesStructures S;
-    float3* IM;
-    int IM_size;
-    float3* P;
+    float3* IC;
+    int IC_size;
+    //float3* P;
+    float4* PX;
 
     /**< get data */
     printf("nlhs:%d\n",nlhs);
-    if(nlhs<=1)//no place for IM output
+    if(nlhs<=1)
     {
-        IM=NULL;//don't calculate IM
-        IM_size=0;
+    	printf("not enough outputs, function returns [IC, PX]\n");
+    	return;
     }
     else
     {
@@ -51,10 +52,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             printf("IM is not a float array");
             return;
         }*/
-        int dimsIM[2]={480,640};
-        plhs[1]=mxCreateNumericArray(2,dimsIM,mxSINGLE_CLASS,mxREAL);
-        IM=(float3*)mxGetPr(plhs[1]);
-        IM_size=mxGetN(plhs[1])*mxGetM(plhs[1]);
+        int dimsIC[2]={480,640};/**< \todo wczytywać wartości z handles */
+        plhs[0]=mxCreateNumericArray(2,dimsIC,mxSINGLE_CLASS,mxREAL);
+        IC=(float3*)mxGetPr(plhs[0]);
+        IC_size=mxGetN(plhs[0])*mxGetM(plhs[0]);
     }
     if(nrhs<4)
     {
@@ -143,12 +144,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.m2=(float)mxGetScalar(tmp2);
     printf("S.m2:%f\n",S.m2);
 
-    int dims[4]={3,7,VH_length,Vb_length};
-    plhs[0]=mxCreateNumericArray(4,dims,mxSINGLE_CLASS,mxREAL);
-    P=(float3*)mxGetPr(plhs[0]);
+    int dims[2]={4,480,640};
+    plhs[1]=mxCreateNumericArray(3,dims,mxSINGLE_CLASS,mxREAL);
+    PK=(float4*)mxGetPr(plhs[1]);
     //system("pause");
-    printf("IM:%d\n",IM);
-    printf("IM_size:%d\n",IM_size);
+    printf("IC:%d\n",IC);
+    printf("IC_size:%d\n",IC_size);
 
     printf("Br: ");
     for(int i=0;i<Br_size;i++)
@@ -163,6 +164,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
-    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IM, IM_size, P);
+    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IC, IC_size, PK);
 
 }
