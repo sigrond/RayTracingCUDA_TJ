@@ -55,13 +55,13 @@ extern "C"
      * \return void
      *
      */
-    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IC, int IC_size, float4* PK)
+    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IC, int IC_size, float4* PX)
     {
         float* dev_Br=0;
         float* dev_Vb=0;
         float* dev_VH=0;
         float* dev_IC=0;
-        float4* dev_PK=0;
+        float4* dev_PX=0;
         checkCudaErrors(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size));
         checkCudaErrors(cudaMemcpy((void*)dev_Br, Br, sizeof(float)*Br_size, cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMalloc((void**)&dev_Vb, sizeof(float)*Vb_length));
@@ -70,8 +70,8 @@ extern "C"
         checkCudaErrors(cudaMemcpy((void*)dev_VH, VH, sizeof(float)*VH_length, cudaMemcpyHostToDevice));
 		checkCudaErrors(cudaMalloc((void**)&dev_IC, sizeof(float)*IC_size));
 		checkCudaErrors(cudaMemset(dev_IC,0,sizeof(float)*IC_size));
-        checkCudaErrors(cudaMalloc((void**)&dev_PK, sizeof(float)*4*480*640));
-        checkCudaErrors(cudaMemset(dev_P,0,sizeof(float)*4*480*640));
+        checkCudaErrors(cudaMalloc((void**)&dev_PX, sizeof(float)*4*480*640));
+        checkCudaErrors(cudaMemset(dev_PX,0,sizeof(float)*4*480*640));
 
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
@@ -84,7 +84,7 @@ extern "C"
 
         //system("pause");
         printf("dev_IC:%d\n",dev_IC);
-        RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PK);
+        RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PX);
         //RayTraceD<<< 2, 25 >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
 
         err = cudaGetLastError();
@@ -93,11 +93,11 @@ extern "C"
 			printf("2cudaError(while CUDA kernel execution): %s\n", cudaGetErrorString(err));
 		}
 
-        checkCudaErrors(cudaMemcpy((void*)PK,dev_PK,sizeof(float)*4*480*640,cudaMemcpyDeviceToHost));
+        checkCudaErrors(cudaMemcpy((void*)PX,dev_PX,sizeof(float)*4*480*640,cudaMemcpyDeviceToHost));
 		checkCudaErrors(cudaMemcpy((void*)IC,dev_IC,sizeof(float)*IC_size,cudaMemcpyDeviceToHost));
-		checkCudaErrors(cudaFree(dev_IM));
+		checkCudaErrors(cudaFree(dev_IC));
 
-        checkCudaErrors(cudaFree(dev_P));
+        checkCudaErrors(cudaFree(dev_PX));
         checkCudaErrors(cudaFree(dev_VH));
         checkCudaErrors(cudaFree(dev_Vb));
         checkCudaErrors(cudaFree(dev_Br));

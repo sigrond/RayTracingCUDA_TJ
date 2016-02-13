@@ -144,9 +144,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     S.m2=(float)mxGetScalar(tmp2);
     printf("S.m2:%f\n",S.m2);
 
-    int dims[2]={4,480,640};
+    int dims[3]={4,480,640};
     plhs[1]=mxCreateNumericArray(3,dims,mxSINGLE_CLASS,mxREAL);
-    PK=(float4*)mxGetPr(plhs[1]);
+    PX=(float4*)mxGetPr(plhs[1]);
     //system("pause");
     printf("IC:%d\n",IC);
     printf("IC_size:%d\n",IC_size);
@@ -164,6 +164,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
-    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IC, IC_size, PK);
+    RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IC, IC_size, PX);
 
 }
