@@ -350,6 +350,16 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 handles.S.N = 3e3; % Number of points per side
+handles.GPU=1;
+if handles.GPU==1
+    Br = single(BorderCreation(hObject,handles));
+    Vb = (1 + handles.S.N ) : handles.S.N * 2;
+    IC = single(zeros(480,640));
+    PX = single(zeros(4,480,640));
+    [IC,PX]=RayTracingCUDA(Br(Vb(:),1), Br(Vb(:),2), Br(:,3),handles);
+    IC = IC./max(IC(:));
+    [THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
+else
 Br = BorderCreation(hObject,handles);
 % get only the part of border points 
 Vb = (1 + handles.S.N ) : handles.S.N * 2; % Indexes for bottom electrode
@@ -393,6 +403,7 @@ close(hwb)
 IC = IC./max(IC(:));
 % Angles calculation
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
+end
 %--------------------------------------------------------------------------
 
 %=============== End of  My functions =================================
