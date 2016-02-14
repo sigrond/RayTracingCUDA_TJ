@@ -42,3 +42,4 @@ S.Pk   = [0,0,0]; % Position of droplet relativ to the origin of coordinat syste
 S.lambda = 532; %lambda can has the structure of RGB lambda(1:3) = [R,G,B];
 S.N  =   20;    % number of points per border side
 
+

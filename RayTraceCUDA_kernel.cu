@@ -90,10 +90,10 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 {
     uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
     //float3 P[11];
-    /*if(index==0)
+    if(index==0)
     {
-        P[0]=make_float3(-1,-1,-1);//error1
-    }*/
+        //P[0]=make_float3(-1,-1,-1);//error1
+    }
     uint indexi = index/Vb_length;
     if (indexi >= VH_length)
     {
