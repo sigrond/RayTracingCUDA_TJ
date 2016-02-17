@@ -33,7 +33,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int Vb_length=0;
     int VH_length=0;
     HandlesStructures S;
-    float3* IC;
+    float* IC;
     int IC_size;
     //float3* P;
     float4* PX;
@@ -54,7 +54,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         }*/
         int dimsIC[2]={480,640};/**< \todo wczytywać wartości z handles */
         plhs[0]=mxCreateNumericArray(2,dimsIC,mxSINGLE_CLASS,mxREAL);
-        IC=(float3*)mxGetPr(plhs[0]);
+        IC=(float*)mxGetPr(plhs[0]);
         IC_size=mxGetN(plhs[0])*mxGetM(plhs[0]);
     }
     if(nrhs<4)
@@ -152,18 +152,22 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf("IC_size:%d\n",IC_size);
 
     printf("Br: ");
-    for(int i=0;i<Br_size;i++)
+    for(int i=0;i<Br_size && i<100;i++)
     printf("%f ",Br[i]);
     printf("\nVb: ");
-    for(int i=0;i<Vb_length;i++)
+    for(int i=0;i<Vb_length && i<100;i++)
     printf("%f ",Vb[i]);
     printf("\nVH: ");
-    for(int i=0;i<VH_length;i++)
+    for(int i=0;i<VH_length && i<100;i++)
     printf("%f ",VH[i]);
-    printf("\n");
+    printf("\n new version \n");
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
     RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IC, IC_size, PX);
 
+    printf("\nIC: ");
+    for(int i=0;i<IC_size;i++)
+    printf("%f ",IC[i]);
+    printf("\n");
 }

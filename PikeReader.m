@@ -351,19 +351,23 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 % intensity correction matrix for experimental data.       
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
-handles.S.N = 3e3; % Number of points per side
-%handles.S.N = 5e2 ; % Number of points per side
+%handles.S.N = 3e3; % Number of points per side
+handles.S.N = 2890; %5e2 ; % Number of points per side
 %handles.GPU=0;
 if handles.GPU==1
     Br = single(BorderCreation(hObject,handles));
     Vb = (1 + handles.S.N ) : handles.S.N * 2;
     IC = single(zeros(480,640));
     PX = single(zeros(4,480,640));
+    tic;
     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
+    toc
     %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
     max(IC);
 
     IC = IC./max(IC(:));
+    
+    imtool(IC);
 
     [THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
 else

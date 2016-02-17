@@ -55,7 +55,7 @@ extern "C"
      * \return void
      *
      */
-    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IC, int IC_size, float4* PX)
+    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, int IC_size, float4* PX)
     {
         float* dev_Br=0;
         float* dev_Vb=0;
@@ -95,6 +95,13 @@ extern "C"
 
         checkCudaErrors(cudaMemcpy((void*)PX,dev_PX,sizeof(float)*4*480*640,cudaMemcpyDeviceToHost));
 		checkCudaErrors(cudaMemcpy((void*)IC,dev_IC,sizeof(float)*IC_size,cudaMemcpyDeviceToHost));
+
+		err = cudaGetLastError();
+        if (err != cudaSuccess)
+		{
+			printf("3cudaError(while cudaMemcpy): %s\n", cudaGetErrorString(err));
+		}
+
 		checkCudaErrors(cudaFree(dev_IC));
 
         checkCudaErrors(cudaFree(dev_PX));
