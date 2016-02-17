@@ -52,6 +52,8 @@ handles.BWR = [];
 handles.BWG = [];
 handles.BWB = [];
 
+handles.GPU=1;
+
 set(handles.edAperture,'string',num2str(handles.S.D));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
@@ -409,8 +411,9 @@ IC = IC./max(IC(:));
 % Angles calculation
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
 end
-figure;
-image(IC);
+%f=figure;
+%imtool(IC);
+%THETA
 %--------------------------------------------------------------------------
 
 %=============== End of  My functions =================================
@@ -1517,4 +1520,5 @@ function checkbox6_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of checkbox6
-haget(hObject,'Value')
+handles.GPU=get(hObject,'Value');
+guidata(hObject,handles);
