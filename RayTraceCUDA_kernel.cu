@@ -86,7 +86,7 @@ __global__
  * \return void
  *
  */
-void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float4* PX)
+void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
@@ -262,13 +262,13 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     //Recording position of rays and a number of rays that walk into the cell
     float value=1.0f;
     float* val0;
-    val0=(float*)PX+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480;
+    val0=(float*)PX+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, P2.x);
-    val0=(float*)PX+1+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480;
+    val0=(float*)PX+1+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, P2.y);
-    val0=(float*)PX+2+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480;
+    val0=(float*)PX+2+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, P2.z);
-    val0=(float*)PX+3+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480;
+    val0=(float*)PX+3+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, value);//+1
 
     //The calculation of energy loss,  caused by reflection on lens surfaces and rising distance

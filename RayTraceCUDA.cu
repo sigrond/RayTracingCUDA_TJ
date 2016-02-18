@@ -55,14 +55,14 @@ extern "C"
      * \return void
      *
      */
-    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, int IC_size, float4* PX)
+    void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, int IC_size, float* PX)
     {
         cudaError_t err;
         float* dev_Br=0;
         float* dev_Vb=0;
         float* dev_VH=0;
         float* dev_IC=0;
-        float4* dev_PX=0;
+        float* dev_PX=0;
         checkCudaErrors(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size));
         err = cudaGetLastError();
         if (err != cudaSuccess)

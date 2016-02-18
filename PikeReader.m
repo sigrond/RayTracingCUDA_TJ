@@ -368,8 +368,24 @@ if handles.GPU==1
     IC = IC./max(IC(:));
     
     imtool(IC);
+    
+    %PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)
+    PXX=PX(1,:,:)./PX(4,:,:);
+    PXX=squeeze(PXX);
+    %size(PXX)
+    imtool(PXX);
+    PXY=PX(2,:,:)./PX(4,:,:);
+    PXY=squeeze(PXY);
+    imtool(PXY);
+    PXZ=PX(1,:,:)./PX(4,:,:);
+    PXZ=squeeze(PXZ);
+    imtool(PXZ);
 
-    [THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
+    %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
+    [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
+    imtool(THETA);
+    imtool(PHI);
+    imtool(R);
 else
 Br = BorderCreation(hObject,handles);
 % get only the part of border points 

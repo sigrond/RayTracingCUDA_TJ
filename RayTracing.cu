@@ -36,7 +36,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     float* IC;
     int IC_size;
     //float3* P;
-    float4* PX;
+    float* PX;
 
     /**< get data */
     printf("nlhs:%d\n",nlhs);
@@ -146,7 +146,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     int dims[3]={4,480,640};
     plhs[1]=mxCreateNumericArray(3,dims,mxSINGLE_CLASS,mxREAL);
-    PX=(float4*)mxGetPr(plhs[1]);
+    PX=(float*)mxGetPr(plhs[1]);
     //system("pause");
     printf("IC:%d\n",IC);
     printf("IC_size:%d\n",IC_size);
@@ -167,7 +167,28 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     RayTrace(Br, Br_size, Vb, VH, Vb_length, VH_length, S, IC, IC_size, PX);
 
     printf("\nIC: ");
-    for(int i=0;i<IC_size;i++)
-    printf("%f ",IC[i]);
+    for(int i=0,j=0;i<IC_size && j<100;i++)
+    {
+        if(i>0 && IC[i]==0.0f)
+        {
+            if(IC[i-1]==0.0f)
+            continue;
+        }
+        printf("%f ",IC[i]);
+        j++;
+    }
+    printf("\n");
+
+    printf("\nPX: ");
+    for(int i=0,j=0;i<640*480*4 && j<100;i++)
+    {
+        if(i>0 && PX[i]==0.0f)
+        {
+            if(PX[i-1]==0.0f)
+            continue;
+        }
+        printf("%f ",PX[i]);
+        j++;
+    }
     printf("\n");
 }
