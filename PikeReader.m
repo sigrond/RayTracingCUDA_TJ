@@ -352,7 +352,7 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 %handles.S.N = 3e3; % Number of points per side
-handles.S.N = 2890; %5e2 ; % Number of points per side
+handles.S.N = 6000; %5e2 ; % Number of points per side
 %handles.GPU=0;
 if handles.GPU==1
     Br = single(BorderCreation(hObject,handles));

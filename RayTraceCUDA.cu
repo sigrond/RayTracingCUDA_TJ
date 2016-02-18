@@ -57,12 +57,18 @@ extern "C"
      */
     void RayTrace(float* Br, int Br_size, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, int IC_size, float4* PX)
     {
+        cudaError_t err;
         float* dev_Br=0;
         float* dev_Vb=0;
         float* dev_VH=0;
         float* dev_IC=0;
         float4* dev_PX=0;
         checkCudaErrors(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+		{
+			printf("cudaError(cudaMalloc((void**)&dev_Br, sizeof(float)*Br_size)): %s\n", cudaGetErrorString(err));
+		}
         checkCudaErrors(cudaMemcpy((void*)dev_Br, Br, sizeof(float)*Br_size, cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMalloc((void**)&dev_Vb, sizeof(float)*Vb_length));
         checkCudaErrors(cudaMemcpy((void*)dev_Vb, Vb, sizeof(float)*Vb_length, cudaMemcpyHostToDevice));
@@ -75,8 +81,11 @@ extern "C"
 
         uint numThreads, numBlocks;
         computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
+        unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
+        unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid(dimGridX,dimGridY);
 
-        cudaError_t err = cudaGetLastError();
+        err = cudaGetLastError();
         if (err != cudaSuccess)
 		{
 			printf("1cudaError(while GPU memory allocation): %s\n", cudaGetErrorString(err));
@@ -84,7 +93,13 @@ extern "C"
 
         //system("pause");
         printf("dev_IC:%d\n",dev_IC);
-        RayTraceD<<< numBlocks, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PX);
+
+        printf("numBlocks: %d\n",numBlocks);
+        printf("numThreads: %d\n",numThreads);
+        printf("dimGrid.x: %d\n",dimGrid.x);
+        printf("dimGrid.y: %d\n",dimGrid.y);
+
+        RayTraceD<<< dimGrid, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PX);
         //RayTraceD<<< 2, 25 >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
 
         err = cudaGetLastError();

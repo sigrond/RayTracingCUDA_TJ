@@ -88,7 +88,11 @@ __global__
  */
 void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float4* PX)
 {
-    uint index = __mul24(blockIdx.x,blockDim.x) + threadIdx.x;
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     //float3 P[11];
     if(index==0)
     {
