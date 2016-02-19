@@ -255,8 +255,8 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
                 length(P5-P6)+length(P6-P7);
     float3 vR = normalize(P7-P6);
     float alp = acos(dot(make_float3(1,0,0),vR));*/
-    float W  = S.shX + ( S.CCDW/2.0f +P7.y)/S.PixSize;
-    float Hi = S.shY + ( S.CCDH/2.0f +P7.z)/S.PixSize;
+    float W  = S.shX + ( S.CCDW/2.0f +P7.y)/S.PixSize - 1.0f;
+    float Hi = S.shY + ( S.CCDH/2.0f +P7.z)/S.PixSize - 1.0f;
     //float value=cos(alp)/(dist*dist);
 
     //Recording position of rays and a number of rays that walk into the cell
@@ -285,6 +285,7 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     value*=value;
     float Ka4 = Ka3*value;
     value=0.01f*(length(P5-P6) + length(P6-P7));
+    value*=value;
     Ka4/=value;
     value=1.0f/Ka4;
     val0=IC+(unsigned int)round(Hi)+(unsigned int)round(W)*480;

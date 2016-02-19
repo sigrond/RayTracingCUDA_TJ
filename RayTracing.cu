@@ -160,7 +160,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf("\nVH: ");
     for(int i=0;i<VH_length && i<100;i++)
     printf("%f ",VH[i]);
-    printf("\n new version \n");
+    printf("\n new version 3 \n");
 
     /** call cuda kernels */
 //float3* Br, int* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float3* IM, float3* P
