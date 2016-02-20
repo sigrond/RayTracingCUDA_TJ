@@ -377,7 +377,7 @@ if handles.GPU==1
     PXY=PX(2,:,:)./PX(4,:,:);
     PXY=squeeze(PXY);
     imtool(PXY);
-    PXZ=PX(1,:,:)./PX(4,:,:);
+    PXZ=PX(3,:,:)./PX(4,:,:);
     PXZ=squeeze(PXZ);
     imtool(PXZ);
 
@@ -395,14 +395,20 @@ if handles.GPU==1
     PXZT=PXZ;
     save('compT20.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT');
 else
-Br = BorderCreation(hObject,handles);
+Br = single(BorderCreation(hObject,handles));
 % get only the part of border points 
 Vb = (1 + handles.S.N ) : handles.S.N * 2; % Indexes for bottom electrode
 
-IC = zeros(480,640);   % Declaration of correction matrix
-PX = zeros(480,640,4); % Declaration of pixel position matrix 
+IC = single(zeros(480,640));   % Declaration of correction matrix
+PX = single(zeros(480,640,4)); % Declaration of pixel position matrix 
                        % PX(X,Y,Nom); Where Nom is a number of rays that
                        % walk into cell
+
+KA1=zeros(20,20);
+KA2=zeros(20,20);
+KA3=zeros(20,20);
+KA4=zeros(20,20);
+
 hwb = waitbar(0,'Computation of intensity matrix ...');
 s = 'Time estimation...';
 for i = 1 : length(Vb)    % The movment across Z axis
@@ -422,8 +428,8 @@ for i = 1 : length(Vb)    % The movment across Z axis
                  PX(round(Hi),round(W),3) = PX(round(Hi),round(W),3) + P(2,3);
                  PX(round(Hi),round(W),4) = PX(round(Hi),round(W),4) + 1;
          % The calculation of energy loss,  caused by reflection on lens surfaces
-         % and rising distance                 
-             Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;  
+         % and rising distance
+             Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;
              Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;  
              Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;  
              Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;  
@@ -440,18 +446,16 @@ IC = IC./max(IC(:));
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
 
 PXX=PX(:,:,1)./PX(:,:,4);
-PXX=squeeze(PXX);
-    PXY=PX(2,:,:)./PX(4,:,:);
-    PXY=squeeze(PXY);
-    imtool(PXY);
-    PXZ=PX(1,:,:)./PX(4,:,:);
-    PXZ=squeeze(PXZ);
-    imtool(PXZ);
+PXXG=squeeze(PXX);
+PXY=PX(:,:,2)./PX(:,:,4);
+PXYG=squeeze(PXY);
+PXZ=PX(:,:,3)./PX(:,:,4);
+PXZG=squeeze(PXZ);
 ICG=IC;
 THETAG=THETA;
 PHIG=PHI;
 RG=R;
-save('compG20.mat','ICG','THETAG','PHIG','RG');
+save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG');
 end
 %f=figure;
 %imtool(IC);

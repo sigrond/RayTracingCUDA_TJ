@@ -79,8 +79,13 @@ extern "C"
         checkCudaErrors(cudaMalloc((void**)&dev_PX, sizeof(float)*4*480*640));
         checkCudaErrors(cudaMemset(dev_PX,0,sizeof(float)*4*480*640));
 
+        float* dev_KA1=0;
+        checkCudaErrors(cudaMalloc((void**)&dev_KA1, sizeof(float)*400));
+        checkCudaErrors(cudaMemset(dev_KA1,0,sizeof(float)*400));
+
         uint numThreads, numBlocks;
-        computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
+        //computeGridSize(VH_length*Vb_length, 512, numBlocks, numThreads);
+        computeGridSize(Vb_length*Vb_length, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
         dim3 dimGrid(dimGridX,dimGridY);
@@ -99,7 +104,7 @@ extern "C"
         printf("dimGrid.x: %d\n",dimGrid.x);
         printf("dimGrid.y: %d\n",dimGrid.y);
 
-        RayTraceD<<< dimGrid, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PX);
+        RayTraceD<<< dimGrid, numThreads >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IC,dev_PX,dev_KA1);
         //RayTraceD<<< 2, 25 >>>(dev_Br,dev_Vb,dev_VH,Vb_length,VH_length,S,dev_IM,dev_P);
 
         err = cudaGetLastError();
@@ -111,14 +116,28 @@ extern "C"
         checkCudaErrors(cudaMemcpy((void*)PX,dev_PX,sizeof(float)*4*480*640,cudaMemcpyDeviceToHost));
 		checkCudaErrors(cudaMemcpy((void*)IC,dev_IC,sizeof(float)*IC_size,cudaMemcpyDeviceToHost));
 
+		float KA1[400];
+		checkCudaErrors(cudaMemcpy((void*)KA1,dev_KA1,sizeof(float)*400,cudaMemcpyDeviceToHost));
+
 		err = cudaGetLastError();
         if (err != cudaSuccess)
 		{
 			printf("3cudaError(while cudaMemcpy): %s\n", cudaGetErrorString(err));
 		}
 
-		checkCudaErrors(cudaFree(dev_IC));
+		checkCudaErrors(cudaFree(dev_KA1));
 
+        printf("powtórzenia indexów:\n");
+        for(int i=0;i<20;i++)
+        {
+            for(int j=0;j<20;j++)
+            {
+                printf("%.1f, ",KA1[i*20+j]);
+            }
+            printf("\n");
+        }
+
+		checkCudaErrors(cudaFree(dev_IC));
         checkCudaErrors(cudaFree(dev_PX));
         checkCudaErrors(cudaFree(dev_VH));
         checkCudaErrors(cudaFree(dev_Vb));

@@ -174,7 +174,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             if(IC[i-1]==0.0f)
             continue;
         }
-        printf("%f ",IC[i]);
+        printf("%.14f ",IC[i]);
         j++;
     }
     printf("\n");

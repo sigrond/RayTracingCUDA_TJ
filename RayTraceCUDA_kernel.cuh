@@ -6,5 +6,5 @@
 extern "C"
 {
     __global__
-    void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX);
+    void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX,float* KA1);
 }

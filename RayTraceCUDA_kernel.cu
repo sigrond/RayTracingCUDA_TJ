@@ -86,7 +86,7 @@ __global__
  * \return void
  *
  */
-void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX)
+void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX,float* KA1)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
@@ -99,7 +99,8 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
         //P[0]=make_float3(-1,-1,-1);//error1
     }
     uint indexi = index/Vb_length;
-    if (indexi >= VH_length)
+    //if (indexi >= VH_length)
+    if (indexi >= Vb_length)
     {
         //P[index*7]=make_float3(-100,-100,-100);//error1
         return;//empty kernel
@@ -275,20 +276,31 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     value=0.01f*(length(P1-P2) + length(P2-P3));
     value*=value;//fast square
     float Ka1 = cos(P8)/value;
+
+    //KA1[index]=Ka1;
+
     value=0.01f*length(P3-P4);
     value*=value;
     float Ka2 = Ka1*cos(P9)/value;
+    //KA1[index]=Ka2;
     value=0.01f*length(P4-P5);
     value*=value;
     float Ka3 = Ka2*cos(P10)/value;
+    //KA1[index]=Ka3;
     value=cos(P11);//in calculation intensive code calculating same cosine twice isn't wise
     value*=value;
     float Ka4 = Ka3*value;
     value=0.01f*(length(P5-P6) + length(P6-P7));
     value*=value;
     Ka4/=value;
+    //KA1[index]=Ka4;
     value=1.0f/Ka4;
+    //KA1[index]=value;
     val0=IC+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
+    atomicAdd(val0, value);
+
+    val0=&KA1[indexi];
+    value=1.0f;
     atomicAdd(val0, value);
 
     //float* val0=IM+(unsigned int)round(Hi)+(unsigned int)round(W)*480;

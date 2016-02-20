@@ -10,3 +10,27 @@ nvmex -f nvmexopts.bat fakeRayTraceCUDA.cu RayTracing.cu -IC:\CUDA\include -IC:\
 b³¹d zdaje siê byæ w czesci mexa
 okazuje siê, ¿e nie wolno sprawdzaæ l-wartoœci
 jest te¿ problem z m2. m2 nie by³o odrazu zainicjalizowane w matlabie, teraz jest w setsystem
+
+problem:
+IC wylicane w CUDA ma wartoœci za ma³e mniejwiêcej o 1 rz¹d wielkoœci
+plan:
+wypisywaæ Ka1,2,3,4 i ustaliæ gdzie zaczyna byæ Ÿle
+postêpy:
+Ka1 jest identyczne
+Ka2 te¿ wygl¹da w porz¹dku
+Ka3 wygl¹da dobrze
+Ka4 te¿ z du¿¹ dok³adnoœci¹ jest takie samo
+nowa hipoteza:
+sprawdziæ wartoœci 1/Ka4
+wynik:
+1/Ka4 te¿ jest dobrze
+nowa teoria:
+mo¿e to jakiœ problem z dodawaniem do IC, albo coœ z normalizacj¹
+postêpy:
+w IC nie znormalizowanych wartoœci ró¿ni¹ siê mniejwiêcej x2, tak jakby w CUD'dzie dodawanie
+robi³o siê wiêcej razy
+sprawdzam powtarzanie siê indexów
+indexy index wydaj¹ siê nie powtarzaæ
+indexi wyst¹pi³ chyba 4x wiêcej ni¿ powinien, mo¿e wywo³ujê za du¿y kernel powinien byæ vb*vb
+zmieni³em indexowanie VH na Vb
+chyba pomog³o
