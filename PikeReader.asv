@@ -352,7 +352,15 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 %handles.S.N = 3e3; % Number of points per side
-handles.S.N = 20; %5e2 ; % Number of points per side
+handles.S.N = 5000; %5e2 ; % Number of points per side
+
+KA1=zeros(20,20);
+KA2=zeros(20,20);
+KA3=zeros(20,20);
+KA4=zeros(20,20);
+KA5=zeros(20,20);
+KA6=zeros(20,20);
+
 %handles.GPU=0;
 if handles.GPU==1
     Br = single(BorderCreation(hObject,handles));
@@ -363,7 +371,8 @@ if handles.GPU==1
     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
     toc
     %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
-    max(IC);
+    %max(IC);
+    ICNNT=IC;
 
     IC = IC./max(IC(:));
     
@@ -393,7 +402,7 @@ if handles.GPU==1
     PXXT=PXX;
     PXYT=PXY;
     PXZT=PXZ;
-    save('compT20.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT');
+    save('compT20.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
 else
 Br = single(BorderCreation(hObject,handles));
 % get only the part of border points 
@@ -403,12 +412,6 @@ IC = single(zeros(480,640));   % Declaration of correction matrix
 PX = single(zeros(480,640,4)); % Declaration of pixel position matrix 
                        % PX(X,Y,Nom); Where Nom is a number of rays that
                        % walk into cell
-
-KA1=zeros(20,20);
-KA2=zeros(20,20);
-KA3=zeros(20,20);
-KA4=zeros(20,20);
-
 hwb = waitbar(0,'Computation of intensity matrix ...');
 s = 'Time estimation...';
 for i = 1 : length(Vb)    % The movment across Z axis
@@ -430,9 +433,15 @@ for i = 1 : length(Vb)    % The movment across Z axis
          % The calculation of energy loss,  caused by reflection on lens surfaces
          % and rising distance
              Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;
-             Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;  
-             Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;  
-             Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;  
+             KA1(i,j)=Ka1;
+             Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;
+             KA2(i,j)=Ka2;
+             Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;
+             KA3(i,j)=Ka3;
+             Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;
+             KA4(i,j)=Ka4;
+             KA5(i,j)=1./Ka4;
+             KA6(i,j)=1/Ka4;
           IC(round(Hi),round(W)) = 1./Ka4 + IC(round(Hi),round(W));
 
     end
@@ -441,6 +450,7 @@ for i = 1 : length(Vb)    % The movment across Z axis
 end
 close(hwb)
 % Normalisation of Intesity matrix
+ICNNG=IC;
 IC = IC./max(IC(:));
 % Angles calculation
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
@@ -455,7 +465,7 @@ ICG=IC;
 THETAG=THETA;
 PHIG=PHI;
 RG=R;
-save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG');
+save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG','KA1','KA2','KA3','KA4','KA5','KA6','ICNNG');
 end
 %f=figure;
 %imtool(IC);

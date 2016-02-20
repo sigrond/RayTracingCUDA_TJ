@@ -86,7 +86,7 @@ __global__
  * \return void
  *
  */
-void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX,float* KA1)
+void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, HandlesStructures S, float* IC, float* PX)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
@@ -299,9 +299,9 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     val0=IC+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
     atomicAdd(val0, value);
 
-    val0=&KA1[indexi];
-    value=1.0f;
-    atomicAdd(val0, value);
+    //val0=&KA1[indexi];
+    //value=1.0f;
+    //atomicAdd(val0, value);
 
     //float* val0=IM+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
     //atomicAdd(val0, value);
