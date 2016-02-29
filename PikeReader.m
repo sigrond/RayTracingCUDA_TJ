@@ -352,7 +352,7 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 %handles.S.N = 3e3; % Number of points per side
-handles.S.N = 6000; %5e2 ; % Number of points per side
+handles.S.N = 15000; %5e2 ; % Number of points per side
 
 %KA1=zeros(20,20);
 %KA2=zeros(20,20);
@@ -377,24 +377,26 @@ if handles.GPU==1
     IC = IC./max(IC(:));
     
     imtool(IC);
+    figure;
+    mesh(double(IC));
     
     %PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)
     PXX=PX(1,:,:)./PX(4,:,:);
     PXX=squeeze(PXX);
     %size(PXX)
-    imtool(PXX);
+    %imtool(PXX);
     PXY=PX(2,:,:)./PX(4,:,:);
     PXY=squeeze(PXY);
-    imtool(PXY);
+    %imtool(PXY);
     PXZ=PX(3,:,:)./PX(4,:,:);
     PXZ=squeeze(PXZ);
-    imtool(PXZ);
+    %imtool(PXZ);
 
     %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
     [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
-    imtool(THETA);
-    imtool(PHI);
-    imtool(R);
+    %imtool(THETA);
+    %imtool(PHI);
+    %imtool(R);
     ICT=IC;
     THETAT=THETA;
     PHIT=PHI;
@@ -402,7 +404,7 @@ if handles.GPU==1
     PXXT=PXX;
     PXYT=PXY;
     PXZT=PXZ;
-    save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
+    %save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
 else
 Br = single(BorderCreation(hObject,handles));
 % get only the part of border points 
