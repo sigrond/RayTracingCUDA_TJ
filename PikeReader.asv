@@ -352,14 +352,14 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 %handles.S.N = 3e3; % Number of points per side
-handles.S.N = 5000; %5e2 ; % Number of points per side
+handles.S.N = 25000; %5e2 ; % Number of points per side
 
-KA1=zeros(20,20);
-KA2=zeros(20,20);
-KA3=zeros(20,20);
-KA4=zeros(20,20);
-KA5=zeros(20,20);
-KA6=zeros(20,20);
+%KA1=zeros(20,20);
+%KA2=zeros(20,20);
+%KA3=zeros(20,20);
+%KA4=zeros(20,20);
+%KA5=zeros(20,20);
+%KA6=zeros(20,20);
 
 %handles.GPU=0;
 if handles.GPU==1
@@ -377,24 +377,26 @@ if handles.GPU==1
     IC = IC./max(IC(:));
     
     imtool(IC);
+    figure;
+    mesh(double(IC));
     
     %PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)
     PXX=PX(1,:,:)./PX(4,:,:);
     PXX=squeeze(PXX);
     %size(PXX)
-    imtool(PXX);
+    %imtool(PXX);
     PXY=PX(2,:,:)./PX(4,:,:);
     PXY=squeeze(PXY);
-    imtool(PXY);
+    %imtool(PXY);
     PXZ=PX(3,:,:)./PX(4,:,:);
     PXZ=squeeze(PXZ);
-    imtool(PXZ);
+    %imtool(PXZ);
 
     %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
     [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
-    imtool(THETA);
-    imtool(PHI);
-    imtool(R);
+    %imtool(THETA);
+    %imtool(PHI);
+    %imtool(R);
     ICT=IC;
     THETAT=THETA;
     PHIT=PHI;
@@ -402,7 +404,7 @@ if handles.GPU==1
     PXXT=PXX;
     PXYT=PXY;
     PXZT=PXZ;
-    save('compT20.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
+    %save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
 else
 Br = single(BorderCreation(hObject,handles));
 % get only the part of border points 
@@ -433,15 +435,15 @@ for i = 1 : length(Vb)    % The movment across Z axis
          % The calculation of energy loss,  caused by reflection on lens surfaces
          % and rising distance
              Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;
-             KA1(i,j)=Ka1;
+             %KA1(i,j)=Ka1;
              Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;
-             KA2(i,j)=Ka2;
+             %KA2(i,j)=Ka2;
              Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;
-             KA3(i,j)=Ka3;
+             %KA3(i,j)=Ka3;
              Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;
-             KA4(i,j)=Ka4;
-             KA5(i,j)=1./Ka4;
-             KA6(i,j)=1/Ka4;
+             %KA4(i,j)=Ka4;
+             %KA5(i,j)=1./Ka4;
+             %KA6(i,j)=1/Ka4;
           IC(round(Hi),round(W)) = 1./Ka4 + IC(round(Hi),round(W));
 
     end
@@ -450,22 +452,22 @@ for i = 1 : length(Vb)    % The movment across Z axis
 end
 close(hwb)
 % Normalisation of Intesity matrix
-ICNNG=IC;
+%ICNNG=IC;
 IC = IC./max(IC(:));
 % Angles calculation
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
 
-PXX=PX(:,:,1)./PX(:,:,4);
-PXXG=squeeze(PXX);
-PXY=PX(:,:,2)./PX(:,:,4);
-PXYG=squeeze(PXY);
-PXZ=PX(:,:,3)./PX(:,:,4);
-PXZG=squeeze(PXZ);
-ICG=IC;
-THETAG=THETA;
-PHIG=PHI;
-RG=R;
-save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG','KA1','KA2','KA3','KA4','KA5','KA6','ICNNG');
+%PXX=PX(:,:,1)./PX(:,:,4);
+%PXXG=squeeze(PXX);
+%PXY=PX(:,:,2)./PX(:,:,4);
+%PXYG=squeeze(PXY);
+%PXZ=PX(:,:,3)./PX(:,:,4);
+%PXZG=squeeze(PXZ);
+%ICG=IC;
+%THETAG=THETA;
+%PHIG=PHI;
+%RG=R;
+%save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG','ICNNG');%,'KA1','KA2','KA3','KA4','KA5','KA6');
 end
 %f=figure;
 %imtool(IC);
@@ -956,6 +958,7 @@ end
 % According to chosen checkbox:
 if get(handles.chR,'value')
     ipR = find(handles.BWR); % Searching for a good pixels related to the mask
+    %size(handles.THETA_R)
     ThetaR = 180*handles.THETA_R(ipR)/pi; % There is a problem with beam direction.
                                           % We have to add 90 degree or 270 according to beam direction.
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
@@ -1284,6 +1287,7 @@ function muCalcIm_Callback(hObject, eventdata, handles)
         handles.S.lambda = str2double(get(handles.edR,'string'));
         handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
         [handles.ICR,handles.THETA_R,handles.PHI_R] =  IC_Calculation(hObject,handles);
+        %size(handles.THETA_R)
     end
     if get(handles.chG,'value')
         handles.S.lambda = str2double(get(handles.edG,'string'));

@@ -352,7 +352,7 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
 %handles.S.N = 3e3; % Number of points per side
-handles.S.N = 15000; %5e2 ; % Number of points per side
+handles.S.N = 25000; %5e2 ; % Number of points per side
 
 %KA1=zeros(20,20);
 %KA2=zeros(20,20);
@@ -956,43 +956,54 @@ elseif ischar( handles.f ) % The single file is chosen
     
 end
 % According to chosen checkbox:
+ 
 if get(handles.chR,'value')
     ipR = find(handles.BWR); % Searching for a good pixels related to the mask
-    ThetaR = 180*handles.THETA_R(ipR)/pi; % There is a problem with beam direction.
-                                          % We have to add 90 degree or 270 according to beam direction.
+    ThetaR = 180*handles.THETA_R(ipR)/pi;   % There is a problem with beam direction.
+                                            % We have to add 90 degree or 270 according to beam direction.
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
-    nThetaR = linspace(min(ThetaR(:)),max(ThetaR(:)),handles.NP); % Reduction of points
-    I_Red = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
+% Reduction of points    
+    deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
+    I_Red = zeros( handles.N_frames, handles.NP ); % Creation of empty matrix for intensity recording
+    nThetaR = zeros( 1,handles.NP );          % Angles vector
     ICR_N = handles.ICR(ipR);                 % Correction 
-    ICR_N = ICR_N./max(ICR_N(:));     % Normalised intensity correction vector
+    ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
 end
 if get(handles.chG,'value')
     ipG = find(handles.BWG);
-    ThetaG = 180*handles.THETA_G(ipG)/pi;         % There is a problem with beam direction.
-                                                  % We have to add 90 degree or 270 according to beam direction.
-    [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data                                    
-    nThetaG = linspace(min(ThetaG(:)),max(ThetaG(:)),handles.NP);
-    I_Green = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
+    ThetaG = 180*handles.THETA_G(ipG)/pi;          % There is a problem with beam direction.
+                                                   % We have to add 90 degree or 270 according to beam direction.
+    [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data
+% Reduction of points  
+    deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
+    I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
+    
+    nThetaG = zeros( 1,handles.NP ); 
     ICG_N = handles.ICG(ipG);
-    ICG_N = ICG_N./max(ICG_N(:));     % Normalised intensity correction vector
+    ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
+    
 end
 if get(handles.chB,'value')
     ipB = find(handles.BWB);
     ThetaB = 180*handles.THETA_B(ipB)/pi;  % There is a problem with beam direction.
                                            % We have to add 90 degree or 270 according to beam direction.
-    [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data                                    
-    nThetaB = linspace(min(ThetaB(:)),max(ThetaB(:)),handles.NP);
-    I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
-    ICB_N = handles.ICB(ipB);
-    ICB_N = ICB_N./max(ICB_N(:)); 
-
+    [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data
+% Reduction of points
+    deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
+    I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
+    nThetaB = zeros( 1,handles.NP ); 
+    ICB_N = handles.ICB( ipB );
+    ICB_N = ICB_N./max( ICB_N(:) ); 
+                                        
 end
 % 
 % Preparing to read the data from the move file
 % 
-wb_s ='Time estimation...';
-wb = waitbar(0,wb_s);
+% Calculation of reduction coefficient:
+
+wb_s = 'Time estimation...';
+wb = waitbar( 0, wb_s );
 if iscell( handles.f ) % In case of multi select function is enabled
     Nom = size( handles.f, 2 );
     count = 1;
@@ -1001,7 +1012,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
         waitbar(ii/Nom,wb,wb_s);
         path = [handles.dir handles.f{ii}];
         inf = aviinfo( path );
-        tic;
+       for1 = tic;
         for j = 1:count_step:inf.NumFrames % Numbers of frames
             handles.nom = j;
             Frame = FrameRider(hObject,handles);
@@ -1009,82 +1020,144 @@ if iscell( handles.f ) % In case of multi select function is enabled
             if get(handles.chR,'value')
                 Red = Frame(:,:,1);
                   Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaR_S,Ir(I_S_R),150);
-                  cf = fit(ThetaR_S, sm,'smooth');
-               I_Red(count,:) = cf(nThetaR);
-               count = count+1;
+                  nom = 1;
+                % Reduction of number of points
+                  while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
+                      ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S ) ) & ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) >= ThetaR_S )  ) );
+                     
+                      if max(ind)>0
+                          nThetaR(nom) = mean(ThetaR_S(ind));
+                          I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+                      else
+                          nThetaR(nom) = nThetaR(nom-1);
+                          I_Red(count,nom) = I_Red(count,nom-1);
+                      end
+                      nom = nom + 1;
+                      
+                  end
             end
             
         %  The green channel is chosen
             if get(handles.chG,'value')
                 Green = Frame(:,:,2);
                   Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaG_S,Ig(I_S_G),150);
-                  cf = fit(ThetaG_S, sm,'smooth');
-               I_Green(count,:) = cf(nThetaG);
-               count = count+1;
+                  nom = 1;
+                % Reduction of number of points
+                  while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
+                      ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S ) ) & ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) >= ThetaG_S )  ) );
+                      if max(ind)>0
+                          nThetaG(nom) = mean(ThetaG_S(ind));
+                          I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+                      else
+                          nThetaG(nom) = nThetaG(nom-1);
+                          I_Green(count,nom) = I_Green(count,nom-1);
+                      end
+                     
+                      nom = nom + 1;
+                  end
             end
             
         %  The blue channel is chosen
             if get(handles.chB,'value')
                 Blue = Frame(:,:,3);
-                  Ir = Blue(ipR)./ICB_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaB_S,Ir(I_S_B),150);
-                  cf = fit(ThetaB_S, sm,'smooth');
-               I_Blue(count,:) = cf(nThetaB);
-               count = count+1;
+                  Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
+                   nom = 1;
+                % Reduction of number of points
+                  while (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S(end)
+                      ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S ) ) & ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) >= ThetaB_S )  ) );
+                      if max(ind)>0
+                          nThetaB(nom) = mean(ThetaB_S(ind));
+                          I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+                      else
+                          nThetaB(nom) = nThetaB(nom-1);
+                          I_Blue(count,nom) = I_Blue(count,nom-1);
+                      end
+                      nom = nom + 1;
+                  end
             end
-            
+             count = count+1;
         end
-        tt = toc;
-        wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %2.2f min.',...
-                       ii,Nom,(tt*(Nom-ii)/60));
+        tt = toc(for1);
+       
+        wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %s .',...
+                       ii,Nom,datestr(datenum(0,0,0,0,0,(tt*(Nom-ii))),'HH:MM:SS'));
     end
      
 elseif ischar( handles.f ) % The single file is chosen
-    path = [ handles.dir handles.f ];
-     count =1;
-    for j = 1:count_step:inf.NumFrames-1
-        waitbar(j/inf.NumFrames,wb,wb_s);    
-        tic;
-            handles.nom = j;
-            Frame = FrameRider(hObject,handles);
-       %  The red channel is chosen
-            if get(handles.chR,'value')
-                Red = Frame(:,:,1);
-                  Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaR_S,Ir(I_S_R),150);
-                  cf = fit(ThetaR_S, sm,'smooth');
-               I_Red(count,:) = cf(nThetaR);
-               count = count+1;
-            end
-            
-        %  The green channel is chosen
-            if get(handles.chG,'value')
-                Green = Frame(:,:,2);
-                  Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaG_S,Ig(I_S_G),150);
-                  cf = fit(ThetaG_S, sm,'smooth');
-               I_Green(count,:) = cf(nThetaG);
-               count = count+1;
-            end
-            
-        %  The blue channel is chosen
-            if get(handles.chB,'value')
-                Blue = Frame(:,:,3);
-                  Ir = Blue(ipR)./ICB_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaB_S,Ir(I_S_B),150);
-                  cf = fit(ThetaB_S, sm,'smooth');
-               I_Blue(count,:) = cf(nThetaB);
-               count = count+1;
-            end
-      tt = toc;
-        wb_s = sprintf('Processing frame number %1.0f from %1.0f \n Remaining time: %2.2f min.',...
-                       j,inf.NumFrames-1,(tt*(inf.NumFrames-1-j)/60));      
-    end
-        
+     path  = [ handles.dir handles.f ];
+     count = 1;
+     for j = 1:count_step:inf.NumFrames-1
+         waitbar(j/inf.NumFrames,wb,wb_s);
+         tic;
+         handles.nom = j;
+         Frame = FrameRider(hObject,handles);
+         %  The red channel is chosen
+         if get(handles.chR,'value')
+             Red = Frame(:,:,1);
+             Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
+                 ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S ) ) & ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) >= ThetaR_S )  ) );
+                 if max(ind)>0
+                     nThetaR(nom) = mean(ThetaR_S(ind));
+                     I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+                 else
+                     nThetaR(nom) = nThetaR(nom-1);
+                     I_Red(count,nom) = I_Red(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         
+         %  The green channel is chosen
+         if get(handles.chG,'value')
+             Green = Frame(:,:,2);
+             Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
+                 ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S ) ) & ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) >= ThetaG_S )  ) );
+                 if max(ind)>0
+                     nThetaG(nom) = mean(ThetaG_S(ind));
+                     I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+                 else
+                     nThetaG(nom) = nThetaG(nom-1);
+                     I_Green(count,nom) = I_Green(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         
+         %  The blue channel is chosen
+         if get(handles.chB,'value')
+             Blue = Frame(:,:,3);
+             Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S(end)
+                 ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S ) ) & ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) >= ThetaB_S )  ) );
+                 if max(ind)>0
+                     nThetaB(nom) = mean(ThetaB_S(ind));
+                     I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+                 else
+                     nThetaB(nom) = nThetaB(nom-1);
+                     I_Blue(count,nom) = I_Blue(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         tt = toc;
+         wb_s = sprintf('Processing frame number %1.0f from %1.0f \n Remaining time: %s .',...
+             j,inf.NumFrames-1,datestr(datenum(0,0,0,0,0,(tt*((inf.NumFrames-j)/count_step))),'HH:MM:SS'));
+         
+             count = count + 1;
+     end
+     
 end
-    if get(handles.chR,'value')
+
+
+     if get(handles.chR,'value')
          assignin('base','I_R',I_Red);
          assignin('base','ThetaR',nThetaR);
      end
@@ -1286,6 +1359,7 @@ function muCalcIm_Callback(hObject, eventdata, handles)
         handles.S.lambda = str2double(get(handles.edR,'string'));
         handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
         [handles.ICR,handles.THETA_R,handles.PHI_R] =  IC_Calculation(hObject,handles);
+        %size(handles.THETA_R)
     end
     if get(handles.chG,'value')
         handles.S.lambda = str2double(get(handles.edG,'string'));
