@@ -32,11 +32,8 @@ function [mov]=AviReadPike_Split(name,zakres)
     if (nargin==2 && max(zakres)>int32((s.bytes-34816)/skok))
         stop=int32((s.bytes-34816)/skok);
     end
-%     mov=zeros(length(zakres),480,640,3,'uint16');
-%     mov=zeros(480,640,3,'uint16');                 %   MW
+    mov=zeros(length(zakres),480,640,3,'uint16');
     for i=1:length(zakres)
-		mov(i,:,:,:)=demosaic_mw((avimex_Split(name,int16(zakres(i))))','grbg');
-%       mov(i,:,:,:)=demosaic((avimex_Split(name,int16(zakres(i))))','grbg'
-%       ); - standart demosaic filter from Matlab
+		mov(i,:,:,:)=demosaic_c_mex((avimex_Split(name,int16(zakres(i))))','grbg');
     end   
 end
