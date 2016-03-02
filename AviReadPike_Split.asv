@@ -35,5 +35,6 @@ function [mov]=AviReadPike_Split(name,zakres)
     mov=zeros(length(zakres),480,640,3,'uint16');
     for i=1:length(zakres)
 		mov(i,:,:,:)=demosaic_c_mex((avimex_Split(name,int16(zakres(i))))','grbg');
+     mov(i,:,:,:) = demosaic_c_mex.mexw32((avimex_Split(name,int16(zakres(i))))','grbg');
     end   
 end

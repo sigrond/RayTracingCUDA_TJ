@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 14-Feb-2016 12:49:44
+% Last Modified by GUIDE v2.5 11-Sep-2015 14:05:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,8 +52,6 @@ handles.BWR = [];
 handles.BWG = [];
 handles.BWB = [];
 
-handles.GPU=1;
-
 set(handles.edAperture,'string',num2str(handles.S.D));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
@@ -84,7 +82,7 @@ if isempty( handles.fn )
      Frame = zeros(480,640,3);   
 else
      mov = AviReadPike_Split( handles.fn,handles.nom );
-     Frame =  squeeze( mov );
+     Frame =  double(squeeze( mov ));
 end
 % ---------------------------------------------------------------------
 function handles = Draw(hObject,handles)
@@ -351,70 +349,16 @@ function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 % intensity correction matrix for experimental data.       
 %% Creation of electrode border
 %% FIXME: could be sped up!!! with GPU  
-%handles.S.N = 3e3; % Number of points per side
-handles.S.N = 15000; %5e2 ; % Number of points per side
-
-%KA1=zeros(20,20);
-%KA2=zeros(20,20);
-%KA3=zeros(20,20);
-%KA4=zeros(20,20);
-%KA5=zeros(20,20);
-%KA6=zeros(20,20);
-
-%handles.GPU=0;
-if handles.GPU==1
-    Br = single(BorderCreation(hObject,handles));
-    Vb = (1 + handles.S.N ) : handles.S.N * 2;
-    IC = single(zeros(480,640));
-    PX = single(zeros(4,480,640));
-    tic;
-    [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
-    toc
-    %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
-    %max(IC);
-    ICNNT=IC;
-
-    IC = IC./max(IC(:));
-    
-    imtool(IC);
-    figure;
-    mesh(double(IC));
-    
-    %PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)
-    PXX=PX(1,:,:)./PX(4,:,:);
-    PXX=squeeze(PXX);
-    %size(PXX)
-    %imtool(PXX);
-    PXY=PX(2,:,:)./PX(4,:,:);
-    PXY=squeeze(PXY);
-    %imtool(PXY);
-    PXZ=PX(3,:,:)./PX(4,:,:);
-    PXZ=squeeze(PXZ);
-    %imtool(PXZ);
-
-    %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
-    [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
-    %imtool(THETA);
-    %imtool(PHI);
-    %imtool(R);
-    ICT=IC;
-    THETAT=THETA;
-    PHIT=PHI;
-    RT=R;
-    PXXT=PXX;
-    PXYT=PXY;
-    PXZT=PXZ;
-    %save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
-else
-Br = single(BorderCreation(hObject,handles));
+handles.S.N = 3e3; % Number of points per side
+Br = BorderCreation(hObject,handles);
 % get only the part of border points 
 Vb = (1 + handles.S.N ) : handles.S.N * 2; % Indexes for bottom electrode
 
-IC = single(zeros(480,640));   % Declaration of correction matrix
-PX = single(zeros(480,640,4)); % Declaration of pixel position matrix 
+IC = zeros(480,640);   % Declaration of correction matrix
+PX = zeros(480,640,4); % Declaration of pixel position matrix 
                        % PX(X,Y,Nom); Where Nom is a number of rays that
                        % walk into cell
-hwb = waitbar(0,'Computation of intensity matrix ...');
+ hwb = waitbar(0,'Computation of intensity matrix ...');
 s = 'Time estimation...';
 for i = 1 : length(Vb)    % The movment across Z axis
     waitbar(i/length(Vb),hwb,s);
@@ -433,45 +377,22 @@ for i = 1 : length(Vb)    % The movment across Z axis
                  PX(round(Hi),round(W),3) = PX(round(Hi),round(W),3) + P(2,3);
                  PX(round(Hi),round(W),4) = PX(round(Hi),round(W),4) + 1;
          % The calculation of energy loss,  caused by reflection on lens surfaces
-         % and rising distance
-             Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;
-             %KA1(i,j)=Ka1;
-             Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;
-             %KA2(i,j)=Ka2;
-             Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;
-             %KA3(i,j)=Ka3;
-             Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;
-             %KA4(i,j)=Ka4;
-             %KA5(i,j)=1./Ka4;
-             %KA6(i,j)=1/Ka4;
+         % and rising distance                 
+             Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;  
+             Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;  
+             Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;  
+             Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;  
           IC(round(Hi),round(W)) = 1./Ka4 + IC(round(Hi),round(W));
 
     end
     t = toc;
-   s = sprintf('Remaining time %2.3f hour',(t*length(Vb)-t*i)/3600) ;
+   s = sprintf('Remaining time %s', datestr(datenum(0,0,0,0,0,(t*length(Vb)-t*i)),'HH:MM:SS'));
 end
 close(hwb)
 % Normalisation of Intesity matrix
-%ICNNG=IC;
 IC = IC./max(IC(:));
 % Angles calculation
 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
-
-%PXX=PX(:,:,1)./PX(:,:,4);
-%PXXG=squeeze(PXX);
-%PXY=PX(:,:,2)./PX(:,:,4);
-%PXYG=squeeze(PXY);
-%PXZ=PX(:,:,3)./PX(:,:,4);
-%PXZG=squeeze(PXZ);
-%ICG=IC;
-%THETAG=THETA;
-%PHIG=PHI;
-%RG=R;
-%save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG','ICNNG');%,'KA1','KA2','KA3','KA4','KA5','KA6');
-end
-%f=figure;
-%imtool(IC);
-%THETA
 %--------------------------------------------------------------------------
 
 %=============== End of  My functions =================================
@@ -956,43 +877,54 @@ elseif ischar( handles.f ) % The single file is chosen
     
 end
 % According to chosen checkbox:
+ 
 if get(handles.chR,'value')
     ipR = find(handles.BWR); % Searching for a good pixels related to the mask
-    ThetaR = 180*handles.THETA_R(ipR)/pi; % There is a problem with beam direction.
-                                          % We have to add 90 degree or 270 according to beam direction.
+    ThetaR = 180*handles.THETA_R(ipR)/pi;   % There is a problem with beam direction.
+                                            % We have to add 90 degree or 270 according to beam direction.
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
-    nThetaR = linspace(min(ThetaR(:)),max(ThetaR(:)),handles.NP); % Reduction of points
-    I_Red = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
+% Reduction of points    
+    deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
+    I_Red = zeros( handles.N_frames, handles.NP ); % Creation of empty matrix for intensity recording
+    nThetaR = zeros( 1,handles.NP );          % Angles vector
     ICR_N = handles.ICR(ipR);                 % Correction 
-    ICR_N = ICR_N./max(ICR_N(:));     % Normalised intensity correction vector
+    ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
 end
 if get(handles.chG,'value')
     ipG = find(handles.BWG);
-    ThetaG = 180*handles.THETA_G(ipG)/pi;         % There is a problem with beam direction.
-                                                  % We have to add 90 degree or 270 according to beam direction.
-    [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data                                    
-    nThetaG = linspace(min(ThetaG(:)),max(ThetaG(:)),handles.NP);
-    I_Green = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
+    ThetaG = 180*handles.THETA_G(ipG)/pi;          % There is a problem with beam direction.
+                                                   % We have to add 90 degree or 270 according to beam direction.
+    [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data
+% Reduction of points  
+    deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
+    I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
+    
+    nThetaG = zeros( 1,handles.NP ); 
     ICG_N = handles.ICG(ipG);
-    ICG_N = ICG_N./max(ICG_N(:));     % Normalised intensity correction vector
+    ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
+    
 end
 if get(handles.chB,'value')
     ipB = find(handles.BWB);
     ThetaB = 180*handles.THETA_B(ipB)/pi;  % There is a problem with beam direction.
                                            % We have to add 90 degree or 270 according to beam direction.
-    [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data                                    
-    nThetaB = linspace(min(ThetaB(:)),max(ThetaB(:)),handles.NP);
-    I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording                                      
-    ICB_N = handles.ICB(ipB);
-    ICB_N = ICB_N./max(ICB_N(:)); 
-
+    [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data
+% Reduction of points
+    deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
+    I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
+    nThetaB = zeros( 1,handles.NP ); 
+    ICB_N = handles.ICB( ipB );
+    ICB_N = ICB_N./max( ICB_N(:) ); 
+                                        
 end
 % 
 % Preparing to read the data from the move file
 % 
-wb_s ='Time estimation...';
-wb = waitbar(0,wb_s);
+% Calculation of reduction coefficient:
+
+wb_s = 'Time estimation...';
+wb = waitbar( 0, wb_s );
 if iscell( handles.f ) % In case of multi select function is enabled
     Nom = size( handles.f, 2 );
     count = 1;
@@ -1001,7 +933,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
         waitbar(ii/Nom,wb,wb_s);
         path = [handles.dir handles.f{ii}];
         inf = aviinfo( path );
-        tic;
+       for1 = tic;
         for j = 1:count_step:inf.NumFrames % Numbers of frames
             handles.nom = j;
             Frame = FrameRider(hObject,handles);
@@ -1009,82 +941,144 @@ if iscell( handles.f ) % In case of multi select function is enabled
             if get(handles.chR,'value')
                 Red = Frame(:,:,1);
                   Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaR_S,Ir(I_S_R),150);
-                  cf = fit(ThetaR_S, sm,'smooth');
-               I_Red(count,:) = cf(nThetaR);
-               count = count+1;
+                  nom = 1;
+                % Reduction of number of points
+                  while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
+                      ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S ) ) & ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) >= ThetaR_S )  ) );
+                     
+                      if max(ind)>0
+                          nThetaR(nom) = mean(ThetaR_S(ind));
+                          I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+                      else
+                          nThetaR(nom) = nThetaR(nom-1);
+                          I_Red(count,nom) = I_Red(count,nom-1);
+                      end
+                      nom = nom + 1;
+                      
+                  end
             end
             
         %  The green channel is chosen
             if get(handles.chG,'value')
                 Green = Frame(:,:,2);
                   Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaG_S,Ig(I_S_G),150);
-                  cf = fit(ThetaG_S, sm,'smooth');
-               I_Green(count,:) = cf(nThetaG);
-               count = count+1;
+                  nom = 1;
+                % Reduction of number of points
+                  while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
+                      ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S ) ) & ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) >= ThetaG_S )  ) );
+                      if max(ind)>0
+                          nThetaG(nom) = mean(ThetaG_S(ind));
+                          I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+                      else
+                          nThetaG(nom) = nThetaG(nom-1);
+                          I_Green(count,nom) = I_Green(count,nom-1);
+                      end
+                     
+                      nom = nom + 1;
+                  end
             end
             
         %  The blue channel is chosen
             if get(handles.chB,'value')
                 Blue = Frame(:,:,3);
-                  Ir = Blue(ipR)./ICB_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaB_S,Ir(I_S_B),150);
-                  cf = fit(ThetaB_S, sm,'smooth');
-               I_Blue(count,:) = cf(nThetaB);
-               count = count+1;
+                  Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
+                   nom = 1;
+                % Reduction of number of points
+                  while (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S(end)
+                      ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S ) ) & ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) >= ThetaB_S )  ) );
+                      if max(ind)>0
+                          nThetaB(nom) = mean(ThetaB_S(ind));
+                          I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+                      else
+                          nThetaB(nom) = nThetaB(nom-1);
+                          I_Blue(count,nom) = I_Blue(count,nom-1);
+                      end
+                      nom = nom + 1;
+                  end
             end
-            
+             count = count+1;
         end
-        tt = toc;
-        wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %2.2f min.',...
-                       ii,Nom,(tt*(Nom-ii)/60));
+        tt = toc(for1);
+       
+        wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %s .',...
+                       ii,Nom,datestr(datenum(0,0,0,0,0,(tt*(Nom-ii))),'HH:MM:SS'));
     end
      
 elseif ischar( handles.f ) % The single file is chosen
-    path = [ handles.dir handles.f ];
-     count =1;
-    for j = 1:count_step:inf.NumFrames-1
-        waitbar(j/inf.NumFrames,wb,wb_s);    
-        tic;
-            handles.nom = j;
-            Frame = FrameRider(hObject,handles);
-       %  The red channel is chosen
-            if get(handles.chR,'value')
-                Red = Frame(:,:,1);
-                  Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaR_S,Ir(I_S_R),150);
-                  cf = fit(ThetaR_S, sm,'smooth');
-               I_Red(count,:) = cf(nThetaR);
-               count = count+1;
-            end
-            
-        %  The green channel is chosen
-            if get(handles.chG,'value')
-                Green = Frame(:,:,2);
-                  Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaG_S,Ig(I_S_G),150);
-                  cf = fit(ThetaG_S, sm,'smooth');
-               I_Green(count,:) = cf(nThetaG);
-               count = count+1;
-            end
-            
-        %  The blue channel is chosen
-            if get(handles.chB,'value')
-                Blue = Frame(:,:,3);
-                  Ir = Blue(ipR)./ICB_N; % Reading and correcting intensity vector
-                  sm = smooth(ThetaB_S,Ir(I_S_B),150);
-                  cf = fit(ThetaB_S, sm,'smooth');
-               I_Blue(count,:) = cf(nThetaB);
-               count = count+1;
-            end
-      tt = toc;
-        wb_s = sprintf('Processing frame number %1.0f from %1.0f \n Remaining time: %2.2f min.',...
-                       j,inf.NumFrames-1,(tt*(inf.NumFrames-1-j)/60));      
-    end
-        
+     path  = [ handles.dir handles.f ];
+     count = 1;
+     for j = 1:count_step:inf.NumFrames-1
+         waitbar(j/inf.NumFrames,wb,wb_s);
+         tic;
+         handles.nom = j;
+         Frame = FrameRider(hObject,handles);
+         %  The red channel is chosen
+         if get(handles.chR,'value')
+             Red = Frame(:,:,1);
+             Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
+                 ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S ) ) & ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) >= ThetaR_S )  ) );
+                 if max(ind)>0
+                     nThetaR(nom) = mean(ThetaR_S(ind));
+                     I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+                 else
+                     nThetaR(nom) = nThetaR(nom-1);
+                     I_Red(count,nom) = I_Red(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         
+         %  The green channel is chosen
+         if get(handles.chG,'value')
+             Green = Frame(:,:,2);
+             Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
+                 ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S ) ) & ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) >= ThetaG_S )  ) );
+                 if max(ind)>0
+                     nThetaG(nom) = mean(ThetaG_S(ind));
+                     I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+                 else
+                     nThetaG(nom) = nThetaG(nom-1);
+                     I_Green(count,nom) = I_Green(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         
+         %  The blue channel is chosen
+         if get(handles.chB,'value')
+             Blue = Frame(:,:,3);
+             Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
+             nom = 1;
+             % Reduction of number of points
+             while (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S(end)
+                 ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S ) ) & ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) >= ThetaB_S )  ) );
+                 if max(ind)>0
+                     nThetaB(nom) = mean(ThetaB_S(ind));
+                     I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+                 else
+                     nThetaB(nom) = nThetaB(nom-1);
+                     I_Blue(count,nom) = I_Blue(count,nom-1);
+                 end
+                 nom = nom + 1;
+             end
+         end
+         tt = toc;
+         wb_s = sprintf('Processing frame number %1.0f from %1.0f \n Remaining time: %s .',...
+             j,inf.NumFrames-1,datestr(datenum(0,0,0,0,0,(tt*((inf.NumFrames-j)/count_step))),'HH:MM:SS'));
+         
+             count = count + 1;
+     end
+     
 end
-    if get(handles.chR,'value')
+
+
+     if get(handles.chR,'value')
          assignin('base','I_R',I_Red);
          assignin('base','ThetaR',nThetaR);
      end
@@ -1128,20 +1122,13 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     Save = evalin('base','Save');
-    handles.S = Save.S;  % load s structure;
-    handles.Bw = Save.Bw;
 % loading checkbox structure
-    set(handles.rbR,'value',Save.rbR_value);
-    set(handles.rbG,'value',Save.rbG_value);
-    set(handles.rbB,'value',Save.rbB_value);
-  %---
     set(handles.chR,'value',Save.chR_value);
     set(handles.chG,'value',Save.chG_value);
     set(handles.chB,'value',Save.chB_value);  
   %---
     set(handles.chSight,'value',Save.chSight);
     set(handles.chAdjust,'value',Save.chAdjust);
-%     set(handles.chSumFrames,'value',Save.chSumFrames);
 % Loading lambda edit boxes
     set(handles.edR,'string',Save.edR);
     set(handles.edG,'string',Save.edG);
@@ -1157,10 +1144,28 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
     set(handles.edSumFrameStep,'string',Save.edSumFrameStep);
     set(handles.edFrameStep,'string',Save.edFrameStep);
 % Loading ThetaPhiR structure
-    handles.position = Save.position;
-    handles.ThetaPhiR = Save.ThetaPhiR;
-    handles.Bw = Save.Bw;
-    handles = Draw(hObject,handles)
+    % Saving angles and masks
+%      --  masks --
+    handles.BWR = Save.BWR;
+    handles.BWG = Save.BWG;
+    handles.BWB = Save.BWB;
+%      --  border of masks --
+    handles.R_position = Save.R_position;
+    handles.G_position = Save.G_position;
+    handles.B_position = Save.B_position;
+% Correction masks
+    handles.ICR = Save.ICR;
+    handles.ICG = Save.ICG;
+    handles.ICB = Save.ICB;
+% Angles matrix    
+    handles.THETA_R = Save.THETA_R;
+    handles.THETA_G = Save.THETA_G;
+    handles.THETA_B = Save.THETA_B;
+%      ---    
+    handles.PHI_R   = Save.PHI_R;
+    handles.PHI_G   = Save.PHI_G;
+    handles.PHI_B   = Save.PHI_B;
+    handles = Draw(hObject,handles);
 
 
 % --- Executes on button press in pbSaveParam.
@@ -1168,19 +1173,14 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
 % hObject    handle to pbSaveParam (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Save.S = handles.S; % save s structure;
+% 
 % Saving checkbox structure
-        Save.rbR_value = get(handles.rbR,'value');
-        Save.rbG_value = get(handles.rbG,'value');
-        Save.rbB_value = get(handles.rbB,'value');
-    %---
-        Save.chR_value = get(handles.chR,'value');
-        Save.chG_value = get(handles.chG,'value');
-        Save.chB_value = get(handles.chB,'value');
-    %---
-        Save.chAdjust  = get(handles.chAdjust,'value');
-        Save.chSight   = get(handles.chSight,'value');
-%         Save.chSumFrames = get(handles.chSumFrames,'value');
+    Save.chR_value = get(handles.chR,'value');
+    Save.chG_value = get(handles.chG,'value');
+    Save.chB_value = get(handles.chB,'value');
+%---
+    Save.chAdjust  = get(handles.chAdjust,'value');
+    Save.chSight   = get(handles.chSight,'value');
 % Saving lambda edit boxes
     Save.edR = get(handles.edR,'string');
     Save.edG = get(handles.edG,'string');
@@ -1195,12 +1195,54 @@ Save.S = handles.S; % save s structure;
     Save.edAdjust = get(handles.edAdjust,'string');
     Save.edSumFrameStep = get(handles.edSumFrameStep,'string');
     Save.edFrameStep = get(handles.edFrameStep,'string');
-% Saving ThetaPhiR and mask
-    Save.Bw = handles.Bw;
-    Save.position = handles.position;
-    Save.ThetaPhiR = handles.ThetaPhiR;
+% Saving angles and masks
+%      --  masks --
+    Save.BWR = handles.BWR;
+    Save.BWG = handles.BWG;
+    Save.BWB = handles.BWB;
+%      --  border of masks --
+    Save.R_position = handles.R_position;
+    Save.G_position = handles.G_position;
+    Save.B_position = handles.B_position;
+% Correction masks
+    Save.ICR = handles.ICR;
+    Save.ICG = handles.ICG;
+    Save.ICB = handles.ICB;
+% Angles matrix    
+    Save.THETA_R = handles.THETA_R;
+    Save.THETA_G = handles.THETA_G;
+    Save.THETA_B = handles.THETA_B;
+%      ---    
+    Save.PHI_R   = handles.PHI_R;
+    Save.PHI_G   = handles.PHI_G;
+    Save.PHI_B   = handles.PHI_B;
+    handles.dir;
+    savePath = [ handles.dir 'SaveParams.mat'];
+    if exist(savePath)
+    % File exist!
+       button = questdlg('File already exists!','Warning!!!','Rewrite','NO','Cancel','Cancel');
+       switch button
+           case 'Rewrite'
+               save(savePath,'Save');
+               sprintf('Parameters has been saved to the directory:\n %s',savePath)
+           case 'NO'
+             [file,path] = uiputfile('SaveParams_1.mat','Save file name', savePath);  
+             if file == 0
+                 return;
+             end;
+               savePath =[path,file];
+               save(savePath,'Save');
+               sprintf('Parameters has been saved to the directory:\n %s',savePath)
+           otherwise
+           
+       end
+    else
+    % File dose not exist.
+        save(savePath,'Save');
+        sprintf('Parameters has been saved to the directory:\n %s',savePath)
+    end
     assignin('base','Save',Save);
-
+    
 function ed_Sh_l1_Callback(hObject, eventdata, handles)
 % hObject    handle to ed_Sh_l1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1353,7 +1395,7 @@ function pbEditMask_Callback(hObject, eventdata, handles)
 
 if get(handles.chR,'value') % mask for red channel
     % Prepearing image
-    hf = imtool( handles.cF(:,:,1) );
+    hf = imtool( handles.cF(:,:,1),[min(min(handles.cF(:,:,1))),max(mean(handles.cF(:,:,1)))] );
     set(hf,'name','Set Mask for Red channel!')
     ha = get(hf,'CurrentAxes');
     hold(ha,'on');
@@ -1368,13 +1410,12 @@ if get(handles.chR,'value') % mask for red channel
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
     % compound of masks  for red channel
     handles.BWR = Bw1.*Bw2;
-    handles.R_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
+    handles.R_position = position; % coord handles for mascksinates of mask    
 end
 
 if get(handles.chG,'value') % mask for green channel
     % Prepearing image
-    hf = imtool( handles.cF(:,:,2) );
+    hf = imtool( handles.cF(:,:,2),[min(min(handles.cF(:,:,2))),max(mean(handles.cF(:,:,2)))] );
     set(hf,'name','Set Mask for Green channel!')
     ha = get(hf,'CurrentAxes');
     hold(ha,'on');
@@ -1386,16 +1427,15 @@ if get(handles.chG,'value') % mask for green channel
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
-    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     % compound of masks  for red channel
     handles.BWG = Bw1.*Bw2;
     handles.G_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
 end
 
 if get(handles.chB,'value') % mask for blue channel
     % Prepearing image
-    hf = imtool( handles.cF(:,:,3) );
+    hf = imtool( handles.cF(:,:,3),[min(min(handles.cF(:,:,3))),max(mean(handles.cF(:,:,3)))] );
     set(hf,'name','Set Mask for Blue channel!')
     ha = get(hf,'CurrentAxes');
     hold(ha,'on');
@@ -1407,13 +1447,12 @@ if get(handles.chB,'value') % mask for blue channel
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
-    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     % compound of masks  for red channel
     handles.BWB = Bw1.*Bw2;
     handles.B_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
 end
-
+guidata(hObject,handles);
 % --- Executes on button press in pbSetMask.
 
  function pbSetMask_Callback(hObject, eventdata, handles)
@@ -1438,8 +1477,7 @@ if get(handles.chR,'value') % mask for red channel
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
     % compound of masks  for red channel
     handles.BWR = Bw1.*Bw2;
-    handles.R_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
+    handles.R_position = position; % coord handles for mascksinates of mask   
 end
    
 if get(handles.chG,'value') % mask for green channel
@@ -1456,11 +1494,10 @@ if get(handles.chG,'value') % mask for green channel
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
-    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     % compound of masks  for red channel
     handles.BWG = Bw1.*Bw2;
-    handles.G_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
+    handles.G_position = position; % coord handles for mascksinates of mask    
 end
 
 if get(handles.chB,'value') % mask for blue channel
@@ -1477,13 +1514,12 @@ if get(handles.chB,'value') % mask for blue channel
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
-    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     % compound of masks  for red channel
     handles.BWB = Bw1.*Bw2;
-    handles.B_position = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
+    handles.B_position = position; % coord handles for mascksinates of mask  
 end
-   
+guidata(hObject,handles); 
    
 
 
@@ -1569,14 +1605,3 @@ for i = 1 : length(VH)    % The movement across Z axis
 end
 
 close(hwb)
-
-
-% --- Executes on button press in checkbox6.
-function checkbox6_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of checkbox6
-handles.GPU=get(hObject,'Value');
-guidata(hObject,handles);
