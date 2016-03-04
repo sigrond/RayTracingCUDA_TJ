@@ -110,13 +110,13 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     /**< w pętli sprawdzamy czy w tym punkcie spełniony jest warunek na ind */
     /**< jeśli jest spełniony to dodajemy odpowiednie wartości theta i I, oraz zwiększamy licznik */
     /**< po zakończeniu wyliczamy średnią */
-    unsigned int max_nom=floor((Theta_S[Theta_S_size-1]-Theta_S[0])/deltaT);
-    float* dev_Theta_S=0;
-    float* dev_I=0;
-    float* dev_I_S=0;
-    float* dev_nTheta=0;
-    float* dev_nI=0;
-    float* dev_counter=0;
+    unsigned int max_nom=floor((Theta_S[Theta_S_size-1]-Theta_S[0])/(float)*deltaT);
+    float* dev_Theta_S=NULL;
+    float* dev_I=NULL;
+    float* dev_I_S=NULL;
+    float* dev_nTheta=NULL;
+    float* dev_nI=NULL;
+    float* dev_counter=NULL;
     cudaError_t err;
     checkCudaErrors(cudaMalloc((void**)&dev_Theta_S, sizeof(float)*Theta_S_size));
     checkCudaErrors(cudaMemcpy((void*)dev_Theta_S, Theta_S, sizeof(float)*Theta_S_size, cudaMemcpyHostToDevice));
@@ -125,8 +125,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     checkCudaErrors(cudaMalloc((void**)&dev_I_S, sizeof(float)*I_S_size));
     checkCudaErrors(cudaMemcpy((void*)dev_I_S, I_S, sizeof(float)*I_S_size, cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMalloc((void**)&dev_nTheta, sizeof(float)*max_nom));
+    checkCudaErrors(cudaMemset(dev_nTheta,0,sizeof(float)*max_nom));
     checkCudaErrors(cudaMalloc((void**)&dev_nI, sizeof(float)*max_nom));
+    checkCudaErrors(cudaMemset(dev_nI,0,sizeof(float)*max_nom));
     checkCudaErrors(cudaMalloc((void**)&dev_counter, sizeof(float)*max_nom));
+    checkCudaErrors(cudaMemset(dev_counter,0,sizeof(float)*max_nom));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -138,7 +141,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     unsigned int dimGridY=numBlocks/65535+1;
     dim3 dimGrid(dimGridX,dimGridY);
 
-    ReducedMeanD<<< dimGrid, numThreads >>>(dev_Theta_S,deltaT,max_nom,dev_I,dev_I_S,dev_nTheta,dev_nI,dev_counter);
+    ReducedMeanD<<< dimGrid, numThreads >>>(dev_Theta_S,(float)*deltaT,max_nom,dev_I,dev_I_S,dev_nTheta,dev_nI,dev_counter);
 
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -146,13 +149,13 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         printf("cudaError(ReducedMeanD): %s\n", cudaGetErrorString(err));
     }
 
-    int dimsnTheta[1]={max_nom};
+    int dimsnTheta[1]={(int)max_nom};
     plhs[0]=mxCreateNumericArray(1,dimsnTheta,mxSINGLE_CLASS,mxREAL);
     float* nTheta=(float*)mxGetPr(plhs[0]);
-    int dimsnI[1]={max_nom};
+    int dimsnI[1]={(int)max_nom};
     plhs[1]=mxCreateNumericArray(1,dimsnI,mxSINGLE_CLASS,mxREAL);
     float* nI=(float*)mxGetPr(plhs[1]);
-    float* counter=malloc(sizeof(float)*max_nom);
+    float* counter=(float*)malloc(sizeof(float)*max_nom);
 
     checkCudaErrors(cudaMemcpy((void*)nTheta,dev_nTheta,sizeof(float)*max_nom,cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy((void*)nI,dev_nI,sizeof(float)*max_nom,cudaMemcpyDeviceToHost));

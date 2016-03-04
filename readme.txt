@@ -15,5 +15,9 @@ Tip:
 If you get an error while execution, first try reseting matlab.
 
 
-TODO:
-for each ray, if it hits pixel calculate average ray's y & z for that pixel
+
+
+
+ReducedMean
+
+nvmex -f nvmexopts64.bat ReducedMean.cu ReducedMean_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda

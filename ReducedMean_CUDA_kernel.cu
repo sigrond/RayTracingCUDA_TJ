@@ -30,7 +30,7 @@ void ReducedMeanD(float* Theta_S, float deltaT, unsigned int max_nom, float* I, 
     float value;
     float* val0;
     #pragma unroll
-    for(unsigned int nom=1;nom<=max_nom)
+    for(unsigned int nom=1;nom<=max_nom;nom++)
     {
         if(((Theta_S[0]+deltaT*nom)<=Theta_S[index]) && ((Theta_S[0]+deltaT*(nom+1))<=Theta_S[index]))
         {

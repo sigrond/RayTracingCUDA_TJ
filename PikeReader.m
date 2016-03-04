@@ -1095,6 +1095,11 @@ elseif ischar( handles.f ) % The single file is chosen
          if get(handles.chR,'value')
              Red = Frame(:,:,1);
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
+             
+             if handles.GPU==1
+                 [nThetaR, I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(I_S_R));
+             else
+             
              nom = 1;
              % Reduction of number of points
              while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
@@ -1107,6 +1112,8 @@ elseif ischar( handles.f ) % The single file is chosen
                      I_Red(count,nom) = I_Red(count,nom-1);
                  end
                  nom = nom + 1;
+             end
+             
              end
          end
          
