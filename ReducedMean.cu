@@ -141,7 +141,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     unsigned int dimGridY=numBlocks/65535+1;
     dim3 dimGrid(dimGridX,dimGridY);
 
-    ReducedMeanD<<< dimGrid, numThreads >>>(dev_Theta_S,(float)*deltaT,max_nom,dev_I,dev_I_S,dev_nTheta,dev_nI,dev_counter);
+    ReducedMeanD<<< dimGrid, numThreads >>>(dev_Theta_S,Theta_S_size,(float)*deltaT,max_nom,dev_I,dev_I_S,dev_nTheta,dev_nI,dev_counter);
 
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -165,6 +165,46 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     {
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
     }
+
+    /*printf("\nnTheta: ");
+    for(int i=0,j=0;i<max_nom && j<100;i++)
+    {
+        if(i>0 && nTheta[i]==0.0f)
+        {
+            if(nTheta[i-1]==0.0f)
+            continue;
+        }
+        printf("%f ",nTheta[i]);
+        j++;
+    }
+    printf("\n");
+
+    printf("\nnI: ");
+    for(int i=0,j=0;i<max_nom && j<100;i++)
+    {
+        if(i>0 && nI[i]==0.0f)
+        {
+            if(nI[i-1]==0.0f)
+            continue;
+        }
+        printf("%f ",nI[i]);
+        j++;
+    }
+    printf("\n");
+
+    printf("\ncounter: ");
+    for(int i=0,j=0;i<max_nom && j<100;i++)
+    {
+        if(i>0 && counter[i]==0.0f)
+        {
+            if(counter[i-1]==0.0f)
+            continue;
+        }
+        printf("%f ",counter[i]);
+        j++;
+    }
+    printf("\n");*/
+
     for(int i=0;i<max_nom;i++)
     {
         nTheta[i]/=counter[i];
