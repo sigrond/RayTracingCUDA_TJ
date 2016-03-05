@@ -166,52 +166,34 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
     }
 
-    /*printf("\nnTheta: ");
-    for(int i=0,j=0;i<max_nom && j<100;i++)
+    /*printf("\nnumer:    ");
+    for(int i=0;i<max_nom;i++)
     {
-        if(i>0 && nTheta[i]==0.0f)
-        {
-            if(nTheta[i-1]==0.0f)
-            continue;
-        }
-        printf("%f ",nTheta[i]);
-        j++;
+        printf("%17.9f ",(float)i);
     }
     printf("\n");
 
-    printf("\nnI: ");
+    printf("\nnTheta:   ");
     for(int i=0,j=0;i<max_nom && j<100;i++)
     {
-        if(i>0 && nI[i]==0.0f)
-        {
-            if(nI[i-1]==0.0f)
-            continue;
-        }
-        printf("%f ",nI[i]);
-        j++;
+        printf("%17.9f ",nTheta[i]);
     }
     printf("\n");
 
-    printf("\ncounter: ");
+    printf("\nnI:       ");
     for(int i=0,j=0;i<max_nom && j<100;i++)
     {
-        if(i>0 && counter[i]==0.0f)
-        {
-            if(counter[i-1]==0.0f)
-            continue;
-        }
-        printf("%f ",counter[i]);
-        j++;
+        printf("%17.9f ",nI[i]);
+    }
+    printf("\n");
+
+    printf("\ncounter:  ");
+    for(int i=0,j=0;i<max_nom && j<100;i++)
+    {
+        printf("%17.9f ",counter[i]);
     }
     printf("\n");*/
 
-    for(int i=0;i<max_nom;i++)
-    {
-        nTheta[i]/=counter[i];
-        nI[i]/=counter[i];
-    }
-
-    free(counter);
     checkCudaErrors(cudaFree(dev_counter));
     checkCudaErrors(cudaFree(dev_nI));
     checkCudaErrors(cudaFree(dev_nTheta));
@@ -223,4 +205,22 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     {
         printf("cudaError(cudaFree): %s\n", cudaGetErrorString(err));
     }
+
+    for(unsigned int i=0;i<max_nom;i++)
+    {
+        if(counter[i]==0.0f)
+        {
+            nTheta[i]=nTheta[i-1];
+            nI[i]=nI[i-1];
+        }
+        else
+        {
+            nTheta[i]/=counter[i];
+            nI[i]/=counter[i];
+        }
+        if(isnan(nI[i]))
+            nI[i]=0.0f;
+    }
+
+    free(counter);
 }

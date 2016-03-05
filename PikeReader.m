@@ -84,7 +84,7 @@ if isempty( handles.fn )
      Frame = zeros(480,640,3);   
 else
      mov = AviReadPike_Split( handles.fn,handles.nom );
-     Frame =  double(squeeze( mov ));
+     Frame =  single(squeeze( mov ));
 end
 % ---------------------------------------------------------------------
 function handles = Draw(hObject,handles)
@@ -962,10 +962,11 @@ if get(handles.chR,'value')
     ThetaR = 180*handles.THETA_R(ipR)/pi;   % There is a problem with beam direction.
                                             % We have to add 90 degree or 270 according to beam direction.
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
-% Reduction of points    
+    I_S_R=single(I_S_R);
+    % Reduction of points    
     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
-    I_Red = zeros( handles.N_frames, handles.NP ); % Creation of empty matrix for intensity recording
-    nThetaR = zeros( 1,handles.NP );          % Angles vector
+    I_Red = single(zeros( handles.N_frames, handles.NP )); % Creation of empty matrix for intensity recording
+    nThetaR = single(zeros( 1,handles.NP ));          % Angles vector
     ICR_N = handles.ICR(ipR);                 % Correction 
     ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
@@ -1097,7 +1098,7 @@ elseif ischar( handles.f ) % The single file is chosen
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
              
              if handles.GPU==1
-                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(I_S_R));
+                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, I_S_R);
              else
              
              nom = 1;
@@ -1121,6 +1122,9 @@ elseif ischar( handles.f ) % The single file is chosen
          if get(handles.chG,'value')
              Green = Frame(:,:,2);
              Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
+             if handles.GPU==1
+                 [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ig, single(I_S_G));
+             else
              nom = 1;
              % Reduction of number of points
              while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
@@ -1134,12 +1138,16 @@ elseif ischar( handles.f ) % The single file is chosen
                  end
                  nom = nom + 1;
              end
+             end
          end
          
          %  The blue channel is chosen
          if get(handles.chB,'value')
              Blue = Frame(:,:,3);
              Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
+             if handles.GPU==1
+                 [nThetaB(:), I_Blue(count,:)]=ReducedMean(ThetaB_S, deltaT_B, Ib, single(I_S_B));
+             else
              nom = 1;
              % Reduction of number of points
              while (ThetaB_S(1)+deltaT_B*nom) <= ThetaB_S(end)
@@ -1152,6 +1160,7 @@ elseif ischar( handles.f ) % The single file is chosen
                      I_Blue(count,nom) = I_Blue(count,nom-1);
                  end
                  nom = nom + 1;
+             end
              end
          end
          tt = toc;

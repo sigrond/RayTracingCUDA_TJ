@@ -1095,6 +1095,11 @@ elseif ischar( handles.f ) % The single file is chosen
          if get(handles.chR,'value')
              Red = Frame(:,:,1);
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
+             
+             if handles.GPU==1
+                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(I_S_R));
+             else
+             
              nom = 1;
              % Reduction of number of points
              while (ThetaR_S(1)+deltaT_R*nom) <= ThetaR_S(end)
@@ -1108,12 +1113,17 @@ elseif ischar( handles.f ) % The single file is chosen
                  end
                  nom = nom + 1;
              end
+             
+             end
          end
          
          %  The green channel is chosen
          if get(handles.chG,'value')
              Green = Frame(:,:,2);
              Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
+             if handles.GPU==1
+                 [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ir, single(I_S_R));
+             else
              nom = 1;
              % Reduction of number of points
              while (ThetaG_S(1)+deltaT_G*nom) <= ThetaG_S(end)
@@ -1126,6 +1136,7 @@ elseif ischar( handles.f ) % The single file is chosen
                      I_Green(count,nom) = I_Green(count,nom-1);
                  end
                  nom = nom + 1;
+             end
              end
          end
          

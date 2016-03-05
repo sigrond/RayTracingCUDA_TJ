@@ -31,24 +31,22 @@ void ReducedMeanD(float* Theta_S,unsigned int Theta_S_size, float deltaT, unsign
         return;
     float value;
     float* val0;
-    //#pragma unroll
-    /**< \todo zmiana koncepcji, ind zamiast byæ macie¿¹ logiczn¹ powinna zawieraæ numery nom do których trzeba wliczaæ œredni¹ */
-    //index*deltaT
-    unsigned int nom=ceil((Theta_S[index]-Theta_S[0])/deltaT-1.0f);
+
+    unsigned int nom=floor((Theta_S[index]-Theta_S[0])/deltaT);
     if(nom>max_nom || nom<=0)
         return;
-    if(((Theta_S[0]+deltaT*nom)<=Theta_S[index]) && ((Theta_S[0]+deltaT*(nom+1))>=Theta_S[index]))
-    {
+    //if(((Theta_S[0]+deltaT*nom)<=Theta_S[index]) && ((Theta_S[0]+deltaT*(nom+1))>=Theta_S[index]))
+    //{
         val0=nTheta+nom-1;
         value=Theta_S[index];
         atomicAdd(val0, value);
         val0=nI+nom-1;
-        value=I[(unsigned int)I_S[index]];
+        value=I[(unsigned int)round(I_S[index])];
         atomicAdd(val0, value);
         val0=counter+nom-1;
         value=1.0f;
         atomicAdd(val0, value);
-    }
+    //}
 }
 
 }
