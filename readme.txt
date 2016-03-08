@@ -21,3 +21,7 @@ If you get an error while execution, first try reseting matlab.
 ReducedMean
 
 nvmex -f nvmexopts64.bat ReducedMean.cu ReducedMean_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda
+
+MovingAverage
+
+nvmex -f nvmexopts64.bat MovingAverage.cu MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda

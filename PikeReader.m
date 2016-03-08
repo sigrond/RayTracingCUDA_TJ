@@ -964,6 +964,7 @@ if get(handles.chR,'value')
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
     I_S_R=single(I_S_R);
     % Reduction of points    
+    [ThetaR_S, sThetaR_S] = MovingAverage(ThetaR_S, ThetaR_S, I_S_R);
     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
     I_Red = single(zeros( handles.N_frames, handles.NP )); % Creation of empty matrix for intensity recording
     nThetaR = single(zeros( 1,handles.NP ));          % Angles vector
@@ -1098,7 +1099,8 @@ elseif ischar( handles.f ) % The single file is chosen
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
              
              if handles.GPU==1
-                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, I_S_R);
+                 [sThetaR_S, Ir] = MovingAverage(ThetaR_S, Ir, I_S_R);
+                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
              else
              
              nom = 1;

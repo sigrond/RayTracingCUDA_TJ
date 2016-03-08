@@ -105,11 +105,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     I_S=(float*)mxGetPr(prhs[3]);
     I_S_size=mxGetN(prhs[3])*mxGetM(prhs[3]);
 
-    /**< dla każdego punktu z theta_S odpalamy osobny kernel */
-    /**< w każdym kerneluętla nom 1:nom_max */
-    /**< w pętli sprawdzamy czy w tym punkcie spełniony jest warunek na ind */
-    /**< jeśli jest spełniony to dodajemy odpowiednie wartości theta i I, oraz zwiększamy licznik */
-    /**< po zakończeniu wyliczamy średnią */
     unsigned int max_nom=floor((Theta_S[Theta_S_size-1]-Theta_S[0])/(float)*deltaT);
     float* dev_Theta_S=NULL;
     float* dev_I=NULL;

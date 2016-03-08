@@ -41,7 +41,7 @@ void ReducedMeanD(float* Theta_S,unsigned int Theta_S_size, float deltaT, unsign
         value=Theta_S[index];
         atomicAdd(val0, value);
         val0=nI+nom-1;
-        value=I[(unsigned int)round(I_S[index])];
+        value=I[(unsigned int)round(I_S[index]-1.0f)];/**< uwaga macierz indexów zawiera indexy matlabowe */
         atomicAdd(val0, value);
         val0=counter+nom-1;
         value=1.0f;
