@@ -10,9 +10,9 @@ extern "C"
 {
 
     __global__
-    void MovingAverageD(float* Theta_S,unsigned int Theta_S_size, float* I, float* I_S, float* sTheta, float* sI);
+    void MovingAverageD(float* I, unsigned int I_size, float* I_S, float* sI, float step);
 
     __global__
-    void DivD(unsigned int Theta_S_size, float* sTheta, float* sI);
+    void DivD(unsigned int I_size, float* sI, float step);
 
 }

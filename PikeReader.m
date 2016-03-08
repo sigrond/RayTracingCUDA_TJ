@@ -938,6 +938,7 @@ function pbIntensCalc_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.NP = 700; % Number of angle points
+step=single(64);
 % Movie length estimation  
  count_step = str2double( get(handles.edFrameStep,'string'));
  handles.N_frames = 0;
@@ -964,9 +965,7 @@ if get(handles.chR,'value')
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
     I_S_R=single(I_S_R);
     % Reduction of points    
-    if handles.GPU==1
-        [ThetaR_S, sThetaR_S] = MovingAverage(ThetaR_S, ThetaR_S, I_S_R);
-    end
+    
     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
     I_Red = single(zeros( handles.N_frames, handles.NP )); % Creation of empty matrix for intensity recording
     nThetaR = single(zeros( 1,handles.NP ));          % Angles vector
@@ -980,9 +979,7 @@ if get(handles.chG,'value')
                                                    % We have to add 90 degree or 270 according to beam direction.
     [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data
 % Reduction of points  
-    if handles.GPU==1
-        [ThetaG_S, sThetaG_S] = MovingAverage(ThetaG_S, ThetaG_S, I_S_G);
-    end
+    
     deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
     I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
     
@@ -997,9 +994,7 @@ if get(handles.chB,'value')
                                            % We have to add 90 degree or 270 according to beam direction.
     [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data
 % Reduction of points
-    if handles.GPU==1
-        [ThetaB_S, sThetaB_S] = MovingAverage(ThetaB_S, ThetaB_S, I_S_B);
-    end
+    
     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
     I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
     nThetaB = zeros( 1,handles.NP ); 
@@ -1031,7 +1026,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
                 Red = Frame(:,:,1);
                   Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
                   if handles.GPU==1
-                    [sThetaR_S, Ir] = MovingAverage(ThetaR_S, Ir, I_S_R);
+                    Ir = MovingAverage(Ir, I_S_R, step);
                     [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
                   else
                   nom = 1;
@@ -1057,7 +1052,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
                 Green = Frame(:,:,2);
                   Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
                   if handles.GPU==1
-                    [sThetaG_S, Ig] = MovingAverage(ThetaG_S, Ig, I_S_G);
+                    Ig = MovingAverage(Ig, I_S_G, step);
                     [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ig, single(1:length(Ig)));
                   else
                   nom = 1;
@@ -1082,7 +1077,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
                 Blue = Frame(:,:,3);
                   Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
                   if handles.GPU==1
-                    [sThetaB_S, Ib] = MovingAverage(ThetaB_S, Ib, I_S_B);
+                    Ib = MovingAverage(Ib, I_S_B,step);
                     [nThetaB(:), I_Blue(count,:)]=ReducedMean(ThetaB_S, deltaT_B, Ib, single(1:length(Ib)));
                   else
                   nom = 1;
@@ -1122,8 +1117,10 @@ elseif ischar( handles.f ) % The single file is chosen
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
              
              if handles.GPU==1
-                 [sThetaR_S, Ir] = MovingAverage(ThetaR_S, Ir, I_S_R);
-                 [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
+                 Ir = MovingAverage(Ir, I_S_R, step);
+                 I_Red(count,:)=Ir(int16(linspace(1,length(Ir),700)));
+                 nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
+                 %[nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
              else
              
              nom = 1;
@@ -1148,7 +1145,7 @@ elseif ischar( handles.f ) % The single file is chosen
              Green = Frame(:,:,2);
              Ig = Green(ipG)./ICG_N; % Reading and correcting intensity vector
              if handles.GPU==1
-                 [sThetaG_S, Ig] = MovingAverage(ThetaG_S, Ig, I_S_G);
+                 Ig = MovingAverage(Ig, I_S_G, step);
                  [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ig, single(1:length(Ig)));
              else
              nom = 1;
@@ -1172,7 +1169,7 @@ elseif ischar( handles.f ) % The single file is chosen
              Blue = Frame(:,:,3);
              Ib = Blue(ipB)./ICB_N; % Reading and correcting intensity vector
              if handles.GPU==1
-                 [sThetaB_S, Ib] = MovingAverage(ThetaB_S, Ib, I_S_B);
+                 Ib = MovingAverage(Ib, I_S_B,step);
                  [nThetaB(:), I_Blue(count,:)]=ReducedMean(ThetaB_S, deltaT_B, Ib, single(1:length(Ib)));
              else
              nom = 1;

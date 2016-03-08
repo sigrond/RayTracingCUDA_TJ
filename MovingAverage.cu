@@ -41,7 +41,7 @@ void computeGridSize(uint n, uint blockSize, uint &numBlocks, uint &numThreads)
 }
 
 /** \brief wyg³adza Theta i I
- * function [sTheta, sI] = MovingAverage(Theta_S, I, I_S)
+ * function [sI] = MovingAverage(I, I_S, step)
  * \param nlhs int
  * \param plhs[] mxArray*
  * \param nrhs int
@@ -51,22 +51,21 @@ void computeGridSize(uint n, uint blockSize, uint &numBlocks, uint &numThreads)
  */
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-    float* Theta_S;/**< posortowany wektor theta */
-    unsigned int Theta_S_size;
     float* I;/**< skorygowana klatka */
     unsigned int I_size;
     float* I_S;/**< indeksy posortowanej klatki */
     unsigned int I_S_size;
+    float* step;
 
     /**< sprawdzanie argumentów */
-    if(nlhs!=2)
+    if(nlhs!=1)
     {
-    	printf("function returns [Theta, I] \n");
+    	printf("function returns [I] \n");
     	return;
     }
     if(nrhs!=3)
     {
-        printf("function arguments are (Theta_S, I, I_S) \n");
+        printf("function arguments are (I, I_S, step) \n");
         return;
     }
     if(!mxIsSingle(prhs[0]))
@@ -82,33 +81,31 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     if(!mxIsSingle(prhs[2]))
     {
-        printf("3rd argument needs to be single precision vector\n");
+        printf("3rd argument needs to be single precision number\n");
         return;
     }
 
     /**< pobranie argumentów z matlaba */
-    Theta_S=(float*)mxGetPr(prhs[0]);
-    Theta_S_size=mxGetN(prhs[0])*mxGetM(prhs[0]);
-    I=(float*)mxGetPr(prhs[1]);
-    I_size=mxGetN(prhs[1])*mxGetM(prhs[1]);
-    I_S=(float*)mxGetPr(prhs[2]);
-    I_S_size=mxGetN(prhs[2])*mxGetM(prhs[2]);
+    I=(float*)mxGetPr(prhs[0]);
+    I_size=mxGetN(prhs[0])*mxGetM(prhs[0]);
+    I_S=(float*)mxGetPr(prhs[1]);
+    I_S_size=mxGetN(prhs[1])*mxGetM(prhs[1]);
+    step=(float*)mxGetPr(prhs[2]);
+    if(mxGetN(prhs[2])*mxGetM(prhs[2])!=1)
+    {
+        printf("3rd argument (step) must be a number\n");
+        return;
+    }
 
-    float* dev_Theta_S=NULL;
     float* dev_I=NULL;
     float* dev_I_S=NULL;
-    float* dev_sTheta=NULL;
     float* dev_sI=NULL;
 
     cudaError_t err;
-    checkCudaErrors(cudaMalloc((void**)&dev_Theta_S, sizeof(float)*Theta_S_size));
-    checkCudaErrors(cudaMemcpy((void*)dev_Theta_S, Theta_S, sizeof(float)*Theta_S_size, cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMalloc((void**)&dev_I, sizeof(float)*I_size));
     checkCudaErrors(cudaMemcpy((void*)dev_I, I, sizeof(float)*I_size, cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMalloc((void**)&dev_I_S, sizeof(float)*I_S_size));
     checkCudaErrors(cudaMemcpy((void*)dev_I_S, I_S, sizeof(float)*I_S_size, cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMalloc((void**)&dev_sTheta, sizeof(float)*Theta_S_size));
-    checkCudaErrors(cudaMemset(dev_sTheta,0,sizeof(float)*Theta_S_size));
     checkCudaErrors(cudaMalloc((void**)&dev_sI, sizeof(float)*I_size));
     checkCudaErrors(cudaMemset(dev_sI,0,sizeof(float)*I_size));
     err = cudaGetLastError();
@@ -118,12 +115,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
 
     uint numThreads, numBlocks;
-    computeGridSize(Theta_S_size, 512, numBlocks, numThreads);
+    computeGridSize(I_size, 512, numBlocks, numThreads);
     unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
     unsigned int dimGridY=numBlocks/65535+1;
     dim3 dimGrid(dimGridX,dimGridY);
 
-    MovingAverageD<<< dimGrid, numThreads >>>(dev_Theta_S,Theta_S_size,dev_I,dev_I_S,dev_sTheta,dev_sI);
+    MovingAverageD<<< dimGrid, numThreads >>>(dev_I,I_size,dev_I_S,dev_sI,*step);
 
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -131,7 +128,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         printf("cudaError(MovingAverageD): %s\n", cudaGetErrorString(err));
     }
 
-    DivD<<< dimGrid, numThreads >>>(Theta_S_size,dev_sTheta,dev_sI);
+    DivD<<< dimGrid, numThreads >>>(I_size,dev_sI,*step);
 
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -139,14 +136,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
     }
 
-    int dimssTheta[1]={(int)Theta_S_size};
-    plhs[0]=mxCreateNumericArray(1,dimssTheta,mxSINGLE_CLASS,mxREAL);
-    float* sTheta=(float*)mxGetPr(plhs[0]);
     int dimssI[1]={(int)I_size};
-    plhs[1]=mxCreateNumericArray(1,dimssI,mxSINGLE_CLASS,mxREAL);
-    float* sI=(float*)mxGetPr(plhs[1]);
+    plhs[0]=mxCreateNumericArray(1,dimssI,mxSINGLE_CLASS,mxREAL);
+    float* sI=(float*)mxGetPr(plhs[0]);
 
-    checkCudaErrors(cudaMemcpy((void*)sTheta,dev_sTheta,sizeof(float)*Theta_S_size,cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy((void*)sI,dev_sI,sizeof(float)*I_size,cudaMemcpyDeviceToHost));
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -155,10 +148,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
 
     checkCudaErrors(cudaFree(dev_sI));
-    checkCudaErrors(cudaFree(dev_sTheta));
     checkCudaErrors(cudaFree(dev_I_S));
     checkCudaErrors(cudaFree(dev_I));
-    checkCudaErrors(cudaFree(dev_Theta_S));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
