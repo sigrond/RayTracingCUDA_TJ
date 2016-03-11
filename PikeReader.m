@@ -368,6 +368,10 @@ if handles.GPU==1
     IC = single(zeros(480,640));
     PX = single(zeros(4,480,640));
     tic;
+    %pojawia siê dziwny crash matlaba dla koloru niebieskiego
+    %na SPICA'y nie uda³o mi siê go odtworzyæ
+    %zakomentowana linijka ze zmienionym zakresem nie powoduje tego b³êdu
+    %nie wiem dlaczego tak siê dzieje, ale mo¿e byæ to bug w matlabie
     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
     toc
     %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
@@ -406,6 +410,7 @@ if handles.GPU==1
     PXZT=PXZ;
     %save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
 else
+handles.S.N = 3e3; % Number of points per side
 Br = single(BorderCreation(hObject,handles));
 % get only the part of border points 
 Vb = (1 + handles.S.N ) : handles.S.N * 2; % Indexes for bottom electrode
@@ -1105,6 +1110,11 @@ if iscell( handles.f ) % In case of multi select function is enabled
      
 elseif ischar( handles.f ) % The single file is chosen
      path  = [ handles.dir handles.f ];
+     
+     tic;
+[I_Red,I_Green,I_Blue]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipG),ICR_N,ICG_N,ICG_N,int32(I_S_R),int32(I_S_G),int32(I_S_G));
+     toc
+
      count = 1;
      for j = 1:count_step:inf.NumFrames-1
          waitbar(j/inf.NumFrames,wb,wb_s);

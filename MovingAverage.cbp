@@ -13,6 +13,9 @@
 				<Option compiler="null" />
 			</Target>
 		</Build>
+		<Unit filename="MovingAverage.cu" />
+		<Unit filename="MovingAverage_CUDA_kernel.cu" />
+		<Unit filename="MovingAverage_CUDA_kernel.cuh" />
 		<Extensions>
 			<code_completion />
 			<envvars />
