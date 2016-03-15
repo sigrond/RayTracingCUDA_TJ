@@ -6,6 +6,11 @@
  *
  */
 
+
+extern "C"
+{
+
+
 /** \brief przygotowanie do obliczeń
  *
  * \return void
@@ -37,3 +42,5 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue);
  *
  */
 void freeCUDA_IC();
+
+}

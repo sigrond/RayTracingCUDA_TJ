@@ -18,6 +18,11 @@
 #include "helper_math.h"
 #include "math_constants.h"
 
+#include <stdio.h>
+
+extern "C"
+{
+
 
 /** \brief wyliczanie wartości pixeli z bajtów filmu
  *
@@ -50,3 +55,4 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
     frame[index]=bh+bl;
 }
 
+}

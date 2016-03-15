@@ -42,20 +42,32 @@ cudaError_t err;
 char* dev_buff=NULL;
 unsigned short* dev_frame=NULL;
 
+extern "C"
+{
+
 void setupCUDA_IC()
 {
     /**< przygotowanie CUDA'y */
 
     checkCudaErrors(cudaSetDevice(0));
+    err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
     }
     checkCudaErrors(cudaMalloc((void**)&dev_buff, sizeof(char)*640*480*2));
     checkCudaErrors(cudaMalloc((void**)&dev_frame, sizeof(unsigned short)*640*480));
+    err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMemset(dev_buff,0,sizeof(char)*640*480*2));
+    checkCudaErrors(cudaMemset(dev_frame,0,sizeof(unsigned short)*640*480));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
     }
 }
 
@@ -63,11 +75,17 @@ void copyBuff(char* buff)
 {
     /**< kopiujemy na kartę */
     checkCudaErrors(cudaSetDevice(0));
+    err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
     }
     checkCudaErrors(cudaMemcpy((void*)dev_buff, buff, sizeof(char)*640*480*2, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+    }
 }
 
 void doIC(float* I_Red, float* I_Green, float* I_Blue)
@@ -78,11 +96,6 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     unsigned int dimGridY=numBlocks/65535+1;
     dim3 dimGrid(dimGridX,dimGridY);
 
-    err = cudaGetLastError();
-    if (err != cudaSuccess)
-    {
-        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
-    }
     /**< Jeśli tutaj będzie działało za wolno, to można wykozystać dodatkowy wątek CPU i CUDA streams */
     aviGetValueD<<< dimGrid, numThreads >>>(dev_buff,dev_frame,640*480);
     err = cudaGetLastError();
@@ -91,12 +104,20 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
     unsigned short int klatka[307200];
-    checkCudaErrors(cudaMemcpy((void*)klatka,dev_frame,sizeof(float)*640*480,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)klatka,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
     }
+    /*for(int i=0;i<480;i++)
+    {
+        for(int j=0;j<640;j++)
+        {
+            printf("%d ",klatka[i*640+j]);
+        }
+        printf("\n");
+    }*/
 }
 
 void freeCUDA_IC()
@@ -110,3 +131,4 @@ void freeCUDA_IC()
     }
 }
 
+}

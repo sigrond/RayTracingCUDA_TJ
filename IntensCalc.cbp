@@ -13,9 +13,14 @@
 				<Option compiler="null" />
 			</Target>
 		</Build>
+		<Unit filename="CyclicBuffer.cpp" />
+		<Unit filename="CyclicBuffer.hpp" />
 		<Unit filename="IntensCalc.cu" />
+		<Unit filename="IntensCalc_CUDA.cu" />
+		<Unit filename="IntensCalc_CUDA.cuh" />
 		<Unit filename="IntensCalc_CUDA_kernel.cu" />
 		<Unit filename="IntensCalc_CUDA_kernel.cuh" />
+		<Unit filename="OneshotAviread.cpp" />
 		<Unit filename="avireadtest.cpp" />
 		<Extensions>
 			<code_completion />
