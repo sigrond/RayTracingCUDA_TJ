@@ -18,12 +18,15 @@ const unsigned char reverse6bitLookupTable[]={
 
 struct buffId
 {
-    buffId(int id,char* pt):id(id),pt(pt) {};
+    buffId(int id,char* pt):id(id),frameNo(-1),pt(pt) {};
+    buffId(int id,char* pt,int frameNo):id(id),frameNo(frameNo),pt(pt) {};
     int id;
+    int frameNo;
     char* pt;
 };
 
-#define CBUFFS 1024
+
+#define CBUFFS 8
 /** \brief monitor dla bufora cyklicznego
  */
 class CyclicBuffer
@@ -35,6 +38,7 @@ private:
     condition_variable full;/**< bufor cykliczny pełny */
     condition_variable empty;/**< bufor cykliczny pusty */
     bool buffReady[CBUFFS];/**< czy bufor nie jest już używany */
+    int frameNo[CBUFFS];/**< numery klatek pomogą znaleźć błędy */
     condition_variable buffReadyCond[CBUFFS];
     char* cBuff[CBUFFS];/**< bufor cykliczny z buforami odczytu z dysku */
     condition_variable monitorCond;
@@ -88,7 +92,7 @@ public:
         }
         buffReady[tmpEnd]=false;/**< zaznaczamy, że bufor jest używany */
         lck.unlock();
-        return new buffId(tmpEnd,cBuff[tmpEnd]);
+        return new buffId(tmpEnd,cBuff[tmpEnd],frameNo[tmpEnd]);
     }
     /** \brief zwolnienie bufora po zapisaniu
      * \param id buffId*
@@ -100,6 +104,7 @@ public:
         //printf("writeEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         cEnd=id->id;
         itemCount++;
+        frameNo[id->id]=id->frameNo;
         buffReady[id->id]=true;/**< zaznaczamy, że nie używamy już bufora */
         monitorMtx.unlock();/**< odblokowujemy monitor */
         buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
@@ -115,7 +120,7 @@ public:
 		//printf("claimForRead cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         while(itemCount==0)
         {
-            printf("claimForRead empty cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+            //printf("claimForRead empty cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
             empty.wait(lck);
         }
         unsigned int tmpBeg=cBeg;
@@ -125,7 +130,7 @@ public:
         }
         buffReady[tmpBeg]=false;/**< zaznaczamy, że bufor jest używany */
         lck.unlock();
-        return new buffId(tmpBeg,cBuff[tmpBeg]);
+        return new buffId(tmpBeg,cBuff[tmpBeg],frameNo[tmpBeg]);
     }
     /** \brief zwolnienie bufora po odczytaniu
      * \param id buffId*
@@ -142,6 +147,7 @@ public:
             printf("błąd krytyczny, ujemna liczba elementów bufora");
             throw string("błąd krytyczny, ujemna liczba elementów bufora");
         }
+        frameNo[id->id]=-2;
         buffReady[id->id]=true;/**< zaznaczamy, że nie używamy już bufora */
         buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
         delete id;
@@ -175,6 +181,7 @@ try
 /**< \todo można poprawić, żeby przesunięcie było względem obecnej pozycji i dało się czytać filmy >4GB */
             bId=cyclicBuffer.claimForWrite();
             buff=bId->pt;
+            bId->frameNo=i;
             for(int j=0;j<10;j++)
             {
                 file.read(buff+j*65535,65535);/**< 64KB to optymalny rozmiar bloku czytanego z dysku */
@@ -193,10 +200,12 @@ try
     unsigned short int klatka[307200];
     unsigned short int bl,bh;
     long double licz=0.0f;
+    int tmpFrameNo=-3;
     for(int k=0;k<NumFrames;k+=count_step)
     {
         bID=cyclicBuffer.claimForRead();
         tmpBuff=bID->pt;
+        tmpFrameNo=bID->frameNo;
         for(int l=0;l<307200;l++)/**< może bardziej opłacać się zrobić to na GPU */
         {
             bh=((unsigned short int)tmpBuff[2*l])<<6;
@@ -205,6 +214,7 @@ try
             licz+=(long double)klatka[l];
         }
         cyclicBuffer.readEnd(bID);
+        printf("k: %d Frame: %d, ",k,tmpFrameNo);
         //printf("%lf",licz);
         /*if(k==1)
         {

@@ -1,3 +1,12 @@
+/** \file IntensCalc_CUDA_kernel.cu
+ * \author Tomasz Jakubczyk
+ * \brief funkcje CUDA na GPU
+ *
+ *
+ *
+ */
+
+
 #define WIN32
 #include<stdlib.h>
 #include <math.h>
@@ -10,9 +19,14 @@
 #include "math_constants.h"
 
 
-extern "C"
-{
-
+/** \brief wyliczanie wartości pixeli z bajtów filmu
+ *
+ * \param buff char*
+ * \param frame unsigned short*
+ * \param frame_size unsigned int
+ * \return void
+ *
+ */
 __global__
 void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
 {
@@ -23,7 +37,7 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=frame_size)
         return;
-    __shared__ const unsigned char reverse6bitLookupTable[]={
+    const unsigned char reverse6bitLookupTable[]={
 0x00,0x20,0x10,0x30,0x08,0x28,0x18,0x38,0x04,0x24,0x14,0x34,0x0C,0x2C,0x1C,0x3C,
 0x02,0x22,0x12,0x32,0x0A,0x2A,0x1A,0x3A,0x06,0x26,0x16,0x36,0x0E,0x2E,0x1E,0x3E,
 0x01,0x21,0x11,0x31,0x09,0x29,0x19,0x39,0x05,0x25,0x15,0x35,0x0D,0x2D,0x1D,0x3D,
@@ -36,4 +50,3 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
     frame[index]=bh+bl;
 }
 
-}
