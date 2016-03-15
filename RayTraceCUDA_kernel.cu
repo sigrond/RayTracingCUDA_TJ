@@ -257,7 +257,11 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     float3 vR = normalize(P7-P6);
     float alp = acos(dot(make_float3(1,0,0),vR));*/
     float W  = S.shX + ( S.CCDW/2.0f +P7.y)/S.PixSize - 1.0f;
+    if(round(W)>=640 || round(W)<0)
+        return;
     float Hi = S.shY + ( S.CCDH/2.0f +P7.z)/S.PixSize - 1.0f;
+    if(round(Hi)>=480 || round(Hi)<0)
+        return;
     //float value=cos(alp)/(dist*dist);
 
     //Recording position of rays and a number of rays that walk into the cell

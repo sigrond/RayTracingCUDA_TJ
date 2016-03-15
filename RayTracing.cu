@@ -1,6 +1,10 @@
 /** \file RayTracing.cu
  * \brief this file contains calls to matlab and main function
- *
+ * compilation line:
+ * 32bit:
+ * nvmex -f nvmexopts.bat RayTracing.cu RayTraceCUDA.cu RayTraceCUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\win32 -lcufft -lcudart -lcuda -output RayTracingCUDA
+ * 64bit:
+ * nvmex -f nvmexopts64.bat RayTracing.cu RayTraceCUDA.cu RayTraceCUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda -output RayTracingCUDA
  */
 #define WIN32
 #include "mex.h"

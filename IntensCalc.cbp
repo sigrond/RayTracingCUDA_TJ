@@ -14,6 +14,8 @@
 			</Target>
 		</Build>
 		<Unit filename="IntensCalc.cu" />
+		<Unit filename="IntensCalc_CUDA_kernel.cu" />
+		<Unit filename="avireadtest.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -983,7 +983,8 @@ if get(handles.chG,'value')
     ThetaG = 180*handles.THETA_G(ipG)/pi;          % There is a problem with beam direction.
                                                    % We have to add 90 degree or 270 according to beam direction.
     [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data
-% Reduction of points  
+    I_S_G=single(I_S_G);
+    % Reduction of points  
     
     deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
     I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
