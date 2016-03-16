@@ -43,7 +43,7 @@ buffId* CyclicBuffer::claimForWrite()
     //printf("claimForWrite cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
     while(itemCount==cBuffS)
     {
-        printf("claimForWrite full cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+        //printf("claimForWrite full cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         full.wait(lck);/**< czekamy jeśli bufor cykliczny jest pełny */
     }
     unsigned int tmpEnd=cEnd;

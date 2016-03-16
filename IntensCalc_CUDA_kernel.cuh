@@ -12,4 +12,7 @@ extern "C"
 __global__
 void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size);
 
+__global__
+void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray);
+
 }

@@ -12,8 +12,10 @@
 #include <helper_functions.h>
 #include <helper_cuda.h>
 #include <vector_types.h>
+#include <cuda_profiler_api.h>
 #include "helper_math.h"
 #include "IntensCalc_CUDA_kernel.cuh"
+#include "MovingAverage_CUDA_kernel.cuh"
 
 __host__
 //Round a / b to nearest higher integer value
@@ -41,6 +43,7 @@ void computeGridSize(uint n, uint blockSize, uint &numBlocks, uint &numThreads)
 cudaError_t err;
 char* dev_buff=NULL;
 unsigned short* dev_frame=NULL;
+short* dev_outArray=NULL;
 
 extern "C"
 {
@@ -57,6 +60,7 @@ void setupCUDA_IC()
     }
     checkCudaErrors(cudaMalloc((void**)&dev_buff, sizeof(char)*640*480*2));
     checkCudaErrors(cudaMalloc((void**)&dev_frame, sizeof(unsigned short)*640*480));
+    checkCudaErrors(cudaMalloc((void**)&dev_outArray, sizeof(short)*640*480*3));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -64,6 +68,7 @@ void setupCUDA_IC()
     }
     checkCudaErrors(cudaMemset(dev_buff,0,sizeof(char)*640*480*2));
     checkCudaErrors(cudaMemset(dev_frame,0,sizeof(unsigned short)*640*480));
+    checkCudaErrors(cudaMemset(dev_outArray,0,sizeof(short)*640*480*3));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -103,6 +108,14 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     {
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
+
+    demosaicD<<< dimGrid, numThreads >>>(dev_frame,640*480,dev_outArray);
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(demosaicD): %s\n", cudaGetErrorString(err));
+    }
+
     unsigned short int klatka[307200];
     checkCudaErrors(cudaMemcpy((void*)klatka,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
     err = cudaGetLastError();
@@ -110,25 +123,19 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     {
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
     }
-    /*for(int i=0;i<480;i++)
-    {
-        for(int j=0;j<640;j++)
-        {
-            printf("%d ",klatka[i*640+j]);
-        }
-        printf("\n");
-    }*/
 }
 
 void freeCUDA_IC()
 {
     checkCudaErrors(cudaFree(dev_buff));
     checkCudaErrors(cudaFree(dev_frame));
+    checkCudaErrors(cudaFree(dev_outArray));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaFree): %s\n", cudaGetErrorString(err));
     }
+    cudaProfilerStop();
 }
 
 }

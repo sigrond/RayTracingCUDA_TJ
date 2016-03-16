@@ -2,7 +2,7 @@
  * \author Tomasz Jakubczyk
  * \brief
  * kompilacja w matlabie:
- * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
+ * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
  */
 
 #define WIN32
@@ -24,7 +24,7 @@ using namespace std;
 
 
 /** \brief
- * function [I_Red,I_Green,I_Blue] = IntensCalc(handles,count_step,NumFrames,ipR,ipG,ipB,ICR_N,ICG_N,ICB_N)
+ * function [I_Red,I_Green,I_Blue] = IntensCalc(handles,count_step,NumFrames,ipR,ipG,ipB,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B)
  * \param nlhs int
  * \param plhs[] mxArray*
  * \param nrhs int
@@ -122,6 +122,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
 
     /**< pobieranie danych */
+    bool isR, isG, isB;
     mxArray* tmp;
     tmp=mxGetField(prhs[0],0,"fn");/**< nazwa pliku */
     name=mxArrayToString(tmp);

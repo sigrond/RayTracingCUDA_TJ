@@ -55,4 +55,116 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
     frame[index]=bh+bl;
 }
 
+#define I frame
+/** \brief demosaic GRBG bruteforce!
+ *
+ * \param frame unsigned short*
+ * \param frame_size unsigned int
+ * \param outArray short*
+ * \return void
+ *
+ */
+__global__
+void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
+{
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
+    if(index>=frame_size)
+        return;
+
+    int j=index%640;
+    int i=index%480;
+    int wid=480, len=640;
+    int x_max=wid-1, y_max=len-1;
+    int im1=0,ip1=0,jm1=0,jp1=0;
+    int lenxwid=len*wid;
+
+    jm1=j==0?j+1:j-1;//j-1
+    jp1=j==y_max?j-1:j+1;//j+1
+
+    im1=i==0?i+1:i-1;//i-1
+    ip1=i==x_max?i-1:i+1;//i+1
+    if((i&1)==0)
+    {
+        if((j&1)==0)//R(G)R
+        {
+            outArray[i+j*wid]=(I[i+jm1*wid]+I[i+jp1*wid])>>1;//B
+        }
+        else//G(B)G
+        {
+            outArray[i+j*wid]=I[i+wid*j];//B
+        }
+    }
+    else
+    {
+        if((j&1)==0)//G(R)G
+        {
+            outArray[i+j*wid]=(I[im1+wid*jm1]+I[ip1+wid*jp1]+I[im1+wid*jp1]+I[ip1+wid*jm1])>>2;//B
+        }
+        else//B(G)B
+        {
+            outArray[i+j*wid]=(I[im1+wid*j]+I[ip1+wid*j])>>1;//B
+        }
+    }
+
+    jm1=j==0?j+1:j-1;//j-1
+    jp1=j==y_max?j-1:j+1;//j+1
+
+    im1=i==0?i+1:i-1;//i-1
+    ip1=i==x_max?i-1:i+1;//i+1
+    if((i&1)==0)
+    {
+        if((j&1)==0)//R(G)R
+        {
+            outArray[i+j*wid+lenxwid]=I[i+j*wid];//G
+        }
+        else//G(B)G
+        {
+            outArray[i+j*wid+lenxwid]=(I[im1+wid*j]+I[ip1+wid*j]+I[i+wid*jm1]+I[i+wid*jp1])>>2;//G
+        }
+    }
+    else
+    {
+        if((j&1)==0)//G(R)G
+        {
+            outArray[i+j*wid+lenxwid]=(I[im1+wid*j]+I[ip1+wid*j]+I[i+wid*jm1]+I[i+wid*jp1])>>2;//G
+        }
+        else//B(G)B
+        {
+            outArray[i+j*wid+lenxwid]=I[i+wid*j];//G
+        }
+    }
+
+    jm1=j==0?j+1:j-1;//j-1
+    jp1=j==y_max?j-1:j+1;//j+1
+
+    im1=i==0?i+1:i-1;//i-1
+    ip1=i==x_max?i-1:i+1;//i+1
+    if((i&1)==0)
+    {
+        if((j&1)==0)//R(G)R
+        {
+            outArray[i+j*wid+2*lenxwid]=(I[im1+j*wid]+I[ip1+j*wid])>>1;//R
+        }
+        else//G(B)G
+        {
+            outArray[i+j*wid+2*lenxwid]=(I[im1+jm1*wid]+I[ip1+wid*jp1]+I[im1+wid*jp1]+I[ip1+wid*jm1])>>2;//R
+        }
+    }
+    else
+    {
+        if((j&1)==0)//G(R)G
+        {
+            outArray[i+j*wid+2*lenxwid]=I[i+wid*j];//R
+        }
+        else//B(G)B
+        {
+            outArray[i+j*wid+2*lenxwid]=(I[i+wid*jm1]+I[i+wid*jp1])>>1;//R
+        }
+    }
+}
+
 }
