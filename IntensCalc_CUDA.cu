@@ -57,6 +57,9 @@ float* dev_ICB_N=NULL;
 int* dev_I_S_R=NULL;
 int* dev_I_S_G=NULL;
 int* dev_I_S_B=NULL;
+float* dev_IR=NULL;
+float* dev_IG=NULL;
+float* dev_IB=NULL;
 
 extern "C"
 {
@@ -154,6 +157,25 @@ void setMasksAndImagesAndSortedIndexes(
         printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
     }
     checkCudaErrors(cudaMalloc((void**)&dev_I_S_B, sizeof(int)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+
+    checkCudaErrors(cudaMalloc((void**)&dev_IR, sizeof(float)*ipR_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_IG, sizeof(float)*ipG_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_IB, sizeof(float)*ipB_size));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -260,11 +282,53 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
 
+    /**< demosaic */
     demosaicD<<< dimGrid, numThreads >>>(dev_frame,640*480,dev_outArray);
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(demosaicD): %s\n", cudaGetErrorString(err));
+    }
+
+    /**< nałożyć maskę i skorygować */
+    if(ipR_Size>0)
+    {
+        computeGridSize(ipR_Size, 512, numBlocks, numThreads);
+        unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
+        unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid(dimGridX,dimGridY);
+        correctionD<<< dimGrid, numThreads >>>(dev_outArray,dev_ipR,ipR_Size,dev_ICR_N,dev_IR);
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(correctionD R): %s\n", cudaGetErrorString(err));
+        }
+    }
+    if(ipG_Size>0)
+    {
+        computeGridSize(ipG_Size, 512, numBlocks, numThreads);
+        unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
+        unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid(dimGridX,dimGridY);
+        correctionD<<< dimGrid, numThreads >>>(dev_outArray+640*480,dev_ipG,ipG_Size,dev_ICG_N,dev_IG);
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(correctionD G): %s\n", cudaGetErrorString(err));
+        }
+    }
+    if(ipB_Size>0)
+    {
+        computeGridSize(ipB_Size, 512, numBlocks, numThreads);
+        unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
+        unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid(dimGridX,dimGridY);
+        correctionD<<< dimGrid, numThreads >>>(dev_outArray+640*480*2,dev_ipB,ipB_Size,dev_ICB_N,dev_IB);
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(correctionD B): %s\n", cudaGetErrorString(err));
+        }
     }
 
     unsigned short int klatka[307200];

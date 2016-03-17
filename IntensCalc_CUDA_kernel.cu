@@ -167,4 +167,27 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
     }
 }
 
+/** \brief nałożenie maski na kolor klatki i podzielenie przez obraz korekcyjny
+ *
+ * \param color short* klatka w wybranym kolorze
+ * \param mask int* nakładana maska
+ * \param mask_size int rozmiar maski
+ * \param IC float* obraz korekcyjny
+ * \param I float* zwracana skorygowana klatka w wybranym kolorze
+ * \return void
+ *
+ */
+__global__
+void correctionD(short* color, int* mask, int mask_size, float* IC, float* I)
+{
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
+    if(index>=mask_size)
+        return;
+    I[index]=((float)color[(mask[index])])/IC[index];
+}
+
 }
