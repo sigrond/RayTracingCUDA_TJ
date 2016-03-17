@@ -97,12 +97,134 @@ void setMasksAndImagesAndSortedIndexes(
     ipR_Size=ipR_size;
     ipG_Size=ipG_size;
     ipB_Size=ipB_size;
+
+    checkCudaErrors(cudaSetDevice(0));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
+    }
+
     checkCudaErrors(cudaMalloc((void**)&dev_ipR, sizeof(int)*ipR_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
     checkCudaErrors(cudaMalloc((void**)&dev_ipG, sizeof(int)*ipG_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
     checkCudaErrors(cudaMalloc((void**)&dev_ipB, sizeof(int)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
     checkCudaErrors(cudaMalloc((void**)&dev_ICR_N, sizeof(float)*ipR_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
     checkCudaErrors(cudaMalloc((void**)&dev_ICG_N, sizeof(float)*ipG_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
     checkCudaErrors(cudaMalloc((void**)&dev_ICB_N, sizeof(float)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_I_S_R, sizeof(int)*ipR_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_I_S_G, sizeof(int)*ipG_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_I_S_B, sizeof(int)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+
+    checkCudaErrors(cudaMemcpy((void*)dev_ipR, ipR, sizeof(int)*ipR_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_ipG, ipG, sizeof(int)*ipG_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_ipB, ipB, sizeof(int)*ipB_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_ICR_N, ICR_N, sizeof(float)*ipR_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_ICG_N, ICG_N, sizeof(float)*ipG_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    //return;
+    checkCudaErrors(cudaMemcpy((void*)dev_ICB_N, ICB_N, sizeof(float)*ipB_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    //return;
+    checkCudaErrors(cudaMemcpy((void*)dev_I_S_R, I_S_R, sizeof(int)*ipR_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_I_S_G, I_S_G, sizeof(int)*ipG_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    checkCudaErrors(cudaMemcpy((void*)dev_I_S_B, I_S_B, sizeof(int)*ipB_size, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
 }
 
 void copyBuff(char* buff)

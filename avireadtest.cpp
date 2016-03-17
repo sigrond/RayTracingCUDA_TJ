@@ -35,6 +35,32 @@ int main(int argc,char* argv[])
 	int NumFrames=1484;
 	int count_step=1;
 
+	int* ipR;/**< indeksy czerwonej maski */
+    int ipR_size=30220;/**< rozmiar czerwonej maski */
+    int* ipG;/**< indeksy zielonej maski */
+    int ipG_size=33230;/**< rozmiar zielonej maski */
+    int* ipB;/**< indeksy niebieskiej maski */
+    int ipB_size=38077;/**< rozmiar niebieskiej maski */
+
+    float* ICR_N;/**< czerwony wymaskowany obraz */
+    float* ICG_N;/**< zielony wymaskowany obraz */
+    float* ICB_N;/**< niebieski wymaskowany obraz */
+    int* I_S_R;/**< indexy według wymaskowanej posortowanej thety */
+    int* I_S_G;/**< indexy według wymaskowanej posortowanej thety */
+    int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
+
+    ipR=new int[ipR_size];
+    ipG=new int[ipG_size];
+    ipB=new int[ipB_size];
+
+    ICR_N=new float[ipR_size];
+    ICG_N=new float[ipG_size];
+    ICB_N=new float[ipB_size];
+
+    I_S_R=new int[ipR_size];
+    I_S_G=new int[ipG_size];
+    I_S_B=new int[ipB_size];
+
 try
 {
     printf("avireadtest - CUDA\n");
@@ -85,6 +111,9 @@ try
     });/**< readMovieThread lambda */
 
     setupCUDA_IC();
+
+    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B);
+    //setMasksAndImagesAndSortedIndexes(nullptr,0,nullptr,0,nullptr,0,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 

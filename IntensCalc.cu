@@ -46,12 +46,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int* ipB;/**< indeksy niebieskiej maski */
     int ipB_size=0;/**< rozmiar niebieskiej maski */
     char* name;/**< nazwa pliku z pe³n¹ œcierzk¹ */
-    float* ICR_N;
-    float* ICG_N;
-    float* ICB_N;
-    int* I_S_R;
-    int* I_S_G;
-    int* I_S_B;
+    float* ICR_N;/**< czerwony wymaskowany obraz */
+    float* ICG_N;/**< zielony wymaskowany obraz */
+    float* ICB_N;/**< niebieski wymaskowany obraz */
+    int* I_S_R;/**< indexy według wymaskowanej posortowanej thety */
+    int* I_S_G;/**< indexy według wymaskowanej posortowanej thety */
+    int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
 
     /**< sprawdzanie argumentów */
     if(nlhs!=3)
@@ -182,13 +182,21 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     ipB_size=mxGetN(prhs[5])*mxGetM(prhs[5]);
     printf("ipB_size: %d\n",ipB_size);
 
-    ICR_N=(float*)mxGetPr(plhs[6]);
-    ICG_N=(float*)mxGetPr(plhs[7]);
-    ICB_N=(float*)mxGetPr(plhs[8]);
+    ICR_N=(float*)mxGetPr(prhs[6]);
+    printf(": %d\n",mxGetN(prhs[6])*mxGetM(prhs[6]));
+    ICG_N=(float*)mxGetPr(prhs[7]);
+    printf(": %d\n",mxGetN(prhs[7])*mxGetM(prhs[7]));
+    ICB_N=(float*)mxGetPr(prhs[8]);
+    printf(": %d\n",mxGetN(prhs[8])*mxGetM(prhs[8]));
+    //for(int i=0;i<ipB_size;i++)
+    //    printf("%f,",ICB_N[i]);
 
     I_S_R=(int*)mxGetPr(prhs[9]);
+    printf(": %d\n",mxGetN(prhs[9])*mxGetM(prhs[9]));
     I_S_G=(int*)mxGetPr(prhs[10]);
+    printf(": %d\n",mxGetN(prhs[10])*mxGetM(prhs[10]));
     I_S_B=(int*)mxGetPr(prhs[11]);
+    printf(": %d\n",mxGetN(prhs[11])*mxGetM(prhs[11]));
 
     /**< przygotowanie zwracanych macierzy */
     int dimsI_Red[2]={NumFrames,700};
@@ -258,6 +266,8 @@ try
     });/**< readMovieThread lambda */
 
     setupCUDA_IC();
+
+    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
