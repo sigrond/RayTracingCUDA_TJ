@@ -60,6 +60,9 @@ int* dev_I_S_B=NULL;
 float* dev_IR=NULL;
 float* dev_IG=NULL;
 float* dev_IB=NULL;
+float* dev_sIR=NULL;
+float* dev_sIG=NULL;
+float* dev_sIB=NULL;
 
 extern "C"
 {
@@ -182,6 +185,25 @@ void setMasksAndImagesAndSortedIndexes(
         printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
     }
 
+    checkCudaErrors(cudaMalloc((void**)&dev_sIR, sizeof(float)*ipR_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_sIG, sizeof(float)*ipG_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_sIB, sizeof(float)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+
     checkCudaErrors(cudaMemcpy((void*)dev_ipR, ipR, sizeof(int)*ipR_size, cudaMemcpyHostToDevice));
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -290,9 +312,10 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(demosaicD): %s\n", cudaGetErrorString(err));
     }
 
-    /**< nałożyć maskę i skorygować */
+
     if(ipR_Size>0)
     {
+        /**< nałożyć maskę i skorygować */
         computeGridSize(ipR_Size, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
@@ -302,6 +325,23 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         if (err != cudaSuccess)
         {
             printf("cudaError(correctionD R): %s\n", cudaGetErrorString(err));
+        }
+
+        /**< średnia krocząca */
+        MovingAverageD<<< dimGrid, numThreads >>>(dev_IR,ipR_Size,dev_I_S_R,dev_sIR,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(MovingAverageD): %s\n", cudaGetErrorString(err));
+        }
+
+        DivD<<< dimGrid, numThreads >>>(ipR_Size,dev_sIR,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
         }
     }
     if(ipG_Size>0)
@@ -316,6 +356,22 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(correctionD G): %s\n", cudaGetErrorString(err));
         }
+
+        MovingAverageD<<< dimGrid, numThreads >>>(dev_IG,ipG_Size,dev_I_S_G,dev_sIG,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(MovingAverageD): %s\n", cudaGetErrorString(err));
+        }
+
+        DivD<<< dimGrid, numThreads >>>(ipG_Size,dev_sIG,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
+        }
     }
     if(ipB_Size>0)
     {
@@ -328,6 +384,22 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         if (err != cudaSuccess)
         {
             printf("cudaError(correctionD B): %s\n", cudaGetErrorString(err));
+        }
+
+        MovingAverageD<<< dimGrid, numThreads >>>(dev_IB,ipB_Size,dev_I_S_B,dev_sIB,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(MovingAverageD): %s\n", cudaGetErrorString(err));
+        }
+
+        DivD<<< dimGrid, numThreads >>>(ipB_Size,dev_sIB,64.0f);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
         }
     }
 

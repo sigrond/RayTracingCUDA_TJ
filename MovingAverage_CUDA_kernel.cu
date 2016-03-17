@@ -23,7 +23,7 @@ extern "C"
 {
 
 __global__
-void MovingAverageD(float* I, unsigned int I_size, float* I_S, float* sI, float step)
+void MovingAverageD(float* I, unsigned int I_size, int* I_S, float* sI, float step)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
