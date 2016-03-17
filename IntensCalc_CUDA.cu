@@ -45,6 +45,19 @@ char* dev_buff=NULL;
 unsigned short* dev_frame=NULL;
 short* dev_outArray=NULL;
 
+int* dev_ipR=NULL;
+int ipR_Size=0;
+int* dev_ipG=NULL;
+int ipG_Size=0;
+int* dev_ipB=NULL;
+int ipB_Size=0;
+float* dev_ICR_N=NULL;
+float* dev_ICG_N=NULL;
+float* dev_ICB_N=NULL;
+int* dev_I_S_R=NULL;
+int* dev_I_S_G=NULL;
+int* dev_I_S_B=NULL;
+
 extern "C"
 {
 
@@ -74,6 +87,22 @@ void setupCUDA_IC()
     {
         printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
     }
+}
+
+void setMasksAndImagesAndSortedIndexes(
+    int* ipR,int ipR_size,int* ipG,int ipG_size,int* ipB, int ipB_size,
+    float* ICR_N, float* ICG_N, float* ICB_N,
+    int* I_S_R, int* I_S_G, int* I_S_B)
+{
+    ipR_Size=ipR_size;
+    ipG_Size=ipG_size;
+    ipB_Size=ipB_size;
+    checkCudaErrors(cudaMalloc((void**)&dev_ipR, sizeof(int)*ipR_size));
+    checkCudaErrors(cudaMalloc((void**)&dev_ipG, sizeof(int)*ipG_size));
+    checkCudaErrors(cudaMalloc((void**)&dev_ipB, sizeof(int)*ipB_size));
+    checkCudaErrors(cudaMalloc((void**)&dev_ICR_N, sizeof(float)*ipR_size));
+    checkCudaErrors(cudaMalloc((void**)&dev_ICG_N, sizeof(float)*ipG_size));
+    checkCudaErrors(cudaMalloc((void**)&dev_ICB_N, sizeof(float)*ipB_size));
 }
 
 void copyBuff(char* buff)

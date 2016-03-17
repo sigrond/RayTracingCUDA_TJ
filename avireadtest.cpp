@@ -4,6 +4,10 @@
  * kompilacja:
  * nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_30,code=compute_30 -std=c++11 --use-local-env --cl-version 2012 -IC:\CUDA\include -IC:\CUDA\inc -lcufft -lcudart -lcuda
  *
+C:\Our_soft\RayTracingCUDA_TJ>nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu Int
+ensCalc_CUDA.cu CyclicBuffer.cpp -gencode=arch=compute_30,code=sm_30 -gencode=ar
+ch=compute_30,code=compute_30 -std=c++11 --use-local-env --cl-version 2012 -IC:\
+CUDA\include -IC:\CUDA\inc -lcufft -lcudart -lcuda -v -o avireadtest2.exe
  *
  */
 
@@ -15,7 +19,7 @@
 #include <string>
 #include <thread>
 #include <exception>
-
+#include <ctime>
 
 #include "CyclicBuffer.hpp"
 #include "IntensCalc_CUDA.cuh"
@@ -25,7 +29,9 @@ using namespace std;
 
 int main(int argc,char* argv[])
 {
-    char name[]="E:\\DEG_clean402.avi\0";
+    srand(time(0));
+    string s="E:\\DEG_clean40"+to_string(rand()%9+1)+".avi";
+    char* name=(char*)s.c_str();
 	int NumFrames=1484;
 	int count_step=1;
 
@@ -42,6 +48,7 @@ try
         try
         {
         printf("readMovieThread\n");
+        printf("name: %s\n",name);
         //return;
         ifstream file (name, ios::in|ios::binary);
         const int skok = (640*480*2)+8;

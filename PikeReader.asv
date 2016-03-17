@@ -948,11 +948,6 @@ ipR=zeros(0,'int32');
 ipG=zeros(0,'int32');
 ipB=zeros(0,'int32');
 ICR_N=zeros(0,'single');
-ICG_N=zeros(0,'single');
-ICB_N=zeros(0,'single');
-I_S_R=zeros(0,'int32');
-I_S_G=zeros(0,'int32');
-I_S_B=zeros(0,'int32');
 % Movie length estimation  
  count_step = str2double( get(handles.edFrameStep,'string'));
  handles.N_frames = 0;

@@ -18,6 +18,14 @@ extern "C"
  */
 void setupCUDA_IC();
 
+
+void setMasksAndImagesAndSortedIndexes(
+    int* ipR,int ipR_size,int* ipG,int ipG_size,int* ipB, int ipB_size,
+    float* ICR_N, float* ICG_N, float* ICB_N,
+    int* I_S_R, int* I_S_G, int* I_S_B);
+
+
+
 /** \brief kopiuje bufor do GPU
  *
  * \param buff char* bufor z pliku 640*48*2

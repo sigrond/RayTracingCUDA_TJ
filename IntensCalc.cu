@@ -40,12 +40,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int count_step=1;/**< co która klatka */
     int NumFrames;/**< liczba klatek */
     int* ipR;/**< indeksy czerwonej maski */
-    int ipR_size=0;
+    int ipR_size=0;/**< rozmiar czerwonej maski */
     int* ipG;/**< indeksy zielonej maski */
-    int ipG_size=0;
+    int ipG_size=0;/**< rozmiar zielonej maski */
     int* ipB;/**< indeksy niebieskiej maski */
-    int ipB_size=0;
+    int ipB_size=0;/**< rozmiar niebieskiej maski */
     char* name;/**< nazwa pliku z pe³n¹ œcierzk¹ */
+    float* ICR_N;
+    float* ICG_N;
+    float* ICB_N;
+    int* I_S_R;
+    int* I_S_G;
+    int* I_S_B;
 
     /**< sprawdzanie argumentów */
     if(nlhs!=3)
@@ -122,11 +128,36 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
 
     /**< pobieranie danych */
-    bool isR, isG, isB;
+    bool isR=false, isG=false, isB=false;/**< czy jest zaznaczony kolor */
+    double* value;
     mxArray* tmp;
     tmp=mxGetField(prhs[0],0,"fn");/**< nazwa pliku */
     name=mxArrayToString(tmp);
     printf("name: %s\n",name);
+
+    tmp=mxGetField(prhs[0],0,"chR");
+    if(tmp==NULL)
+        printf("NULL chR");
+    tmp=mxGetProperty(tmp,0,"Value");
+    if(tmp==NULL)
+        printf("NULL chR Value");
+    value=(double*)mxGetPr(tmp);
+    printf("isR value: %lf\n",*value);
+    isR=(bool)*value;
+    printf("isR: %d\n",isR);
+
+    tmp=mxGetField(prhs[0],0,"chG");
+    tmp=mxGetProperty(tmp,0,"Value");
+    value=(double*)mxGetPr(tmp);
+    isG=(bool)*value;
+    printf("isG: %d\n",isG);
+
+    tmp=mxGetField(prhs[0],0,"chB");
+    tmp=mxGetProperty(tmp,0,"Value");
+    value=(double*)mxGetPr(tmp);
+    isB=(bool)*value;
+    printf("isB: %d\n",isB);
+
     count_step=*((int*)mxGetPr(prhs[1]));
     if(mxGetN(prhs[1])*mxGetM(prhs[1])!=1)
     {
@@ -141,6 +172,24 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         return;
     }
 
+    ipR=(int*)mxGetPr(prhs[3]);
+    ipR_size=mxGetN(prhs[3])*mxGetM(prhs[3]);
+    printf("ipR_size: %d\n",ipR_size);
+    ipG=(int*)mxGetPr(prhs[4]);
+    ipG_size=mxGetN(prhs[4])*mxGetM(prhs[4]);
+    printf("ipG_size: %d\n",ipG_size);
+    ipB=(int*)mxGetPr(prhs[5]);
+    ipB_size=mxGetN(prhs[5])*mxGetM(prhs[5]);
+    printf("ipB_size: %d\n",ipB_size);
+
+    ICR_N=(float*)mxGetPr(plhs[6]);
+    ICG_N=(float*)mxGetPr(plhs[7]);
+    ICB_N=(float*)mxGetPr(plhs[8]);
+
+    I_S_R=(int*)mxGetPr(prhs[9]);
+    I_S_G=(int*)mxGetPr(prhs[10]);
+    I_S_B=(int*)mxGetPr(prhs[11]);
+
     /**< przygotowanie zwracanych macierzy */
     int dimsI_Red[2]={NumFrames,700};
     plhs[0]=mxCreateNumericArray(2,dimsI_Red,mxSINGLE_CLASS,mxREAL);
@@ -154,6 +203,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf("I_Blue NxM: %dx%d\n",mxGetN(plhs[2]),mxGetM(plhs[2]));
     //return;
 
+    if(!(isR||isG||isB))
+    {
+        printf("no color is chosen\n");
+        return;
+    }
 
 try
 {
