@@ -78,9 +78,9 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
     if(index>=frame_size)
         return;
 
-    int j=index/480;
-    int i=index%480;
-    int wid=480, len=640;
+    int j=index/640;
+    int i=index%640;
+    int wid=640, len=480;
     int x_max=wid-1, y_max=len-1;
     int im1=0,ip1=0,jm1=0,jp1=0;
     int lenxwid=len*wid;

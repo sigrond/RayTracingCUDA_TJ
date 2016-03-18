@@ -20,6 +20,9 @@
 extern unsigned short* previewFa;
 unsigned short* previewFa=nullptr;
 
+extern short* previewFb;
+short* previewFb=nullptr;
+
 __host__
 //Round a / b to nearest higher integer value
 uint iDivUp(uint a, uint b)
@@ -342,6 +345,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(demosaicD): %s\n", cudaGetErrorString(err));
     }
 
+    checkCudaErrors(cudaMemcpy((void*)previewFb,dev_outArray,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
+
 
     if(ipR_Size>0)
     {
@@ -350,7 +355,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
         dim3 dimGrid(dimGridX,dimGridY);
-        correctionD<<< dimGrid, numThreads >>>(dev_outArray,dev_ipR,ipR_Size,dev_ICR_N,dev_IR);
+        correctionD<<< dimGrid, numThreads >>>(dev_outArray+640*480*2,dev_ipR,ipR_Size,dev_ICR_N,dev_IR);
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
@@ -436,7 +441,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
         dim3 dimGrid(dimGridX,dimGridY);
-        correctionD<<< dimGrid, numThreads >>>(dev_outArray+640*480*2,dev_ipB,ipB_Size,dev_ICB_N,dev_IB);
+        correctionD<<< dimGrid, numThreads >>>(dev_outArray,dev_ipB,ipB_Size,dev_ICB_N,dev_IB);
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {

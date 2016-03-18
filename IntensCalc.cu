@@ -22,6 +22,7 @@ using namespace std;
 
 extern unsigned short* previewFa;
 //unsigned short* previewFa;
+extern short* previewFb;
 
 
 /** \brief
@@ -55,7 +56,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
 
     /**< sprawdzanie argumentów */
-    if(nlhs!=4)//3)
+    if(nlhs!=5)//3)
     {
     	printf("function returns [I_Red,I_Green,I_Blue] \n");
     	return;
@@ -214,6 +215,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int dimsP[2]={640,480};
     plhs[3]=mxCreateNumericArray(2,dimsP,mxUINT16_CLASS,mxREAL);
     previewFa=(unsigned short*)mxGetPr(plhs[3]);
+
+    plhs[4]=mxCreateNumericArray(2,dimsP,mxINT16_CLASS,mxREAL);
+    previewFb=(short*)mxGetPr(plhs[4]);
 
     //return;
 

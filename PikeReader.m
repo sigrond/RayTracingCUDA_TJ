@@ -1123,7 +1123,7 @@ elseif ischar( handles.f ) % The single file is chosen
      path  = [ handles.dir handles.f ];
      
      tic;
-[I_Red,I_Green,I_Blue,prevF]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+[I_Red,I_Green,I_Blue,prevF,prevR]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
      toc
 
      count = 1;
