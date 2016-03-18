@@ -973,8 +973,9 @@ end
 % According to chosen checkbox:
  
 if get(handles.chR,'value')
-    ipR = find(handles.BWR); % Searching for a good pixels related to the mask
-    ThetaR = 180*handles.THETA_R(ipR)/pi;   % There is a problem with beam direction.
+    ipR = find(handles.BWR'); % Searching for a good pixels related to the mask
+    ThR=handles.THETA_R';
+    ThetaR = 180*ThR(ipR)/pi;   % There is a problem with beam direction.
                                             % We have to add 90 degree or 270 according to beam direction.
     [ThetaR_S,I_S_R] = sort(ThetaR);        % It is better to work with sorted ( ordered ) data                                    
     I_S_R=single(I_S_R);
@@ -983,13 +984,15 @@ if get(handles.chR,'value')
     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
     I_Red = single(zeros( handles.N_frames, handles.NP )); % Creation of empty matrix for intensity recording
     nThetaR = single(zeros( 1,handles.NP ));          % Angles vector
-    ICR_N = handles.ICR(ipR);                 % Correction 
+    icr=handles.ICR';
+    ICR_N = icr(ipR);                 % Correction 
     ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
 end
 if get(handles.chG,'value')
-    ipG = find(handles.BWG);
-    ThetaG = 180*handles.THETA_G(ipG)/pi;          % There is a problem with beam direction.
+    ipG = find(handles.BWG');
+    ThG=handles.THETA_G';
+    ThetaG = 180*ThG(ipG)/pi;          % There is a problem with beam direction.
                                                    % We have to add 90 degree or 270 according to beam direction.
     [ThetaG_S,I_S_G] = sort(ThetaG);               % It is better to work with sorted ( ordered ) data
     I_S_G=single(I_S_G);
@@ -999,13 +1002,15 @@ if get(handles.chG,'value')
     I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
     
     nThetaG = zeros( 1,handles.NP ); 
-    ICG_N = handles.ICG(ipG);
+    icg=handles.ICG';
+    ICG_N = icg(ipG);
     ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
     
 end
 if get(handles.chB,'value')
-    ipB = find(handles.BWB);
-    ThetaB = 180*handles.THETA_B(ipB)/pi;  % There is a problem with beam direction.
+    ipB = find(handles.BWB');
+    ThB=handles.THETA_B';
+    ThetaB = 180*ThB(ipB)/pi;  % There is a problem with beam direction.
                                            % We have to add 90 degree or 270 according to beam direction.
     [ThetaB_S,I_S_B] = sort(ThetaB);               % It is better to work with sorted ( ordered ) data
     I_S_B=single(I_S_B);
@@ -1013,8 +1018,9 @@ if get(handles.chB,'value')
     
     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
     I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
-    nThetaB = zeros( 1,handles.NP ); 
-    ICB_N = handles.ICB( ipB );
+    nThetaB = zeros( 1,handles.NP );
+    icb=handles.ICB';
+    ICB_N = icb( ipB );
     ICB_N = ICB_N./max( ICB_N(:) ); 
                                         
 end
