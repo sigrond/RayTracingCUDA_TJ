@@ -2,7 +2,7 @@
  * \author Tomasz Jakubczyk
  * \brief plik do testowania poza matlabem
  * kompilacja:
- * nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_30,code=compute_30 -std=c++11 --use-local-env --cl-version 2012 -IC:\CUDA\include -IC:\CUDA\inc -lcufft -lcudart -lcuda
+ * nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_30,code=compute_30 -std=c++11 --use-local-env --cl-version 2012 -IC:\CUDA\include -IC:\CUDA\inc -lcufft -lcudart -lcuda
  *
 C:\Our_soft\RayTracingCUDA_TJ>nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu Int
 ensCalc_CUDA.cu CyclicBuffer.cpp -gencode=arch=compute_30,code=sm_30 -gencode=ar
@@ -50,16 +50,34 @@ int main(int argc,char* argv[])
     int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
 
     ipR=new int[ipR_size];
+    for(int i=0;i<ipR_size;i++)
+        ipR[i]=i;
     ipG=new int[ipG_size];
+    for(int i=0;i<ipG_size;i++)
+        ipG[i]=i;
     ipB=new int[ipB_size];
+    for(int i=0;i<ipB_size;i++)
+        ipB[i]=i;
 
     ICR_N=new float[ipR_size];
+    for(int i=0;i<ipR_size;i++)
+        ICR_N[i]=1.0f;
     ICG_N=new float[ipG_size];
+    for(int i=0;i<ipG_size;i++)
+        ICG_N[i]=1.0f;
     ICB_N=new float[ipB_size];
+    for(int i=0;i<ipB_size;i++)
+        ICB_N[i]=1.0f;
 
     I_S_R=new int[ipR_size];
+    for(int i=0;i<ipR_size;i++)
+        I_S_R[i]=i;
     I_S_G=new int[ipG_size];
+    for(int i=0;i<ipG_size;i++)
+        I_S_G[i]=i;
     I_S_B=new int[ipB_size];
+    for(int i=0;i<ipB_size;i++)
+        I_S_B[i]=i;
 
 try
 {
@@ -120,6 +138,10 @@ try
     char* tmpBuff=nullptr;/**< tymczasowy adres bufora do odczytu */
     buffId* bID=nullptr;
 
+    float R[700];
+    float G[700];
+    float B[700];
+
     long double licz=0.0f;
     int tmpFrameNo=-3;
     for(int k=0;k<NumFrames;k+=count_step)
@@ -129,7 +151,7 @@ try
         tmpFrameNo=bID->frameNo;
         copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
-        doIC(nullptr,nullptr,nullptr);
+        doIC(R,G,B);
     }
     readMovieThread.join();
 

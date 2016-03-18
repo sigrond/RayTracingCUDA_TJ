@@ -63,6 +63,9 @@ float* dev_IB=NULL;
 float* dev_sIR=NULL;
 float* dev_sIG=NULL;
 float* dev_sIB=NULL;
+float* dev_RR=NULL;
+float* dev_RG=NULL;
+float* dev_RB=NULL;
 
 extern "C"
 {
@@ -198,6 +201,25 @@ void setMasksAndImagesAndSortedIndexes(
         printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
     }
     checkCudaErrors(cudaMalloc((void**)&dev_sIB, sizeof(float)*ipB_size));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+
+    checkCudaErrors(cudaMalloc((void**)&dev_RR, sizeof(float)*700));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_RG, sizeof(float)*700));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_RB, sizeof(float)*700));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -343,6 +365,20 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
         }
+
+        /**< wybór reprezentantów */
+        computeGridSize(700, 512, numBlocks, numThreads);
+        dimGridX=numBlocks<65535?numBlocks:65535;
+        dimGridY=numBlocks/65535+1;
+        dim3 dimGrid2(dimGridX,dimGridY);
+
+        chooseRepresentativesD<<< dimGrid2, numThreads >>>(dev_sIR,ipR_Size,dev_RR,700);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(chooseRepresentativesD): %s\n", cudaGetErrorString(err));
+        }
     }
     if(ipG_Size>0)
     {
@@ -371,6 +407,19 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         if (err != cudaSuccess)
         {
             printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
+        }
+
+        computeGridSize(700, 512, numBlocks, numThreads);
+        dimGridX=numBlocks<65535?numBlocks:65535;
+        dimGridY=numBlocks/65535+1;
+        dim3 dimGrid2(dimGridX,dimGridY);
+
+        chooseRepresentativesD<<< dimGrid2, numThreads >>>(dev_sIG,ipG_Size,dev_RG,700);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(chooseRepresentativesD): %s\n", cudaGetErrorString(err));
         }
     }
     if(ipB_Size>0)
@@ -401,10 +450,24 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
         }
+
+        computeGridSize(700, 512, numBlocks, numThreads);
+        dimGridX=numBlocks<65535?numBlocks:65535;
+        dimGridY=numBlocks/65535+1;
+        dim3 dimGrid2(dimGridX,dimGridY);
+
+        chooseRepresentativesD<<< dimGrid2, numThreads >>>(dev_sIB,ipB_Size,dev_RB,700);
+
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(chooseRepresentativesD): %s\n", cudaGetErrorString(err));
+        }
     }
 
-    unsigned short int klatka[307200];
-    checkCudaErrors(cudaMemcpy((void*)klatka,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)I_Red,dev_RR,sizeof(float)*700,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)I_Green,dev_RG,sizeof(float)*700,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)I_Blue,dev_RB,sizeof(float)*700,cudaMemcpyDeviceToHost));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {

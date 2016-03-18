@@ -190,4 +190,26 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I)
     I[index]=((float)color[(mask[index])])/IC[index];
 }
 
+/** \brief wybiera równomiernie rozłożone punkty
+ *
+ * \param I float* duży zbiór danych
+ * \param I_size int rozmiar dużego zbioru
+ * \param R float* zbiór wybranych danych
+ * \param R_size int rozmiar wybranych danych
+ * \return void
+ *
+ */
+__global__
+void chooseRepresentativesD(float* I, int I_size, float* R, int R_size)
+{
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
+    if(index>=R_size)
+        return;
+    R[index]=I[index*I_size/R_size];
+}
+
 }

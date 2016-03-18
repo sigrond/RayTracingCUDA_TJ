@@ -18,4 +18,7 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray);
 __global__
 void correctionD(short* color, int* mask, int mask_size, float* IC, float* I);
 
+__global__
+void chooseRepresentativesD(float* I, int I_size, float* R, int R_size);
+
 }
