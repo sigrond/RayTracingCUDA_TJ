@@ -49,10 +49,13 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
 0x03,0x23,0x13,0x33,0x0B,0x2B,0x1B,0x3B,0x07,0x27,0x17,0x37,0x0F,0x2F,0x1F,0x3F};
 /**< tablica odwracająca kolejność 6 młodszych bitów */
 
-    unsigned short int bl,bh;
-    bh=((unsigned short int)buff[2*index])<<6;
-    bl=(unsigned short int)reverse6bitLookupTable[(unsigned char)(buff[2*index+1]>>2)];
-    frame[index]=bh+bl;
+    unsigned short bl,bh;
+    bh=0x00FF&buff[2*index];/**< CUDA zdaje się sama nie zerować starszego bajtu ze śmieci */
+    bh=bh<<6;
+    bl=0x00FF&buff[2*index+1];
+    bl=bl>>2;
+    bl=0x00FF&(unsigned short)reverse6bitLookupTable[(unsigned char)bl];
+    frame[index]=bh|bl;
 }
 
 #define I frame
@@ -75,7 +78,7 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
     if(index>=frame_size)
         return;
 
-    int j=index%640;
+    int j=index/480;
     int i=index%480;
     int wid=480, len=640;
     int x_max=wid-1, y_max=len-1;

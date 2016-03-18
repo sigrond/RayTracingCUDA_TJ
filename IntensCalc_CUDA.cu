@@ -17,6 +17,9 @@
 #include "IntensCalc_CUDA_kernel.cuh"
 #include "MovingAverage_CUDA_kernel.cuh"
 
+extern unsigned short* previewFa;
+unsigned short* previewFa=nullptr;
+
 __host__
 //Round a / b to nearest higher integer value
 uint iDivUp(uint a, uint b)
@@ -310,6 +313,9 @@ void copyBuff(char* buff)
     }
 }
 
+//extern unsigned short previewFa[640*480];
+
+
 void doIC(float* I_Red, float* I_Green, float* I_Blue)
 {
     uint numThreads, numBlocks;
@@ -325,6 +331,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     {
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
+
+    checkCudaErrors(cudaMemcpy((void*)previewFa,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
 
     /**< demosaic */
     demosaicD<<< dimGrid, numThreads >>>(dev_frame,640*480,dev_outArray);
