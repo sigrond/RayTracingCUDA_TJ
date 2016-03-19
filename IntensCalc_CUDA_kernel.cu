@@ -190,7 +190,7 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=mask_size)
         return;
-    I[index]=((float)color[(mask[index])])/IC[index];
+    I[index]=((float)color[(mask[index]-1)])/IC[index];
 }
 
 /** \brief wybiera równomiernie rozłożone punkty

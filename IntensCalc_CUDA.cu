@@ -17,11 +17,19 @@
 #include "IntensCalc_CUDA_kernel.cuh"
 #include "MovingAverage_CUDA_kernel.cuh"
 
-extern unsigned short* previewFa;
+#ifdef DEBUG
+extern unsigned short* previewFa;/**< klatka po obliczeniu wartości pixeli */
 unsigned short* previewFa=nullptr;
 
-extern short* previewFb;
+extern short* previewFb;/**< czerwona klatka po demosaicu */
 short* previewFb=nullptr;
+
+extern float* previewFc;/**< czerwona klatka po nałożeniu obrazu korekcyjnego */
+float* previewFc=nullptr;
+
+extern float* previewFd;/**< czerwona klatka po sumowaniu pixeli */
+float* previewFd=nullptr;
+#endif // DEBUG
 
 __host__
 //Round a / b to nearest higher integer value
@@ -334,8 +342,9 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     {
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
-
+    #ifdef DEBUG
     checkCudaErrors(cudaMemcpy((void*)previewFa,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
+    #endif // DEBUG
 
     /**< demosaic */
     demosaicD<<< dimGrid, numThreads >>>(dev_frame,640*480,dev_outArray);
@@ -345,8 +354,9 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(demosaicD): %s\n", cudaGetErrorString(err));
     }
 
+    #ifdef DEBUG
     checkCudaErrors(cudaMemcpy((void*)previewFb,dev_outArray,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
-
+    #endif // DEBUG
 
     if(ipR_Size>0)
     {
@@ -362,14 +372,28 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(correctionD R): %s\n", cudaGetErrorString(err));
         }
 
+        #ifdef DEBUG
+        checkCudaErrors(cudaMemcpy((void*)previewFc,dev_IR,sizeof(float)*ipR_Size,cudaMemcpyDeviceToHost));
+        #endif // DEBUG
+        /**< przydatna sztuczka do podglądania w matlabie:
+        tmpIM=zeros(640,480,'single');
+        tmpIM=reshape(tmpIM,640*480,[]);
+        tmpIM(ipR)=prevRC;
+        tmpIM=reshape(tmpIM,640,480);
+        imtool(tmpIM')
+         */
+
         /**< średnia krocząca */
         MovingAverageD<<< dimGrid, numThreads >>>(dev_IR,ipR_Size,dev_I_S_R,dev_sIR,64.0f);
-
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(MovingAverageD): %s\n", cudaGetErrorString(err));
         }
+
+        #ifdef DEBUG
+        checkCudaErrors(cudaMemcpy((void*)previewFd,dev_sIR,sizeof(float)*ipR_Size,cudaMemcpyDeviceToHost));
+        #endif // DEBUG
 
         DivD<<< dimGrid, numThreads >>>(ipR_Size,dev_sIR,64.0f);
 

@@ -26,7 +26,7 @@ rem ********************************************************************
 set COMPILER=nvcc
 set COMPFLAGS=-gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_30,code=compute_30 -c -Xcompiler "/c /Zp8 /GR /W3 /EHs /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0 /DMATLAB_MEX_FILE /nologo /MD"
 set OPTIMFLAGS=-Xcompiler "/O2 /Oy- /DNDEBUG"
-set DEBUGFLAGS=-Xcompiler "/Zi /Fd"%OUTDIR%%MEX_NAME%%MEX_EXT%.pdb""
+set DEBUGFLAGS=-G0 -Xcompiler "/Zi /Fd"%OUTDIR%%MEX_NAME%%MEX_EXT%.pdb""
 set NAME_OBJECT= 
 
 rem ********************************************************************

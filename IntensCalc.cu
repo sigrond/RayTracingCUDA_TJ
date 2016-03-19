@@ -20,9 +20,15 @@
 
 using namespace std;
 
+#ifdef DEBUG
 extern unsigned short* previewFa;
 //unsigned short* previewFa;
 extern short* previewFb;
+
+extern float* previewFc;
+
+extern float* previewFd;
+#endif // DEBUG
 
 
 /** \brief
@@ -56,7 +62,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
 
     /**< sprawdzanie argumentów */
-    if(nlhs!=5)//3)
+    if(nlhs!=
+    #ifdef DEBUG
+        7)
+    #else
+        3)
+    #endif // DEBUG
     {
     	printf("function returns [I_Red,I_Green,I_Blue] \n");
     	return;
@@ -201,23 +212,32 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf(": %d\n",mxGetN(prhs[11])*mxGetM(prhs[11]));
 
     /**< przygotowanie zwracanych macierzy */
-    int dimsI_Red[2]={NumFrames,700};
+    int dimsI_Red[2]={700,NumFrames};
     plhs[0]=mxCreateNumericArray(2,dimsI_Red,mxSINGLE_CLASS,mxREAL);
     float* I_Red=(float*)mxGetPr(plhs[0]);
-    int dimsI_Green[2]={NumFrames,700};
+    int dimsI_Green[2]={700,NumFrames};
     plhs[1]=mxCreateNumericArray(2,dimsI_Green,mxSINGLE_CLASS,mxREAL);
     float* I_Green=(float*)mxGetPr(plhs[1]);
-    int dimsI_Blue[2]={NumFrames,700};
+    int dimsI_Blue[2]={700,NumFrames};
     plhs[2]=mxCreateNumericArray(2,dimsI_Blue,mxSINGLE_CLASS,mxREAL);
     float* I_Blue=(float*)mxGetPr(plhs[2]);
     printf("I_Blue NxM: %dx%d\n",mxGetN(plhs[2]),mxGetM(plhs[2]));
 
+    #ifdef DEBUG
     int dimsP[2]={640,480};
     plhs[3]=mxCreateNumericArray(2,dimsP,mxUINT16_CLASS,mxREAL);
     previewFa=(unsigned short*)mxGetPr(plhs[3]);
 
     plhs[4]=mxCreateNumericArray(2,dimsP,mxINT16_CLASS,mxREAL);
     previewFb=(short*)mxGetPr(plhs[4]);
+
+    int dimsV[1]={ipR_size};
+    plhs[5]=mxCreateNumericArray(1,dimsV,mxSINGLE_CLASS,mxREAL);
+    previewFc=(float*)mxGetPr(plhs[5]);
+
+    plhs[6]=mxCreateNumericArray(1,dimsV,mxSINGLE_CLASS,mxREAL);
+    previewFd=(float*)mxGetPr(plhs[6]);
+    #endif // DEBUG
 
     //return;
 

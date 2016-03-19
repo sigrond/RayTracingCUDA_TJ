@@ -372,6 +372,8 @@ if handles.GPU==1
     %na SPICA'y nie uda³o mi siê go odtworzyæ
     %zakomentowana linijka ze zmienionym zakresem nie powoduje tego b³êdu
     %nie wiem dlaczego tak siê dzieje, ale mo¿e byæ to bug w matlabie
+    %edit: b³¹d by³ zwi¹zany z nie sprawdzaniem, czy promieñ nie wyszed³
+    %poza macierz
     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
     toc
     %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
@@ -953,6 +955,9 @@ ICB_N=zeros(0,'single');
 I_S_R=zeros(0,'int32');
 I_S_G=zeros(0,'int32');
 I_S_B=zeros(0,'int32');
+ThetaR_S=zeros(1,'single');
+ThetaG_S=zeros(1,'single');
+ThetaB_S=zeros(1,'single');
 % Movie length estimation  
  count_step = str2double( get(handles.edFrameStep,'string'));
  handles.N_frames = 0;
@@ -1128,9 +1133,15 @@ if iscell( handles.f ) % In case of multi select function is enabled
 elseif ischar( handles.f ) % The single file is chosen
      path  = [ handles.dir handles.f ];
      
+     if handles.GPU==1
      tic;
-[I_Red,I_Green,I_Blue,prevF,prevR]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+%[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+[I_Red,I_Green,I_Blue]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
      toc
+     nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
+     nThetaG(:)=ThetaG_S(int16(linspace(1,length(ThetaG_S),700)));
+     nThetaB(:)=ThetaB_S(int16(linspace(1,length(ThetaB_S),700)));
+     else
 
      count = 1;
      for j = 1:count_step:inf.NumFrames-1
@@ -1140,7 +1151,7 @@ elseif ischar( handles.f ) % The single file is chosen
          Frame = FrameRider(hObject,handles);
          %  The red channel is chosen
          if get(handles.chR,'value')
-             Red = Frame(:,:,1);
+             Red = Frame(:,:,1)';
              Ir = Red(ipR)./ICR_N; % Reading and correcting intensity vector
              
              if handles.GPU==1
@@ -1219,6 +1230,7 @@ elseif ischar( handles.f ) % The single file is chosen
              j,inf.NumFrames-1,datestr(datenum(0,0,0,0,0,(tt*((inf.NumFrames-j)/count_step))),'HH:MM:SS'));
          
              count = count + 1;
+     end
      end
      
 end
