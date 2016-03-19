@@ -987,7 +987,7 @@ if get(handles.chR,'value')
     % Reduction of points    
     
     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; % Angle's step
-    I_Red = single(zeros( handles.N_frames, handles.NP )); % Creation of empty matrix for intensity recording
+    I_Red = single(zeros( handles.NP, handles.N_frames )); % Creation of empty matrix for intensity recording
     nThetaR = single(zeros( 1,handles.NP ));          % Angles vector
     icr=handles.ICR';
     ICR_N = icr(ipR);                 % Correction 
@@ -1004,7 +1004,7 @@ if get(handles.chG,'value')
     % Reduction of points  
     
     deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
-    I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
+    I_Green = zeros(handles.NP,handles.N_frames);   % Creation of empty matrix for intensity recording
     
     nThetaG = zeros( 1,handles.NP ); 
     icg=handles.ICG';
@@ -1022,7 +1022,7 @@ if get(handles.chB,'value')
     % Reduction of points
     
     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
-    I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
+    I_Blue = zeros(handles.NP,handles.N_frames); % Creation of empty matrix for intensity recording  
     nThetaB = zeros( 1,handles.NP );
     icb=handles.ICB';
     ICB_N = icb( ipB );
@@ -1040,10 +1040,26 @@ if iscell( handles.f ) % In case of multi select function is enabled
     Nom = size( handles.f, 2 );
     count = 1;
   %% FIXME: could be sped up!!! with GPU  
+  ite=0;
+  %itb=1;
     for ii = 1 : Nom  % Number of moves parts
         waitbar(ii/Nom,wb,wb_s);
         path = [handles.dir handles.f{ii}];
         inf = aviinfo( path );
+        
+        if handles.GPU==1
+        handles.fn=handles.f{ii};
+        itb=ite+1;
+        ite=ite+inf.NumFrames;
+     tic;
+%[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+[I_Red(:,itb:ite),I_Green(:,itb:ite),I_Blue(:,itb:ite)]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+     nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
+     nThetaG(:)=ThetaG_S(int16(linspace(1,length(ThetaG_S),700)));
+     nThetaB(:)=ThetaB_S(int16(linspace(1,length(ThetaB_S),700)));
+     tt=toc
+        else
+         
        for1 = tic;
         for j = 1:count_step:inf.NumFrames % Numbers of frames
             handles.nom = j;
@@ -1125,6 +1141,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
              count = count+1;
         end
         tt = toc(for1);
+        end
        
         wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %s .',...
                        ii,Nom,datestr(datenum(0,0,0,0,0,(tt*(Nom-ii))),'HH:MM:SS'));
