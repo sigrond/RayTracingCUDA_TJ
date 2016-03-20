@@ -86,15 +86,26 @@ try
     /**< wzorzec konsument producent */
     CyclicBuffer cyclicBuffer;
 
+    ifstream file (name, ios::in|ios::binary);
+    if(!file.is_open())
+    {
+        throw string("file open failed");
+    }
+    if(!file.good())
+    {
+        throw string("opened file is not good");
+    }
+
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
         try
         {
+        //throw 0;
         printf("readMovieThread\n");
         printf("name: %s\n",name);
         //return;
-        ifstream file (name, ios::in|ios::binary);
+
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
         buffId* bId=nullptr;
@@ -116,14 +127,17 @@ try
         catch(string& e)
         {
             printf("wyjątek: %s",e.c_str());
+            exit(0);
         }
         catch(exception& e)
         {
             printf("wyjątek: %s",e.what());
+            exit(0);
         }
         catch(...)
         {
             printf("nieznany wyjątek");
+            exit(0);
         }
 
     });/**< readMovieThread lambda */

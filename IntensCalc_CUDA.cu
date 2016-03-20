@@ -94,6 +94,14 @@ void setupCUDA_IC()
     {
         printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
     }
+
+    checkCudaErrors(cudaFree(0));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(cudaFree(0)): %s\n", cudaGetErrorString(err));
+    }
+
     checkCudaErrors(cudaMalloc((void**)&dev_buff, sizeof(char)*640*480*2));
     checkCudaErrors(cudaMalloc((void**)&dev_frame, sizeof(unsigned short)*640*480));
     checkCudaErrors(cudaMalloc((void**)&dev_outArray, sizeof(short)*640*480*3));
@@ -517,6 +525,26 @@ void freeCUDA_IC()
     checkCudaErrors(cudaFree(dev_buff));
     checkCudaErrors(cudaFree(dev_frame));
     checkCudaErrors(cudaFree(dev_outArray));
+
+    checkCudaErrors(cudaFree(dev_ipR));
+    checkCudaErrors(cudaFree(dev_ipG));
+    checkCudaErrors(cudaFree(dev_ipB));
+    checkCudaErrors(cudaFree(dev_ICR_N));
+    checkCudaErrors(cudaFree(dev_ICG_N));
+    checkCudaErrors(cudaFree(dev_ICB_N));
+    checkCudaErrors(cudaFree(dev_I_S_R));
+    checkCudaErrors(cudaFree(dev_I_S_G));
+    checkCudaErrors(cudaFree(dev_I_S_B));
+    checkCudaErrors(cudaFree(dev_IR));
+    checkCudaErrors(cudaFree(dev_IG));
+    checkCudaErrors(cudaFree(dev_IB));
+    checkCudaErrors(cudaFree(dev_sIR));
+    checkCudaErrors(cudaFree(dev_sIG));
+    checkCudaErrors(cudaFree(dev_sIB));
+    checkCudaErrors(cudaFree(dev_RR));
+    checkCudaErrors(cudaFree(dev_RG));
+    checkCudaErrors(cudaFree(dev_RB));
+
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {

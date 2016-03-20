@@ -43,7 +43,9 @@ extern float* previewFd;
 //__host__
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-
+    #ifdef DEBUG
+    printf("DEBUG ver.\n");
+    #endif // DEBUG
 
     int count_step=1;/**< co która klatka */
     int NumFrames;/**< liczba klatek */
@@ -155,7 +157,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if(tmp==NULL)
         printf("NULL chR Value");
     value=(double*)mxGetPr(tmp);
-    printf("isR value: %lf\n",*value);
+    //printf("isR value: %lf\n",*value);
     isR=(bool)*value;
     printf("isR: %d\n",isR);
 
@@ -179,6 +181,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     printf("count_step: %d\n",count_step);
     NumFrames=*((int*)mxGetPr(prhs[2]));
+    printf("NumFrames: %d\n",NumFrames);
     if(mxGetN(prhs[2])*mxGetM(prhs[2])!=1)
     {
         printf("3rd argument (NumFrames) must be a number\n");
@@ -254,14 +257,24 @@ try
     /**< wzorzec konsument producent */
     CyclicBuffer cyclicBuffer;
 
+    ifstream file (name, ios::in|ios::binary);
+    if(!file.is_open())
+    {
+        throw string("file open failed");
+    }
+    if(!file.good())
+    {
+        throw string("opened file is not good");
+    }
+
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
         try
         {
+        //throw 0;
         printf("readMovieThread\n");
         //return;
-        ifstream file (name, ios::in|ios::binary);
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
         buffId* bId=nullptr;
@@ -283,14 +296,23 @@ try
         catch(string& e)
         {
             printf("wyjątek: %s",e.c_str());
+            mexEvalString("drawnow;");
+            system("pause");
+            exit(0);
         }
         catch(exception& e)
         {
             printf("wyjątek: %s",e.what());
+            mexEvalString("drawnow;");
+            system("pause");
+            exit(0);
         }
         catch(...)
         {
             printf("nieznany wyjątek");
+            mexEvalString("drawnow;");
+            system("pause");
+            exit(0);
         }
 
     });/**< readMovieThread lambda */
