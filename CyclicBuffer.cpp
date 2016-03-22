@@ -41,7 +41,7 @@ buffId* CyclicBuffer::claimForWrite()
 {
     unique_lock<mutex> lck(monitorMtx);
     //printf("claimForWrite cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
-    while(itemCount==cBuffS)
+    while(itemCount==cBuffS || ((cEnd+1)%cBuffS && itemCount!=0))
     {
         //printf("claimForWrite full cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         full.wait(lck);/**< czekamy jeśli bufor cykliczny jest pełny */

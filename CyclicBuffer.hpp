@@ -8,6 +8,20 @@
 
 #include <mutex>
 #include <condition_variable>
+#include <exception>
+#include <string>
+
+class CyclicBufferException : public std::exception
+{
+private:
+    std::string str;
+public:
+    CyclicBufferException(std::string s) : str(s){}
+    virtual char const * what() const
+    {
+        return str.c_str();
+    }
+};
 
 struct buffId
 {

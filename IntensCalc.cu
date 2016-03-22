@@ -6,6 +6,7 @@
  */
 
 #define WIN32
+#include "Windows.h"
 #include "mex.h"
 #include <cstdio>
 #include <cstdlib>
@@ -270,6 +271,7 @@ try
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
+        buffId* bId=nullptr;
         try
         {
         //throw 0;
@@ -277,7 +279,6 @@ try
         //return;
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
-        buffId* bId=nullptr;
         for(int i=0;i<NumFrames;i+=count_step)/**< czytanie klatek */
         {
             file.seekg((34824+(skok*(i))),ios::beg);
@@ -296,23 +297,35 @@ try
         catch(string& e)
         {
             printf("wyjątek: %s",e.c_str());
-            mexEvalString("drawnow;");
+            string s="wyjątek: "+e;
+            MessageBox(NULL,s.c_str(),NULL,NULL);
             system("pause");
-            exit(0);
+            cyclicBuffer.writeEnd(bId);
+            file.close();
+            //mexEvalString("drawnow;");
+            //exit(0);
         }
         catch(exception& e)
         {
             printf("wyjątek: %s",e.what());
-            mexEvalString("drawnow;");
+            string s=e.what();
+            MessageBox(NULL,s.c_str(),NULL,NULL);
             system("pause");
-            exit(0);
+            cyclicBuffer.writeEnd(bId);
+            file.close();
+            //mexEvalString("drawnow;");
+            //exit(0);
         }
         catch(...)
         {
             printf("nieznany wyjątek");
-            mexEvalString("drawnow;");
+            string s="nieznany wyjątek";
+            MessageBox(NULL,s.c_str(),NULL,NULL);
             system("pause");
-            exit(0);
+            cyclicBuffer.writeEnd(bId);
+            file.close();
+            //mexEvalString("drawnow;");
+            //exit(0);
         }
 
     });/**< readMovieThread lambda */
