@@ -267,7 +267,8 @@ try
     {
         throw string("opened file is not good");
     }
-
+    const unsigned int bigFileFirstFrame=64564;
+    const unsigned int smallFileFirstFrame=34824;
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
@@ -346,6 +347,11 @@ try
         bID=cyclicBuffer.claimForRead();
         tmpBuff=bID->pt;
         tmpFrameNo=bID->frameNo;
+        if(tmpFrameNo!=k)
+        {
+            printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
+            throw string("zgubiona numeracja klatek");
+        }
         copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
@@ -357,14 +363,23 @@ try
 catch(string& e)
 {
     printf("wyjątek: %s",e.c_str());
+    string s="wyjątek: "+e;
+    MessageBox(NULL,s.c_str(),NULL,NULL);
+    system("pause");
 }
 catch(exception& e)
 {
     printf("wyjątek: %s",e.what());
+    string s=e.what();
+    MessageBox(NULL,s.c_str(),NULL,NULL);
+    system("pause");
 }
 catch(...)
 {
     printf("nieznany wyjątek");
+    string s="nieznany wyjątek";
+    MessageBox(NULL,s.c_str(),NULL,NULL);
+    system("pause");
 }
     /**< czytaæ wêksze bloki danych z pliku ni¿ po jednym znaku */
     /**< dla klatki zastosowaæ demosaic */

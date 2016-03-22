@@ -212,7 +212,7 @@ void chooseRepresentativesD(float* I, int I_size, float* R, int R_size)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=R_size)
         return;
-    R[index]=I[index*I_size/R_size];
+    R[index]=I[index*(I_size-1)/R_size+1];
 }
 
 }

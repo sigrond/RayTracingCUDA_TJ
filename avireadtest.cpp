@@ -163,6 +163,11 @@ try
         bID=cyclicBuffer.claimForRead();
         tmpBuff=bID->pt;
         tmpFrameNo=bID->frameNo;
+        if(tmpFrameNo!=k)
+        {
+            printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
+            throw string("zgubiona numeracja klatek");
+        }
         copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(R,G,B);

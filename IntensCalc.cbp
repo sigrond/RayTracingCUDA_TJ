@@ -13,6 +13,7 @@
 				<Option compiler="null" />
 			</Target>
 		</Build>
+		<Unit filename="AviInfo.hpp" />
 		<Unit filename="CyclicBuffer.cpp" />
 		<Unit filename="CyclicBuffer.hpp" />
 		<Unit filename="IntensCalc.cu" />

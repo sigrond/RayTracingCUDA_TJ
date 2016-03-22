@@ -1160,8 +1160,11 @@ elseif ischar( handles.f ) % The single file is chosen
      if handles.GPU==1
      tic;
 %[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
-[I_Red,I_Green,I_Blue]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
-     toc
+[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+I_Red=I_RedM';
+    I_Green=I_GreenM';
+    I_Blue=I_BlueM';     
+toc
      nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
      nThetaG(:)=ThetaG_S(int16(linspace(1,length(ThetaG_S),700)));
      nThetaB(:)=ThetaB_S(int16(linspace(1,length(ThetaB_S),700)));
