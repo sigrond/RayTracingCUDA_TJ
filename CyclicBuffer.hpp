@@ -33,7 +33,7 @@ struct buffId
 };
 
 
-#define CBUFFS 8
+#define CBUFFS 32
 /** \brief monitor dla bufora cyklicznego
  */
 class CyclicBuffer

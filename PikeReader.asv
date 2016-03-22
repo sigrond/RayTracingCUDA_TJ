@@ -1042,7 +1042,6 @@ if iscell( handles.f ) % In case of multi select function is enabled
   %% FIXME: could be sped up!!! with GPU  
   ite=0;
   %itb=1;
-  ats=tic;
     for ii = 1 : Nom  % Number of moves parts
         waitbar(ii/Nom,wb,wb_s);
         tts=tic;
@@ -1152,7 +1151,6 @@ if iscell( handles.f ) % In case of multi select function is enabled
         wb_s = sprintf('Processing segment number %1.0f from %1.0f \n Remaining time: %s .',...
                        ii,Nom,datestr(datenum(0,0,0,0,0,(tt*(Nom-ii))),'HH:MM:SS'));
     end
-    toc(ats)
      
 elseif ischar( handles.f ) % The single file is chosen
      path  = [ handles.dir handles.f ];
