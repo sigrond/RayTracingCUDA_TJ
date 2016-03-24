@@ -18,9 +18,11 @@ If you would like to adjust this code to work with another codecs you should cha
  * \author Tomasz Jakubczyk
  * \email sigrond93(at)gmail.com
  * \date 29.02.2016
- * \brief zmiany maj�ce na celu doprowadzi� do prwid�owego dzia�ania
- * (bez efektu ziarna; warto�ci pixeli uci�te z g�ry) w wersji 64 bitowej
- *
+ * \brief zmiany maj¹ce na celu doprowadziæ do prwid³owego dzia³ania
+ * (bez efektu ziarna; wartoœci pixeli uciête z góry) w wersji 64 bitowej
+ * \date 23.03.2016
+ * zmiany mające na celu umożliwienie poprawnego czytania również
+ * nie podzielonych filmów
  */
 
 
@@ -48,21 +50,79 @@ unsigned short int odwroc6(unsigned short int i) {
 
 void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
+    const unsigned char reverse6bitLookupTable[]={
+0x00,0x20,0x10,0x30,0x08,0x28,0x18,0x38,0x04,0x24,0x14,0x34,0x0C,0x2C,0x1C,0x3C,
+0x02,0x22,0x12,0x32,0x0A,0x2A,0x1A,0x3A,0x06,0x26,0x16,0x36,0x0E,0x2E,0x1E,0x3E,
+0x01,0x21,0x11,0x31,0x09,0x29,0x19,0x39,0x05,0x25,0x15,0x35,0x0D,0x2D,0x1D,0x3D,
+0x03,0x23,0x13,0x33,0x0B,0x2B,0x1B,0x3B,0x07,0x27,0x17,0x37,0x0F,0x2F,0x1F,0x3F};
+/**< tablica odwracająca kolejność 6 młodszych bitów */
+    const unsigned int bigFileFirstFrame=64564;
+    const unsigned int smallFileFirstFrame=34824;
+    unsigned int fileFirstFrame=0;
 	char *filename;
 	int *numer;
 	numer=(int*)mxGetPr(prhs[1]);
 	filename = mxArrayToString(prhs[0]);
 	ifstream file (filename, ios::in|ios::binary);
+	char* buff=new char[65535*10];
+	char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
+	char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
+	char codeBuff[8];
+	//przypadek 1 - mały plik
+	file.seekg(smallFileFirstFrame-8,ios::beg);
+	file.read(codeBuff,8);
+	bool b=true;
+	for(int i=0;i<8;i++)
+    {
+        b&=frameStartCodeS[i]==codeBuff[i];
+        printf("0x%X ",codeBuff[i]);
+    }
+    if(b)
+    {
+        fileFirstFrame=smallFileFirstFrame;
+        printf("mały plik\n");
+    }
+    else
+    {
+        //przypadek 2 - duży plik
+        file.seekg(bigFileFirstFrame-8,ios::beg);
+        file.read(codeBuff,8);
+        b=true;
+        for(int i=0;i<8;i++)
+        {
+            b&=frameStartCode[i]==codeBuff[i];
+            printf("0x%X ",codeBuff[i]);
+        }
+        if(b)
+        {
+            fileFirstFrame=bigFileFirstFrame;
+            printf("duży plik\n");
+        }
+        else
+        {
+            //przypadek 3 - trzeba przejżeć nagłówek
+            printf("format pliku jeszcze nie obsługiwany\n");
+        }
+    }
+
+	for(int i=0;i<10;i++)
+	{
+	    file.read(buff+i*65535,65535);
+	    for(int j=0;j<12;j++)
+        {
+
+        }
+	}
 	unsigned short int *klatka;
 	int skok = (640*480*2)+8;
 	plhs[0]=mxCreateNumericMatrix(640,480,mxUINT16_CLASS,mxREAL);
 	klatka=(unsigned short int*) mxGetPr(plhs[0]);
-	file.seekg((34824+(skok*(*numer))),ios::beg);
+	file.seekg((fileFirstFrame+(skok*(*numer))),ios::beg);
 	unsigned short int bl,bh;
 	for(int i=0;i<307200;i++)
     {
         bh=((unsigned short int)file.get())<<6;
-        bl=odwroc6(((unsigned short int)file.get())>>2);
+        bl=reverse6bitLookupTable[file.get()>>2];
         klatka[i]=bh+bl;
     }
 }
