@@ -29,6 +29,8 @@ If you would like to adjust this code to work with another codecs you should cha
 
 #include "mex.h"
 #include<fstream>
+#include<limits>
+#include<exception>
 
 using namespace std;
 
@@ -50,6 +52,7 @@ unsigned short int odwroc6(unsigned short int i) {
 
 void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
+try{
     const unsigned char reverse6bitLookupTable[]={
 0x00,0x20,0x10,0x30,0x08,0x28,0x18,0x38,0x04,0x24,0x14,0x34,0x0C,0x2C,0x1C,0x3C,
 0x02,0x22,0x12,0x32,0x0A,0x2A,0x1A,0x3A,0x06,0x26,0x16,0x36,0x0E,0x2E,0x1E,0x3E,
@@ -64,7 +67,6 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	numer=(int*)mxGetPr(prhs[1]);
 	filename = mxArrayToString(prhs[0]);
 	ifstream file (filename, ios::in|ios::binary);
-	char* buff=new char[65535*10];
 	char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
 	char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
 	char codeBuff[8];
@@ -75,7 +77,7 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	for(int i=0;i<8;i++)
     {
         b&=frameStartCodeS[i]==codeBuff[i];
-        printf("0x%X ",codeBuff[i]);
+        //printf("0x%X ",codeBuff[i]);
     }
     if(b)
     {
@@ -91,7 +93,7 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         for(int i=0;i<8;i++)
         {
             b&=frameStartCode[i]==codeBuff[i];
-            printf("0x%X ",codeBuff[i]);
+            //printf("0x%X ",codeBuff[i]);
         }
         if(b)
         {
@@ -105,19 +107,41 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         }
     }
 
-	for(int i=0;i<10;i++)
-	{
-	    file.read(buff+i*65535,65535);
-	    for(int j=0;j<12;j++)
-        {
 
-        }
-	}
 	unsigned short int *klatka;
-	int skok = (640*480*2)+8;
+	unsigned long long int skok = (640*480*2)+8;
 	plhs[0]=mxCreateNumericMatrix(640,480,mxUINT16_CLASS,mxREAL);
 	klatka=(unsigned short int*) mxGetPr(plhs[0]);
-	file.seekg((fileFirstFrame+(skok*(*numer))),ios::beg);
+	unsigned long long int pos=((unsigned long long int)fileFirstFrame+(skok*(unsigned long long int)(*numer)));
+	#ifndef _WIN64
+	printf("WIN64 not defined\n");
+	file.seekg(0,ios::beg);
+	while(pos>=numeric_limits<unsigned long int>::max())
+    {
+        printf("pos: %llu\n");
+        file.seekg(numeric_limits<unsigned long int>::max(),ios::cur);
+        pos-=numeric_limits<unsigned long int>::max();
+    }
+    file.seekg(pos,ios::cur);
+    #else
+	file.seekg(pos,ios::beg);
+	#endif // _WIN64
+
+	//sprawdzam nagłówek klatki
+	file.seekg(-8,ios::cur);
+	file.read(codeBuff,8);
+	if(!file.good())
+    {
+        printf("file is not good!\n");
+    }
+
+	for(int i=0;i<8;i++)
+    {
+        b&=frameStartCodeS[i]==codeBuff[i];
+        printf("0x%02X ",codeBuff[i]);
+    }
+
+	//czytanie klatki
 	unsigned short int bl,bh;
 	for(int i=0;i<307200;i++)
     {
@@ -125,4 +149,13 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         bl=reverse6bitLookupTable[file.get()>>2];
         klatka[i]=bh+bl;
     }
+}
+catch(exception &e)
+{
+    printf("wyjątek: %s\n",e.what());
+}
+catch(...)
+{
+    printf("nieznany wyjątek\n");
+}
 }
