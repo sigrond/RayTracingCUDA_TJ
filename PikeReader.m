@@ -1347,19 +1347,14 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
 % hObject    handle to pbSaveParam (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Save.S = handles.S; % save s structure;
+% 
 % Saving checkbox structure
-        Save.rbR_value = get(handles.rbR,'value');
-        Save.rbG_value = get(handles.rbG,'value');
-        Save.rbB_value = get(handles.rbB,'value');
-    %---
-        Save.chR_value = get(handles.chR,'value');
-        Save.chG_value = get(handles.chG,'value');
-        Save.chB_value = get(handles.chB,'value');
-    %---
-        Save.chAdjust  = get(handles.chAdjust,'value');
-        Save.chSight   = get(handles.chSight,'value');
-%         Save.chSumFrames = get(handles.chSumFrames,'value');
+    Save.chR_value = get(handles.chR,'value');
+    Save.chG_value = get(handles.chG,'value');
+    Save.chB_value = get(handles.chB,'value');
+%---
+    Save.chAdjust  = get(handles.chAdjust,'value');
+    Save.chSight   = get(handles.chSight,'value');
 % Saving lambda edit boxes
     Save.edR = get(handles.edR,'string');
     Save.edG = get(handles.edG,'string');
@@ -1374,10 +1369,52 @@ Save.S = handles.S; % save s structure;
     Save.edAdjust = get(handles.edAdjust,'string');
     Save.edSumFrameStep = get(handles.edSumFrameStep,'string');
     Save.edFrameStep = get(handles.edFrameStep,'string');
-% Saving ThetaPhiR and mask
-    Save.Bw = handles.Bw;
-    Save.position = handles.position;
-    Save.ThetaPhiR = handles.ThetaPhiR;
+% Saving angles and masks
+%      --  masks --
+    Save.BWR = handles.BWR;
+    Save.BWG = handles.BWG;
+    Save.BWB = handles.BWB;
+%      --  border of masks --
+    Save.R_position = handles.R_position;
+    Save.G_position = handles.G_position;
+    Save.B_position = handles.B_position;
+% Correction masks
+    Save.ICR = handles.ICR;
+    Save.ICG = handles.ICG;
+    Save.ICB = handles.ICB;
+% Angles matrix    
+    Save.THETA_R = handles.THETA_R;
+    Save.THETA_G = handles.THETA_G;
+    Save.THETA_B = handles.THETA_B;
+%      ---    
+    Save.PHI_R   = handles.PHI_R;
+    Save.PHI_G   = handles.PHI_G;
+    Save.PHI_B   = handles.PHI_B;
+    handles.dir;
+    savePath = [ handles.dir 'SaveParams.mat'];
+    if exist(savePath)
+    % File exist!
+       button = questdlg('File already exists!','Warning!!!','Rewrite','NO','Cancel','Cancel');
+       switch button
+           case 'Rewrite'
+               save(savePath,'Save');
+               sprintf('Parameters has been saved to the directory:\n %s',savePath)
+           case 'NO'
+             [file,path] = uiputfile('SaveParams_1.mat','Save file name', savePath);  
+             if file == 0
+                 return;
+             end;
+               savePath =[path,file];
+               save(savePath,'Save');
+               sprintf('Parameters has been saved to the directory:\n %s',savePath)
+           otherwise
+           
+       end
+    else
+    % File dose not exist.
+        save(savePath,'Save');
+        sprintf('Parameters has been saved to the directory:\n %s',savePath)
+    end
     assignin('base','Save',Save);
 
 function ed_Sh_l1_Callback(hObject, eventdata, handles)
