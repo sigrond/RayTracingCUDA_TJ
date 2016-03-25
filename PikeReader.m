@@ -1307,20 +1307,13 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     Save = evalin('base','Save');
-    handles.S = Save.S;  % load s structure;
-    handles.Bw = Save.Bw;
 % loading checkbox structure
-    set(handles.rbR,'value',Save.rbR_value);
-    set(handles.rbG,'value',Save.rbG_value);
-    set(handles.rbB,'value',Save.rbB_value);
-  %---
     set(handles.chR,'value',Save.chR_value);
     set(handles.chG,'value',Save.chG_value);
     set(handles.chB,'value',Save.chB_value);  
   %---
     set(handles.chSight,'value',Save.chSight);
     set(handles.chAdjust,'value',Save.chAdjust);
-%     set(handles.chSumFrames,'value',Save.chSumFrames);
 % Loading lambda edit boxes
     set(handles.edR,'string',Save.edR);
     set(handles.edG,'string',Save.edG);
@@ -1336,10 +1329,28 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
     set(handles.edSumFrameStep,'string',Save.edSumFrameStep);
     set(handles.edFrameStep,'string',Save.edFrameStep);
 % Loading ThetaPhiR structure
-    handles.position = Save.position;
-    handles.ThetaPhiR = Save.ThetaPhiR;
-    handles.Bw = Save.Bw;
-    handles = Draw(hObject,handles)
+    % Saving angles and masks
+%      --  masks --
+    handles.BWR = Save.BWR;
+    handles.BWG = Save.BWG;
+    handles.BWB = Save.BWB;
+%      --  border of masks --
+    handles.R_position = Save.R_position;
+    handles.G_position = Save.G_position;
+    handles.B_position = Save.B_position;
+% Correction masks
+    handles.ICR = Save.ICR;
+    handles.ICG = Save.ICG;
+    handles.ICB = Save.ICB;
+% Angles matrix    
+    handles.THETA_R = Save.THETA_R;
+    handles.THETA_G = Save.THETA_G;
+    handles.THETA_B = Save.THETA_B;
+%      ---    
+    handles.PHI_R   = Save.PHI_R;
+    handles.PHI_G   = Save.PHI_G;
+    handles.PHI_B   = Save.PHI_B;
+    handles = Draw(hObject,handles);
 
 
 % --- Executes on button press in pbSaveParam.
