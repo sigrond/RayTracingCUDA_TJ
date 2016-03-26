@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1458930219 source:c:\our_soft\raytracingcuda_tj\findmoviestart\findmoviestart.cpp
+	<cstdio>
+	<cstdlib>
+	<fstream>
+

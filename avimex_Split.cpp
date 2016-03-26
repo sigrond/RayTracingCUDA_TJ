@@ -74,6 +74,7 @@ try{
 	file.seekg(smallFileFirstFrame-8,ios::beg);
 	file.read(codeBuff,8);
 	bool b=true;
+	bool smallf=true;
 	for(int i=0;i<8;i++)
     {
         b&=frameStartCodeS[i]==codeBuff[i];
@@ -99,6 +100,7 @@ try{
         {
             fileFirstFrame=bigFileFirstFrame;
             printf("duży plik\n");
+            smallf=false;
         }
         else
         {
@@ -115,6 +117,9 @@ try{
 	unsigned long long int pos=((unsigned long long int)fileFirstFrame+(skok*(unsigned long long int)(*numer)));
 	#ifndef _WIN64
 	printf("WIN64 not defined\n");
+	#endif // _WIN64
+	#if 1
+	//printf("sizeof(streamoff): %d\n",sizeof(streamoff));
 	file.seekg(0,ios::beg);
 	while(pos>=numeric_limits<unsigned long int>::max())
     {
@@ -137,8 +142,37 @@ try{
 
 	for(int i=0;i<8;i++)
     {
-        b&=frameStartCodeS[i]==codeBuff[i];
+        if(smallf)
+            b&=frameStartCodeS[i]==codeBuff[i];
+        else
+            b&=frameStartCode[i]==codeBuff[i];
         printf("0x%02X ",codeBuff[i]);
+    }
+    if(!b)
+    {
+        printf("początek klatki: %hu nie znaleźiony w przewidzianym miejscu\n",*numer);
+        char* buff=new char[65535+8];
+        file.seekg(-65535,ios::cur);
+        while(!b && file.good())
+        {
+            file.read(buff,65535);
+            for(int j=0;j<65535;j++)
+            {
+                b=true;
+                for(int i=0;i<8 && b;i++)
+                {
+                    b&=frameStartCode[i]==buff[j+i];
+                }
+                if(b)
+                {
+                    file.seekg(65535-j+8,ios::cur);
+                    printf("nagłówek klatki j=%d\n",j);
+                    printf("tellg: %lld\n",file.tellg());
+                    break;
+                }
+            }
+            printf("nie znaleziono początku klatki, przeszukuję następne 64KB\n");
+        }
     }
 
 	//czytanie klatki

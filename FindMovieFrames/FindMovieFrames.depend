@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1458996259 source:c:\our_soft\raytracingcuda_tj\findmovieframes\findmovieframes.cpp
+	<cstdio>
+	<cstdlib>
+	<fstream>
+	<string>
+
