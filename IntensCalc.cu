@@ -280,9 +280,10 @@ try
         //return;
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
+        file.seekg(34824,ios::beg);
         for(int i=0;i<NumFrames;i+=count_step)/**< czytanie klatek */
         {
-            file.seekg((34824+(skok*(i))),ios::beg);
+            //file.seekg((34824+(skok*(i))),ios::beg);
 /**< \todo można poprawić, żeby przesunięcie było względem obecnej pozycji i dało się czytać filmy >4GB */
             bId=cyclicBuffer.claimForWrite();
             buff=bId->pt;

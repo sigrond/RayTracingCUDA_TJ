@@ -495,7 +495,11 @@ function pbLoad_Callback(hObject, eventdata, handles)
         handles.avi_title = handles.f;
         handles.fn = [handles.dir handles.f];
         inf = aviinfo(handles.fn);
-        handles.N_frames = inf.NumFrames; % total number of frames
+        if inf.NumFrames <= inf.FileSize/(640*480*2+8)
+            handles.N_frames = inf.NumFrames; % total number of frames
+        else
+            handles.N_frames = double(int32(inf.FileSize/(640*480*2+8)));
+        end
         set(handles.slFrames,'max',handles.N_frames,'min',1,'value',1,...
             'sliderstep',[1/handles.N_frames 10/handles.N_frames],'enable','on');
         S = sprintf('Current frame: %d; Total number of frame %d',1, handles.N_frames);
