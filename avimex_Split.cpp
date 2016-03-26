@@ -152,12 +152,15 @@ try{
     {
         printf("początek klatki: %hu nie znaleźiony w przewidzianym miejscu\n",*numer);
         char* buff=new char[65535+8];
-        file.seekg(-65535,ios::cur);
+        file.seekg(8*65535,ios::cur);
+        int ct=0,ct2=0;
         while(!b && file.good())
         {
             file.read(buff,65535);
+            ct2++;
             for(int j=0;j<65535;j++)
             {
+                ct++;
                 b=true;
                 for(int i=0;i<8 && b;i++)
                 {
@@ -165,8 +168,8 @@ try{
                 }
                 if(b)
                 {
-                    file.seekg(65535-j+8,ios::cur);
-                    printf("nagłówek klatki j=%d\n",j);
+                    file.seekg(-(65535-j)-614400,ios::cur);
+                    printf("nagłówek klatki ct=%d\n",ct);
                     printf("tellg: %lld\n",file.tellg());
                     break;
                 }

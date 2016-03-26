@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
     //fstream file1("E:\\DEG_clean403.avi",ios::in|ios::binary);
     const int skok = (640*480*2)+8;
     char* buff=new char[640*480*2];
+    char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
     int j=0;
     char c;
     long long int bindex=0;
@@ -36,6 +37,8 @@ int main(int argc, char* argv[])
             printf("cant't open file: %s\n",name.c_str());
         }
         file1.seekg(34824,ios::beg);
+        bool b=true;
+        int codeNo=0;
         while(file0.good() && file1.good())
         {
             //printf("search for frame: %d\n",j);
@@ -54,6 +57,19 @@ int main(int argc, char* argv[])
                 {
                     c=file0.get();
                     index++;
+                    if(!b)
+                    {
+                        b=true;
+                        codeNo=0;
+                    }
+                    b&=frameStartCode[codeNo++]==c;
+                    if(b && codeNo==8)
+                    {
+                        printf("header of frame: %d found at: %lld\n",j,index-8);
+                        b=true;
+                        codeNo=0;
+                    }
+
                     if(c==buff[i])
                     {
                         if(i+1==640*480*2)
@@ -79,7 +95,7 @@ int main(int argc, char* argv[])
                         }
                         if(c==buff[0])
                         {
-                            printf("new potential begining of frame: %d at: %lld licz: %d\n",j,index,licz);
+                            //printf("new potential begining of frame: %d at: %lld licz: %d\n",j,index,licz);
                             i=0;
                             bindex=index;
                         }
