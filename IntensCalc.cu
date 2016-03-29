@@ -269,6 +269,53 @@ try
     }
     const unsigned int bigFileFirstFrame=64564;
     const unsigned int smallFileFirstFrame=34824;
+    unsigned int fileFirstFrame=0;
+    char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
+	char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
+	char* FrameStartCode=nullptr;
+	char codeBuff[8];
+
+	file.seekg(smallFileFirstFrame-8,ios::beg);
+	file.read(codeBuff,8);
+	bool b=true;
+	bool smallf=true;
+	for(int i=0;i<8;i++)
+    {
+        b&=frameStartCodeS[i]==codeBuff[i];
+        //printf("0x%X ",codeBuff[i]);
+    }
+    if(b)
+    {
+        fileFirstFrame=smallFileFirstFrame;
+        FrameStartCode=frameStartCodeS;
+        printf("mały plik\n");
+    }
+    else
+    {
+        //przypadek 2 - duży plik
+        file.seekg(bigFileFirstFrame-8,ios::beg);
+        file.read(codeBuff,8);
+        b=true;
+        for(int i=0;i<8;i++)
+        {
+            b&=frameStartCode[i]==codeBuff[i];
+            //printf("0x%X ",codeBuff[i]);
+        }
+        if(b)
+        {
+            fileFirstFrame=bigFileFirstFrame;
+            FrameStartCode=frameStartCode;
+            printf("duży plik\n");
+            smallf=false;
+        }
+        else
+        {
+            //przypadek 3 - trzeba przejżeć nagłówek
+            printf("format pliku jeszcze nie obsługiwany\n");
+            return;
+        }
+    }
+
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
@@ -280,7 +327,7 @@ try
         //return;
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
-        file.seekg(34824,ios::beg);
+        file.seekg(fileFirstFrame,ios::beg);
         for(int i=0;i<NumFrames;i+=count_step)/**< czytanie klatek */
         {
             //file.seekg((34824+(skok*(i))),ios::beg);
@@ -343,6 +390,12 @@ try
 
     long double licz=0.0f;
     int tmpFrameNo=-3;
+    int frameEnd=614400;/**< miejsce od którego w buforze może wystąpić nagłówek następnej klatki */
+    char* currentFrame=new char[614400];
+    char* nextFrame=new char[614400];
+    int nextFrameElements=0;
+    int garbageElements=0;
+    char* tmpFrame=nullptr;
     for(int k=0;k<NumFrames;k+=count_step)
     {
         bID=cyclicBuffer.claimForRead();
@@ -353,7 +406,38 @@ try
             printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
             throw string("zgubiona numeracja klatek");
         }
-        copyBuff(tmpBuff);
+
+        for(int j=frameEnd;j<65535*10;j++)
+        {
+            b=true;
+            for(int i=0;i<8 && b;i++)
+            {
+                b&=FrameStartCode[i]==tmpBuff[j+i];
+            }
+            if(b)
+            {
+                if(k==0)
+                {
+                    memcpy(currentFrame,tmpBuff+j-640*480*2,640*480*2);/**< wszystko co jest klatką */
+                    memcpy(nextFrame,tmpBuff+j+8,65535*10-(j+8));/**< nadmiar do następnej klatki */
+                    nextFrameElements=65535*10-(j+8);/**< ile elementów weszło do następnej klatki */
+                    garbageElements=j-640*480*2;/**< ile śmieci mamy za nagłówkiem klatki */
+                }
+                else
+                {
+                    garbageElements=nextFrameElements+j-640*480*2;
+                    memcpy(currentFrame,nextFrame+garbageElements,nextFrameElements-garbageElements);
+                    memcpy(currentFrame+nextFrameElements-garbageElements,tmpBuff+j-640*480*2-(nextFrameElements-garbageElements),j);
+                    memcpy(nextFrame,tmpBuff+j+8,65535*10-(j+8));
+                    nextFrameElements=65535*10-(j+8);
+                }
+                frameEnd=frameEnd-(65535*10-(j+8));
+                break;
+            }
+        }
+        copyBuff(currentFrame);
+
+        //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
     }

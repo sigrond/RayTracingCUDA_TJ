@@ -2,24 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="IntensCalc_CUDA.cu" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="OneshotAviread.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12977" topLine="210" />
-		</Cursor>
-		<Folding>
-			<Collapse line="87" />
-			<Collapse line="118" />
-			<Collapse line="310" />
-		</Folding>
-	</File>
-	<File name="IntensCalc_CUDA.cuh" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="255" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="IntensCalc_CUDA_kernel.cu" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5927" topLine="168" />
+			<Cursor1 position="621" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="IntensCalc_CUDA_kernel.cuh" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -27,24 +12,49 @@
 			<Cursor1 position="440" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="OneshotAviread.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="AviInfo.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="416" topLine="0" />
+			<Cursor1 position="379" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="avireadtest.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc_CUDA_kernel.cu" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4941" topLine="11" />
+			<Cursor1 position="971" topLine="21" />
 		</Cursor>
 	</File>
-	<File name="CyclicBuffer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc_CUDA.cuh" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="987" topLine="81" />
+			<Cursor1 position="255" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="IntensCalc.cu" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc_CUDA.cu" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2034" topLine="198" />
+			<Cursor1 position="10901" topLine="91" />
+		</Cursor>
+		<Folding>
+			<Collapse line="87" />
+			<Collapse line="126" />
+			<Collapse line="318" />
+		</Folding>
+	</File>
+	<File name="IntensCalc.cu" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12707" topLine="386" />
+		</Cursor>
+	</File>
+	<File name="CyclicBuffer.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="487" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="avireadtest.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3490" topLine="82" />
+		</Cursor>
+	</File>
+	<File name="CyclicBuffer.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="467" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
