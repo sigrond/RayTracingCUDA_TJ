@@ -395,6 +395,9 @@ try
     char* nextFrame=new char[614400];
     int nextFrameElements=0;
     int garbageElements=0;
+    int dstOff=0;
+    int srcOff=0;
+    int cpyNum=0;
     char* tmpFrame=nullptr;
     for(int k=0;k<NumFrames;k+=count_step)
     {
@@ -418,17 +421,70 @@ try
             {
                 if(k==0)
                 {
-                    memcpy(currentFrame,tmpBuff+j-640*480*2,640*480*2);/**< wszystko co jest klatką */
-                    memcpy(nextFrame,tmpBuff+j+8,65535*10-(j+8));/**< nadmiar do następnej klatki */
+                    srcOff=j-640*480*2;
+                    if(srcOff<0 || srcOff>65535*10)
+                    {
+                        printf("error1 k: %d srcOff: %d\n",k,srcOff);
+                        break;
+                    }
+                    memcpy(currentFrame,tmpBuff+srcOff,640*480*2);/**< wszystko co jest klatką */
+                    srcOff=j+8;
+                    if(srcOff<0 || srcOff>65535*10)
+                    {
+                        printf("error2 k: %d srcOff: %d\n",k,srcOff);
+                        break;
+                    }
+                    cpyNum=65535*10-(j+8);
+                    if(cpyNum<0 || cpyNum>614400)
+                    {
+                        printf("error3 k: %d cpyNum: %d\n",k,cpyNum);
+                        break;
+                    }
+                    memcpy(nextFrame,tmpBuff+srcOff,cpyNum);/**< nadmiar do następnej klatki */
                     nextFrameElements=65535*10-(j+8);/**< ile elementów weszło do następnej klatki */
                     garbageElements=j-640*480*2;/**< ile śmieci mamy za nagłówkiem klatki */
                 }
                 else
                 {
                     garbageElements=nextFrameElements+j-640*480*2;
+                    if(garbageElements<0 || garbageElements>614400)
+                    {
+                        printf("error4 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
+                        break;
+                    }
+                    cpyNum=nextFrameElements-garbageElements;
+                    if(cpyNum<0 || cpyNum>614400)
+                    {
+                        printf("error5 k: %d cpyNum: %d\n",k,cpyNum);
+                        break;
+                    }
                     memcpy(currentFrame,nextFrame+garbageElements,nextFrameElements-garbageElements);
-                    memcpy(currentFrame+nextFrameElements-garbageElements,tmpBuff+j-640*480*2-(nextFrameElements-garbageElements),j);
-                    memcpy(nextFrame,tmpBuff+j+8,65535*10-(j+8));
+                    dstOff=nextFrameElements-garbageElements;
+                    if(srcOff<0 || srcOff>614400)
+                    {
+                        printf("error6 k: %d dstOff: %d\n",k,dstOff);
+                        break;
+                    }
+                    srcOff=j-640*480*2-(nextFrameElements-garbageElements);
+                    if(srcOff<0 || srcOff>65535*10)
+                    {
+                        printf("error7 k: %d srcOff: %d\n",k,srcOff);
+                        break;
+                    }
+                    memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);
+                    srcOff=j+8;
+                    if(srcOff<0 || srcOff>65535*10)
+                    {
+                        printf("error8 k: %d srcOff: %d\n",k,srcOff);
+                        break;
+                    }
+                    cpyNum=65535*10-(j+8);
+                    if(cpyNum<0 || cpyNum>614400)
+                    {
+                        printf("error9 k: %d cpyNum: %d\n",k,cpyNum);
+                        break;
+                    }
+                    memcpy(nextFrame,tmpBuff+j+8,cpyNum);
                     nextFrameElements=65535*10-(j+8);
                 }
                 frameEnd=frameEnd-(65535*10-(j+8));
@@ -451,6 +507,7 @@ catch(string& e)
     string s="wyjątek: "+e;
     MessageBox(NULL,s.c_str(),NULL,NULL);
     system("pause");
+    //readMovieThread.join();
 }
 catch(exception& e)
 {
@@ -458,6 +515,7 @@ catch(exception& e)
     string s=e.what();
     MessageBox(NULL,s.c_str(),NULL,NULL);
     system("pause");
+    //readMovieThread.join();
 }
 catch(...)
 {
@@ -465,6 +523,7 @@ catch(...)
     string s="nieznany wyjątek";
     MessageBox(NULL,s.c_str(),NULL,NULL);
     system("pause");
+    //readMovieThread.join();
 }
     /**< czytaæ wêksze bloki danych z pliku ni¿ po jednym znaku */
     /**< dla klatki zastosowaæ demosaic */
