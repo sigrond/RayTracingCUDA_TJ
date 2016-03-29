@@ -458,9 +458,9 @@ try
                         printf("error5 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(currentFrame,nextFrame+garbageElements,nextFrameElements-garbageElements);
+                    memcpy(currentFrame,nextFrame+garbageElements,cpyNum);
                     dstOff=nextFrameElements-garbageElements;
-                    if(srcOff<0 || srcOff>614400)
+                    if(dstOff<0 || dstOff>614400)
                     {
                         printf("error6 k: %d dstOff: %d\n",k,dstOff);
                         break;
