@@ -316,6 +316,8 @@ try
         }
     }
 
+    bool finished=false;
+
     /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
     thread readMovieThread([&]
     {/**< uwaga wyra¿enie lambda w w¹tku */
@@ -328,7 +330,7 @@ try
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
         file.seekg(fileFirstFrame,ios::beg);
-        for(int i=0;i<NumFrames && file.good();i+=count_step)/**< czytanie klatek */
+        for(int i=0;i<NumFrames && !finished;i+=count_step)/**< czytanie klatek */
         {
             //file.seekg((34824+(skok*(i))),ios::beg);
 /**< \todo można poprawić, żeby przesunięcie było względem obecnej pozycji i dało się czytać filmy >4GB */
@@ -410,7 +412,7 @@ try
             //throw string("zgubiona numeracja klatek");
         }
 
-        for(int j=frameEnd;j<65535*10;j++)
+        for(int j=frameEnd;j<65535*10-8;j++)
         {
             b=true;
             for(int i=0;i<8 && b;i++)
@@ -517,7 +519,14 @@ try
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
     }
+    finished=true;
+    printf("finshed reading from cyclic bufor\n");
+    mexEvalString("drawnow;");
+    bID=cyclicBuffer.claimForRead();
+    cyclicBuffer.readEnd(bID);
     readMovieThread.join();
+    printf("readMovieThread joined\n");
+    mexEvalString("drawnow;");
 
     freeCUDA_IC();
 }
