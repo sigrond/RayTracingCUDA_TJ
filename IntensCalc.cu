@@ -453,8 +453,9 @@ try
                     garbageElements=nextFrameElements+j-640*480*2;
                     if(garbageElements<0 || garbageElements>614400)
                     {
-                        printf("error4 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
-                        break;
+                        printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
+                        //break;
+                        garbageElements=nextFrameElements;
                     }
                     cpyNum=nextFrameElements-garbageElements;
                     if(cpyNum<0 || cpyNum>614400)
@@ -493,7 +494,7 @@ try
                     nextFrameElements=65535*10-(j+8);
                     if(nextFrameElements>=614400)
                     {
-                        printf("debug2 k: %d nextFrameElements: %d\n",k,nextFrameElements);
+                        printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
                         copyBuff(currentFrame);
                         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
                         k++;
@@ -504,8 +505,8 @@ try
                 frameEnd=j+8-40950;
                 if(frameEnd<40950)
                 {
-                    printf("error10 k: %d frameEnd: %d\n",k,frameEnd);
-                    break;
+                    printf("debug4 k: %d frameEnd: %d\n",k,frameEnd);
+                    //break;
                 }
                 break;
             }
