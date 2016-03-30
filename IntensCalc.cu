@@ -328,14 +328,14 @@ try
         const int skok = (640*480*2)+8;
         char* buff=nullptr;/**< aktualny adres zapisu z dysku */
         file.seekg(fileFirstFrame,ios::beg);
-        for(int i=0;i<NumFrames;i+=count_step)/**< czytanie klatek */
+        for(int i=0;i<NumFrames && file.good();i+=count_step)/**< czytanie klatek */
         {
             //file.seekg((34824+(skok*(i))),ios::beg);
 /**< \todo można poprawić, żeby przesunięcie było względem obecnej pozycji i dało się czytać filmy >4GB */
             bId=cyclicBuffer.claimForWrite();
             buff=bId->pt;
             bId->frameNo=i;
-            for(int j=0;j<10;j++)
+            for(int j=0;j<10 && file.good();j++)
             {
                 file.read(buff+j*65535,65535);/**< 64KB to optymalny rozmiar bloku czytanego z dysku */
             }
@@ -392,7 +392,7 @@ try
     int tmpFrameNo=-3;
     int frameEnd=614400;/**< miejsce od którego w buforze może wystąpić nagłówek następnej klatki */
     char* currentFrame=new char[614400];
-    char* nextFrame=new char[614400];
+    char* nextFrame=new char[655350];
     int nextFrameElements=0;
     int garbageElements=0;
     int dstOff=0;
@@ -406,8 +406,8 @@ try
         tmpFrameNo=bID->frameNo;
         if(tmpFrameNo!=k)
         {
-            printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
-            throw string("zgubiona numeracja klatek");
+            //printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
+            //throw string("zgubiona numeracja klatek");
         }
 
         for(int j=frameEnd;j<65535*10;j++)
@@ -446,6 +446,10 @@ try
                 }
                 else
                 {
+                    if(j<=40950)
+                    {
+                        printf("debug1 k: %d j: %d\n",k,j);
+                    }
                     garbageElements=nextFrameElements+j-640*480*2;
                     if(garbageElements<0 || garbageElements>614400)
                     {
@@ -458,20 +462,21 @@ try
                         printf("error5 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(currentFrame,nextFrame+garbageElements,cpyNum);
+                    memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
                     dstOff=nextFrameElements-garbageElements;
                     if(dstOff<0 || dstOff>614400)
                     {
                         printf("error6 k: %d dstOff: %d\n",k,dstOff);
                         break;
                     }
-                    srcOff=j-640*480*2-(nextFrameElements-garbageElements);
+                    //srcOff=j-640*480*2-(nextFrameElements-garbageElements);
+                    srcOff=j>614400?j-614400:0;
                     if(srcOff<0 || srcOff>65535*10)
                     {
                         printf("error7 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);
+                    memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
                     srcOff=j+8;
                     if(srcOff<0 || srcOff>65535*10)
                     {
@@ -479,15 +484,29 @@ try
                         break;
                     }
                     cpyNum=65535*10-(j+8);
-                    if(cpyNum<0 || cpyNum>614400)
+                    if(cpyNum<0 || cpyNum>65535*10)
                     {
                         printf("error9 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(nextFrame,tmpBuff+j+8,cpyNum);
+                    memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
                     nextFrameElements=65535*10-(j+8);
+                    if(nextFrameElements>=614400)
+                    {
+                        printf("debug2 k: %d nextFrameElements: %d\n",k,nextFrameElements);
+                        copyBuff(currentFrame);
+                        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                        k++;
+                        j+=614400;
+                        continue;
+                    }
                 }
-                frameEnd=frameEnd-(65535*10-(j+8));
+                frameEnd=j+8-40950;
+                if(frameEnd<40950)
+                {
+                    printf("error10 k: %d frameEnd: %d\n",k,frameEnd);
+                    break;
+                }
                 break;
             }
         }
