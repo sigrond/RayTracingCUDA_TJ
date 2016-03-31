@@ -480,18 +480,34 @@ try
                         printf("error7 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    if(j>0)
-                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
+                    cpyNum=j+dstOff<=614400?j:614400-dstOff;/**< większa manifestacja chaosu */
+                    if(cpyNum<0 || cpyNum>614400)
+                    {
+                        printf("error8 k: %d cpyNum: %d\n",k,cpyNum);
+                        break;
+                    }
+                    if((dstOff+cpyNum)<0 || (dstOff+cpyNum)>614400)
+                    {
+                        printf("error9 k: %d dstOff: %d cpyNum: %d\n",k,dstOff,cpyNum);
+                        break;
+                    }
+                    if((srcOff+cpyNum)<0 || (srcOff+cpyNum)>655350)
+                    {
+                        printf("error10 k: %d srcOff: %d cpyNum: %d\n",k,srcOff,cpyNum);
+                        break;
+                    }
+                    if(cpyNum>0)
+                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,cpyNum);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
                     srcOff=j+8;
                     if(srcOff<0 || srcOff>65535*10)
                     {
-                        printf("error8 k: %d srcOff: %d\n",k,srcOff);
+                        printf("error11 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
                     cpyNum=65535*10-(j+8);
                     if(cpyNum<0 || cpyNum>65535*10)
                     {
-                        printf("error9 k: %d cpyNum: %d\n",k,cpyNum);
+                        printf("error12 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
                     if(cpyNum>0)
@@ -536,8 +552,8 @@ try
     printf("readMovieThread joined\n");
     //mexEvalString("drawnow;");
 
-    //delete[] currentFrame;
-    //delete[] nextFrame;
+    delete[] currentFrame;
+    delete[] nextFrame;
     //cyclicBuffer.~CyclicBuffer();
 
     freeCUDA_IC();
