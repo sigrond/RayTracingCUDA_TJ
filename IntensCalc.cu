@@ -448,14 +448,14 @@ try
                 }
                 else
                 {
-                    if(j<=40950)
-                    {
-                        printf("debug1 k: %d j: %d\n",k,j);
-                    }
+                    //if(j<=40950)
+                    //{
+                    //    printf("debug1 k: %d j: %d\n",k,j);
+                    //}
                     garbageElements=nextFrameElements+j-640*480*2;
                     if(garbageElements<0 || garbageElements>614400)
                     {
-                        printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
+                        //printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
                         //break;
                         garbageElements=nextFrameElements;
                     }
@@ -465,7 +465,8 @@ try
                         printf("error5 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
+                    if(cpyNum>0)
+                        memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
                     dstOff=nextFrameElements-garbageElements;
                     if(dstOff<0 || dstOff>614400)
                     {
@@ -479,7 +480,8 @@ try
                         printf("error7 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
+                    if(j>0)
+                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,j);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
                     srcOff=j+8;
                     if(srcOff<0 || srcOff>65535*10)
                     {
@@ -492,11 +494,12 @@ try
                         printf("error9 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
+                    if(cpyNum>0)
+                        memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
                     nextFrameElements=65535*10-(j+8);
                     if(nextFrameElements>=614400)
                     {
-                        printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
+                        //printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
                         copyBuff(currentFrame);
                         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
                         k++;
@@ -505,11 +508,11 @@ try
                     }
                 }
                 frameEnd=j+8-40950;
-                if(frameEnd<40950)
-                {
-                    printf("debug4 k: %d frameEnd: %d\n",k,frameEnd);
+                //if(frameEnd<40950)
+                //{
+                //    printf("debug4 k: %d frameEnd: %d\n",k,frameEnd);
                     //break;
-                }
+                //}
                 break;
             }
         }
@@ -518,6 +521,11 @@ try
         //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+        //if((k*100/NumFrames)%10==0)
+        //{
+        //    printf("%d%% ",k*100/NumFrames);
+            //mexEvalString("drawnow;");
+        //}
     }
     finished=true;
     printf("finshed reading from cyclic bufor\n");
@@ -527,6 +535,10 @@ try
     readMovieThread.join();
     printf("readMovieThread joined\n");
     mexEvalString("drawnow;");
+
+    //delete[] currentFrame;
+    //delete[] nextFrame;
+    //cyclicBuffer.~CyclicBuffer();
 
     freeCUDA_IC();
 }
