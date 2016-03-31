@@ -534,7 +534,7 @@ try
     cyclicBuffer.readEnd(bID);
     readMovieThread.join();
     printf("readMovieThread joined\n");
-    mexEvalString("drawnow;");
+    //mexEvalString("drawnow;");
 
     //delete[] currentFrame;
     //delete[] nextFrame;
