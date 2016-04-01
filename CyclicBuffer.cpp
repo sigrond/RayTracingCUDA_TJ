@@ -23,6 +23,7 @@ CyclicBuffer::CyclicBuffer() :
     for(int i=0;i<cBuffS;i++)/**< alokowanie pamięci bufora */
     {
         cBuff[i]=new char[65535*10];
+        frameNo[i]=-7;/**< niech oznacza to, że nigdy nie było użyte */
         buffReady[i]=true;/**< na początku żaden bufor nie jest używany */
     }
 }
@@ -31,12 +32,14 @@ CyclicBuffer::CyclicBuffer() :
  */
 CyclicBuffer::~CyclicBuffer()
 {
+    unique_lock<mutex> lck(monitorMtx);
     printf("itemCount: %d cBeg: %d cEnd: %d\n",itemCount,cBeg,cEnd);
     for(int i=0;i<cBuffS;i++)
     {
         printf("buffReady[%d]: %d frameNo[%d]: %d\n",i,buffReady[i],i,frameNo[i]);
-        //delete[] cBuff[i];
+        delete[] cBuff[i];
     }
+    lck.unlock();
 }
 
 /** \brief zajmij wskaźnik bufora do zapisu
@@ -84,7 +87,8 @@ void CyclicBuffer::writeEnd(buffId* id)
     buffReady[id->id]=true;/**< zaznaczamy, że nie używamy już bufora */
     monitorMtx.unlock();/**< odblokowujemy monitor */
     buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
-    //delete id;/**< zwalniamy wskaźnik strukturę */
+    delete id;/**< zwalniamy wskaźnik strukturę */
+    id=nullptr;
     empty.notify_one();/**< powiadamiamy, że bufor cykliczny nie jest już pusty */
 }
 
@@ -138,6 +142,7 @@ void CyclicBuffer::readEnd(buffId* id)
     buffReady[id->id]=true;/**< zaznaczamy, że nie używamy już bufora */
     monitorMtx.unlock();
     buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
-    //delete id;
+    delete id;
+    id=nullptr;
     full.notify_one();
 }
