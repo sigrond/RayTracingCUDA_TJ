@@ -38,6 +38,7 @@ CyclicBuffer::~CyclicBuffer()
     {
         printf("buffReady[%d]: %d frameNo[%d]: %d\n",i,buffReady[i],i,frameNo[i]);
         delete[] cBuff[i];
+        cBuff[i]=nullptr;
     }
     lck.unlock();
 }

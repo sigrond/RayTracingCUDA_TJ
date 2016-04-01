@@ -106,6 +106,7 @@ try{
         {
             //przypadek 3 - trzeba przejżeć nagłówek
             printf("format pliku jeszcze nie obsługiwany\n");
+            smallf=false;
         }
     }
 

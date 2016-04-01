@@ -1060,7 +1060,7 @@ if iscell( handles.f ) % In case of multi select function is enabled
         ite=ite+inf.NumFrames;
      %I_RedM=zeros(700,inf.NumFrames,'single');
 %[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
-[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 	I_Red(itb:ite,:)=I_RedM';
     I_Green(itb:ite,:)=I_GreenM';
     I_Blue(itb:ite,:)=I_BlueM';
