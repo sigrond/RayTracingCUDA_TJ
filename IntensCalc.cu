@@ -401,6 +401,7 @@ try
     int srcOff=0;
     int cpyNum=0;
     char* tmpFrame=nullptr;
+    printf("Progress:   %5.2f%%\n",0.0f);
     for(int k=0;k<NumFrames;k+=count_step)
     {
         bID=cyclicBuffer.claimForRead();
@@ -537,11 +538,12 @@ try
         //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
-        //if((k*100/NumFrames)%10==0)
-        //{
-        //    printf("%d%% ",k*100/NumFrames);
+        if(k%500==0)
+        {
+            printf("\b\b\b\b\b\b\b%5.2f%%\n",(float)(k*100)/(float)NumFrames);
             //mexEvalString("drawnow;");
-        //}
+            mexEvalString("pause(.001);");
+        }
     }
     finished=true;
     printf("finshed reading from cyclic bufor\n");

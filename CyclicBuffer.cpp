@@ -9,6 +9,9 @@
 #include "CyclicBuffer.hpp"
 #include <string>
 #include <cstdio>
+#ifdef MATLAB_MEX_FILE
+#include "mex.h"
+#endif // MATLAB_MEX_FILE
 
 using namespace std;
 
@@ -28,9 +31,11 @@ CyclicBuffer::CyclicBuffer() :
  */
 CyclicBuffer::~CyclicBuffer()
 {
+    printf("itemCount: %d cBeg: %d cEnd: %d\n",itemCount,cBeg,cEnd);
     for(int i=0;i<cBuffS;i++)
     {
-        delete[] cBuff[i];
+        printf("buffReady[%d]: %d frameNo[%d]: %d\n",i,buffReady[i],i,frameNo[i]);
+        //delete[] cBuff[i];
     }
 }
 
@@ -72,7 +77,7 @@ buffId* CyclicBuffer::claimForWrite()
 void CyclicBuffer::writeEnd(buffId* id)
 {
     monitorMtx.lock();
-    printf("writeEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+    //printf("writeEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
     cEnd=id->id;
     itemCount++;
     frameNo[id->id]=id->frameNo;
