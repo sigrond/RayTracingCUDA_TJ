@@ -401,6 +401,7 @@ try
     int srcOff=0;
     int cpyNum=0;
     char* tmpFrame=nullptr;
+    int checkBuffForStartCodePosition=0;
     printf("Progress:   %5.2f%%\n",0.0f);
     for(int k=0;k<NumFrames;k+=count_step)
     {
@@ -416,10 +417,19 @@ try
         for(int j=frameEnd;j<65535*10-8;j++)
         {
             b=true;
-            for(int i=0;i<8 && b;i++)
+            for(int i=checkBuffForStartCodePosition;i<8 && b;i++)
             {
                 b&=FrameStartCode[i]==tmpBuff[j+i];
+                if(b)
+                {
+                    checkBuffForStartCodePosition=i;/**< zapisujemy na wypadek gdyby bufor przecioł nagłówek */
+                }
+                else
+                {
+                    checkBuffForStartCodePosition=0;
+                }
             }
+
             if(b)
             {
                 if(k==0)
