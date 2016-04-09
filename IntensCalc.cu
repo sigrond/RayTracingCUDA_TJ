@@ -15,6 +15,7 @@
 #include <string>
 #include <thread>
 #include <exception>
+#include <chrono>
 
 #include "CyclicBuffer.hpp"
 #include "IntensCalc_CUDA.cuh"
@@ -402,6 +403,7 @@ try
     int cpyNum=0;
     char* tmpFrame=nullptr;
     int checkBuffForStartCodePosition=0;
+    int lastFrameNo=-1;
     printf("Progress:   %5.2f%%\n",0.0f);
     for(int k=0;k<NumFrames;k+=count_step)
     {
@@ -413,6 +415,10 @@ try
             //printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
             //throw string("zgubiona numeracja klatek");
         }
+
+        //if(lastFrameNo==tmpFrameNo)
+        //    printf("lastFrameNo: %d tmpFrameNo: %d\n",lastFrameNo,tmpFrameNo);
+        lastFrameNo=tmpFrameNo;
 
         for(int j=frameEnd;j<65535*10-8;j++)
         {
@@ -545,6 +551,10 @@ try
         }
         copyBuff(currentFrame);
 
+        #ifdef SIM_HEAVY_CALC
+        this_thread::sleep_for (chrono::milliseconds(10));
+        #endif // SIM_HEAVY_CALC
+
         //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
@@ -557,9 +567,13 @@ try
     }
     finished=true;
     printf("finshed reading from cyclic bufor\n");
-    mexEvalString("drawnow;");
-    bID=cyclicBuffer.claimForRead();
-    cyclicBuffer.readEnd(bID);
+    printf("itemCount: %d\n",cyclicBuffer.tellItemCount());
+    mexEvalString("pause(.001);");
+    if(cyclicBuffer.tellItemCount()>0)
+    {
+        bID=cyclicBuffer.claimForRead();
+        cyclicBuffer.readEnd(bID);
+    }
     readMovieThread.join();
     printf("readMovieThread joined\n");
     //mexEvalString("drawnow;");

@@ -50,6 +50,7 @@ private:
     char* cBuff[CBUFFS];/**< bufor cykliczny z buforami odczytu z dysku */
     std::condition_variable monitorCond;
     std::mutex monitorMtx;
+    int errorCount;
 public:
     /** \brief konstruktor
      */
@@ -75,4 +76,8 @@ public:
      * \return void
      */
     void readEnd(buffId* id);
+    /** \brief zwraca aktualną chwilową liczbę elementów
+     * \return int itemCount
+     */
+    int tellItemCount();
 };

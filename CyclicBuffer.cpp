@@ -18,7 +18,7 @@ using namespace std;
 /** \brief konstruktor
  */
 CyclicBuffer::CyclicBuffer() :
-    cBuffS(CBUFFS), cBeg(0), cEnd(0), itemCount(0)
+    cBuffS(CBUFFS), cBeg(0), cEnd(0), itemCount(0), errorCount(0)
 {
     for(int i=0;i<cBuffS;i++)/**< alokowanie pamięci bufora */
     {
@@ -40,6 +40,7 @@ CyclicBuffer::~CyclicBuffer()
         delete[] cBuff[i];
         cBuff[i]=nullptr;
     }
+    printf("errorCount: %d\n",errorCount);
     lck.unlock();
 }
 
@@ -49,8 +50,8 @@ CyclicBuffer::~CyclicBuffer()
 buffId* CyclicBuffer::claimForWrite()
 {
     unique_lock<mutex> lck(monitorMtx);
-    //printf("claimForWrite cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
-    while(itemCount==cBuffS || ((cEnd+1)%cBuffS && itemCount!=0))
+    printf("claimForWrite cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+    while(itemCount==cBuffS || ((cEnd+1)%cBuffS==cBeg && itemCount!=0))
     {
         //printf("claimForWrite full cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         full.wait(lck);/**< czekamy jeśli bufor cykliczny jest pełny */
@@ -62,7 +63,8 @@ buffId* CyclicBuffer::claimForWrite()
     }
     if(tmpEnd==cBeg && itemCount!=0)
     {
-        //printf("błąd krytyczny, przepełnienie bufora");
+        errorCount++;
+        printf("błąd krytyczny, przepełnienie bufora");
         throw string("błąd krytyczny, przepełnienie bufora");
     }
     while(!buffReady[tmpEnd])
@@ -81,7 +83,7 @@ buffId* CyclicBuffer::claimForWrite()
 void CyclicBuffer::writeEnd(buffId* id)
 {
     monitorMtx.lock();
-    //printf("writeEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+    printf("writeEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
     cEnd=id->id;
     itemCount++;
     frameNo[id->id]=id->frameNo;
@@ -99,21 +101,27 @@ void CyclicBuffer::writeEnd(buffId* id)
 buffId* CyclicBuffer::claimForRead()
 {
     unique_lock<mutex> lck(monitorMtx);
-    //printf("claimForRead cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+    printf("claimForRead cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
     while(itemCount==0)
     {
-        //printf("claimForRead empty cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+        if(cBeg!=cEnd && itemCount==0)
+        {
+            errorCount++;
+            printf("0 elementów, a cBeg!=cEnd");
+        }
+        printf("claimForRead empty cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         empty.wait(lck);
     }
-    /*if(cBeg==cEnd && itemCount!=cBuffS)
+    if(cBeg==cEnd && itemCount>0)
     {
-        printf("próba czytania nieistniejącego elementu");
-        throw string("próba czytania nieistniejącego elementu");
-    }*/
+        errorCount++;
+        printf("próba czytania nieistniejącego elementu\n");
+        //throw string("próba czytania nieistniejącego elementu");
+    }
     unsigned int tmpBeg=cBeg;
     while(!buffReady[tmpBeg])
     {
-        //printf("claimForRead buff not ready cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+        printf("claimForRead buff not ready cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         buffReadyCond[tmpBeg].wait(lck);/**< jeśli coś używa bufora to czekamy poza monitorem */
     }
     buffReady[tmpBeg]=false;/**< zaznaczamy, że bufor jest używany */
@@ -127,23 +135,50 @@ buffId* CyclicBuffer::claimForRead()
  */
 void CyclicBuffer::readEnd(buffId* id)
 {
-    monitorMtx.lock();
-    //printf("readEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
-    if(itemCount-1>0)
+    unique_lock<mutex> lck(monitorMtx);
+    printf("readEnd cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
+    if(itemCount==0)
+    {
+        errorCount++;
+        printf("właśnie przeczytaliśmy coś co nie istniało\n");
+    }
+    if(itemCount<0)
+    {
+        errorCount++;
+        printf("próbujemy zakończyć czytanie z ujemną liczbą elementów\n");
+    }
+    if(itemCount==1 && buffReady[(id->id+1)%cBuffS]==true)
+    {
+        cBeg=(id->id+1)%cBuffS;
+    }
+    else if(itemCount==1 && buffReady[(id->id+1)%cBuffS]==false)
+    {
+        //errorCount++;
+        printf("wygląda na to, że kończymy czytać jedyny element w buforze, a następny się jak na razie nie zapisuje\n");
+    }
+    if(itemCount>1)
     {
         cBeg=(id->id+1)%cBuffS;
     }
     itemCount--;
     if(itemCount<0)
     {
+        errorCount++;
         //printf("błąd krytyczny, ujemna liczba elementów bufora");
         throw string("błąd krytyczny, ujemna liczba elementów bufora");
     }
     frameNo[id->id]=-2;
     buffReady[id->id]=true;/**< zaznaczamy, że nie używamy już bufora */
-    monitorMtx.unlock();
+    lck.unlock();
     buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
     delete id;
     id=nullptr;
     full.notify_one();
 }
+
+
+int CyclicBuffer::tellItemCount()
+{
+    return itemCount;
+}
+
