@@ -47,6 +47,18 @@ namespace ErrorCode
         ReadEndAndNextBuffIsNotBeingWriten=5,
         ReadEndCousedNegativeNumberOfElements=6,
     };
+    static const char* ErrorNames[ERRNUM]={
+        "BufferOverflow",
+        "cBegIsNotcEndAtitemCount0",
+        "ClaimForReadOfNotExistingElement",
+        "ReadEndOfNotExistingElement",
+        "ReadEndWithNegativeNumberOfElements",
+        "ReadEndAndNextBuffIsNotBeingWriten",
+        "ReadEndCousedNegativeNumberOfElements",
+        "",
+        "",
+        ""
+        };
 }
 /** \brief monitor dla bufora cyklicznego
  */
@@ -58,13 +70,23 @@ private:
     int itemCount;
     std::condition_variable full;/**< bufor cykliczny pełny */
     std::condition_variable empty;/**< bufor cykliczny pusty */
-    bool buffReady[CBUFFS];/**< czy bufor nie jest już używany */
+    int buffReady[CBUFFS];/**< czy bufor nie jest już używany
+    1 - gotowy pusty
+    2 - gotowy pełny
+    -1 - używany do zapisu
+    -2 - używany do odczytu */
     int frameNo[CBUFFS];/**< numery klatek pomogą znaleźć błędy */
     std::condition_variable buffReadyCond[CBUFFS];
     char* cBuff[CBUFFS];/**< bufor cykliczny z buforami odczytu z dysku */
     std::condition_variable monitorCond;
     std::mutex monitorMtx;
     int errorCount[ERRNUM];
+    /** \brief wypisuje status bez blokowania
+     * \return void
+     */
+    void _printStatus();
+    float averageLoad;
+    float loadCount;
 public:
     /** \brief konstruktor
      */
@@ -94,4 +116,8 @@ public:
      * \return int itemCount
      */
     int tellItemCount();
+    /** \brief blokuje i wypisuje informacje o buforze
+     * \return void
+     */
+    void printStatus();
 };

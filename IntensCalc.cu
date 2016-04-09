@@ -416,8 +416,11 @@ try
             //throw string("zgubiona numeracja klatek");
         }
 
-        if(lastFrameNo==tmpFrameNo)
+        if(lastFrameNo+1!=tmpFrameNo)
+        {
             printf("lastFrameNo: %d tmpFrameNo: %d\n",lastFrameNo,tmpFrameNo);
+            cyclicBuffer.printStatus();
+        }
         lastFrameNo=tmpFrameNo;
 
         for(int j=frameEnd;j<65535*10-8;j++)
