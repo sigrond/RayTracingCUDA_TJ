@@ -34,6 +34,20 @@ struct buffId
 
 
 #define CBUFFS 32
+#define ERRNUM 10
+namespace ErrorCode
+{
+    enum ErrorCode
+    {
+        BufferOverflow=0,
+        cBegIsNotcEndAtitemCount0=1,
+        ClaimForReadOfNotExistingElement=2,
+        ReadEndOfNotExistingElement=3,
+        ReadEndWithNegativeNumberOfElements=4,
+        ReadEndAndNextBuffIsNotBeingWriten=5,
+        ReadEndCousedNegativeNumberOfElements=6,
+    };
+}
 /** \brief monitor dla bufora cyklicznego
  */
 class CyclicBuffer
@@ -50,7 +64,7 @@ private:
     char* cBuff[CBUFFS];/**< bufor cykliczny z buforami odczytu z dysku */
     std::condition_variable monitorCond;
     std::mutex monitorMtx;
-    int errorCount;
+    int errorCount[ERRNUM];
 public:
     /** \brief konstruktor
      */

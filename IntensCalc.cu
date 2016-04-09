@@ -416,8 +416,8 @@ try
             //throw string("zgubiona numeracja klatek");
         }
 
-        //if(lastFrameNo==tmpFrameNo)
-        //    printf("lastFrameNo: %d tmpFrameNo: %d\n",lastFrameNo,tmpFrameNo);
+        if(lastFrameNo==tmpFrameNo)
+            printf("lastFrameNo: %d tmpFrameNo: %d\n",lastFrameNo,tmpFrameNo);
         lastFrameNo=tmpFrameNo;
 
         for(int j=frameEnd;j<65535*10-8;j++)
@@ -479,7 +479,7 @@ try
                     cpyNum=nextFrameElements-garbageElements;
                     if(cpyNum<0 || cpyNum>614400)
                     {
-                        printf("error5 k: %d cpyNum: %d\n",k,cpyNum);
+                        printf("error5 k: %d cpyNum: %d           \n",k,cpyNum);
                         break;
                     }
                     if(cpyNum>0)
