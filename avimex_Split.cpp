@@ -165,7 +165,10 @@ try{
                 b=true;
                 for(int i=0;i<8 && b;i++)
                 {
-                    b&=frameStartCode[i]==buff[j+i];
+                    if(smallf)
+                        b&=frameStartCodeS[i]==buff[j+i];
+                    else
+                        b&=frameStartCode[i]==buff[j+i];
                 }
                 if(b)
                 {
