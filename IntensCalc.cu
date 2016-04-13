@@ -148,6 +148,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     bool isR=false, isG=false, isB=false;/**< czy jest zaznaczony kolor */
     double* value;
     mxArray* tmp;
+    mxArray* tmp2;
     tmp=mxGetField(prhs[0],0,"fn");/**< nazwa pliku */
     name=mxArrayToString(tmp);
     printf("name: %s\n",name);
@@ -155,22 +156,44 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     tmp=mxGetField(prhs[0],0,"chR");
     if(tmp==NULL)
         printf("NULL chR");
-    tmp=mxGetProperty(tmp,0,"Value");
-    if(tmp==NULL)
+    tmp2=mxGetProperty(tmp,0,"Value");
+    if(tmp2==NULL)
+    {
         printf("NULL chR Value");
+    }
+    else
+    {
+        tmp=tmp2;
+    }
     value=(double*)mxGetPr(tmp);
     //printf("isR value: %lf\n",*value);
     isR=(bool)*value;
     printf("isR: %d\n",isR);
 
     tmp=mxGetField(prhs[0],0,"chG");
-    tmp=mxGetProperty(tmp,0,"Value");
+    tmp2=mxGetProperty(tmp,0,"Value");
+    if(tmp2==NULL)
+    {
+        printf("NULL chG Value");
+    }
+    else
+    {
+        tmp=tmp2;
+    }
     value=(double*)mxGetPr(tmp);
     isG=(bool)*value;
     printf("isG: %d\n",isG);
 
     tmp=mxGetField(prhs[0],0,"chB");
-    tmp=mxGetProperty(tmp,0,"Value");
+    tmp2=mxGetProperty(tmp,0,"Value");
+    if(tmp2==NULL)
+    {
+        printf("NULL chB Value");
+    }
+    else
+    {
+        tmp=tmp2;
+    }
     value=(double*)mxGetPr(tmp);
     isB=(bool)*value;
     printf("isB: %d\n",isB);

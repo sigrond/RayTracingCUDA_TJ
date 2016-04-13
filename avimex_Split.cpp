@@ -119,12 +119,12 @@ try{
 	#ifndef _WIN64
 	printf("WIN64 not defined\n");
 	#endif // _WIN64
-	#if 1
+	#if 0
 	//printf("sizeof(streamoff): %d\n",sizeof(streamoff));
 	file.seekg(0,ios::beg);
 	while(pos>=numeric_limits<unsigned long int>::max())
     {
-        printf("pos: %llu\n");
+        printf("pos: %llu\n",pos);
         file.seekg(numeric_limits<unsigned long int>::max(),ios::cur);
         pos-=numeric_limits<unsigned long int>::max();
     }
@@ -151,7 +151,7 @@ try{
     }
     if(!b)
     {
-        printf("początek klatki: %hu nie znaleźiony w przewidzianym miejscu\n",*numer);
+        printf("początek klatki: %hu nie znaleziony w przewidzianym miejscu\n",*numer);
         char* buff=new char[65535+8];
         file.seekg(8*65535,ios::cur);
         int ct=0,ct2=0;
