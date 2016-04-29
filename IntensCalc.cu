@@ -443,7 +443,7 @@ try
     long double licz=0.0f;
     int tmpFrameNo=-3;
     int frameEnd=614400;/**< miejsce od którego w buforze może wystąpić nagłówek następnej klatki */
-    char* currentFrame=new char[614400];
+    char* currentFrame=new char[655350];
     char* nextFrame=new char[655350];
     int nextFrameElements=0;
     int garbageElements=0;
@@ -458,6 +458,10 @@ try
     {
         bID=cyclicBuffer.claimForRead();
         tmpBuff=bID->pt;
+        if(tmpBuff==nullptr)
+        {
+            printf("Critical Error tmpBuff==nullptr k: %d\n",k);
+        }
         tmpFrameNo=bID->frameNo;
         if(tmpFrameNo!=k)
         {
@@ -477,6 +481,12 @@ try
             b=true;
             for(int i=checkBuffForStartCodePosition;i<8 && b;i++)
             {
+                if(j+i<0 || j+i>=65535*10)
+                {
+                    printf("error-1 k: %d próba odczytu z poza zakresu tmpBuff\n",k);
+                    b=false;
+                    break;
+                }
                 b&=FrameStartCode[i]==tmpBuff[j+i];
                 if(b)
                 {
@@ -534,7 +544,12 @@ try
                         printf("error5 k: %d cpyNum: %d           \n",k,cpyNum);
                         break;
                     }
-                    if(cpyNum>0)
+                    if(cpyNum+garbageElements<0 || cpyNum+garbageElements>655350)
+                    {
+                        printf("error5b k: %d cpyNum: %d garbageElements: %d           \n",k,cpyNum, garbageElements);
+                        break;
+                    }
+                    if(cpyNum>0 && cpyNum<=614400)
                         memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
                     dstOff=nextFrameElements-garbageElements;
                     if(dstOff<0 || dstOff>614400)
@@ -579,6 +594,11 @@ try
                         printf("error12 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
+                    if(cpyNum+j+8<0 || cpyNum+j+8>65535*10)
+                    {
+                        printf("error12b k: %d cpyNum: %d j: %d\n",k,cpyNum,j);
+                        break;
+                    }
                     if(cpyNum>0)
                         memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
                     nextFrameElements=65535*10-(j+8);
@@ -586,7 +606,14 @@ try
                     {
                         //printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
                         copyBuff(currentFrame);
-                        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                        if(k<NumFrames)
+                        {
+                            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                        }
+                        else
+                        {
+                            printf("pominięcie operacji dla nieprzewidzianych klatek k: %d\n",k);
+                        }
                         k++;
                         j+=614400;
                         continue;
@@ -609,8 +636,15 @@ try
 
         //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
-        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
-        if(k%500==0)
+        if(k<NumFrames)
+        {
+            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+        }
+        else
+        {
+            printf("pominięcie operacji dla nieprzewidzianych klatek k: %d\n",k);
+        }
+        if(k%500==0 || k==NumFrames-1)
         {
             printf("\b\b\b\b\b\b\b%5.2f%%\n",(float)(k*100)/(float)NumFrames);
             //mexEvalString("drawnow;");
