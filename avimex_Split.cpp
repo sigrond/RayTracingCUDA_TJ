@@ -112,33 +112,141 @@ try{
 
 
 	unsigned short int *klatka;
-	unsigned long long int skok = (640*480*2)+8;
+	long long int skok = (640*480*2)+8;
 	plhs[0]=mxCreateNumericMatrix(640,480,mxUINT16_CLASS,mxREAL);
 	klatka=(unsigned short int*) mxGetPr(plhs[0]);
-	unsigned long long int pos=((unsigned long long int)fileFirstFrame+(skok*(unsigned long long int)(*numer)));
+	long long int pos=((long long int)fileFirstFrame+(skok*(long long int)(*numer)));
 	#ifndef _WIN64
 	printf("WIN64 not defined\n");
 	#endif // _WIN64
 	#if 0
 	//printf("sizeof(streamoff): %d\n",sizeof(streamoff));
 	file.seekg(0,ios::beg);
-	while(pos>=numeric_limits<unsigned long int>::max())
+	while(pos>=numeric_limits<long int>::max())
     {
-        printf("pos: %llu\n",pos);
-        file.seekg(numeric_limits<unsigned long int>::max(),ios::cur);
-        pos-=numeric_limits<unsigned long int>::max();
+        printf("pos: %lld\n",pos);
+        file.seekg(numeric_limits<long int>::max(),ios::cur);
+        pos-=numeric_limits<long int>::max();
+        //file.read(codeBuff,8);
+        //pos-=8;
+        if(!file.good())
+        {
+            printf("file is not good(1)!\n");
+            ios_base::iostate state=file.rdstate();
+            printf("state: %d\n",state);
+            if(file.eof())
+            {
+                printf("file.eof\n");
+            }
+            if(file.fail())
+            {
+                printf("file.fail\n");
+            }
+            if(file.bad())
+            {
+                printf("file.bad\n");
+            }
+            printf("tellg: %lld\n",file.tellg());
+            file.clear();
+            break;
+        }
     }
     file.seekg(pos,ios::cur);
     #else
+    file.seekg(0,file.end);
+        printf("tellg end: %lld\n",file.tellg());
 	file.seekg(pos,ios::beg);
 	#endif // _WIN64
 
+	if(!file.good())
+    {
+        printf("file is not good(2)!\n");
+        ios_base::iostate state=file.rdstate();
+        printf("state: %d\n",state);
+        if(file.eof())
+        {
+            printf("file.eof\n");
+        }
+        if(file.fail())
+        {
+            printf("file.fail\n");
+        }
+        if(file.bad())
+        {
+            printf("file.bad\n");
+        }
+        printf("tellg: %lld\n",file.tellg());
+    }
 	//sprawdzam nagłówek klatki
 	file.seekg(-8,ios::cur);
+	if(!file.good())
+    {
+        printf("file is not good(3)!\n");
+        ios_base::iostate state=file.rdstate();
+        printf("state: %d\n",state);
+        if(file.eof())
+        {
+            printf("file.eof\n");
+        }
+        if(file.fail())
+        {
+            printf("file.fail\n");
+        }
+        if(file.bad())
+        {
+            printf("file.bad\n");
+        }
+        printf("tellg: %lld\n",file.tellg());
+    }
 	file.read(codeBuff,8);
 	if(!file.good())
     {
-        printf("file is not good!\n");
+        printf("file is not good(4)!\n");
+        ios_base::iostate state=file.rdstate();
+        printf("state: %d\n",state);
+        if(file.eof())
+        {
+            printf("file.eof\n");
+        }
+        if(file.fail())
+        {
+            printf("file.fail\n");
+        }
+        if(file.bad())
+        {
+            printf("file.bad\n");
+        }
+        printf("tellg: %lld\n",file.tellg());
+        file.clear();
+        file.close();
+        file.open(filename, ios::in|ios::binary);
+        if(!file.is_open())
+        {
+            printf("file reopen failed\n");
+        }
+        pos-=8;
+        printf("pos: %lld\n",pos);
+        file.seekg(0,file.end);
+        printf("tellg end: %lld\n",file.tellg());
+        file.seekg(pos,file.beg);
+        printf("tellg: %lld\n",file.tellg());
+        file.read(codeBuff,8);
+        if(!file.good())
+        {
+            printf("file is not good\n");
+        }
+        if(file.eof())
+        {
+            printf("file.eof\n");
+        }
+        if(file.fail())
+        {
+            printf("file.fail\n");
+        }
+        if(file.bad())
+        {
+            printf("file.bad\n");
+        }
     }
 
 	for(int i=0;i<8;i++)
@@ -149,6 +257,10 @@ try{
             b&=frameStartCode[i]==codeBuff[i];
         printf("0x%02X ",codeBuff[i]);
     }
+    char junkCode[]="JUNK";
+    int junkCt=0;
+    int junkSize=0;
+    bool junkB=true;
     if(!b)
     {
         printf("początek klatki: %hu nie znaleziony w przewidzianym miejscu\n",*numer);
@@ -162,6 +274,19 @@ try{
             for(int j=0;j<65535;j++)
             {
                 ct++;
+                junkB=true;
+                for(int i=0;i<4 && junkB;i++)
+                {
+                    junkB&=junkCode[i]==buff[j+i];
+                }
+                if(junkB)
+                {
+                    printf("znaleziono JUNK ct=%d\n",ct);
+                    junkCt=ct;
+                    junkSize=*(int*)(buff+j+4);
+                    junkSize+=4;
+                    printf("JUNK size: %d\n",junkSize);
+                }
                 b=true;
                 for(int i=0;i<8 && b;i++)
                 {
@@ -172,7 +297,7 @@ try{
                 }
                 if(b)
                 {
-                    file.seekg(-(65535-j)-614400,ios::cur);
+                    file.seekg(-(65535-j)-614400-junkSize,ios::cur);
                     printf("nagłówek klatki ct=%d\n",ct);
                     printf("tellg: %lld\n",file.tellg());
                     break;
@@ -190,6 +315,7 @@ try{
         bl=reverse6bitLookupTable[file.get()>>2];
         klatka[i]=bh+bl;
     }
+    file.close();
 }
 catch(exception &e)
 {
