@@ -361,7 +361,7 @@ try
             delete[] buff0;
             FrameStartCode=frameStartCode;
             fileFirstFrame=ct;
-            printf("Warning! JUNK skipping not implemented jet!\n");
+            printf("Warning! JUNK skipping is still experimental!\n");
             //return;
         }
     }
@@ -453,6 +453,11 @@ try
     char* tmpFrame=nullptr;
     int checkBuffForStartCodePosition=0;
     int lastFrameNo=-1;
+    char junkCode[]="JUNK";
+    //long long int junkCt=0;
+    int junkSize=0;
+    bool junkB=true;
+    int checkBuffForJunkPosition=0;
     printf("Progress:   %5.2f%%\n",0.0f);
     for(int k=0;k<NumFrames;k+=count_step)
     {
@@ -478,6 +483,23 @@ try
 
         for(int j=frameEnd;j<65535*10-8;j++)
         {
+            junkB=true;
+            for(int i=checkBuffForJunkPosition;i<4 && junkB;i++)
+            {
+                junkB&=junkCode[i]==tmpBuff[j+i];
+                if(junkB)
+                    checkBuffForJunkPosition=i;
+                else
+                    checkBuffForJunkPosition=0;
+            }
+            if(junkB)
+            {
+                //printf("znaleziono JUNK ct=%d\n",ct);
+                //junkCt=ct;
+                junkSize=*(int*)(tmpBuff+j+4);
+                junkSize+=4;
+                //printf("JUNK size: %d\n",junkSize);
+            }
             b=true;
             for(int i=checkBuffForStartCodePosition;i<8 && b;i++)
             {
@@ -502,7 +524,8 @@ try
             {
                 if(k==0)
                 {
-                    srcOff=j-640*480*2;
+                    srcOff=j-640*480*2-junkSize;
+                    junkSize=0;
                     if(srcOff<0 || srcOff>65535*10)
                     {
                         printf("error1 k: %d srcOff: %d\n",k,srcOff);
@@ -531,7 +554,7 @@ try
                     //{
                     //    printf("debug1 k: %d j: %d\n",k,j);
                     //}
-                    garbageElements=nextFrameElements+j-640*480*2;
+                    garbageElements=nextFrameElements+j-640*480*2-junkSize;/**< śmieci za nagłówkiem klatki */
                     if(garbageElements<0 || garbageElements>614400)
                     {
                         //printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
@@ -551,7 +574,7 @@ try
                     }
                     if(cpyNum>0 && cpyNum<=614400)
                         memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
-                    dstOff=nextFrameElements-garbageElements;
+                    dstOff=nextFrameElements-garbageElements;/**< gdzie w obecnej klatce kończą się dane z poprzedniego bloku */
                     if(dstOff<0 || dstOff>614400)
                     {
                         printf("error6 k: %d dstOff: %d\n",k,dstOff);
@@ -564,7 +587,9 @@ try
                         printf("error7 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    cpyNum=j+dstOff<=614400?j:614400-dstOff;/**< większa manifestacja chaosu */
+                    /**<                      v- kopiujemy do nagłówka, albo tylko do JUNK'u przed nagłówkiem */
+                    /**<                            v- j wskazuje na nagłówek jeszcze następnej klatki i tylko dopychamy dane do obecnej klatki */
+                    cpyNum=j-junkSize+dstOff<=614400?(j-junkSize>=0?j-junkSize:0):614400-dstOff;/**< większa manifestacja chaosu */
                     if(cpyNum<0 || cpyNum>614400)
                     {
                         printf("error8 k: %d cpyNum: %d\n",k,cpyNum);
@@ -602,6 +627,7 @@ try
                     if(cpyNum>0)
                         memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
                     nextFrameElements=65535*10-(j+8);
+                    junkSize=0;/**< nie zawsze przed nagłowkiem musi być JUNK */
                     if(nextFrameElements>=614400)
                     {
                         //printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
