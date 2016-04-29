@@ -312,7 +312,7 @@ try
     {
         fileFirstFrame=smallFileFirstFrame;
         FrameStartCode=frameStartCodeS;
-        printf("mały plik\n");
+        printf("mały plik #1\n");
     }
     else
     {
@@ -329,14 +329,40 @@ try
         {
             fileFirstFrame=bigFileFirstFrame;
             FrameStartCode=frameStartCode;
-            printf("duży plik\n");
+            printf("duży plik #2\n");
             smallf=false;
         }
         else
         {
             //przypadek 3 - trzeba przejżeć nagłówek
-            printf("format pliku jeszcze nie obsługiwany\n");
-            return;
+            printf("format pliku #3\n");
+            char* buff0=new char[65535+8];
+            int ct=0;
+            file.seekg(0,ios::beg);
+            while(file.good() && !b)
+            {
+                file.read(buff0,65535);
+                for(int j=0;j<65535 && !b;j++)
+                {
+                    b=true;
+                    ct++;
+                    for(int i=0;i<8;i++)
+                    {
+                        b&=frameStartCode[i]==buff0[j+i];
+                    }
+                    if(b)
+                    {
+                        printf("first frame header ct=%d\n",ct);
+                        file.seekg(65535-j,ios::cur);
+                        //printf("tellg: %lld\n",file.tellg());
+                    }
+                }
+            }
+            delete[] buff0;
+            FrameStartCode=frameStartCode;
+            fileFirstFrame=ct;
+            printf("Warning! JUNK skipping not implemented jet!\n");
+            //return;
         }
     }
 

@@ -84,7 +84,13 @@ if isempty( handles.fn )
      Frame = zeros(480,640,3);   
 else
      mov = AviReadPike_Split( handles.fn,handles.nom );
+     %munlock('avimex_Split');
+     %clear('avimex_Split');
+     %clear mex;
+     %clear functions;
      Frame =  single(squeeze( mov ));
+     %drawnow;
+     %pause(0.1);
 end
 % ---------------------------------------------------------------------
 function handles = Draw(hObject,handles)
