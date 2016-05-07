@@ -1070,9 +1070,9 @@ if iscell( handles.f ) % In case of multi select function is enabled
 	I_Red(itb:ite,:)=I_RedM';
     I_Green(itb:ite,:)=I_GreenM';
     I_Blue(itb:ite,:)=I_BlueM';
-    nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
-     nThetaG(:)=ThetaG_S(int16(linspace(1,length(ThetaG_S),700)));
-     nThetaB(:)=ThetaB_S(int16(linspace(1,length(ThetaB_S),700)));
+    nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
+     nThetaG(:)=ThetaG_S(int32(linspace(1,length(ThetaG_S),700)));
+     nThetaB(:)=ThetaB_S(int32(linspace(1,length(ThetaB_S),700)));
      tt=toc(tts)
         else
          
@@ -1180,9 +1180,9 @@ I_Red=I_RedM';
     I_Green=I_GreenM';
     I_Blue=I_BlueM';     
 toc
-     nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
-     nThetaG(:)=ThetaG_S(int16(linspace(1,length(ThetaG_S),700)));
-     nThetaB(:)=ThetaB_S(int16(linspace(1,length(ThetaB_S),700)));
+     nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
+     nThetaG(:)=ThetaG_S(int32(linspace(1,length(ThetaG_S),700)));
+     nThetaB(:)=ThetaB_S(int32(linspace(1,length(ThetaB_S),700)));
      else
 
      count = 1;
@@ -1198,8 +1198,8 @@ toc
              
              if handles.GPU==1
                  Ir = MovingAverage(Ir, I_S_R, step);
-                 I_Red(count,:)=Ir(int16(linspace(1,length(Ir),700)));
-                 nThetaR(:)=ThetaR_S(int16(linspace(1,length(ThetaR_S),700)));
+                 I_Red(count,:)=Ir(int32(linspace(1,length(Ir),700)));
+                 nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
                  %[nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
              else
              
