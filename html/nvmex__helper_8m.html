@@ -1,0 +1,643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/nvmex_helper.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('nvmex__helper_8m.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a> &#124;
+<a href="#var-members">Zmienne</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku nvmex_helper.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><a href="nvmex__helper_8m_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:aed59709df4276019b328625ec2f732a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a> (<a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)[loaded_m</td></tr>
+<tr class="separator:aed59709df4276019b328625ec2f732a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22af208da9e9d9b548e558335f836bbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a22af208da9e9d9b548e558335f836bbf">~isempty</a> (<a class="el" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a>) clear_mex_file(<a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)</td></tr>
+<tr class="separator:a22af208da9e9d9b548e558335f836bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8d23f65a2106af54da14e9e96a39811"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a> (nargin &gt; 0) <a class="el" href="_pike_reader_8m.html#aa75144726b375b93ecfc08810e5b5f09">args</a></td></tr>
+<tr class="separator:ad8d23f65a2106af54da14e9e96a39811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a44b13df716f60afdc2c96a1d5915e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a4a44b13df716f60afdc2c96a1d5915e5">if</a> (any(<a class="el" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a>== ' ')) <a class="el" href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">quote_str</a></td></tr>
+<tr class="separator:a4a44b13df716f60afdc2c96a1d5915e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f4cc2444b7da15a2aa65807e00639e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a4f4cc2444b7da15a2aa65807e00639e7">fschange</a> (<a class="el" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a>)</td></tr>
+<tr class="separator:a4f4cc2444b7da15a2aa65807e00639e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae605ef29128b5bf623676bcd5f2212a0"><td class="memItemLeft" align="right" valign="top">catch end catch&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#ae605ef29128b5bf623676bcd5f2212a0">disp</a> (lasterr)</td></tr>
+<tr class="separator:ae605ef29128b5bf623676bcd5f2212a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa10fc9bba65211f5c19b788a8059b15"><td class="memItemLeft" align="right" valign="top">failure end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#afa10fc9bba65211f5c19b788a8059b15">delete</a> (rspfile)</td></tr>
+<tr class="separator:afa10fc9bba65211f5c19b788a8059b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b4a1d63ebb0c68e297fddd83fe1c29f"><td class="memItemLeft" align="right" valign="top">end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> (<a class="el" href="_pike_reader_8m.html#a9b07119da70fc4a54e0d1cb5751d69aa">nargout</a> &gt; 0) <a class="el" href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">errorCode</a></td></tr>
+<tr class="separator:a6b4a1d63ebb0c68e297fddd83fe1c29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52e3417805be73af234040a44925af06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a> (errCode~=0) errorStruct.identifier</td></tr>
+<tr class="separator:a52e3417805be73af234040a44925af06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0489ecd4c030bc4b6352ec04a2c0ddd0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a0489ecd4c030bc4b6352ec04a2c0ddd0">rethrow</a> (errorStruct)</td></tr>
+<tr class="separator:a0489ecd4c030bc4b6352ec04a2c0ddd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Zmienne</h2></td></tr>
+<tr class="memitem:abd4185f6c6867456d4856595efdcd28d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">errorCode</a></td></tr>
+<tr class="separator:abd4185f6c6867456d4856595efdcd28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98baafc6b8f14f13df653fdddf418cff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> Inc&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a98baafc6b8f14f13df653fdddf418cff">$Revision</a></td></tr>
+<tr class="separator:a98baafc6b8f14f13df653fdddf418cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a518de3456d7b17fa4c64b7f5ea4cbcec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a> = inmem</td></tr>
+<tr class="separator:a518de3456d7b17fa4c64b7f5ea4cbcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb28a75740da4e379c38d2fa99060f40"><td class="memItemLeft" align="right" valign="top">end end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a> = [' &quot;ARCH=' computer('arch') '&quot;']</td></tr>
+<tr class="separator:abb28a75740da4e379c38d2fa99060f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ccaf008556dc6115a8ea9ccf52a2639"><td class="memItemLeft" align="right" valign="top">end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a> = unix([matlabroot '/bin/<a class="el" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a>' <a class="el" href="_pike_reader_8m.html#aa75144726b375b93ecfc08810e5b5f09">args</a>])</td></tr>
+<tr class="separator:a3ccaf008556dc6115a8ea9ccf52a2639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af80dc9f1f7bc03460e1d43da1614d46d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a> ispc&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a> = get_mex_opts(varargin{:})</td></tr>
+<tr class="separator:af80dc9f1f7bc03460e1d43da1614d46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c23f3b8ac85aefec2420a42bc029792"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a> =[matlabroot '\bin']</td></tr>
+<tr class="separator:a7c23f3b8ac85aefec2420a42bc029792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d1a34c748aa986f976355f24f1e435"><td class="memItemLeft" align="right" valign="top">end end Loop over all the <br class="typebreak"/>
+arguments Put extra quotes <br class="typebreak"/>
+around any that contain spaces <br class="typebreak"/>
+for&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a></td></tr>
+<tr class="separator:ac2d1a34c748aa986f976355f24f1e435"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20abaa114426c76c3ed451b6d987917c"><td class="memItemLeft" align="right" valign="top">end end Format the <a class="el" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> command&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a20abaa114426c76c3ed451b6d987917c">cmdargs</a> = ['-called_from_matlab -matlab &quot;' matlabroot '&quot; ' sprintf(' %<a class="el" href="_pike_reader_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a>', varargin{:})]</td></tr>
+<tr class="separator:a20abaa114426c76c3ed451b6d987917c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab21dfbb3c00ee9af7c79459265351b48"><td class="memItemLeft" align="right" valign="top">else&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">quote_str</a> = ''</td></tr>
+<tr class="separator:ab21dfbb3c00ee9af7c79459265351b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ef1f5833358a3897d1e2119db385af"><td class="memItemLeft" align="right" valign="top">end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a24ef1f5833358a3897d1e2119db385af">cmdtool</a></td></tr>
+<tr class="separator:a24ef1f5833358a3897d1e2119db385af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c139bb15419b7b513993481d9ef4f40"><td class="memItemLeft" align="right" valign="top">try This is done to force a <br class="typebreak"/>
+change <a class="el" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> in case <br class="typebreak"/>
+notificationhandles are not <br class="typebreak"/>
+working properly If it&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a6c139bb15419b7b513993481d9ef4f40">fails</a></td></tr>
+<tr class="separator:a6c139bb15419b7b513993481d9ef4f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef2f019afdbe62fe276ec54e33c9555f"><td class="memItemLeft" align="right" valign="top">try This is done to force a <br class="typebreak"/>
+change <a class="el" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> in case <br class="typebreak"/>
+notificationhandles are not <br class="typebreak"/>
+working properly If it we just <br class="typebreak"/>
+want to keep going&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a> = fileparts(<a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)</td></tr>
+<tr class="separator:aef2f019afdbe62fe276ec54e33c9555f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f1eaf2b095de910e29b1862790d763"><td class="memItemLeft" align="right" valign="top">errorStruct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> ='Unable to complete successfully.'</td></tr>
+<tr class="separator:ac2f1eaf2b095de910e29b1862790d763"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a7512f97cc47ff0bda46dd2db7ce2d"><td class="memItemLeft" align="right" valign="top">end SUBFUNCTIONS <a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#aa4a7512f97cc47ff0bda46dd2db7ce2d">result</a></td></tr>
+<tr class="separator:aa4a7512f97cc47ff0bda46dd2db7ce2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc5ba7e22f5e4a6221c12a70503bef3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#adfc5ba7e22f5e4a6221c12a70503bef3">cmd</a></td></tr>
+<tr class="separator:adfc5ba7e22f5e4a6221c12a70503bef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e837d211f0030e72fa8d317be59d56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex__helper_8m.html#a30e837d211f0030e72fa8d317be59d56">ARGS</a> = &amp;shellwords($line)</td></tr>
+<tr class="separator:a30e837d211f0030e72fa8d317be59d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="afa10fc9bba65211f5c19b788a8059b15"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">failure end delete </td>
+          <td>(</td>
+          <td class="paramtype">rspfile&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae605ef29128b5bf623676bcd5f2212a0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">catch end catch disp </td>
+          <td>(</td>
+          <td class="paramtype">lasterr&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a52e3417805be73af234040a44925af06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">elseif </td>
+          <td>(</td>
+          <td class="paramtype">errCode~&#160;</td>
+          <td class="paramname"> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4f4cc2444b7da15a2aa65807e00639e7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">fschange </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad8d23f65a2106af54da14e9e96a39811"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if </td>
+          <td>(</td>
+          <td class="paramtype">nargin&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4a44b13df716f60afdc2c96a1d5915e5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if </td>
+          <td>(</td>
+          <td class="paramtype">any(<a class="el" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a>== ' ')&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6b4a1d63ebb0c68e297fddd83fe1c29f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end if </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_pike_reader_8m.html#a9b07119da70fc4a54e0d1cb5751d69aa">nargout</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0489ecd4c030bc4b6352ec04a2c0ddd0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">rethrow </td>
+          <td>(</td>
+          <td class="paramtype">errorStruct&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aed59709df4276019b328625ec2f732a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> ~<a class="el" href="_pike_reader_8m.html#ab0f73a4b0e20ffee1dff4c2e0add81c0">isempty</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a22af208da9e9d9b548e558335f836bbf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> ~<a class="el" href="_pike_reader_8m.html#ab0f73a4b0e20ffee1dff4c2e0add81c0">isempty</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja zmiennych</h2>
+<a class="anchor" id="a98baafc6b8f14f13df653fdddf418cff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> Inc $Revision</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00001">1</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abb28a75740da4e379c38d2fa99060f40"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end end args = [' &quot;ARCH=' computer('arch') '&quot;']</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00023">23</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a30e837d211f0030e72fa8d317be59d56"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ARGS = &amp;shellwords($line)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00104">104</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adfc5ba7e22f5e4a6221c12a70503bef3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cmd</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= </div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00099">99</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a20abaa114426c76c3ed451b6d987917c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end end Format the <a class="el" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> command cmdargs = ['-called_from_matlab -matlab &quot;' matlabroot '&quot; ' sprintf(' %<a class="el" href="_pike_reader_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a>', varargin{:})]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00050">50</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a24ef1f5833358a3897d1e2119db385af"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end cmdtool</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= [quote_str matlabroot &#39;\sys\perl\win32\bin\perl.exe&#39; quote_str &#39; &#39; ... </div>
+<div class="line">               quote_str matlab_bin_location &#39;\nvmex.pl&#39; quote_str]</div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00057">57</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ccaf008556dc6115a8ea9ccf52a2639"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">try errCode = unix([matlabroot '/bin/<a class="el" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a>' <a class="el" href="_pike_reader_8m.html#aa75144726b375b93ecfc08810e5b5f09">args</a>])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00027">27</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abd4185f6c6867456d4856595efdcd28d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> errorCode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= nvmex_helper(varargin)</div>
+<div class="line">%MEX_HELPER is a helper <span class="keyword">function</span> that contains the code that MEX.M (an </div>
+<div class="line">%   autogenerated <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>) executes.  It sets up the inputs to call <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a>.pl (on PC)</div>
+<div class="line">%   and <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> (on Unix).</div>
+<div class="line">%  </div>
+<div class="line">%   For information on how to use MEX see MEX help by typing <span class="stringliteral">&quot;help mex&quot;</span> or </div>
+<div class="line">%   <span class="stringliteral">&quot;mex -h&quot;</span>.</div>
+<div class="line"></div>
+<div class="line">%   Copyright 1984-2006 The MathWorks</div>
+<div class="ttc" id="_pike_reader_8m_html_a9298037979afd4748a15c04dbf4dad7b"><div class="ttname"><a href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a></div><div class="ttdeci">clear mex</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00089">PikeReader.m:89</a></div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a53be3e8a3476298b0e2ca95e4fa573fc"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input file(including.avi extension)</div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00001">1</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6c139bb15419b7b513993481d9ef4f40"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">try This is done to force a change <a class="el" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> in case notificationhandles are not working properly If it fails</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00064">64</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac2d1a34c748aa986f976355f24f1e435"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end end Loop over all the arguments Put extra quotes around any that contain spaces for i</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">=1:numel(varargin)</div>
+<div class="line">        <a class="code" href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a> (find(varargin{<a class="code" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a>} == <span class="charliteral">&#39; &#39;</span>))</div>
+<div class="line">            varargin{<a class="code" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a>} = [ &#39;&quot;&#39; varargin{i} &#39;&quot;&#39; ]</div>
+<div class="ttc" id="nvmex__helper_8m_html_ad8d23f65a2106af54da14e9e96a39811"><div class="ttname"><a href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a></div><div class="ttdeci">if(nargin &gt; 0) args</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ac2d1a34c748aa986f976355f24f1e435"><div class="ttname"><a href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a></div><div class="ttdeci">end end Loop over all the arguments Put extra quotes around any that contain spaces for i</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00043">nvmex_helper.m:43</a></div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00043">43</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a518de3456d7b17fa4c64b7f5ea4cbcec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> loaded_mex = inmem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00017">17</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7c23f3b8ac85aefec2420a42bc029792"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">matlab_bin_location =[matlabroot '\bin']</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00032">32</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac2f1eaf2b095de910e29b1862790d763"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">errorStruct message ='Unable to complete successfully.'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00081">81</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af80dc9f1f7bc03460e1d43da1614d46d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a> ispc mexname = get_mex_opts(varargin{:})</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00031">31</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef2f019afdbe62fe276ec54e33c9555f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">try This is done to force a change <a class="el" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> in case notificationhandles are not working properly If it we just want to keep going mexpath = fileparts(<a class="el" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00066">66</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab21dfbb3c00ee9af7c79459265351b48"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">else quote_str = ''</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00054">54</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa4a7512f97cc47ff0bda46dd2db7ce2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end SUBFUNCTIONS <a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> one per entry in the <a class="el" href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a> <a class="el" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a> Use Perl to ensure processing <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> arguments is the same as <a class="el" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> bat result</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= read_response_file(filename)</div>
+<div class="line">%</div>
+<div class="line">% Read a <a class="code" href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a> <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a> (a filename that starts with <span class="charliteral">&#39;@&#39;</span>)</div>
+<div class="line">% and <span class="keywordflow">return</span> a cell <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> strings</div>
+<div class="ttc" id="_pike_reader_8m_html_aefc58e2aa2fcd319de777ecd3067fdd9"><div class="ttname"><a href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a></div><div class="ttdeci">UIWAIT makes PikeReader wait for user response(see UIRESUME)%uiwait(handles.Fig1)</div></div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a53be3e8a3476298b0e2ca95e4fa573fc"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input file(including.avi extension)</div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex__helper_8m_source.html#l00090">90</a> pliku <a class="el" href="nvmex__helper_8m_source.html">nvmex_helper.m</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="nvmex__helper_8m.html">nvmex_helper.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:37 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

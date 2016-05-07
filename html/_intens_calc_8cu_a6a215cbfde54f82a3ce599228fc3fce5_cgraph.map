@@ -1,0 +1,16 @@
+<map id="mexFunction" name="mexFunction">
+<area shape="rect" id="node2" href="$class_cyclic_buffer.html#a8248aa2aee9e0217d7a36b4ee031add5" title="zajmij wskaźnik bufora do odczytu " alt="" coords="164,5,343,32"/>
+<area shape="rect" id="node3" href="$class_cyclic_buffer.html#a7f1ee79209bbf484d7f9ceda2d8b0f51" title="zajmij wskaźnik bufora do zapisu " alt="" coords="163,56,343,83"/>
+<area shape="rect" id="node4" href="$_intens_calc___c_u_d_a_8cu.html#a997c87c5d0dd10c13e485b1007e1a47f" title="kopiuje bufor do GPU " alt="" coords="217,107,289,133"/>
+<area shape="rect" id="node5" href="$_intens_calc___c_u_d_a_8cu.html#a8494aebdb81f1b39234c086f0fc6753e" title="zwraca wektor natężeń od theta " alt="" coords="229,157,277,184"/>
+<area shape="rect" id="node8" href="$_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc" title="file" alt="" coords="234,208,273,235"/>
+<area shape="rect" id="node9" href="$_intens_calc___c_u_d_a_8cu.html#acd8e703dad3053671f5d9ba6906f9366" title="zwalnianie zajętych zasobów CUDA " alt="" coords="204,259,303,285"/>
+<area shape="rect" id="node10" href="$class_cyclic_buffer.html#a65de3f09429df80e7d2ea0a0b0efe8f4" title="blokuje i wypisuje informacje o buforze " alt="" coords="172,309,335,336"/>
+<area shape="rect" id="node11" href="$class_cyclic_buffer.html#a507927ac47627419e6017c9c22dae3ca" title="zwolnienie bufora po odczytaniu " alt="" coords="180,360,327,387"/>
+<area shape="rect" id="node12" href="$_intens_calc___c_u_d_a_8cu.html#af42802edfe6b97969f8a04dc1eaeb7ff" title="setMasksAndImagesAndSorted\lIndexes" alt="" coords="151,411,356,453"/>
+<area shape="rect" id="node13" href="$_intens_calc___c_u_d_a_8cu.html#a1d82d2d00d7cc54a527f556907b49086" title="przygotowanie do obliczeń " alt="" coords="199,477,308,504"/>
+<area shape="rect" id="node14" href="$class_cyclic_buffer.html#ace938691bdc77457e47434d1646d6dfc" title="zwraca aktualną chwilową liczbę elementów " alt="" coords="166,528,341,555"/>
+<area shape="rect" id="node15" href="$class_cyclic_buffer.html#ac2868514c45dbc2cc9170f4156375a0b" title="zwolnienie bufora po zapisaniu " alt="" coords="179,579,328,605"/>
+<area shape="rect" id="node6" href="$_intens_calc___c_u_d_a_8cu.html#ad4e437e740b68751d689abe404aeeaac" title="compute grid and thread block size for a given number of elements " alt="" coords="404,157,527,184"/>
+<area shape="rect" id="node7" href="$_intens_calc___c_u_d_a_8cu.html#ab01bee12e3576a50b5201d5e42b54f8f" title="iDivUp" alt="" coords="575,157,633,184"/>
+</map>

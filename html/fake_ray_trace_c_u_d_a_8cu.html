@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/fakeRayTraceCUDA.cu</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('fake_ray_trace_c_u_d_a_8cu.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Definicje</a> &#124;
+<a href="#func-members">Funkcje</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku fakeRayTraceCUDA.cu</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="_handles_structures_8cuh_source.html">HandlesStructures.cuh</a>&quot;</code><br/>
+<code>#include &lt;cuda_runtime.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="helper__functions_8h_source.html">helper_functions.h</a>&gt;</code><br/>
+<code>#include &lt;helper_cuda.h&gt;</code><br/>
+<code>#include &lt;vector_types.h&gt;</code><br/>
+<code>#include &quot;helper_math.h&quot;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Wykres zależności załączania dla fakeRayTraceCUDA.cu:</div>
+<div class="dyncontent">
+<div class="center"><img src="fake_ray_trace_c_u_d_a_8cu__incl.png" border="0" usemap="#_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2fake_ray_trace_c_u_d_a_8cu" alt=""/></div>
+<map name="_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2fake_ray_trace_c_u_d_a_8cu" id="_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2fake_ray_trace_c_u_d_a_8cu">
+<area shape="rect" id="node2" href="_handles_structures_8cuh.html" title="HandlesStructures.cuh" alt="" coords="40,95,195,121"/><area shape="rect" id="node5" href="helper__functions_8h.html" title="helper_functions.h" alt="" coords="514,95,641,121"/></map>
+</div>
+</div>
+<p><a href="fake_ray_trace_c_u_d_a_8cu_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Definicje</h2></td></tr>
+<tr class="memitem:a6402e8b8594280624585b8fd643bfb65"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fake_ray_trace_c_u_d_a_8cu.html#a6402e8b8594280624585b8fd643bfb65">WIN32</a></td></tr>
+<tr class="separator:a6402e8b8594280624585b8fd643bfb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a64914f8dd39b9cfb45567446e55f7380"><td class="memItemLeft" align="right" valign="top">__host__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fake_ray_trace_c_u_d_a_8cu.html#a64914f8dd39b9cfb45567446e55f7380">RayTrace</a> (float *<a class="el" href="_pike_reader_8m.html#a727d67a0b53a360ee9f05f7f08821c36">Br</a>, int Br_size, int *<a class="el" href="_pike_reader_8m.html#afc718730e782c562dbdd8cbdda84fb46">Vb</a>, float *VH, int Vb_length, int VH_length, <a class="el" href="struct_handles_structures.html">HandlesStructures</a> <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>, float3 *IM, int IM_size, float3 *<a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a>)</td></tr>
+<tr class="memdesc:a64914f8dd39b9cfb45567446e55f7380"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculate ray tracing. call RayTraceD CUDA kernels  <a href="#a64914f8dd39b9cfb45567446e55f7380">Więcej...</a><br/></td></tr>
+<tr class="separator:a64914f8dd39b9cfb45567446e55f7380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja definicji</h2>
+<a class="anchor" id="a6402e8b8594280624585b8fd643bfb65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WIN32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="fake_ray_trace_c_u_d_a_8cu_source.html#l00006">6</a> pliku <a class="el" href="fake_ray_trace_c_u_d_a_8cu_source.html">fakeRayTraceCUDA.cu</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="a64914f8dd39b9cfb45567446e55f7380"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__host__ void RayTrace </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>Br</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Br_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>Vb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>VH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Vb_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>VH_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_handles_structures.html">HandlesStructures</a>&#160;</td>
+          <td class="paramname"><em>S</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float3 *&#160;</td>
+          <td class="paramname"><em>IM</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>IM_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float3 *&#160;</td>
+          <td class="paramname"><em>P</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>calculate ray tracing. call RayTraceD CUDA kernels </p>
+<dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Br</td><td>float* </td></tr>
+    <tr><td class="paramname">Vb</td><td>int* </td></tr>
+    <tr><td class="paramname">VH</td><td>float* </td></tr>
+    <tr><td class="paramname">Vb_length</td><td>int </td></tr>
+    <tr><td class="paramname">VH_length</td><td>int </td></tr>
+    <tr><td class="paramname">S</td><td><a class="el" href="struct_handles_structures.html" title="Structure with handles data used by raytracing. Structure should be filled with data from matlab on i...">HandlesStructures</a> </td></tr>
+    <tr><td class="paramname">IM</td><td>float3* image. must be zeroed before ray tracing. to skip image calculation set pointer to NULL </td></tr>
+    <tr><td class="paramname">P</td><td>float3* </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>void </dd></dl>
+
+<p>Definicja w linii <a class="el" href="fake_ray_trace_c_u_d_a_8cu_source.html#l00033">33</a> pliku <a class="el" href="fake_ray_trace_c_u_d_a_8cu_source.html">fakeRayTraceCUDA.cu</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_tracing_8cu_source.html#l00031">mexFunction()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Oto graf wywoływań tej funkcji:</div>
+<div class="dyncontent">
+<div class="center"><img src="fake_ray_trace_c_u_d_a_8cu_a64914f8dd39b9cfb45567446e55f7380_icgraph.png" border="0" usemap="#fake_ray_trace_c_u_d_a_8cu_a64914f8dd39b9cfb45567446e55f7380_icgraph" alt=""/></div>
+<map name="fake_ray_trace_c_u_d_a_8cu_a64914f8dd39b9cfb45567446e55f7380_icgraph" id="fake_ray_trace_c_u_d_a_8cu_a64914f8dd39b9cfb45567446e55f7380_icgraph">
+<area shape="rect" id="node2" href="_ray_tracing_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5" title="RayTracing mex function function [IC, PX] = RayTracing(Br,Vb,VH,handles) function P = RayTracing(Br..." alt="" coords="131,5,228,32"/></map>
+</div>
+</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="fake_ray_trace_c_u_d_a_8cu.html">fakeRayTraceCUDA.cu</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:35 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

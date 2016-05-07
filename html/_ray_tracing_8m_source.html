@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Plik źródłowy D:/Moje dokumenty/RayTracingCUDA_TJ/RayTracing.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_ray_tracing_8m_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">RayTracing.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_ray_tracing_8m.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">    1</a></span>&#160;<span class="keyword">function</span> <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a> = <a class="code" href="fake_ray_trace_c_u_d_a_8cu.html#a64914f8dd39b9cfb45567446e55f7380">RayTrace</a>( <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>,<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a> )</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;% The <span class="keyword">function</span> <span class="stringliteral">&quot;P = RayTrace( P2,S )&quot;</span> - conducts rays through lens system</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;%</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;% <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="code" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> on the surface <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the first diaphragm</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;% <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>  - structure contains the <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;% <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>  - coordinates <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> successive intersection ray with  surfaces</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;%</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;% Calculation <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the position <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the sphere&#39;<a class="code" href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a> center</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Cs1  = <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_pike_reader_8m.html#a091dd2547d36e2b58e43462d965834d7">l1</a> - <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>(1) + <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a>;         </div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a3bfd673c2aec98087229fe424070349a">   10</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Cs2  = <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Cs1 + <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">ll</a> + 2*<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>(2);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">   12</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a> = <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Pk;   % droplet coordinates</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">   14</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a> = (<a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)/<a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>); % direction vector <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;% looking <span class="keywordflow">for</span> the <a class="code" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> intersection <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line and lenses</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;%</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">   17</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a> = (<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.l1 - <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>(1))/<a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>(1); </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">   18</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a> = <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> + <a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>*<a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>;                            % Point in the plane parallel to the flat surface <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordflow">if</span> <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>([<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(end,2),<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(end,3)]) &gt; (<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.efD/2)    % verification whether  the <a class="code" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> inside the aperture <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens or not</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;     % perescitywajem koordinaty </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    Kp = <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(1,2:3))/(<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.efD/2);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(2:3) = <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(2:3)/Kp;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a> = (<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a> - <a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)/<a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a> - <a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>); % direction vector <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;   </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;end</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;% </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;% </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;% <span class="keywordflow">if</span> <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(2:3)) &gt; (<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.efD/2)    % verification whether  the <a class="code" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> inside the aperture <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens or not</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">   32</a></span>&#160;%      <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a> = [<a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>; <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>; [NaN,NaN,NaN]];</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;%      <span class="keywordflow">return</span>    </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;% end</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;% normal vector to the surface</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">   36</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a> =[ 1, 0, 0 ];</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;% Nachodim ugol mezdu normalju <a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> vektorom padenia <a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> stroim nowyj</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;% prelomlennyj wektor</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">   39</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>,1,<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.m2 );</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;%------ For intensity <a class="code" href="_pike_reader_8m.html#a33cb10e751a17a81c39b07c9dc1710ae">calculation</a></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(8,1:3) = acosd(dot(<a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>,<a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>));</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;% Isczem pereseczenie so sferoj</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">   43</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a4588a68b5fa1faa0bc3ce222f4388bc5">SphereCross</a>( [ <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(1) - <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Cs1, <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(2), <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>(3) ], <a class="code" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a><span class="stringliteral">&#39;,S.R(1) );</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="stringliteral">% Proweriajem popal li lucz w linzu</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="stringliteral">if isnan( rc ) % lucz nie peresek sferu</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral">    P = [P1; P2; P3;[NaN,NaN,NaN]];</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="stringliteral">    return</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">end</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral">% stroim normal w punktie pereseczenija</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">   51</a></span>&#160;<span class="stringliteral">ns = rc(1,:) / norm( rc(1,:) );</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">   52</a></span>&#160;<span class="stringliteral">v4 = findAlpha( ns, v3&#39;</span>,2,<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.m2 );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;%------ For intensity <a class="code" href="_pike_reader_8m.html#a33cb10e751a17a81c39b07c9dc1710ae">calculation</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(9,1:3) = acosd(dot(<a class="code" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a>, <a class="code" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a>&#39;));</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">   55</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a> = [ rc(1,1) + S.Cs1, rc(1,2), rc(1,3) ];</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordflow">if</span> <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,2:3)) &gt; <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.D/2 </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;   <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a> = [P1; P2; P3; P4;[NaN,NaN,NaN]];</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;   <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;   </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;end</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;% isczem pereseczenie so wtoroj sferoj</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;% l - rasstojanie mezdu linzami</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;% centr sledujusczej sfery nachoditsia na rasstojanii 2*<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>+l</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;% znaczit wektor nado pereniesti na rasstojanie 2*<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>+l po osi <a class="code" href="_ray_tracing_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a>. Tojest</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;% perenosim toczku <a class="code" href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a> kotoroj on wychodit</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a4588a68b5fa1faa0bc3ce222f4388bc5">SphereCross</a>( [<a class="code" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a>(1)-<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#a3bfd673c2aec98087229fe424070349a">Cs2</a>,<a class="code" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a>(2),<a class="code" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a>(3)], <a class="code" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a>&#39;,<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>(2) );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordflow">if</span> <a class="code" href="_ray_tracing_8m.html#a9da9ecad31a80fb98272dcc7405af9af">isnan</a>( <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a> ) % lucz nie peresek sferu</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a> = [P1; P2; P3; P4;[NaN,NaN,NaN]];</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;end</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">   78</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a> = <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,:);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a>(1) = <a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a>(1) + <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#a3bfd673c2aec98087229fe424070349a">Cs2</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordflow">if</span> <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>(<a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,2:3)) &gt; <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.D/2 %lucz nie popal w linzu</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    P = [P1; P2; P3; P5;[NaN,NaN,NaN]];</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;end</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;% stroim normal k etoj toczkie </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a> = <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,:) / <a class="code" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a>( <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,:) );</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">   89</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( -ns, <a class="code" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a><span class="stringliteral">&#39;,1,S.m2 );</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">%------ For intensity calculation</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">P(10,1:3) = acosd(dot(-ns, v4&#39;</span>));</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;% <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,1) - toczka pereseczenija kogda sfera nachoditsia  w naczale</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;% koordinat</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;% x0 = <a class="code" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,1);</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">   95</a></span>&#160;% <a class="code" href="_ray_tracing_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a> = x0+V4(1)*<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;% posledniaja toczka eto <a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aee34fc740f3a5271508e6499ce2e3326">   97</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#aee34fc740f3a5271508e6499ce2e3326">X</a> = <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.l1 + 2*<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a> + <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">ll</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a> = ( <a class="code" href="_ray_tracing_8m.html#aee34fc740f3a5271508e6499ce2e3326">X</a> - <a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a>(1) ) / <a class="code" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>( 1 );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">  100</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a> = <a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a> + <a class="code" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>&#39;*<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">  102</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="code" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a><span class="stringliteral">&#39;,2,S.m2 );</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="stringliteral">%------ For intensity calculation</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">P(11,1:3) = acosd(dot(n, v5&#39;</span>));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a> = (<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.lCCD - <a class="code" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a>(1) ) / <a class="code" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a>(1);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aa20240d26ace6829859aba913f892152">  107</a></span>&#160;<a class="code" href="_ray_tracing_8m.html#aa20240d26ace6829859aba913f892152">P7</a> = <a class="code" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a> + <a class="code" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a>&#39;*<a class="code" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;% P  = [ P1; P2; P3; P4; P5; P6; P7];</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(1,:)  =  <a class="code" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(2,:)  =  <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(3,:)  =  <a class="code" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(4,:)  =  <a class="code" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a>;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(5,:)  =  <a class="code" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(6,:)  =  <a class="code" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>(7,:)  =  <a class="code" href="_ray_tracing_8m.html#aa20240d26ace6829859aba913f892152">P7</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;% </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;% ======= END OF MAIN FUNCTION ======================</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">function</span> <a class="code" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a> = <a class="code" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>, <a class="code" href="_ray_tracing_8m.html#a2a792a898a039d36b908170327d38714">p</a>,<a class="code" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> )</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;     %  funkcyja rasscitywajet nowyj naprawljausczij vektro dla</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;     % priamoj</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        al1 = <a class="code" href="_ray_tracing_8m.html#a6383b85089594c4ebcc921ab908368a5">acosd</a>(dot(<a class="code" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>,<a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>));</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        % refractive index <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> environment and lens respectively</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">  124</a></span>&#160;        <a class="code" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a> = 1;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">  125</a></span>&#160;%         <a class="code" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> = Calculate_m(25,<a class="code" href="_calculate__m_8m.html#a82ea416e80661b7fc65f91173022c0eb">lambda</a>, <span class="stringliteral">&#39;BK7&#39;</span>);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        % Snell<span class="stringliteral">&#39;s law</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a2a792a898a039d36b908170327d38714">  127</a></span>&#160;<span class="stringliteral">        if p == 1</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="stringliteral">            al2 = asind( m1 * sind( al1 ) / m2 );</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="stringliteral">        else</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">  130</a></span>&#160;<span class="stringliteral">            al2 = asind( m2 * sind( al1 ) / m1 );</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="stringliteral">        end</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral">        % rasscitywajem ugol mezdu V1 i V2</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a2eaa3649fc4ddd31850c37d3d1e035c1">  133</a></span>&#160;<span class="stringliteral">        bet = al1 - al2;</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral">        %</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">        % Stroim prelomlennyj wektor</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral">        % stroim perpendikularnyj wektor</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">  137</a></span>&#160;<span class="stringliteral">        S = cross( v, n );</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="stringliteral">        if norm(S) == 0 </span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="stringliteral">            % wektor paralelnyj k normali net neobchodimossti scitat&#39;</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            % sistemu urawnienij</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <a class="code" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a> = <a class="code" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a><span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="stringliteral">        else</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a4e6f4c9c72f94c82a12f25f6e3b1b233">  143</a></span>&#160;<span class="stringliteral">            A = [ v; n; S ];</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a9d3d9048db16a7eee539e93e3618cbe7">  144</a></span>&#160;<span class="stringliteral">            B = [ cosd( bet ); cosd( al2 ); 0 ];</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">  145</a></span>&#160;<span class="stringliteral">            V2 = A\B;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="stringliteral">        end</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="stringliteral">% ------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="stringliteral">function rc = SphereCross( r, V,R )</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="stringliteral">% Eta funkcyja nachodit toczki pereseczenia lucza so sferoj</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="stringliteral">%</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="stringliteral">% r  - koordinaty toczki iz kotoroj wychdit priamaja opredelennaja</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="stringliteral">% naprawliauscim wektorom V</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="stringliteral">% R - radius sfery</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="stringliteral">%</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="stringliteral">A = sum(V.^2);</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="stringliteral">B = 2*dot(r,V);</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">  157</a></span>&#160;<span class="stringliteral">C = sum(r.^2) - R^2;</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">  158</a></span>&#160;<span class="stringliteral">D = B^2 -4 * A * C;</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="stringliteral">if D &lt; 0 </span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="stringliteral">rc = NaN;</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="stringliteral">    return</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="stringliteral">end</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="stringliteral">t(1) = ( -B + sqrt( D ) ) / 2 / A ;</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="stringliteral">t(2) = ( -B - sqrt( D ) ) / 2 / A ;</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="stringliteral">rc(1,:) = r + V*t(1);</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="stringliteral">rc(2,:) = r + V*t(2);</span></div>
+<div class="ttc" id="_ray_tracing_8m_html_ad53aeb78abc83a52ab8982f5c82a3d5b"><div class="ttname"><a href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a></div><div class="ttdeci">Stroim prelomlennyj wektor stroim perpendikularnyj wektor S</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00137">RayTracing.m:137</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a683f09a8fde8fd5aca2637267de85ef4"><div class="ttname"><a href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a></div><div class="ttdeci">m2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00125">RayTracing.m:125</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a4baee84af7a92177c9064ddc2fc010ce"><div class="ttname"><a href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a></div><div class="ttdeci">function P</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00001">RayTracing.m:1</a></div></div>
+<div class="ttc" id="_ray_trace_c_u_d_a__kernel_8cu_html_a4588a68b5fa1faa0bc3ce222f4388bc5"><div class="ttname"><a href="_ray_trace_c_u_d_a__kernel_8cu.html#a4588a68b5fa1faa0bc3ce222f4388bc5">SphereCross</a></div><div class="ttdeci">__device__ rcstruct SphereCross(float3 r, float3 V, float R)</div><div class="ttdef"><b>Definition:</b> <a href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00053">RayTraceCUDA_kernel.cu:53</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a15f015adf595b9ddc21a25082c3aabb0"><div class="ttname"><a href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a></div><div class="ttdeci">P4</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00055">RayTracing.m:55</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aeab71244afb687f16d8c4f5ee9d6ef0e"><div class="ttname"><a href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a></div><div class="ttdeci">return end normal vector to the surface n</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00036">RayTracing.m:36</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_af4cc1b4cce031f2daf22087d1f6a8428"><div class="ttname"><a href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a></div><div class="ttdeci">v5</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00089">RayTracing.m:89</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a3bfd673c2aec98087229fe424070349a"><div class="ttname"><a href="_ray_tracing_8m.html#a3bfd673c2aec98087229fe424070349a">Cs2</a></div><div class="ttdeci">S Cs2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00010">RayTracing.m:10</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ae4d665bafab09a5b5d0dc55e888edea8"><div class="ttname"><a href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a></div><div class="ttdeci">Point in the plane parallel to the flat surface of the lens if norm([P3(end, 2), P3(end, 3)]) &gt;(S.efD/2)%verification whether the point inside the aperture of the lens or not%perescitywajem koordinaty Kp</div></div>
+<div class="ttc" id="_set_system_8m_html_a86bdec0d61a48a8ca4da1674058837cc"><div class="ttname"><a href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a></div><div class="ttdeci">id g()</div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ac82842dff393085d5d4ed8bb065ae57d"><div class="ttname"><a href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a></div><div class="ttdeci">V2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00145">RayTracing.m:145</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a1e290925c3c5aef593439888e5ee9309"><div class="ttname"><a href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a></div><div class="ttdeci">P3</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00018">RayTracing.m:18</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aedad1181684565670a7de27502eedcc5"><div class="ttname"><a href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a></div><div class="ttdeci">Isczem pereseczenie so sferoj rc</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00043">RayTracing.m:43</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_af93dd7f73e57b8b17d34efa33f0f948e"><div class="ttname"><a href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a></div><div class="ttdeci">P1</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00012">RayTracing.m:12</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a3b2ca6393fc73e16fc5984d4f395f2d9"><div class="ttname"><a href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a></div><div class="ttdeci">rc1(2, 1)-toczka pereseczenija kogda sfera nachoditsia w naczale%koordinat%x0</div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a3691308f2a4c2f6983f2880d32e29c84"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition:</b> <a href="_avi_read_pike___split_8m_source.html#l00028">AviReadPike_Split.m:28</a></div></div>
+<div class="ttc" id="_calculate__m_8m_html_a70c8cb1145c8203acbdab7cdcaa65d14"><div class="ttname"><a href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a></div><div class="ttdeci">Cauchy dispersion parameters</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00022">Calculate_m.m:22</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ac4055e3a20b6b3af3d10590ea446ef6c"><div class="ttname"><a href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a></div><div class="ttdeci">droplet coordinates v</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00014">RayTracing.m:14</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ada275fd73bace2d376e859bbded8e68e"><div class="ttname"><a href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a></div><div class="ttdeci">refractive index of environment and lens respectively m1</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00124">RayTracing.m:124</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a27f5efe14c52fa358088a3f5d31d5922"><div class="ttname"><a href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a></div><div class="ttdeci">P2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00032">RayTracing.m:32</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aaccc9105df5383111407fd5b41255e23"><div class="ttname"><a href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></div><div class="ttdeci">direction vector of the line looking for the point of intersection of the line and lenses t</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00017">RayTracing.m:17</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a59dd33f2aa8046ea67bba3fad7a09e8e"><div class="ttname"><a href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a></div><div class="ttdeci">v6</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00102">RayTracing.m:102</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a9da9ecad31a80fb98272dcc7405af9af"><div class="ttname"><a href="_ray_tracing_8m.html#a9da9ecad31a80fb98272dcc7405af9af">isnan</a></div><div class="ttdeci">Proweriajem popal li lucz w linzu if isnan(rc)%lucz nie peresek sferu P</div></div>
+<div class="ttc" id="_pike_reader_8m_html_a091dd2547d36e2b58e43462d965834d7"><div class="ttname"><a href="_pike_reader_8m.html#a091dd2547d36e2b58e43462d965834d7">l1</a></div><div class="ttdeci">width of CCD setting the distance between center of the trap and first lens handles S l1</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00217">PikeReader.m:217</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aaa05ec51c2d691a0b7560a330374e1c4"><div class="ttname"><a href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a></div><div class="ttdeci">v4</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00052">RayTracing.m:52</a></div></div>
+<div class="ttc" id="fake_ray_trace_c_u_d_a_8cu_html_a64914f8dd39b9cfb45567446e55f7380"><div class="ttname"><a href="fake_ray_trace_c_u_d_a_8cu.html#a64914f8dd39b9cfb45567446e55f7380">RayTrace</a></div><div class="ttdeci">__host__ void RayTrace(float *Br, int Br_size, int *Vb, float *VH, int Vb_length, int VH_length, HandlesStructures S, float3 *IM, int IM_size, float3 *P)</div><div class="ttdoc">calculate ray tracing. call RayTraceD CUDA kernels </div><div class="ttdef"><b>Definition:</b> <a href="fake_ray_trace_c_u_d_a_8cu_source.html#l00033">fakeRayTraceCUDA.cu:33</a></div></div>
+<div class="ttc" id="_ray_trace_c_u_d_a__kernel_8cu_html_a2a43379900de4ef87e50b4e28da13291"><div class="ttname"><a href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a></div><div class="ttdeci">__device__ float3 findAlpha(float3 n, float3 v, float p, float m2)</div><div class="ttdef"><b>Definition:</b> <a href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00021">RayTraceCUDA_kernel.cu:21</a></div></div>
+<div class="ttc" id="demosaic__mw_8m_html_a6f6ccfcf58b31cb6412107d9d5281426"><div class="ttname"><a href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a></div><div class="ttdeci">switch pattern case rggb for i</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__mw_8m_source.html#l00025">demosaic_mw.m:25</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_afe83ce175095e439946163562d101dec"><div class="ttname"><a href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a></div><div class="ttdeci">return end stroim normal w punktie pereseczenija ns</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00051">RayTracing.m:51</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a48b1e0f0f342c6a0720585b62d204ef2"><div class="ttname"><a href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a></div><div class="ttdeci">P6</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00100">RayTracing.m:100</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a6383b85089594c4ebcc921ab908368a5"><div class="ttname"><a href="_ray_tracing_8m.html#a6383b85089594c4ebcc921ab908368a5">acosd</a></div><div class="ttdeci">dot(n, v acosd()</div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a9336ebf25087d91c818ee6e9ec29f8c1"><div class="ttname"><a href="_ray_tracing_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00095">RayTracing.m:95</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a1058d9ad301258665d276a3182ac2cb2"><div class="ttname"><a href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">ll</a></div><div class="ttdeci">Distance between center of the trap and first lens S ll</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00024">SetSystem.m:24</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_ad51c447b242fd7b0935d39a878faf3cb"><div class="ttname"><a href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a></div><div class="ttdeci">end end Recalculation meters to pixels shifting the origin to middle of the image The center of image isn t placed on[0, 0] point</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00308">PikeReader.m:308</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_a33cb10e751a17a81c39b07c9dc1710ae"><div class="ttname"><a href="_pike_reader_8m.html#a33cb10e751a17a81c39b07c9dc1710ae">calculation</a></div><div class="ttdeci">Angles calculation[THETA, PHI, R]</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00471">PikeReader.m:471</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aa20240d26ace6829859aba913f892152"><div class="ttname"><a href="_ray_tracing_8m.html#aa20240d26ace6829859aba913f892152">P7</a></div><div class="ttdeci">P7</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00107">RayTracing.m:107</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ae1439e1fe3c28a3f6208cba9a71f1a2d"><div class="ttname"><a href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a></div><div class="ttdeci">2 R()</div></div>
+<div class="ttc" id="_calculate__m_8m_html_a82ea416e80661b7fc65f91173022c0eb"><div class="ttname"><a href="_calculate__m_8m.html#a82ea416e80661b7fc65f91173022c0eb">lambda</a></div><div class="ttdeci">lambda</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00073">Calculate_m.m:73</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a2a792a898a039d36b908170327d38714"><div class="ttname"><a href="_ray_tracing_8m.html#a2a792a898a039d36b908170327d38714">p</a></div><div class="ttdeci">Snell s law if p</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00127">RayTracing.m:127</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a78d663047395fbda2ab172ef7d535a46"><div class="ttname"><a href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a></div><div class="ttdeci">return end P5</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00078">RayTracing.m:78</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_aee34fc740f3a5271508e6499ce2e3326"><div class="ttname"><a href="_ray_tracing_8m.html#aee34fc740f3a5271508e6499ce2e3326">X</a></div><div class="ttdeci">posledniaja toczka eto P5 X</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00097">RayTracing.m:97</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a0beaea967ea7920263f0580caccb0ed2"><div class="ttname"><a href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a></div><div class="ttdeci">Nachodim ugol mezdu normalju i vektorom padenia i stroim nowyj prelomlennyj wektor v3</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00039">RayTracing.m:39</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_ray_tracing_8m.html">RayTracing.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:34 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

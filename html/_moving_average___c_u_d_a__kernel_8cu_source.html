@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Plik źródłowy D:/Moje dokumenty/RayTracingCUDA_TJ/MovingAverage_CUDA_kernel.cu</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_moving_average___c_u_d_a__kernel_8cu_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">MovingAverage_CUDA_kernel.cu</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_moving_average___c_u_d_a__kernel_8cu.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="_moving_average___c_u_d_a__kernel_8cu.html#a6402e8b8594280624585b8fd643bfb65">    9</a></span>&#160;<span class="preprocessor">#define WIN32</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include&lt;stdlib.h&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;float.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;cuda_runtime.h&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="helper__functions_8h.html">helper_functions.h</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;helper_cuda.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector_types.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;helper_math.h&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;math_constants.h&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="_moving_average___c_u_d_a__kernel_8cu.html#a70be2dc5c8bdc85b027ea6118753cca1">   20</a></span>&#160;<span class="preprocessor">#define STEP 64</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;__global__</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="_moving_average___c_u_d_a__kernel_8cuh.html#a7adc48dbcc0a7f49a051705419aad804">   26</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_moving_average___c_u_d_a__kernel_8cu.html#a7adc48dbcc0a7f49a051705419aad804">MovingAverageD</a>(<span class="keywordtype">float</span>* <a class="code" href="demosaic__c__mex_8c.html#a60ef6e1bcfabb95cfeb300e1d03ce470">I</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> I_size, <span class="keywordtype">int</span>* I_S, <span class="keywordtype">float</span>* sI, <span class="keywordtype">float</span> step)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// unique block index inside a 3D block grid</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> blockId = blockIdx.x <span class="comment">//1D</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        + blockIdx.y * gridDim.x <span class="comment">//2D</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        + gridDim.x * gridDim.y * blockIdx.z; <span class="comment">//3D</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span>(index&gt;=I_size)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">float</span> value;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">float</span>* val0;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">    #pragma unroll</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>=0;<a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>&lt;step &amp;&amp; index+<a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>&lt;I_size;<a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>++)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        val0=sI+index+<a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        value=I[(<span class="keywordtype">unsigned</span> int)round(I_S[index]-1.0<a class="code" href="_pike_reader_8m.html#a7ecaf384ab87923ea947dbb29e4e4fa9">f</a>)];</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        atomicAdd(val0, value);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;__global__</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="_moving_average___c_u_d_a__kernel_8cuh.html#a1b83890df2e4f6c122b77d8e72c4f3e8">   48</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="_moving_average___c_u_d_a__kernel_8cu.html#a1b83890df2e4f6c122b77d8e72c4f3e8">DivD</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> I_size, <span class="keywordtype">float</span>* sI, <span class="keywordtype">float</span> step)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// unique block index inside a 3D block grid</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> blockId = blockIdx.x <span class="comment">//1D</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        + blockIdx.y * gridDim.x <span class="comment">//2D</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        + gridDim.x * gridDim.y * blockIdx.z; <span class="comment">//3D</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">if</span>(index&gt;=I_size)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span>(index&gt;=step-1)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        sI[index]/=(float)step;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        sI[index]/=(float)(index+1);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="ttc" id="_moving_average___c_u_d_a__kernel_8cu_html_a7adc48dbcc0a7f49a051705419aad804"><div class="ttname"><a href="_moving_average___c_u_d_a__kernel_8cu.html#a7adc48dbcc0a7f49a051705419aad804">MovingAverageD</a></div><div class="ttdeci">__global__ void MovingAverageD(float *I, unsigned int I_size, int *I_S, float *sI, float step)</div><div class="ttdef"><b>Definition:</b> <a href="_moving_average___c_u_d_a__kernel_8cu_source.html#l00026">MovingAverage_CUDA_kernel.cu:26</a></div></div>
+<div class="ttc" id="_moving_average___c_u_d_a__kernel_8cu_html_a1b83890df2e4f6c122b77d8e72c4f3e8"><div class="ttname"><a href="_moving_average___c_u_d_a__kernel_8cu.html#a1b83890df2e4f6c122b77d8e72c4f3e8">DivD</a></div><div class="ttdeci">__global__ void DivD(unsigned int I_size, float *sI, float step)</div><div class="ttdef"><b>Definition:</b> <a href="_moving_average___c_u_d_a__kernel_8cu_source.html#l00048">MovingAverage_CUDA_kernel.cu:48</a></div></div>
+<div class="ttc" id="demosaic__c__mex_8c_html_a60ef6e1bcfabb95cfeb300e1d03ce470"><div class="ttname"><a href="demosaic__c__mex_8c.html#a60ef6e1bcfabb95cfeb300e1d03ce470">I</a></div><div class="ttdeci">#define I</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__c__mex_8c_source.html#l00005">demosaic_c_mex.c:5</a></div></div>
+<div class="ttc" id="demosaic__mw_8m_html_a6f6ccfcf58b31cb6412107d9d5281426"><div class="ttname"><a href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a></div><div class="ttdeci">switch pattern case rggb for i</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__mw_8m_source.html#l00025">demosaic_mw.m:25</a></div></div>
+<div class="ttc" id="helper__functions_8h_html"><div class="ttname"><a href="helper__functions_8h.html">helper_functions.h</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_a7ecaf384ab87923ea947dbb29e4e4fa9"><div class="ttname"><a href="_pike_reader_8m.html#a7ecaf384ab87923ea947dbb29e4e4fa9">f</a></div><div class="ttdeci">end f</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00485">PikeReader.m:485</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_moving_average___c_u_d_a__kernel_8cu.html">MovingAverage_CUDA_kernel.cu</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:33 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

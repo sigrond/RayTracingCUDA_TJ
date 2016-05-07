@@ -1,0 +1,4 @@
+<map id="isnan" name="isnan">
+<area shape="rect" id="node2" href="$_reduced_mean_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5" title="function [nTheta, I_] = ReducedMean(Theta_S, deltaT, I, I_S) " alt="" coords="107,5,204,32"/>
+<area shape="rect" id="node3" href="$_ray_trace_c_u_d_a__kernel_8cuh.html#a019fa68800a77de11df2ca791c58f6af" title="RayTrace CUDA kernel function. " alt="" coords="112,56,199,83"/>
+</map>

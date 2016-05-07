@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/nvmex.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('nvmex_8m.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a> &#124;
+<a href="#var-members">Zmienne</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku nvmex.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><a href="nvmex_8m_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a9d849f570cbfced8e90e16fd3012fc29"><td class="memItemLeft" align="right" valign="top">e.g.%the resource linker on Windows&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex_8m.html#a9d849f570cbfced8e90e16fd3012fc29">at:http:Platforms:Note:Platforms:Platforms:Details:Details:Details:</a> (id,[http] id All,[Platforms] 'arch'machine,[Note] Inverse <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the-<a class="el" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">D</a> option.Windows,[Platforms] id UNIX,[Platforms] id File,[Details] id Option,[Details] e.g., COMPFLAGS=&quot;$COMPFLAGS opt2&quot;on Windows or%CFLAGS='$CFLAGS opt2'on UNIX Application,[Details] id <a class="el" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>)</td></tr>
+<tr class="separator:a9d849f570cbfced8e90e16fd3012fc29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58a8cc19bf018462b0ba04983e9e345a"><td class="memItemLeft" align="right" valign="top">id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex_8m.html#a58a8cc19bf018462b0ba04983e9e345a">Examples:file:information:</a> (id MEX,[<a class="el" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>] id debugging,[information] id <a class="el" href="_pike_reader_8m.html#a7c1ef7386988a8ccd4761d8428895842">varargout</a>)</td></tr>
+<tr class="separator:a58a8cc19bf018462b0ba04983e9e345a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442b44cad687b79b2b6662b258a8f8ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex_8m.html#a442b44cad687b79b2b6662b258a8f8ed">error</a> (<a class="el" href="nvmex_8m.html#ab4332075e676f1b545f5842d730167c6">err</a>)</td></tr>
+<tr class="separator:a442b44cad687b79b2b6662b258a8f8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Zmienne</h2></td></tr>
+<tr class="memitem:acc89f64219ddae53243030f2c645fc06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex_8m.html#acc89f64219ddae53243030f2c645fc06">varargout</a></td></tr>
+<tr class="separator:acc89f64219ddae53243030f2c645fc06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4332075e676f1b545f5842d730167c6"><td class="memItemLeft" align="right" valign="top">catch&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nvmex_8m.html#ab4332075e676f1b545f5842d730167c6">err</a> = rmfield(lasterror, 'stack')</td></tr>
+<tr class="separator:ab4332075e676f1b545f5842d730167c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="a9d849f570cbfced8e90e16fd3012fc29"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">e.g. % the resource linker on Windows at:http:Platforms:Note:Platforms:Platforms:Details:Details:Details: </td>
+          <td>(</td>
+          <td class="paramtype">id&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[http] id&#160;</td>
+          <td class="paramname"><em>All</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Platforms] 'arch'&#160;</td>
+          <td class="paramname"><em>machine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Note] Inverse <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the-<a class="el" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">D</a> option.&#160;</td>
+          <td class="paramname"><em>Windows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Platforms] id&#160;</td>
+          <td class="paramname"><em>UNIX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Platforms] id&#160;</td>
+          <td class="paramname"><em>File</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Details] id&#160;</td>
+          <td class="paramname"><em>Option</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Details] e.&#160;</td>
+          <td class="paramname"><em>g.</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">COMPFLAGS&#160;</td>
+          <td class="paramname"> = <code>&quot;$COMPFLAGS&#160;opt2&quot;on&#160;Windows&#160;or%CFLAGS='$CFLAGS&#160;opt2'on&#160;UNIX&#160;Application</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[Details] id&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a442b44cad687b79b2b6662b258a8f8ed"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">error </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nvmex_8m.html#ab4332075e676f1b545f5842d730167c6">err</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a58a8cc19bf018462b0ba04983e9e345a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">id Examples:file:information: </td>
+          <td>(</td>
+          <td class="paramtype">id&#160;</td>
+          <td class="paramname"><em>MEX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[file] id&#160;</td>
+          <td class="paramname"><em>debugging</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[information] id&#160;</td>
+          <td class="paramname"><em>varargout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex_8m_source.html#l00174">174</a> pliku <a class="el" href="nvmex_8m_source.html">nvmex.m</a>.</p>
+<div class="fragment"><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                                              :</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;%       For stand-alone engine and MAT-<a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a> applications, MEX does not use</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;%       the default options <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>; you must use the -<a class="code" href="_pike_reader_8m.html#a7ecaf384ab87923ea947dbb29e4e4fa9">f</a> option to specify</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;%       an options <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>.</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;%       </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;%       The options files used to generate stand-alone MATLAB engine and</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;%       MAT-<a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a> executables are named *engmatopts.bat on Windows, or</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;%       engopts.sh and matopts.sh on UNIX, and are located in the same</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;%       directory as the template options files referred to in the &quot;Options</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;%       File Details&quot; section.</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;%</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;%   Examples:</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;%       The following command compiles &quot;yprime.c&quot;, building a MEX-file:</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;%     </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;%           mex yprime.c</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;%     </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;%       When debugging, it is often useful to use &quot;verbose&quot; mode as well</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;%       as include symbolic debugging information:</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;%     </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;%           mex -v -g yprime.c</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;%</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;%   See also COMPUTER, DBMEX, LOADLIBRARY, MEXEXT, PCODE, PREFDIR, SYSTEM</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;% Copyright 1984-2006 The MathWorks, Inc.</div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a53be3e8a3476298b0e2ca95e4fa573fc"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input file(including.avi extension)</div></div>
+<div class="ttc" id="_pike_reader_8m_html_a7ecaf384ab87923ea947dbb29e4e4fa9"><div class="ttname"><a href="_pike_reader_8m.html#a7ecaf384ab87923ea947dbb29e4e4fa9">f</a></div><div class="ttdeci">end f</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00485">PikeReader.m:485</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja zmiennych</h2>
+<a class="anchor" id="ab4332075e676f1b545f5842d730167c6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">catch err = rmfield(lasterror, 'stack')</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="nvmex_8m_source.html#l00201">201</a> pliku <a class="el" href="nvmex_8m_source.html">nvmex.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acc89f64219ddae53243030f2c645fc06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> varargout</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= nvmex(varargin)</div>
+<div class="line">%MEX   Compile MEX-<a class="code" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a></div>
+<div class="line">%</div>
+<div class="line">%   Usage:</div>
+<div class="line">%       nvmex [options ...] file [files ...]</div>
+<div class="line">%</div>
+<div class="line">%   Description:</div>
+<div class="line">%       MEX compiles and links source files into a shared library called a </div>
+<div class="line">%       MEX-file</div>
+<div class="ttc" id="_calculate__m_8m_html_a620c273b62a1f455230fe4c42528ff31"><div class="ttname"><a href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a></div><div class="ttdeci">function[m]</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00001">Calculate_m.m:1</a></div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="nvmex_8m_source.html#l00001">1</a> pliku <a class="el" href="nvmex_8m_source.html">nvmex.m</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="nvmex_8m.html">nvmex.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:37 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

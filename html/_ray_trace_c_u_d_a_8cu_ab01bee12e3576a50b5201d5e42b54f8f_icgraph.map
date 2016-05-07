@@ -1,0 +1,4 @@
+<map id="iDivUp" name="iDivUp">
+<area shape="rect" id="node2" href="$_ray_trace_c_u_d_a_8cu.html#ad4e437e740b68751d689abe404aeeaac" title="compute grid and thread block size for a given number of elements " alt="" coords="112,5,235,32"/>
+<area shape="rect" id="node3" href="$_ray_trace_c_u_d_a_8cuh.html#a8b4ff823f9a72731db12b1e6a83068f4" title="calculate ray tracing. call RayTraceD CUDA kernels " alt="" coords="283,5,360,32"/>
+</map>

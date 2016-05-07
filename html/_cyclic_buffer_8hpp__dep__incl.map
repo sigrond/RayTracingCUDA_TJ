@@ -1,0 +1,7 @@
+<map id="D:/Moje dokumenty/RayTracingCUDA_TJ/CyclicBuffer.hpp" name="D:/Moje dokumenty/RayTracingCUDA_TJ/CyclicBuffer.hpp">
+<area shape="rect" id="node2" href="$avireadtest_8cpp.html" title="plik do testowania poza matlabem kompilacja: nvcc avireadtest.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu &#45;gencode=arch=compute_30,code=sm_30 &#45;gencode=arch=compute_30,code=compute_30 &#45;std=c++11 –use&#45;local&#45;env –cl&#45;version 2012 &#45;IC: &#45;lcufft &#45;lcudart &#45;lcuda " alt="" coords="5,95,209,136"/>
+<area shape="rect" id="node3" href="$_cyclic_buffer_8cpp.html" title="plik z implementacjami metod klasy monitora z buforem cyklicznym " alt="" coords="233,95,437,136"/>
+<area shape="rect" id="node4" href="$_frame_reader_8hpp.html" title="Plik nag�owkowy klasy FrameReader. " alt="" coords="461,95,665,136"/>
+<area shape="rect" id="node6" href="$_intens_calc_8cu.html" title="kompilacja w matlabie: nvmex &#45;f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu &#45;IC: &#45;LC: &#45;lcufft &#45;lcudart &#45;lcuda COMPFLAGS=&quot;$COMPFLAGS &#45;std=c++11&quot; " alt="" coords="689,95,893,136"/>
+<area shape="rect" id="node5" href="$_frame_reader_8cpp.html" title="Plik z implementacjami metod klasy FrameReader. " alt="" coords="461,184,665,225"/>
+</map>

@@ -1,0 +1,430 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Plik źródłowy D:/Moje dokumenty/RayTracingCUDA_TJ/nvmex_helper.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('nvmex__helper_8m_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">nvmex_helper.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="nvmex__helper_8m.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">    1</a></span>&#160;<span class="keyword">function</span> <a class="code" href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">errorCode</a> = nvmex_helper(varargin)</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;%MEX_HELPER is a helper <span class="keyword">function</span> that contains the code that MEX.M (an </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;%   autogenerated <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>) executes.  It sets up the inputs to call <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a>.pl (on PC)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;%   and <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> (on Unix).</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;%  </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;%   For information on how to use MEX see MEX help by typing <span class="stringliteral">&quot;help mex&quot;</span> or </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;%   <span class="stringliteral">&quot;mex -h&quot;</span>.</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;%   Copyright 1984-2006 The MathWorks, Inc.</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;%   <a class="code" href="nvmex__helper_8m.html#a98baafc6b8f14f13df653fdddf418cff">$Revision</a>: 1.1.6.1 $</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;if isunix</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    mexname = get_mex_opts(varargin{:});</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">if</span> <a class="code" href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a>(<a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">   17</a></span>&#160;        [loaded_m, loaded_mex] = inmem;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a>(<a class="code" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            clear_mex_file(<a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        end</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    end</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">   23</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a> = [&#39; &quot;ARCH=&#39; computer(&#39;arch&#39;) &#39;&quot;&#39;];</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a> (nargin &gt; 0)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a> = [<a class="code" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a> sprintf(&#39; &quot;%<a class="code" href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a>&quot;&#39;, varargin{:})];</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    end</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">   27</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a> = unix([matlabroot <span class="stringliteral">&#39;/bin/mex&#39;</span> <a class="code" href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a>]);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a> ispc</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    </div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">   31</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a> = get_mex_opts(varargin{:});</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">   32</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a>=[matlabroot &#39;\bin&#39;];</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> <a class="code" href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a>(<a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        [loaded_m, loaded_mex] = inmem;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a>(<a class="code" href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a>)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            clear_mex_file(<a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        end</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    end</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    % Loop over all the arguments. Put extra quotes around any that</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    % contain spaces.</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">   43</a></span>&#160;    for <a class="code" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a>=1:numel(varargin)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <a class="code" href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a> (find(varargin{<a class="code" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a>} == <span class="charliteral">&#39; &#39;</span>))</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            varargin{<a class="code" href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a>} = [ &#39;&quot;&#39; varargin{i} &#39;&quot;&#39; ];</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        end</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    end</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    % Format the <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a> command</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a20abaa114426c76c3ed451b6d987917c">   50</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#a20abaa114426c76c3ed451b6d987917c">cmdargs</a> = [&#39;-called_from_matlab -matlab &quot;&#39; matlabroot &#39;&quot; &#39; sprintf(&#39; %s&#39;, varargin{:})];</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (any(<a class="code" href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a> == <span class="charliteral">&#39; &#39;</span>))</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">quote_str</a> = <span class="charliteral">&#39;&quot;&#39;</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">   54</a></span>&#160;        <a class="code" href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">quote_str</a> = <span class="stringliteral">&#39;&#39;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    end</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a24ef1f5833358a3897d1e2119db385af">   57</a></span>&#160;    <a class="code" href="nvmex__helper_8m.html#a24ef1f5833358a3897d1e2119db385af">cmdtool</a> = [quote_str matlabroot &#39;\sys\perl\win32\bin\perl.exe&#39; quote_str &#39; &#39; ... </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;               quote_str matlab_bin_location &#39;\nvmex.pl&#39; quote_str];</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    [cmd, rspfile] = make_rsp_file(<a class="code" href="nvmex__helper_8m.html#a24ef1f5833358a3897d1e2119db385af">cmdtool</a>, <a class="code" href="nvmex__helper_8m.html#a20abaa114426c76c3ed451b6d987917c">cmdargs</a>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a> = dos([ <a class="code" href="nvmex__helper_8m.html#adfc5ba7e22f5e4a6221c12a70503bef3">cmd</a> <span class="stringliteral">&#39; -&#39;</span> computer(<span class="stringliteral">&#39;arch&#39;</span>) ]);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            % This is done to force a change <a class="code" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a> in <span class="keywordflow">case</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a6c139bb15419b7b513993481d9ef4f40">   64</a></span>&#160;            % notificationhandles are not working properly. If it <a class="code" href="nvmex__helper_8m.html#a6c139bb15419b7b513993481d9ef4f40">fails</a>, we</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            % just want to keep going.</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">   66</a></span>&#160;            <a class="code" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a> = fileparts(<a class="code" href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="nvmex__helper_8m.html#a4f4cc2444b7da15a2aa65807e00639e7">fschange</a>(<a class="code" href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">catch</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        end</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">catch</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="nvmex__helper_8m.html#ae605ef29128b5bf623676bcd5f2212a0">disp</a>(lasterr);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a> = 1; % failure</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    end</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">delete</span>(rspfile);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;end</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordflow">if</span> (<a class="code" href="_pike_reader_8m.html#a9b07119da70fc4a54e0d1cb5751d69aa">nargout</a> &gt; 0) </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">errorCode</a> = <a class="code" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<a class="code" href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a> (<a class="code" href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a> ~= 0)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    errorStruct.identifier=&#39;MATLAB:MEX:genericFailure&#39;;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">   81</a></span>&#160;    errorStruct.<a class="code" href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a>=&#39;Unable to complete successfully.&#39;;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="nvmex__helper_8m.html#a0489ecd4c030bc4b6352ec04a2c0ddd0">rethrow</a>(errorStruct);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;end</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;%%%%%%%%%%%%%%%%%%%%</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;%%% SUBFUNCTIONS %%%</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;%%%%%%%%%%%%%%%%%%%%</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#aa4a7512f97cc47ff0bda46dd2db7ce2d">   90</a></span>&#160;<a class="code" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> <a class="code" href="nvmex__helper_8m.html#aa4a7512f97cc47ff0bda46dd2db7ce2d">result</a> = read_response_file(filename)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;%</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;% Read a <a class="code" href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a> file (a filename that starts with &#39;@&#39;)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;% and return a cell <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> strings, one per entry in the <a class="code" href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a> file.</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;% Use Perl to ensure processing <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> arguments is the same as <a class="code" href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a>.bat</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;%</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<a class="code" href="nvmex__helper_8m.html#aa4a7512f97cc47ff0bda46dd2db7ce2d">result</a> = {};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#adfc5ba7e22f5e4a6221c12a70503bef3">   99</a></span>&#160;<a class="code" href="nvmex__helper_8m.html#adfc5ba7e22f5e4a6221c12a70503bef3">cmd</a> = [&#39;&quot;&#39; matlabroot &#39;\sys\perl\win32\bin\perl&quot; -e &quot;&#39; ...</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    &#39;require &#39;&#39;&#39; matlabroot &#39;\\sys\\perl\\win32\\lib\\shellwords.pl&#39;&#39;;&#39; ...</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    &#39;open(FILE, &#39;&#39;&#39; filename &#39;&#39;&#39;) || die &#39;&#39;Could not open &#39; filename &#39;&#39;&#39;;&#39; ...</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    &#39;while (&lt;FILE&gt;) {$line .= $_;} &#39; ...</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    &#39;$line =~ s/\\/\\\\/g;&#39; ...</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="nvmex__helper_8m.html#a30e837d211f0030e72fa8d317be59d56">  104</a></span>&#160;    &#39;@ARGS = &amp;shellwords($line); &#39; ...</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    &#39;$\&quot; = \&quot;\n\&quot;;&#39; ...</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    &#39;print \&quot;@ARGS\&quot;;&#39;];</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;[s, r] = dos(cmd);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;if s == 0</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    cr = sprintf(&#39;\n&#39;);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    while ~isempty(r)</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        [result{end+1}, r] = strtok(r, cr);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    end</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;end</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;function [mexname, setup] = get_mex_opts(varargin)</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;%</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;% GET_MEX_OPTS gets the options from the command line.</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;%</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;% name:</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;% It gets the name of the destination MEX-file.  This has two</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;% purposes: </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;%   1) All platforms need to clear the MEX-file from memory before</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;%      attempting the build, to avoid problems rebuilding shared</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;%      libraries that the OS considers &quot;in use&quot;.</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;%   2) Windows MATLAB deletes the MEX-file before the build occurs.</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;%      It then checks to see whether the MEX-file was created so as</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;%      to establish error status.</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;%   This function returns the minimum necessary information.  Further</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;%   processing is done on the MEX-file name by clear_mex_file to </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;%   successfully clear it.</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;%</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;% setup:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;% It also returns whether or not &#39;-setup&#39; was passed.</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;%</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;mexname = &#39;&#39;;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;outdir = &#39;&#39;;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;setup = 0;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;% First, check for and expand response files into varargin.</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;v = {};</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;for count=1:nargin</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    arg = varargin{count};</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    if arg(1) == &#39;@&#39;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        new_args = read_response_file(arg(2:end));</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        v(end+1:end+length(new_args)) = new_args;          </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    else</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        v{end+1} = arg;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    end</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;end</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;varargin = v;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;count = 1;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;while (count &lt;= nargin)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    arg = varargin{count};</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    if isempty(mexname) &amp;&amp; arg(1) ~= &#39;-&#39; &amp;&amp; ~any(arg==&#39;=&#39;) &amp;&amp; any(arg==&#39;.&#39;)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        % Source file: MEX-file will be built in current directory</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        % Only the first source file matters</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        mexname = arg;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        [notUsed, mexname] = fileparts(mexname); %#ok</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    elseif strcmp(arg, &#39;-f&#39;)</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        count = count + 1;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    elseif strcmp(arg, &#39;-output&#39;)</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        count = count + 1;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        if count &gt; length(varargin)</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            errorStruct.identifier = &#39;MATLAB:MEX:OutputSwitchMisuse&#39;;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            errorStruct.message = &#39;The -output switch must be followed by a file name.&#39;;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            rethrow(errorStruct);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        end</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        mexname = varargin{count};</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        [outdirTemp,mexname]=fileparts(mexname);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    elseif strcmp(arg, &#39;-outdir&#39;)</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        count = count + 1;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        if count &gt; length(varargin)</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            errorStruct.identifier = &#39;MATLAB:MEX:OutdirSwitchMisuse&#39;;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            errorStruct.message = &#39;The -outdir switch must be followed by a directory name.&#39;;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            rethrow(errorStruct);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        end</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        outdir = varargin{count};</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    elseif strcmp(arg, &#39;-setup&#39;)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        setup = 1;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        break;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    end</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    count = count + 1;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;end</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;if isempty(outdir) &amp;&amp; exist(&#39;outdirTemp&#39;,&#39;var&#39;) %Meaning -ouptut</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                                %used but not -outdir</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    outdir = outdirTemp;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;end</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;mexname = fullfile(outdir, mexname);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;function clear_mex_file(basename)</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;%</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;% CLEAR_MEX_FILE Clear a MEX-file from memory.  This is a tricky</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;%   business and should be avoided if possible.  It takes a relative</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;%   or absolute filename as the MEX-file name, and the list of loaded</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;%   MEX-file names.</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;%</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;%   If CLEAR_MEX_FILE is unable to clear the MEX-file, it will error.</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;%   This can happen if the MEX-file is locked.</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;% The purpose of following block is to make sure that fullname is a fully</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;% qualified path.</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;seps = find(basename == filesep);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;if isempty(seps)</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    % basename is in the current directory</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    fullname = fullfile(cd,basename);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;else</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    % -output or -outdir was used to determine the location, as well as the</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    % name of the mex file.</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;     savedir = cd;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;     [destdir,destname] = fileparts(basename);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;     cd(destdir);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;     fullname = fullfile(cd,destname);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;     cd(savedir);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;end</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;if ~isempty(findstr(fullname, &#39;private&#39;))</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    % Things in private directories are represented by the full</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    % path</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    mexname = fullname;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;else</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    modifiers = find(fullname == &#39;@&#39;);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    if any(modifiers)</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        % Methods have the class directory prepended</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        mexname = fullname((modifiers(end)+1):end);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        % Methods are always displayed with UNIX file</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        % separators</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        mexname(mexname==filesep) = &#39;/&#39;;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    else</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        % Otherwise, we just use the base name</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        mexname = basename;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    end</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;end</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;clear_mex(mexname);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;% Make sure that the MEX-file is cleared</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;[ms, mexs] = inmem;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;if ~isempty(strmatch(mexname, mexs, &#39;exact&#39;))</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    errorStruct.identifier = &#39;MATLAB:MEX:mexFileLocked&#39;;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    errorStruct.message = &#39;Your MEX-file is locked and must be unlocked before recompiling.&#39;;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    rethrow(errorStruct);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;end</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;function clear_mex(varargin)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;% This will clear a MEX-file successfully, because it has no internal</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;% variables.  varargin is a builtin function and is therefore not a</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;% valid MEX-file name.</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;clear(varargin{:});</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;function [cmd, rspfile] = make_rsp_file(cmdtool, cmdargs)</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;rspfile = [tempname &#39;.rsp&#39;];</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;[Frsp, errmsg] = fopen(rspfile, &#39;wt&#39;);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;if Frsp == -1</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    errorStruct.identifier = &#39;MATLAB:MEX:RspFilePermissionOpen&#39;;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    errorStruct.message = sprintf(&#39;Cannot open file &quot;%s&quot; for writing: %s.&#39;, rspfile, errmsg);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    rethrow(errorStruct);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;end</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;try</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    count = fprintf(Frsp, &#39;%s&#39;, cmdargs);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    if count &lt; length(cmdargs)</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        errmsg = ferror(Frsp);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        errorStruct.identifier = &#39;MATLAB:MEX:RspFilePermissionWrite&#39;;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        errorStruct.message = sprintf(&#39;Cannot write to file &quot;%s&quot;: %s.&#39;, rspfile, errmsg);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        rethrow(errorStruct);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    end</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    fclose(Frsp);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;catch</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    fclose(Frsp);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    delete(rspfile);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    rethrow(lasterror);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;end</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    cmd = [cmdtool &#39; @&quot;&#39; rspfile &#39;&quot;&#39;];</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
+<div class="ttc" id="nvmex__helper_8m_html_aed59709df4276019b328625ec2f732a1"><div class="ttname"><a href="nvmex__helper_8m.html#aed59709df4276019b328625ec2f732a1">~isempty</a></div><div class="ttdeci">if ~isempty(mexname)[loaded_m</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a24ef1f5833358a3897d1e2119db385af"><div class="ttname"><a href="nvmex__helper_8m.html#a24ef1f5833358a3897d1e2119db385af">cmdtool</a></div><div class="ttdeci">end cmdtool</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00057">nvmex_helper.m:57</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a6c139bb15419b7b513993481d9ef4f40"><div class="ttname"><a href="nvmex__helper_8m.html#a6c139bb15419b7b513993481d9ef4f40">fails</a></div><div class="ttdeci">try This is done to force a change message in case notificationhandles are not working properly If it fails</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00064">nvmex_helper.m:64</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ab21dfbb3c00ee9af7c79459265351b48"><div class="ttname"><a href="nvmex__helper_8m.html#ab21dfbb3c00ee9af7c79459265351b48">quote_str</a></div><div class="ttdeci">else quote_str</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00054">nvmex_helper.m:54</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ae605ef29128b5bf623676bcd5f2212a0"><div class="ttname"><a href="nvmex__helper_8m.html#ae605ef29128b5bf623676bcd5f2212a0">disp</a></div><div class="ttdeci">catch end catch disp(lasterr)</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a7c23f3b8ac85aefec2420a42bc029792"><div class="ttname"><a href="nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792">matlab_bin_location</a></div><div class="ttdeci">matlab_bin_location</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00032">nvmex_helper.m:32</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_aefc58e2aa2fcd319de777ecd3067fdd9"><div class="ttname"><a href="_pike_reader_8m.html#aefc58e2aa2fcd319de777ecd3067fdd9">response</a></div><div class="ttdeci">UIWAIT makes PikeReader wait for user response(see UIRESUME)%uiwait(handles.Fig1)</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a3ccaf008556dc6115a8ea9ccf52a2639"><div class="ttname"><a href="nvmex__helper_8m.html#a3ccaf008556dc6115a8ea9ccf52a2639">errCode</a></div><div class="ttdeci">end errCode</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00027">nvmex_helper.m:27</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_a9298037979afd4748a15c04dbf4dad7b"><div class="ttname"><a href="_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b">mex</a></div><div class="ttdeci">clear mex</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00089">PikeReader.m:89</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a52e3417805be73af234040a44925af06"><div class="ttname"><a href="nvmex__helper_8m.html#a52e3417805be73af234040a44925af06">elseif</a></div><div class="ttdeci">elseif(errCode~=0) errorStruct.identifier</div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a3691308f2a4c2f6983f2880d32e29c84"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition:</b> <a href="_avi_read_pike___split_8m_source.html#l00028">AviReadPike_Split.m:28</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ad8d23f65a2106af54da14e9e96a39811"><div class="ttname"><a href="nvmex__helper_8m.html#ad8d23f65a2106af54da14e9e96a39811">if</a></div><div class="ttdeci">if(nargin &gt; 0) args</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_aef2f019afdbe62fe276ec54e33c9555f"><div class="ttname"><a href="nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f">mexpath</a></div><div class="ttdeci">try This is done to force a change message in case notificationhandles are not working properly If it we just want to keep going mexpath</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00066">nvmex_helper.m:66</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a518de3456d7b17fa4c64b7f5ea4cbcec"><div class="ttname"><a href="nvmex__helper_8m.html#a518de3456d7b17fa4c64b7f5ea4cbcec">loaded_mex</a></div><div class="ttdeci">if loaded_mex</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00017">nvmex_helper.m:17</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a4f4cc2444b7da15a2aa65807e00639e7"><div class="ttname"><a href="nvmex__helper_8m.html#a4f4cc2444b7da15a2aa65807e00639e7">fschange</a></div><div class="ttdeci">fschange(mexpath)</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_abd4185f6c6867456d4856595efdcd28d"><div class="ttname"><a href="nvmex__helper_8m.html#abd4185f6c6867456d4856595efdcd28d">errorCode</a></div><div class="ttdeci">function errorCode</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00001">nvmex_helper.m:1</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a0489ecd4c030bc4b6352ec04a2c0ddd0"><div class="ttname"><a href="nvmex__helper_8m.html#a0489ecd4c030bc4b6352ec04a2c0ddd0">rethrow</a></div><div class="ttdeci">rethrow(errorStruct)</div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ac2d1a34c748aa986f976355f24f1e435"><div class="ttname"><a href="nvmex__helper_8m.html#ac2d1a34c748aa986f976355f24f1e435">i</a></div><div class="ttdeci">end end Loop over all the arguments Put extra quotes around any that contain spaces for i</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00043">nvmex_helper.m:43</a></div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a53be3e8a3476298b0e2ca95e4fa573fc"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input file(including.avi extension)</div></div>
+<div class="ttc" id="_calculate__m_8m_html_a620c273b62a1f455230fe4c42528ff31"><div class="ttname"><a href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a></div><div class="ttdeci">function[m]</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00001">Calculate_m.m:1</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_ac2f1eaf2b095de910e29b1862790d763"><div class="ttname"><a href="nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763">message</a></div><div class="ttdeci">errorStruct message</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00081">nvmex_helper.m:81</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_adfc5ba7e22f5e4a6221c12a70503bef3"><div class="ttname"><a href="nvmex__helper_8m.html#adfc5ba7e22f5e4a6221c12a70503bef3">cmd</a></div><div class="ttdeci">cmd</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00099">nvmex_helper.m:99</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_aa4a7512f97cc47ff0bda46dd2db7ce2d"><div class="ttname"><a href="nvmex__helper_8m.html#aa4a7512f97cc47ff0bda46dd2db7ce2d">result</a></div><div class="ttdeci">end SUBFUNCTIONS function result</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00090">nvmex_helper.m:90</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a20abaa114426c76c3ed451b6d987917c"><div class="ttname"><a href="nvmex__helper_8m.html#a20abaa114426c76c3ed451b6d987917c">cmdargs</a></div><div class="ttdeci">end end Format the mex command cmdargs</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00050">nvmex_helper.m:50</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_af80dc9f1f7bc03460e1d43da1614d46d"><div class="ttname"><a href="nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d">mexname</a></div><div class="ttdeci">elseif ispc mexname</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00031">nvmex_helper.m:31</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_a98baafc6b8f14f13df653fdddf418cff"><div class="ttname"><a href="nvmex__helper_8m.html#a98baafc6b8f14f13df653fdddf418cff">$Revision</a></div><div class="ttdeci">function Inc $Revision</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00001">nvmex_helper.m:1</a></div></div>
+<div class="ttc" id="nvmex__helper_8m_html_abb28a75740da4e379c38d2fa99060f40"><div class="ttname"><a href="nvmex__helper_8m.html#abb28a75740da4e379c38d2fa99060f40">args</a></div><div class="ttdeci">end end args</div><div class="ttdef"><b>Definition:</b> <a href="nvmex__helper_8m_source.html#l00023">nvmex_helper.m:23</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_a9b07119da70fc4a54e0d1cb5751d69aa"><div class="ttname"><a href="_pike_reader_8m.html#a9b07119da70fc4a54e0d1cb5751d69aa">nargout</a></div><div class="ttdeci">end if nargout[varargout{1:nargout}]</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00020">PikeReader.m:20</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="nvmex__helper_8m.html">nvmex_helper.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:33 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

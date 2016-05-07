@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/OneshotAviread.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_oneshot_aviread_8cpp.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Definicje</a> &#124;
+<a href="#func-members">Funkcje</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku OneshotAviread.cpp</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>kompilacja w matlabie: nvmex -f nvmexopts64.bat <a class="el" href="_oneshot_aviread_8cpp.html" title="kompilacja w matlabie: nvmex -f nvmexopts64.bat OneshotAviread.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu -IC: -LC: -lcufft -lcudart -lcuda COMPFLAGS=&quot;$COMPFLAGS -std=c++11&quot; ">OneshotAviread.cpp</a> <a class="el" href="_intens_calc___c_u_d_a__kernel_8cu.html" title="funkcje CUDA na GPU ">IntensCalc_CUDA_kernel.cu</a> <a class="el" href="_intens_calc___c_u_d_a_8cu.html" title="plik z implementacjami funkcji wywołujących CUDA&#39;ę ">IntensCalc_CUDA.cu</a> -IC:</p>
+<div class="fragment"></div><!-- fragment --><p> -LC: -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"  
+<a href="#details">Więcej...</a></p>
+<div class="textblock"><code>#include &quot;mex.h&quot;</code><br/>
+<code>#include &lt;cstdio&gt;</code><br/>
+<code>#include &lt;cstdlib&gt;</code><br/>
+<code>#include &lt;fstream&gt;</code><br/>
+<code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;thread&gt;</code><br/>
+<code>#include &lt;exception&gt;</code><br/>
+<code>#include &quot;<a class="el" href="_intens_calc___c_u_d_a_8cuh_source.html">IntensCalc_CUDA.cuh</a>&quot;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Wykres zależności załączania dla OneshotAviread.cpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="_oneshot_aviread_8cpp__incl.png" border="0" usemap="#_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2_oneshot_aviread_8cpp" alt=""/></div>
+<map name="_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2_oneshot_aviread_8cpp" id="_d_1_2_moje_01dokumenty_2_ray_tracing_c_u_d_a___t_j_2_oneshot_aviread_8cpp">
+<area shape="rect" id="node9" href="_intens_calc___c_u_d_a_8cuh.html" title="plik nagłówkowy funkcji wywołujących CUDA&#39;ę " alt="" coords="609,95,759,121"/></map>
+</div>
+</div>
+<p><a href="_oneshot_aviread_8cpp_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Definicje</h2></td></tr>
+<tr class="memitem:a6402e8b8594280624585b8fd643bfb65"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_oneshot_aviread_8cpp.html#a6402e8b8594280624585b8fd643bfb65">WIN32</a></td></tr>
+<tr class="separator:a6402e8b8594280624585b8fd643bfb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a6a215cbfde54f82a3ce599228fc3fce5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_oneshot_aviread_8cpp.html#a6a215cbfde54f82a3ce599228fc3fce5">mexFunction</a> (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])</td></tr>
+<tr class="separator:a6a215cbfde54f82a3ce599228fc3fce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>kompilacja w matlabie: nvmex -f nvmexopts64.bat <a class="el" href="_oneshot_aviread_8cpp.html" title="kompilacja w matlabie: nvmex -f nvmexopts64.bat OneshotAviread.cpp IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu -IC: -LC: -lcufft -lcudart -lcuda COMPFLAGS=&quot;$COMPFLAGS -std=c++11&quot; ">OneshotAviread.cpp</a> <a class="el" href="_intens_calc___c_u_d_a__kernel_8cu.html" title="funkcje CUDA na GPU ">IntensCalc_CUDA_kernel.cu</a> <a class="el" href="_intens_calc___c_u_d_a_8cu.html" title="plik z implementacjami funkcji wywołujących CUDA&#39;ę ">IntensCalc_CUDA.cu</a> -IC:</p>
+<div class="fragment"></div><!-- fragment --><p> -LC: -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11" </p>
+<dl class="section author"><dt>Autor</dt><dd>Tomasz Jakubczyk </dd></dl>
+
+<p>Definicja w pliku <a class="el" href="_oneshot_aviread_8cpp_source.html">OneshotAviread.cpp</a>.</p>
+</div><h2 class="groupheader">Dokumentacja definicji</h2>
+<a class="anchor" id="a6402e8b8594280624585b8fd643bfb65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WIN32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_oneshot_aviread_8cpp_source.html#l00008">8</a> pliku <a class="el" href="_oneshot_aviread_8cpp_source.html">OneshotAviread.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="a6a215cbfde54f82a3ce599228fc3fce5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mexFunction </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nlhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mxArray *&#160;</td>
+          <td class="paramname"><em>plhs</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nrhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const mxArray *&#160;</td>
+          <td class="paramname"><em>prhs</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>&lt; aktualny adres zapisu z dysku</p>
+<p>&lt; 64KB to optymalny rozmiar bloku czytanego z dysku </p>
+
+<p>Definicja w linii <a class="el" href="_oneshot_aviread_8cpp_source.html#l00023">23</a> pliku <a class="el" href="_oneshot_aviread_8cpp_source.html">OneshotAviread.cpp</a>.</p>
+
+<p>Odwołuje się do <a class="el" href="_intens_calc___c_u_d_a_8cu_source.html#l00318">copyBuff()</a>, <a class="el" href="_intens_calc___c_u_d_a_8cu_source.html#l00338">doIC()</a>, <a class="el" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file()</a>, <a class="el" href="_intens_calc___c_u_d_a_8cu_source.html#l00523">freeCUDA_IC()</a>, <a class="el" href="demosaic__mw_8m_source.html#l00025">i</a>, <a class="el" href="demosaic__mw_8m_source.html#l00048">j</a>, <a class="el" href="_intens_calc___c_u_d_a_8cu_source.html#l00087">setupCUDA_IC()</a> i <a class="el" href="_avi_read_pike___split_8m_source.html#l00027">skok</a>.</p>
+<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="_intens_calc___c_u_d_a_8cu.html#a1d82d2d00d7cc54a527f556907b49086">setupCUDA_IC</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">char</span> name[]=<span class="stringliteral">&quot;E:\\DEG_clean402.avi\0&quot;</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    ifstream <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a> (name, ios::in|ios::binary);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="_avi_read_pike___split_8m.html#af7e606812dceafe6b432386d2ed26341">skok</a> = (640*480*2)+8;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">char</span>* buff=<span class="keyword">new</span> <span class="keywordtype">char</span>[65535*10];</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a>=1;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>.seekg((34824+(skok*(i))),ios::beg);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> <a class="code" href="demosaic__mw_8m.html#a4f4b1425de1ab7dfec29cfbb3bfd4757">j</a>=0;<a class="code" href="demosaic__mw_8m.html#a4f4b1425de1ab7dfec29cfbb3bfd4757">j</a>&lt;10;<a class="code" href="demosaic__mw_8m.html#a4f4b1425de1ab7dfec29cfbb3bfd4757">j</a>++)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a>.read(buff+<a class="code" href="demosaic__mw_8m.html#a4f4b1425de1ab7dfec29cfbb3bfd4757">j</a>*65535,65535);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">//for(int i=0;i&lt;640*480*2;i++)</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">//    printf(&quot;%d &quot;,buff[i]);</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="_intens_calc___c_u_d_a_8cu.html#a997c87c5d0dd10c13e485b1007e1a47f">copyBuff</a>(buff);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="_intens_calc___c_u_d_a_8cu.html#a8494aebdb81f1b39234c086f0fc6753e">doIC</a>(<span class="keyword">nullptr</span>,<span class="keyword">nullptr</span>,<span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="_intens_calc___c_u_d_a_8cu.html#acd8e703dad3053671f5d9ba6906f9366">freeCUDA_IC</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<div class="ttc" id="_intens_calc___c_u_d_a_8cu_html_acd8e703dad3053671f5d9ba6906f9366"><div class="ttname"><a href="_intens_calc___c_u_d_a_8cu.html#acd8e703dad3053671f5d9ba6906f9366">freeCUDA_IC</a></div><div class="ttdeci">void freeCUDA_IC()</div><div class="ttdoc">zwalnianie zajętych zasobów CUDA </div><div class="ttdef"><b>Definition:</b> <a href="_intens_calc___c_u_d_a_8cu_source.html#l00523">IntensCalc_CUDA.cu:523</a></div></div>
+<div class="ttc" id="_intens_calc___c_u_d_a_8cu_html_a997c87c5d0dd10c13e485b1007e1a47f"><div class="ttname"><a href="_intens_calc___c_u_d_a_8cu.html#a997c87c5d0dd10c13e485b1007e1a47f">copyBuff</a></div><div class="ttdeci">void copyBuff(char *buff)</div><div class="ttdoc">kopiuje bufor do GPU </div><div class="ttdef"><b>Definition:</b> <a href="_intens_calc___c_u_d_a_8cu_source.html#l00318">IntensCalc_CUDA.cu:318</a></div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a53be3e8a3476298b0e2ca95e4fa573fc"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc">file</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input file(including.avi extension)</div></div>
+<div class="ttc" id="demosaic__mw_8m_html_a6f6ccfcf58b31cb6412107d9d5281426"><div class="ttname"><a href="demosaic__mw_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a></div><div class="ttdeci">switch pattern case rggb for i</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__mw_8m_source.html#l00025">demosaic_mw.m:25</a></div></div>
+<div class="ttc" id="_intens_calc___c_u_d_a_8cu_html_a8494aebdb81f1b39234c086f0fc6753e"><div class="ttname"><a href="_intens_calc___c_u_d_a_8cu.html#a8494aebdb81f1b39234c086f0fc6753e">doIC</a></div><div class="ttdeci">void doIC(float *I_Red, float *I_Green, float *I_Blue)</div><div class="ttdoc">zwraca wektor natężeń od theta </div><div class="ttdef"><b>Definition:</b> <a href="_intens_calc___c_u_d_a_8cu_source.html#l00338">IntensCalc_CUDA.cu:338</a></div></div>
+<div class="ttc" id="_intens_calc___c_u_d_a_8cu_html_a1d82d2d00d7cc54a527f556907b49086"><div class="ttname"><a href="_intens_calc___c_u_d_a_8cu.html#a1d82d2d00d7cc54a527f556907b49086">setupCUDA_IC</a></div><div class="ttdeci">void setupCUDA_IC()</div><div class="ttdoc">przygotowanie do obliczeń </div><div class="ttdef"><b>Definition:</b> <a href="_intens_calc___c_u_d_a_8cu_source.html#l00087">IntensCalc_CUDA.cu:87</a></div></div>
+<div class="ttc" id="demosaic__mw_8m_html_a4f4b1425de1ab7dfec29cfbb3bfd4757"><div class="ttname"><a href="demosaic__mw_8m.html#a4f4b1425de1ab7dfec29cfbb3bfd4757">j</a></div><div class="ttdeci">end else parzyste j</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__mw_8m_source.html#l00048">demosaic_mw.m:48</a></div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_af7e606812dceafe6b432386d2ed26341"><div class="ttname"><a href="_avi_read_pike___split_8m.html#af7e606812dceafe6b432386d2ed26341">skok</a></div><div class="ttdeci">This is a matlab script which needs avimex MEX file The code was successfully used in Linux Mint with Matlab and Windows bit with Matlab It s used to read a multiframe avi video from AVT PIKE DS filter x frames INPUT First argument is a name of input Second is a vector of frames to be read OUTPUT Outup is a dimensional you also have to be sure to use the correct bayer pattern for your camera to display colors in a apropriate way If you would like to adjust this code to work with another codecs you should change zakres skok</div><div class="ttdef"><b>Definition:</b> <a href="_avi_read_pike___split_8m_source.html#l00027">AviReadPike_Split.m:27</a></div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Oto graf wywołań dla tej funkcji:</div>
+<div class="dyncontent">
+<div class="center"><img src="_oneshot_aviread_8cpp_a6a215cbfde54f82a3ce599228fc3fce5_cgraph.png" border="0" usemap="#_oneshot_aviread_8cpp_a6a215cbfde54f82a3ce599228fc3fce5_cgraph" alt=""/></div>
+<map name="_oneshot_aviread_8cpp_a6a215cbfde54f82a3ce599228fc3fce5_cgraph" id="_oneshot_aviread_8cpp_a6a215cbfde54f82a3ce599228fc3fce5_cgraph">
+<area shape="rect" id="node2" href="_intens_calc___c_u_d_a_8cu.html#a997c87c5d0dd10c13e485b1007e1a47f" title="kopiuje bufor do GPU " alt="" coords="169,5,241,32"/><area shape="rect" id="node3" href="_intens_calc___c_u_d_a_8cu.html#a8494aebdb81f1b39234c086f0fc6753e" title="zwraca wektor natężeń od theta " alt="" coords="181,56,229,83"/><area shape="rect" id="node6" href="_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc" title="file" alt="" coords="186,107,225,133"/><area shape="rect" id="node7" href="_intens_calc___c_u_d_a_8cu.html#acd8e703dad3053671f5d9ba6906f9366" title="zwalnianie zajętych zasobów CUDA " alt="" coords="156,157,255,184"/><area shape="rect" id="node8" href="_intens_calc___c_u_d_a_8cu.html#a1d82d2d00d7cc54a527f556907b49086" title="przygotowanie do obliczeń " alt="" coords="151,208,260,235"/><area shape="rect" id="node4" href="_intens_calc___c_u_d_a_8cu.html#ad4e437e740b68751d689abe404aeeaac" title="compute grid and thread block size for a given number of elements " alt="" coords="308,56,431,83"/><area shape="rect" id="node5" href="_intens_calc___c_u_d_a_8cu.html#ab01bee12e3576a50b5201d5e42b54f8f" title="iDivUp" alt="" coords="479,56,537,83"/></map>
+</div>
+</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_oneshot_aviread_8cpp.html">OneshotAviread.cpp</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:37 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>
