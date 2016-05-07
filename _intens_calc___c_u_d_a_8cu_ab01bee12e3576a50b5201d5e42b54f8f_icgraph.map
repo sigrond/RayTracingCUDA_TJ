@@ -1,0 +1,6 @@
+<map id="iDivUp" name="iDivUp">
+<area shape="rect" id="node2" href="$_intens_calc___c_u_d_a_8cu.html#ad4e437e740b68751d689abe404aeeaac" title="compute grid and thread block size for a given number of elements " alt="" coords="112,31,235,57"/>
+<area shape="rect" id="node3" href="$_intens_calc___c_u_d_a_8cuh.html#a8494aebdb81f1b39234c086f0fc6753e" title="zwraca wektor natężeń od theta " alt="" coords="283,31,331,57"/>
+<area shape="rect" id="node4" href="$avireadtest_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="402,5,453,32"/>
+<area shape="rect" id="node5" href="$_intens_calc_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5" title="function [I_Red,I_Green,I_Blue] = IntensCalc(handles,count_step,NumFrames,ipR,ipG,ipB,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B) " alt="" coords="379,56,476,83"/>
+</map>

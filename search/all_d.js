@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['m',['m',['../_calculate__m_8m.html#ab3cd915d758008bd19d0f2428fbb354a',1,'Calculate_m.m']]],
+  ['m1',['m1',['../_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e',1,'RayTracing.m']]],
+  ['m2',['m2',['../struct_handles_structures.html#aeae224e4a9cfa9b5ebe91605ee965e27',1,'HandlesStructures::m2()'],['../_pike_reader_8m.html#adca714bf61ad7fb2fc07053ed7c43d40',1,'m2():&#160;PikeReader.m'],['../_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4',1,'m2():&#160;RayTracing.m']]],
+  ['m3eg',['m3EG',['../_calculate__m_8m.html#a79a3c97a2940314c81a314e8bdb8d99a',1,'Calculate_m.m']]],
+  ['macierz',['macierz',['../_pike_reader_8m.html#a4e41918df3b734cb20355ce9ca8ab336',1,'PikeReader.m']]],
+  ['main',['main',['../avireadtest_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;avireadtest.cpp'],['../_find_movie_frames_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;FindMovieFrames.cpp'],['../_find_movie_start_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;FindMovieStart.cpp']]],
+  ['matlab_5fbin_5flocation',['matlab_bin_location',['../nvmex__helper_8m.html#a7c23f3b8ac85aefec2420a42bc029792',1,'nvmex_helper.m']]],
+  ['matrix',['matrix',['../_avi_read_pike___split_8m.html#ae22ae49fb36f2b7372aefce186887619',1,'AviReadPike_Split.m']]],
+  ['max',['max',['../_pike_reader_8m.html#a30a0ec962623a193eb6832214fb3c4d8',1,'PikeReader.m']]],
+  ['meg',['mEG',['../_calculate__m_8m.html#aeefe7808ac9ad1f0a76f13c5f15d3e3b',1,'Calculate_m.m']]],
+  ['mesh',['mesh',['../_pike_reader_8m.html#a627e20db9e96bdd9b52fb1f131fb5cd4',1,'PikeReader.m']]],
+  ['message',['message',['../nvmex__helper_8m.html#ac2f1eaf2b095de910e29b1862790d763',1,'nvmex_helper.m']]],
+  ['metoh',['MetOH',['../_calculate__m_8m.html#a4aa2d26ed18e117cf4afa9f9b7452f59',1,'Calculate_m.m']]],
+  ['mex',['mex',['../_pike_reader_8m.html#a9298037979afd4748a15c04dbf4dad7b',1,'PikeReader.m']]],
+  ['mexfunction',['mexFunction',['../avimex___split_8cpp.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;avimex_Split.cpp'],['../demosaic__c__mex_8c.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;demosaic_c_mex.c'],['../_intens_calc_8cpp.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;IntensCalc.cpp'],['../_intens_calc_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;IntensCalc.cu'],['../_moving_average_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;MovingAverage.cu'],['../_oneshot_aviread_8cpp.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;OneshotAviread.cpp'],['../_ray_tracing_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;RayTracing.cu'],['../_reduced_mean_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5',1,'mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]):&#160;ReducedMean.cu']]],
+  ['mexname',['mexname',['../nvmex__helper_8m.html#af80dc9f1f7bc03460e1d43da1614d46d',1,'nvmex_helper.m']]],
+  ['mexpath',['mexpath',['../nvmex__helper_8m.html#aef2f019afdbe62fe276ec54e33c9555f',1,'nvmex_helper.m']]],
+  ['mh',['mh',['../_calculate__m_8m.html#a2029a209ccfd1186141fce6d6c8cc1ee',1,'Calculate_m.m']]],
+  ['mov',['mov',['../_pike_reader_8m.html#a7a344eb254d5f989a285b2afbb5e10d9',1,'PikeReader.m']]],
+  ['movingaverage_2ecu',['MovingAverage.cu',['../_moving_average_8cu.html',1,'']]],
+  ['movingaverage_5fcuda_5fkernel_2ecu',['MovingAverage_CUDA_kernel.cu',['../_moving_average___c_u_d_a__kernel_8cu.html',1,'']]],
+  ['movingaverage_5fcuda_5fkernel_2ecuh',['MovingAverage_CUDA_kernel.cuh',['../_moving_average___c_u_d_a__kernel_8cuh.html',1,'']]],
+  ['movingaveraged',['MovingAverageD',['../_moving_average___c_u_d_a__kernel_8cu.html#a7adc48dbcc0a7f49a051705419aad804',1,'MovingAverageD(float *I, unsigned int I_size, int *I_S, float *sI, float step):&#160;MovingAverage_CUDA_kernel.cu'],['../_moving_average___c_u_d_a__kernel_8cuh.html#a7adc48dbcc0a7f49a051705419aad804',1,'MovingAverageD(float *I, unsigned int I_size, int *I_S, float *sI, float step):&#160;MovingAverage_CUDA_kernel.cu']]],
+  ['munlock',['munlock',['../_pike_reader_8m.html#a3c6a1673d3a361dfaace22b908b602d4',1,'PikeReader.m']]]
+];

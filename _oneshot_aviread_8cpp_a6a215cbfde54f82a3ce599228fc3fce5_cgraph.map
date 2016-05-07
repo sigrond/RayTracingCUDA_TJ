@@ -1,0 +1,9 @@
+<map id="mexFunction" name="mexFunction">
+<area shape="rect" id="node2" href="$_intens_calc___c_u_d_a_8cu.html#a997c87c5d0dd10c13e485b1007e1a47f" title="kopiuje bufor do GPU " alt="" coords="169,5,241,32"/>
+<area shape="rect" id="node3" href="$_intens_calc___c_u_d_a_8cu.html#a8494aebdb81f1b39234c086f0fc6753e" title="zwraca wektor natężeń od theta " alt="" coords="181,56,229,83"/>
+<area shape="rect" id="node6" href="$_avi_read_pike___split_8m.html#a53be3e8a3476298b0e2ca95e4fa573fc" title="file" alt="" coords="186,107,225,133"/>
+<area shape="rect" id="node7" href="$_intens_calc___c_u_d_a_8cu.html#acd8e703dad3053671f5d9ba6906f9366" title="zwalnianie zajętych zasobów CUDA " alt="" coords="156,157,255,184"/>
+<area shape="rect" id="node8" href="$_intens_calc___c_u_d_a_8cu.html#a1d82d2d00d7cc54a527f556907b49086" title="przygotowanie do obliczeń " alt="" coords="151,208,260,235"/>
+<area shape="rect" id="node4" href="$_intens_calc___c_u_d_a_8cu.html#ad4e437e740b68751d689abe404aeeaac" title="compute grid and thread block size for a given number of elements " alt="" coords="308,56,431,83"/>
+<area shape="rect" id="node5" href="$_intens_calc___c_u_d_a_8cu.html#ab01bee12e3576a50b5201d5e42b54f8f" title="iDivUp" alt="" coords="479,56,537,83"/>
+</map>

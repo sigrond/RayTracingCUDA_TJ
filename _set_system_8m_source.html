@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Plik źródłowy D:/Moje dokumenty/RayTracingCUDA_TJ/SetSystem.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_set_system_8m_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">SetSystem.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_set_system_8m.html">Idź do dokumentacji tego pliku.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">    1</a></span>&#160;<span class="keyword">function</span> <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> = SetSystem</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;%  This <span class="keyword">function</span> creates initial structure <span class="keywordflow">for</span> objective and CCD</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;%  <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a>.</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;%  All <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> are in [ mm ]</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;%  The origin <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the system coordinate is the center <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> trap.</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;%</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;% Parameters <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens:</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.D    = 15;   % lens diametr. Set 15 instead <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> 12 (real aperture) is convenient <span class="keywordflow">for</span> calculations</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.efD  = 11.8; % effective diameter <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.R(1)    = 10.3; % radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature first lens</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.R(2)    = 10.3; % radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature second lens</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a9430036a05dc518dd40e94924998ccbd">   13</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.tc   = 1.8;  % thickness <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lenses wall - this parameter -</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;               % is uniquely determined by the radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> curvature,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;               % diameter <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens and thickness <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the whole lens along</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;               % optical axes</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.<a class="code" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a>    = 4;    % thickness <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the whole lens along optical axes</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;% <a class="code" href="_set_system_8m.html#a80b076bd55aee2293a92bc557b49e41a">Distances</a>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a80b076bd55aee2293a92bc557b49e41a">   19</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.ld   = 15;   % Distance between center <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the trap and  first diaphragm</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a92194e0fd585cf13a4a3b76420356158">   20</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.R_dis_Ring = 29.68/2; % outer radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> electrode distancing ring</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="_set_system_8m.html#ac4307d8b60524415f8e0763a528de1f6">   21</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.R_midl_El  = 29.64/2;  % inner radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> midle electrode <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> trap</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">   23</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.l1   = 17;   % Distance between center <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the trap and  first lens</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">   24</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.ll   = 37;   % Distance between lenses</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a12c0e8c5f6ec2340f977ea2a57b8fe09">   25</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.ld2  = 58.3 + <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.<a class="code" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">l1</a>; % 58.3 - distence from first lens to second <a class="code" href="_set_system_8m.html#aceec17b8f2b29cb2ad8841cb63393fc2">diafragm</a>  %76.6; % Distance to second diaphragm</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;% First Diaphragm</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="_set_system_8m.html#aab586b8a47f2968cfaee012c8f55fb04">   27</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.dW   = 9;    % width <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a483471d881ab668d2b0837db0515bfb3">   28</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.dH   = 4.27;    % height <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;% Second diaphragm</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="_set_system_8m.html#ab990f2b204fd217461e99e21ac3e559c">   30</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.RDph  = 1;   % Radius <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> aperture</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a29fb80597792f9f623544c5db18e4ad7">   31</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.W2    = 2;   % thickness <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the diaphragm wall</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;% CCD <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a5e8e6416785c4fcf47c7749fad401061">   33</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.lCCD = 82.8; % Distance to CCD detector</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a09b98e6005f19cfdc641a82e547c5184">   34</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDPH = 480; % width <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD [ Pix ]</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a72dbc52291ac1d269355e4adf0500c4a">   35</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDPW = 640; % height <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD [Pix ]</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">   36</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.PixSize = 7.4e-3; % Pixel <a class="code" href="_pike_reader_8m.html#a700ca319326cbf8fb66c2949e1040ece">size</a>[ mm ] Pike</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a980f8980e654dd7f9a630ab52940bb64">   37</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDH = <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDPH * <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.PixSize;  % height <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a3db3c80d642443d795b2d4d576ae9edb">   38</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDW = <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.CCDPW * <a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.PixSize;  % width  <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;% Droplet position </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a5af87bd8e9f0f9596eb498ecbf2914c3">   40</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.Pk   = [0,0,0]; % Position <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> droplet relativ to the origin <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> coordinat system</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;% Wavelength <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> incident ray</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a6b660e5d31ddcd39dd04cb3ad120d072">   42</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.lambda = 532; %<a class="code" href="_set_system_8m.html#a6b660e5d31ddcd39dd04cb3ad120d072">lambda</a> can has the structure <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> <a class="code" href="demosaic__mw_8m.html#a68368710f70169f80c9e6fa2585d28ce">RGB</a> <a class="code" href="_set_system_8m.html#a6b660e5d31ddcd39dd04cb3ad120d072">lambda</a>(1:3) = [R,G,B];</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="_set_system_8m.html#a7fbf3154550e3465e93cdaa0c4cbc99f">   43</a></span>&#160;<a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.N  =   20;    % number <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> points per border side</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="ttc" id="_pike_reader_8m_html_a700ca319326cbf8fb66c2949e1040ece"><div class="ttname"><a href="_pike_reader_8m.html#a700ca319326cbf8fb66c2949e1040ece">size</a></div><div class="ttdeci">if size(P, 1)</div></div>
+<div class="ttc" id="_set_system_8m_html_a86bdec0d61a48a8ca4da1674058837cc"><div class="ttname"><a href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a></div><div class="ttdeci">id g()</div></div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="_set_system_8m_html_ac93a21a997717f2426bb68373030a2a3"><div class="ttname"><a href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">l1</a></div><div class="ttdeci">inner radius of midle electrode of trap S l1</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00023">SetSystem.m:23</a></div></div>
+<div class="ttc" id="_calculate__m_8m_html_a70c8cb1145c8203acbdab7cdcaa65d14"><div class="ttname"><a href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a></div><div class="ttdeci">Cauchy dispersion parameters</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00022">Calculate_m.m:22</a></div></div>
+<div class="ttc" id="demosaic__mw_8m_html_a68368710f70169f80c9e6fa2585d28ce"><div class="ttname"><a href="demosaic__mw_8m.html#a68368710f70169f80c9e6fa2585d28ce">RGB</a></div><div class="ttdeci">function RGB</div><div class="ttdef"><b>Definition:</b> <a href="demosaic__mw_8m_source.html#l00001">demosaic_mw.m:1</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a80b076bd55aee2293a92bc557b49e41a"><div class="ttname"><a href="_set_system_8m.html#a80b076bd55aee2293a92bc557b49e41a">Distances</a></div><div class="ttdeci">thickness of the whole lens along optical axes Distances</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00019">SetSystem.m:19</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a7506aef172c52006469b250d7cb0b8ef"><div class="ttname"><a href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a></div><div class="ttdeci">function S</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00001">SetSystem.m:1</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a6b660e5d31ddcd39dd04cb3ad120d072"><div class="ttname"><a href="_set_system_8m.html#a6b660e5d31ddcd39dd04cb3ad120d072">lambda</a></div><div class="ttdeci">Position of droplet relativ to the origin of coordinat system Wavelength of incident ray S lambda</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00042">SetSystem.m:42</a></div></div>
+<div class="ttc" id="_set_system_8m_html_aceec17b8f2b29cb2ad8841cb63393fc2"><div class="ttname"><a href="_set_system_8m.html#aceec17b8f2b29cb2ad8841cb63393fc2">diafragm</a></div><div class="ttdeci">id diafragm()</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_set_system_8m.html">SetSystem.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:34 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

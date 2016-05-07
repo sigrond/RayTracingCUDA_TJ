@@ -1,0 +1,12 @@
+<map id="D:/Moje dokumenty/RayTracingCUDA_TJ/helper_functions.h" name="D:/Moje dokumenty/RayTracingCUDA_TJ/helper_functions.h">
+<area shape="rect" id="node2" href="$fake_ray_trace_c_u_d_a_8cu.html" title="D:/Moje dokumenty/RayTracing\lCUDA_TJ/fakeRayTraceCUDA.cu" alt="" coords="5,102,220,143"/>
+<area shape="rect" id="node3" href="$_intens_calc___c_u_d_a_8cu.html" title="plik z implementacjami funkcji wywoÅ‚ujÄ…cych CUDA&#39;Ä™ " alt="" coords="244,102,448,143"/>
+<area shape="rect" id="node4" href="$_intens_calc___c_u_d_a__kernel_8cu.html" title="funkcje CUDA na GPU " alt="" coords="472,95,676,151"/>
+<area shape="rect" id="node5" href="$_moving_average_8cu.html" title="plik g³ówny funkcji licz¹cej œredni¹ krocz¹c¹ " alt="" coords="700,102,904,143"/>
+<area shape="rect" id="node6" href="$_moving_average___c_u_d_a__kernel_8cu.html" title="plik z kernelem CUDA wyg³adzaj¹cym za pomoc¹ œredniej krocz¹cej " alt="" coords="929,95,1139,151"/>
+<area shape="rect" id="node7" href="$_ray_trace_c_u_d_a_8cu.html" title="Implementation of RayTrace function which calls RayTraceD CUDA kernels. " alt="" coords="1164,102,1368,143"/>
+<area shape="rect" id="node8" href="$_ray_trace_c_u_d_a__kernel_8cu.html" title="RayTrace CUDA kernel function &amp; helpers. " alt="" coords="1392,102,1625,143"/>
+<area shape="rect" id="node9" href="$_ray_tracing_8cu.html" title="this file contains calls to matlab and main function compilation line: 32bit: nvmex &#45;f nvmexopts..." alt="" coords="1649,102,1853,143"/>
+<area shape="rect" id="node10" href="$_reduced_mean_8cu.html" title="liczenie Å“rednich dla klatki przy zredukowanej liczbie punktÃ³w " alt="" coords="1877,102,2081,143"/>
+<area shape="rect" id="node11" href="$_reduced_mean___c_u_d_a__kernel_8cu.html" title="kernel function " alt="" coords="2106,95,2314,151"/>
+</map>

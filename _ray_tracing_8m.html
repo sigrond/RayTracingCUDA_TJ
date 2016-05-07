@@ -1,0 +1,1204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/RayTracing.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_ray_tracing_8m.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a> &#124;
+<a href="#var-members">Zmienne</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku RayTracing.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><a href="_ray_tracing_8m_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:ae4d665bafab09a5b5d0dc55e888edea8"><td class="memItemLeft" align="right" valign="top">Point in the plane parallel to <br class="typebreak"/>
+the flat surface <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens <br class="typebreak"/>
+<a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ae4d665bafab09a5b5d0dc55e888edea8">norm</a> ([<a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(end, 2), <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(end, 3)]) &gt;(<a class="el" href="_pike_reader_8m.html#a4ac4099d01190890df161d528ebb7bef">S.efD</a>/2)%verification whether the <a class="el" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> inside the aperture <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens or not%perescitywajem koordinaty Kp</td></tr>
+<tr class="separator:ae4d665bafab09a5b5d0dc55e888edea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb549fbb34b8f2af147bf273215e587"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a> (2:3)</td></tr>
+<tr class="separator:a1cb549fbb34b8f2af147bf273215e587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e55742314c2b5ba40fa257857abd60"><td class="memItemLeft" align="right" valign="top">direction vector <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line end <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a55e55742314c2b5ba40fa257857abd60">norm</a> (<a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(2:3)) &gt;(<a class="el" href="_pike_reader_8m.html#a4ac4099d01190890df161d528ebb7bef">S.efD</a>/2)%verification whether the <a class="el" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> inside the aperture <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens or not%<a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a></td></tr>
+<tr class="separator:a55e55742314c2b5ba40fa257857abd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6383b85089594c4ebcc921ab908368a5"><td class="memItemLeft" align="right" valign="top">dot(<a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a6383b85089594c4ebcc921ab908368a5">acosd</a> ()</td></tr>
+<tr class="separator:a6383b85089594c4ebcc921ab908368a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9da9ecad31a80fb98272dcc7405af9af"><td class="memItemLeft" align="right" valign="top">Proweriajem popal li lucz w <br class="typebreak"/>
+linzu <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a9da9ecad31a80fb98272dcc7405af9af">isnan</a> (<a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>)%lucz nie peresek sferu <a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a></td></tr>
+<tr class="separator:a9da9ecad31a80fb98272dcc7405af9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd4282ca1238a1f1fb5bf7d34f43af1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a8bd4282ca1238a1f1fb5bf7d34f43af1">norm</a> (<a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1, 2:3)) &gt; <a class="el" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">S.D</a>/2 <a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a></td></tr>
+<tr class="separator:a8bd4282ca1238a1f1fb5bf7d34f43af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1439e1fe3c28a3f6208cba9a71f1a2d"><td class="memItemLeft" align="right" valign="top">2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a> ()</td></tr>
+<tr class="separator:ae1439e1fe3c28a3f6208cba9a71f1a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0863210abf9955c0b1c404ca30c5d13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ad0863210abf9955c0b1c404ca30c5d13">isnan</a> (<a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>)%lucz nie peresek sferu <a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a></td></tr>
+<tr class="separator:ad0863210abf9955c0b1c404ca30c5d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a611c5f59ba825a5c45aadb8fe0f6732a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a611c5f59ba825a5c45aadb8fe0f6732a">P5</a> (1)</td></tr>
+<tr class="separator:a611c5f59ba825a5c45aadb8fe0f6732a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2e15d2a062a515247260e4277478f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#adc2e15d2a062a515247260e4277478f0">norm</a> (<a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2, 2:3)) &gt; <a class="el" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">S.D</a>/2%lucz nie popal w linzu <a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a></td></tr>
+<tr class="separator:adc2e15d2a062a515247260e4277478f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b2ca6393fc73e16fc5984d4f395f2d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a> (2, 1)-toczka pereseczenija kogda sfera nachoditsia w naczale%koordinat%x0</td></tr>
+<tr class="separator:a3b2ca6393fc73e16fc5984d4f395f2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11057d1d29524f0d1527eef0fa490dff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a11057d1d29524f0d1527eef0fa490dff">P</a> (1,:)</td></tr>
+<tr class="separator:a11057d1d29524f0d1527eef0fa490dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ac19c67e16b4196ba2f303ce5b61f6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a7ac19c67e16b4196ba2f303ce5b61f6a">P</a> (2,:)</td></tr>
+<tr class="separator:a7ac19c67e16b4196ba2f303ce5b61f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47672ee7127830c62beefad66a9fae28"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a47672ee7127830c62beefad66a9fae28">P</a> (3,:)</td></tr>
+<tr class="separator:a47672ee7127830c62beefad66a9fae28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e0c6eb95211c8a2f172fcfc8b6b90a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a0e0c6eb95211c8a2f172fcfc8b6b90a5">P</a> (4,:)</td></tr>
+<tr class="separator:a0e0c6eb95211c8a2f172fcfc8b6b90a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af450bf404fe17f1da788f1a0d1ac420d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#af450bf404fe17f1da788f1a0d1ac420d">P</a> (5,:)</td></tr>
+<tr class="separator:af450bf404fe17f1da788f1a0d1ac420d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754deed6a44c21d313bf700d1e4bd84d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a754deed6a44c21d313bf700d1e4bd84d">P</a> (6,:)</td></tr>
+<tr class="separator:a754deed6a44c21d313bf700d1e4bd84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a074c42643cc6c0dc716e61f74c14a61e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a074c42643cc6c0dc716e61f74c14a61e">P</a> (7,:)</td></tr>
+<tr class="separator:a074c42643cc6c0dc716e61f74c14a61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a834a8041af1c28666bb299b97ccbd3a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a834a8041af1c28666bb299b97ccbd3a6">norm</a> (<a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>)</td></tr>
+<tr class="separator:a834a8041af1c28666bb299b97ccbd3a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a415c5c5d1f49ee2db2762c80067a9bdc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a415c5c5d1f49ee2db2762c80067a9bdc">cosd</a> (<a class="el" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a>)</td></tr>
+<tr class="separator:a415c5c5d1f49ee2db2762c80067a9bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9564846b4818d9eed8b0e902c97b942d"><td class="memItemLeft" align="right" valign="top">V.^2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a9564846b4818d9eed8b0e902c97b942d">sum</a> ()</td></tr>
+<tr class="separator:a9564846b4818d9eed8b0e902c97b942d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Zmienne</h2></td></tr>
+<tr class="memitem:a4baee84af7a92177c9064ddc2fc010ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a></td></tr>
+<tr class="separator:a4baee84af7a92177c9064ddc2fc010ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bfd673c2aec98087229fe424070349a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a3bfd673c2aec98087229fe424070349a">Cs2</a> = S.Cs1 + <a class="el" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">S.ll</a> + 2*<a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">S.R</a>(2)</td></tr>
+<tr class="separator:a3bfd673c2aec98087229fe424070349a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93dd7f73e57b8b17d34efa33f0f948e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a> = <a class="el" href="_set_system_8m.html#a5af87bd8e9f0f9596eb498ecbf2914c3">S.Pk</a></td></tr>
+<tr class="separator:af93dd7f73e57b8b17d34efa33f0f948e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4055e3a20b6b3af3d10590ea446ef6c"><td class="memItemLeft" align="right" valign="top">droplet coordinates&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a> = (<a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="el" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)/<a class="el" href="_ray_tracing_8m.html#a834a8041af1c28666bb299b97ccbd3a6">norm</a>(<a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="el" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)</td></tr>
+<tr class="separator:ac4055e3a20b6b3af3d10590ea446ef6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaccc9105df5383111407fd5b41255e23"><td class="memItemLeft" align="right" valign="top">direction vector <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line <br class="typebreak"/>
+looking for the <a class="el" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> <br class="typebreak"/>
+intersection <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line and <br class="typebreak"/>
+lenses&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a> = (<a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a> - <a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>(1))/<a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>(1)</td></tr>
+<tr class="separator:aaccc9105df5383111407fd5b41255e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e290925c3c5aef593439888e5ee9309"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a1e290925c3c5aef593439888e5ee9309">P3</a> = <a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> + <a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>*<a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a></td></tr>
+<tr class="separator:a1e290925c3c5aef593439888e5ee9309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f5efe14c52fa358088a3f5d31d5922"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a></td></tr>
+<tr class="separator:a27f5efe14c52fa358088a3f5d31d5922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeab71244afb687f16d8c4f5ee9d6ef0e"><td class="memItemLeft" align="right" valign="top">return end normal vector to <br class="typebreak"/>
+the surface&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a> =[ 1, 0, 0 ]</td></tr>
+<tr class="separator:aeab71244afb687f16d8c4f5ee9d6ef0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0beaea967ea7920263f0580caccb0ed2"><td class="memItemLeft" align="right" valign="top">Nachodim ugol mezdu normalju <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> <br class="typebreak"/>
+vektorom padenia <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> stroim <br class="typebreak"/>
+nowyj prelomlennyj wektor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a> = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>,1,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td></tr>
+<tr class="separator:a0beaea967ea7920263f0580caccb0ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedad1181684565670a7de27502eedcc5"><td class="memItemLeft" align="right" valign="top">Isczem pereseczenie so sferoj&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a> = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a4588a68b5fa1faa0bc3ce222f4388bc5">SphereCross</a>( [ <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(1) - S.Cs1, <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(2), <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(3) ], <a class="el" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a>',<a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">S.R</a>(1) )</td></tr>
+<tr class="separator:aedad1181684565670a7de27502eedcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe83ce175095e439946163562d101dec"><td class="memItemLeft" align="right" valign="top">return end stroim normal w <br class="typebreak"/>
+punktie pereseczenija&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a> = <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,:) / <a class="el" href="_ray_tracing_8m.html#a834a8041af1c28666bb299b97ccbd3a6">norm</a>( <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,:) )</td></tr>
+<tr class="separator:afe83ce175095e439946163562d101dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa05ec51c2d691a0b7560a330374e1c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a> = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a>, <a class="el" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a>',2,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td></tr>
+<tr class="separator:aaa05ec51c2d691a0b7560a330374e1c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f015adf595b9ddc21a25082c3aabb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a15f015adf595b9ddc21a25082c3aabb0">P4</a> = [ <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,1) + S.Cs1, <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,2), <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,3) ]</td></tr>
+<tr class="separator:a15f015adf595b9ddc21a25082c3aabb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78d663047395fbda2ab172ef7d535a46"><td class="memItemLeft" align="right" valign="top">return end&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a78d663047395fbda2ab172ef7d535a46">P5</a> = <a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,:)</td></tr>
+<tr class="separator:a78d663047395fbda2ab172ef7d535a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4cc1b4cce031f2daf22087d1f6a8428"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a> = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( -<a class="el" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a>, <a class="el" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a>',1,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td></tr>
+<tr class="separator:af4cc1b4cce031f2daf22087d1f6a8428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9336ebf25087d91c818ee6e9ec29f8c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a> = x0+V4(1)*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td></tr>
+<tr class="separator:a9336ebf25087d91c818ee6e9ec29f8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee34fc740f3a5271508e6499ce2e3326"><td class="memItemLeft" align="right" valign="top">posledniaja toczka eto <a class="el" href="_ray_tracing_8m.html#a611c5f59ba825a5c45aadb8fe0f6732a">P5</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aee34fc740f3a5271508e6499ce2e3326">X</a> = <a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a> + 2*<a class="el" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">S.g</a> + <a class="el" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">S.ll</a></td></tr>
+<tr class="separator:aee34fc740f3a5271508e6499ce2e3326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b1e0f0f342c6a0720585b62d204ef2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a> = <a class="el" href="_ray_tracing_8m.html#a611c5f59ba825a5c45aadb8fe0f6732a">P5</a> + <a class="el" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>'*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td></tr>
+<tr class="separator:a48b1e0f0f342c6a0720585b62d204ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59dd33f2aa8046ea67bba3fad7a09e8e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a> = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="el" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>',2,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td></tr>
+<tr class="separator:a59dd33f2aa8046ea67bba3fad7a09e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20240d26ace6829859aba913f892152"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aa20240d26ace6829859aba913f892152">P7</a> = <a class="el" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a> + <a class="el" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a>'*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td></tr>
+<tr class="separator:aa20240d26ace6829859aba913f892152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada275fd73bace2d376e859bbded8e68e"><td class="memItemLeft" align="right" valign="top">refractive index <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> <br class="typebreak"/>
+environment and lens <br class="typebreak"/>
+respectively&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a> = 1</td></tr>
+<tr class="separator:ada275fd73bace2d376e859bbded8e68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a683f09a8fde8fd5aca2637267de85ef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> = Calculate_m(25,<a class="el" href="_set_system_8m.html#ab6a8bdc89430eab82dd6615cdf28be5c">lambda</a>, '<a class="el" href="_calculate__m_8m.html#a5a182ddedd82ee46f83d0aca23119410">BK7</a>')</td></tr>
+<tr class="separator:a683f09a8fde8fd5aca2637267de85ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a792a898a039d36b908170327d38714"><td class="memItemLeft" align="right" valign="top">Snell <a class="el" href="_pike_reader_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a> law <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a2a792a898a039d36b908170327d38714">p</a></td></tr>
+<tr class="separator:a2a792a898a039d36b908170327d38714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a5f29b89b53dfa902ebdc182c6407db"><td class="memItemLeft" align="right" valign="top">else&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a> = asind( <a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> * sind( al1 ) / <a class="el" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a> )</td></tr>
+<tr class="separator:a5a5f29b89b53dfa902ebdc182c6407db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eaa3649fc4ddd31850c37d3d1e035c1"><td class="memItemLeft" align="right" valign="top">end rasscitywajem ugol mezdu <br class="typebreak"/>
+<a class="el" href="_pike_reader_8m.html#a012f41a4e178ac7e193a1a250962f349">V1</a> <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> <a class="el" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a2eaa3649fc4ddd31850c37d3d1e035c1">bet</a> = al1 - <a class="el" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a></td></tr>
+<tr class="separator:a2eaa3649fc4ddd31850c37d3d1e035c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53aeb78abc83a52ab8982f5c82a3d5b"><td class="memItemLeft" align="right" valign="top">Stroim prelomlennyj wektor <br class="typebreak"/>
+stroim perpendikularnyj wektor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a> = cross( <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>, <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a> )</td></tr>
+<tr class="separator:ad53aeb78abc83a52ab8982f5c82a3d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e6f4c9c72f94c82a12f25f6e3b1b233"><td class="memItemLeft" align="right" valign="top">else&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a4e6f4c9c72f94c82a12f25f6e3b1b233">A</a> = [ <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a></td></tr>
+<tr class="separator:a4e6f4c9c72f94c82a12f25f6e3b1b233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d3d9048db16a7eee539e93e3618cbe7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a9d3d9048db16a7eee539e93e3618cbe7">B</a> = [ <a class="el" href="_ray_tracing_8m.html#a415c5c5d1f49ee2db2762c80067a9bdc">cosd</a>( <a class="el" href="_ray_tracing_8m.html#a2eaa3649fc4ddd31850c37d3d1e035c1">bet</a> )</td></tr>
+<tr class="separator:a9d3d9048db16a7eee539e93e3618cbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac82842dff393085d5d4ed8bb065ae57d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a> = <a class="el" href="demosaic__mw_8m.html#a476ef5d2298d2996dc9c4beed9f3a4f8">A\B</a></td></tr>
+<tr class="separator:ac82842dff393085d5d4ed8bb065ae57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a> = <a class="el" href="_ray_tracing_8m.html#a9564846b4818d9eed8b0e902c97b942d">sum</a>(r.^2) - <a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">R</a>^2</td></tr>
+<tr class="separator:aaa53ca0b650dfd85c4f59fa156f7a2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350bfcb1e3cfb28ddff48ce525d4f139"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_ray_tracing_8m.html#a350bfcb1e3cfb28ddff48ce525d4f139">D</a> = <a class="el" href="demosaic__mw_8m.html#a476ef5d2298d2996dc9c4beed9f3a4f8">B</a>^2 -4 * <a class="el" href="_ray_tracing_8m.html#a4e6f4c9c72f94c82a12f25f6e3b1b233">A</a> * <a class="el" href="_ray_tracing_8m.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></td></tr>
+<tr class="separator:a350bfcb1e3cfb28ddff48ce525d4f139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="a6383b85089594c4ebcc921ab908368a5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dot(<a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>,<a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a> acosd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a415c5c5d1f49ee2db2762c80067a9bdc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cosd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9da9ecad31a80fb98272dcc7405af9af"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Proweriajem popal li lucz w linzu <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> isnan </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Odwołania w <a class="el" href="_reduced_mean_8cu_source.html#l00052">mexFunction()</a> i <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+<p><div class="dynheader">
+Oto graf wywoływań tej funkcji:</div>
+<div class="dyncontent">
+<div class="center"><img src="_ray_tracing_8m_a9da9ecad31a80fb98272dcc7405af9af_icgraph.png" border="0" usemap="#_ray_tracing_8m_a9da9ecad31a80fb98272dcc7405af9af_icgraph" alt=""/></div>
+<map name="_ray_tracing_8m_a9da9ecad31a80fb98272dcc7405af9af_icgraph" id="_ray_tracing_8m_a9da9ecad31a80fb98272dcc7405af9af_icgraph">
+<area shape="rect" id="node2" href="_reduced_mean_8cu.html#a6a215cbfde54f82a3ce599228fc3fce5" title="function [nTheta, I_] = ReducedMean(Theta_S, deltaT, I, I_S) " alt="" coords="107,5,204,32"/><area shape="rect" id="node3" href="_ray_trace_c_u_d_a__kernel_8cuh.html#a019fa68800a77de11df2ca791c58f6af" title="RayTrace CUDA kernel function. " alt="" coords="112,56,199,83"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ad0863210abf9955c0b1c404ca30c5d13"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> isnan </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae4d665bafab09a5b5d0dc55e888edea8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Point in the plane parallel to the flat surface <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> norm </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a55e55742314c2b5ba40fa257857abd60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">direction vector <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the line end <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> norm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(2:3)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8bd4282ca1238a1f1fb5bf7d34f43af1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> norm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1, 2:3)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adc2e15d2a062a515247260e4277478f0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> norm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2, 2:3)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a834a8041af1c28666bb299b97ccbd3a6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> norm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a11057d1d29524f0d1527eef0fa490dff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">1&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7ac19c67e16b4196ba2f303ce5b61f6a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">2&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a47672ee7127830c62beefad66a9fae28"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">3&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0e0c6eb95211c8a2f172fcfc8b6b90a5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">4&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af450bf404fe17f1da788f1a0d1ac420d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">5&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a754deed6a44c21d313bf700d1e4bd84d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">6&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a074c42643cc6c0dc716e61f74c14a61e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P </td>
+          <td>(</td>
+          <td class="paramtype">7&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">:&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1cb549fbb34b8f2af147bf273215e587"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P3 </td>
+          <td>(</td>
+          <td class="paramtype">2:3&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a611c5f59ba825a5c45aadb8fe0f6732a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P5 </td>
+          <td>(</td>
+          <td class="paramtype">1&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae1439e1fe3c28a3f6208cba9a71f1a2d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">2 R </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3b2ca6393fc73e16fc5984d4f395f2d9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">rc1 </td>
+          <td>(</td>
+          <td class="paramtype">2&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">1&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+<p><div class="dynheader">
+Oto graf wywoływań tej funkcji:</div>
+<div class="dyncontent">
+<div class="center"><img src="_ray_tracing_8m_a3b2ca6393fc73e16fc5984d4f395f2d9_icgraph.png" border="0" usemap="#_ray_tracing_8m_a3b2ca6393fc73e16fc5984d4f395f2d9_icgraph" alt=""/></div>
+<map name="_ray_tracing_8m_a3b2ca6393fc73e16fc5984d4f395f2d9_icgraph" id="_ray_tracing_8m_a3b2ca6393fc73e16fc5984d4f395f2d9_icgraph">
+<area shape="rect" id="node2" href="_ray_trace_c_u_d_a__kernel_8cuh.html#a019fa68800a77de11df2ca791c58f6af" title="RayTrace CUDA kernel function. " alt="" coords="93,5,180,32"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a9564846b4818d9eed8b0e902c97b942d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">V.^2 sum </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja zmiennych</h2>
+<a class="anchor" id="a4e6f4c9c72f94c82a12f25f6e3b1b233"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">else A = [ <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00143">143</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5a5f29b89b53dfa902ebdc182c6407db"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">else al2 = asind( <a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> * sind( al1 ) / <a class="el" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00130">130</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00021">findAlpha()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d3d9048db16a7eee539e93e3618cbe7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">B = [ <a class="el" href="_ray_tracing_8m.html#a415c5c5d1f49ee2db2762c80067a9bdc">cosd</a>( <a class="el" href="_ray_tracing_8m.html#a2eaa3649fc4ddd31850c37d3d1e035c1">bet</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00144">144</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2eaa3649fc4ddd31850c37d3d1e035c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">end rasscitywajem ugol mezdu <a class="el" href="_pike_reader_8m.html#a012f41a4e178ac7e193a1a250962f349">V1</a> <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> <a class="el" href="_ray_tracing_8m.html#ac82842dff393085d5d4ed8bb065ae57d">V2</a> bet = al1 - <a class="el" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00133">133</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00021">findAlpha()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa53ca0b650dfd85c4f59fa156f7a2cc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">C = <a class="el" href="_ray_tracing_8m.html#a9564846b4818d9eed8b0e902c97b942d">sum</a>(r.^2) - <a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">R</a>^2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00157">157</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3bfd673c2aec98087229fe424070349a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> Cs2 = S.Cs1 + <a class="el" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">S.ll</a> + 2*<a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">S.R</a>(2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00010">10</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a350bfcb1e3cfb28ddff48ce525d4f139"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">D = <a class="el" href="demosaic__mw_8m.html#a476ef5d2298d2996dc9c4beed9f3a4f8">B</a>^2 -4 * <a class="el" href="_ray_tracing_8m.html#a4e6f4c9c72f94c82a12f25f6e3b1b233">A</a> * <a class="el" href="_ray_tracing_8m.html#aaa53ca0b650dfd85c4f59fa156f7a2cc">C</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00158">158</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ada275fd73bace2d376e859bbded8e68e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">refractive index <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> environment and lens respectively m1 = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00124">124</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a683f09a8fde8fd5aca2637267de85ef4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">m2 = Calculate_m(25,<a class="el" href="_set_system_8m.html#ab6a8bdc89430eab82dd6615cdf28be5c">lambda</a>, '<a class="el" href="_calculate__m_8m.html#a5a182ddedd82ee46f83d0aca23119410">BK7</a>')</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00125">125</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeab71244afb687f16d8c4f5ee9d6ef0e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">n =[ 1, 0, 0 ]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00036">36</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afe83ce175095e439946163562d101dec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">return end stroim normal k etoj toczkie ns = <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,:) / <a class="el" href="_ray_tracing_8m.html#a834a8041af1c28666bb299b97ccbd3a6">norm</a>( <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,:) )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00051">51</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4baee84af7a92177c9064ddc2fc010ce"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= <a class="code" href="fake_ray_trace_c_u_d_a_8cu.html#a64914f8dd39b9cfb45567446e55f7380">RayTrace</a>( <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>,<a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a> )</div>
+<div class="line">% The <span class="keyword">function</span> <span class="stringliteral">&quot;P = RayTrace( P2,S )&quot;</span> - conducts rays through lens system</div>
+<div class="line">%</div>
+<div class="line">% <a class="code" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="code" href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a> on the surface <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the first diaphragm</div>
+<div class="line">% <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>  - structure contains the <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the lens</div>
+<div class="line">% <a class="code" href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a>  - coordinates <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> successive intersection ray with  surfaces</div>
+<div class="line">%</div>
+<div class="line">% Calculation <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the position <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the sphere&#39;<a class="code" href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a> center</div>
+<div class="line"><a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.Cs1  = <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_pike_reader_8m.html#a091dd2547d36e2b58e43462d965834d7">l1</a> - <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a>(1) + <a class="code" href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a>.<a class="code" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a></div>
+<div class="ttc" id="_ray_tracing_8m_html_ad53aeb78abc83a52ab8982f5c82a3d5b"><div class="ttname"><a href="_ray_tracing_8m.html#ad53aeb78abc83a52ab8982f5c82a3d5b">S</a></div><div class="ttdeci">Stroim prelomlennyj wektor stroim perpendikularnyj wektor S</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00137">RayTracing.m:137</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a4baee84af7a92177c9064ddc2fc010ce"><div class="ttname"><a href="_ray_tracing_8m.html#a4baee84af7a92177c9064ddc2fc010ce">P</a></div><div class="ttdeci">function P</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00001">RayTracing.m:1</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a86bdec0d61a48a8ca4da1674058837cc"><div class="ttname"><a href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a></div><div class="ttdeci">id g()</div></div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="_avi_read_pike___split_8m_html_a3691308f2a4c2f6983f2880d32e29c84"><div class="ttname"><a href="_avi_read_pike___split_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition:</b> <a href="_avi_read_pike___split_8m_source.html#l00028">AviReadPike_Split.m:28</a></div></div>
+<div class="ttc" id="_calculate__m_8m_html_a70c8cb1145c8203acbdab7cdcaa65d14"><div class="ttname"><a href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a></div><div class="ttdeci">Cauchy dispersion parameters</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00022">Calculate_m.m:22</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a27f5efe14c52fa358088a3f5d31d5922"><div class="ttname"><a href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a></div><div class="ttdeci">P2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00032">RayTracing.m:32</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_a091dd2547d36e2b58e43462d965834d7"><div class="ttname"><a href="_pike_reader_8m.html#a091dd2547d36e2b58e43462d965834d7">l1</a></div><div class="ttdeci">width of CCD setting the distance between center of the trap and first lens handles S l1</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00217">PikeReader.m:217</a></div></div>
+<div class="ttc" id="fake_ray_trace_c_u_d_a_8cu_html_a64914f8dd39b9cfb45567446e55f7380"><div class="ttname"><a href="fake_ray_trace_c_u_d_a_8cu.html#a64914f8dd39b9cfb45567446e55f7380">RayTrace</a></div><div class="ttdeci">__host__ void RayTrace(float *Br, int Br_size, int *Vb, float *VH, int Vb_length, int VH_length, HandlesStructures S, float3 *IM, int IM_size, float3 *P)</div><div class="ttdoc">calculate ray tracing. call RayTraceD CUDA kernels </div><div class="ttdef"><b>Definition:</b> <a href="fake_ray_trace_c_u_d_a_8cu_source.html#l00033">fakeRayTraceCUDA.cu:33</a></div></div>
+<div class="ttc" id="_pike_reader_8m_html_ad51c447b242fd7b0935d39a878faf3cb"><div class="ttname"><a href="_pike_reader_8m.html#ad51c447b242fd7b0935d39a878faf3cb">point</a></div><div class="ttdeci">end end Recalculation meters to pixels shifting the origin to middle of the image The center of image isn t placed on[0, 0] point</div><div class="ttdef"><b>Definition:</b> <a href="_pike_reader_8m_source.html#l00308">PikeReader.m:308</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ae1439e1fe3c28a3f6208cba9a71f1a2d"><div class="ttname"><a href="_ray_tracing_8m.html#ae1439e1fe3c28a3f6208cba9a71f1a2d">R</a></div><div class="ttdeci">2 R()</div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00001">1</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2a792a898a039d36b908170327d38714"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Snell <a class="el" href="_pike_reader_8m.html#a3691308f2a4c2f6983f2880d32e29c84">s</a> law <a class="el" href="nvmex__helper_8m.html#a6b4a1d63ebb0c68e297fddd83fe1c29f">if</a> p</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">== 1</div>
+<div class="line">            <a class="code" href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a> = asind( <a class="code" href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a> * sind( al1 ) / <a class="code" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a> )</div>
+<div class="ttc" id="_ray_tracing_8m_html_a683f09a8fde8fd5aca2637267de85ef4"><div class="ttname"><a href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">m2</a></div><div class="ttdeci">m2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00125">RayTracing.m:125</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_a5a5f29b89b53dfa902ebdc182c6407db"><div class="ttname"><a href="_ray_tracing_8m.html#a5a5f29b89b53dfa902ebdc182c6407db">al2</a></div><div class="ttdeci">else al2</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00130">RayTracing.m:130</a></div></div>
+<div class="ttc" id="_ray_tracing_8m_html_ada275fd73bace2d376e859bbded8e68e"><div class="ttname"><a href="_ray_tracing_8m.html#ada275fd73bace2d376e859bbded8e68e">m1</a></div><div class="ttdeci">refractive index of environment and lens respectively m1</div><div class="ttdef"><b>Definition:</b> <a href="_ray_tracing_8m_source.html#l00124">RayTracing.m:124</a></div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00127">127</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af93dd7f73e57b8b17d34efa33f0f948e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P1 = <a class="el" href="_set_system_8m.html#a5af87bd8e9f0f9596eb498ecbf2914c3">S.Pk</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00012">12</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a27f5efe14c52fa358088a3f5d31d5922"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00032">32</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1e290925c3c5aef593439888e5ee9309"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P3 = <a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> + <a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a>*<a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00018">18</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a15f015adf595b9ddc21a25082c3aabb0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P4 = [ <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,1) + S.Cs1, <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,2), <a class="el" href="_ray_tracing_8m.html#aedad1181684565670a7de27502eedcc5">rc</a>(1,3) ]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00055">55</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a78d663047395fbda2ab172ef7d535a46"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P5 = <a class="el" href="_ray_tracing_8m.html#a3b2ca6393fc73e16fc5984d4f395f2d9">rc1</a>(2,:)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00078">78</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48b1e0f0f342c6a0720585b62d204ef2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P6 = <a class="el" href="_ray_tracing_8m.html#a611c5f59ba825a5c45aadb8fe0f6732a">P5</a> + <a class="el" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>'*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00100">100</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa20240d26ace6829859aba913f892152"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P7 = <a class="el" href="_ray_tracing_8m.html#a48b1e0f0f342c6a0720585b62d204ef2">P6</a> + <a class="el" href="_ray_tracing_8m.html#a59dd33f2aa8046ea67bba3fad7a09e8e">v6</a>'*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00107">107</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aedad1181684565670a7de27502eedcc5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Isczem pereseczenie so sferoj rc = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a4588a68b5fa1faa0bc3ce222f4388bc5">SphereCross</a>( [ <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(1) - S.Cs1, <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(2), <a class="el" href="_ray_tracing_8m.html#a1cb549fbb34b8f2af147bf273215e587">P3</a>(3) ], <a class="el" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a>',<a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">S.R</a>(1) )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00043">43</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a> i <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00053">SphereCross()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad53aeb78abc83a52ab8982f5c82a3d5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">S = cross( <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>, <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00137">137</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaccc9105df5383111407fd5b41255e23"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">t = (<a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a> - <a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a>(1))/<a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>(1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00017">17</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4055e3a20b6b3af3d10590ea446ef6c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">v = (<a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="el" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)/<a class="el" href="_ray_tracing_8m.html#a834a8041af1c28666bb299b97ccbd3a6">norm</a>(<a class="el" href="_ray_tracing_8m.html#a27f5efe14c52fa358088a3f5d31d5922">P2</a> - <a class="el" href="_ray_tracing_8m.html#af93dd7f73e57b8b17d34efa33f0f948e">P1</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00014">14</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00021">findAlpha()</a> i <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac82842dff393085d5d4ed8bb065ae57d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">V2 = <a class="el" href="demosaic__mw_8m.html#a476ef5d2298d2996dc9c4beed9f3a4f8">A\B</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00145">145</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0beaea967ea7920263f0580caccb0ed2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Nachodim ugol mezdu normalju <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> vektorom padenia <a class="el" href="_pike_reader_8m.html#a6f6ccfcf58b31cb6412107d9d5281426">i</a> stroim nowyj prelomlennyj wektor v3 = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="el" href="_ray_tracing_8m.html#ac4055e3a20b6b3af3d10590ea446ef6c">v</a>,1,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00039">39</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaa05ec51c2d691a0b7560a330374e1c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">v4 = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a>, <a class="el" href="_ray_tracing_8m.html#a0beaea967ea7920263f0580caccb0ed2">v3</a>',2,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00052">52</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af4cc1b4cce031f2daf22087d1f6a8428"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">v5 = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( -<a class="el" href="_ray_tracing_8m.html#afe83ce175095e439946163562d101dec">ns</a>, <a class="el" href="_ray_tracing_8m.html#aaa05ec51c2d691a0b7560a330374e1c4">v4</a>',1,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00089">89</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a59dd33f2aa8046ea67bba3fad7a09e8e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">v6 = <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu.html#a2a43379900de4ef87e50b4e28da13291">findAlpha</a>( <a class="el" href="_ray_tracing_8m.html#aeab71244afb687f16d8c4f5ee9d6ef0e">n</a>, <a class="el" href="_ray_tracing_8m.html#af4cc1b4cce031f2daf22087d1f6a8428">v5</a>',2,<a class="el" href="_ray_tracing_8m.html#a683f09a8fde8fd5aca2637267de85ef4">S.m2</a> )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00102">102</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9336ebf25087d91c818ee6e9ec29f8c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">x = x0+V4(1)*<a class="el" href="_ray_tracing_8m.html#aaccc9105df5383111407fd5b41255e23">t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00095">95</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aee34fc740f3a5271508e6499ce2e3326"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">posledniaja toczka eto <a class="el" href="_ray_tracing_8m.html#a611c5f59ba825a5c45aadb8fe0f6732a">P5</a> X = <a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a> + 2*<a class="el" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">S.g</a> + <a class="el" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">S.ll</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_ray_tracing_8m_source.html#l00097">97</a> pliku <a class="el" href="_ray_tracing_8m_source.html">RayTracing.m</a>.</p>
+
+<p>Odwołania w <a class="el" href="_ray_trace_c_u_d_a__kernel_8cu_source.html#l00089">RayTraceD()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_ray_tracing_8m.html">RayTracing.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:38 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>PikeReaderCUDA_TJ: Dokumentacja pliku D:/Moje dokumenty/RayTracingCUDA_TJ/SetSystem.m</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">PikeReaderCUDA_TJ
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Strona&#160;główna</span></a></li>
+      <li><a href="pages.html"><span>Dodatkowe&#160;strony</span></a></li>
+      <li><a href="namespaces.html"><span>Przestrzenie&#160;nazw</span></a></li>
+      <li><a href="annotated.html"><span>Klasy</span></a></li>
+      <li class="current"><a href="files.html"><span>Pliki</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Szukaj" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Lista&#160;plików</span></a></li>
+      <li><a href="globals.html"><span>Składowe&#160;plików</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('_set_system_8m.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Klasy</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Przestrzenie nazw</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pliki</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Funkcje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Zmienne</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Definicje typów</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Wyliczenia</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Wartości wyliczeń</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Definicje</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Strony</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a> &#124;
+<a href="#var-members">Zmienne</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja pliku SetSystem.m</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><a href="_set_system_8m_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a3a198b0beef1d35ec220ce7a338f39bc"><td class="memItemLeft" align="right" valign="top">lens diametr Set instead&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> (real aperture) is convenient for calculations <a class="el" href="_pike_reader_8m.html#a4ac4099d01190890df161d528ebb7bef">S.efD</a></td></tr>
+<tr class="separator:a3a198b0beef1d35ec220ce7a338f39bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c976c97efe790938640821499c097bb"><td class="memItemLeft" align="right" valign="top">effective diameter <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a1c976c97efe790938640821499c097bb">R</a> (1)</td></tr>
+<tr class="separator:a1c976c97efe790938640821499c097bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1bcf48d9168c563b2c30cc4f06cbaae"><td class="memItemLeft" align="right" valign="top">radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature first <br class="typebreak"/>
+lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#af1bcf48d9168c563b2c30cc4f06cbaae">R</a> (2)</td></tr>
+<tr class="separator:af1bcf48d9168c563b2c30cc4f06cbaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86bdec0d61a48a8ca4da1674058837cc"><td class="memItemLeft" align="right" valign="top">id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a86bdec0d61a48a8ca4da1674058837cc">g</a> ()</td></tr>
+<tr class="separator:a86bdec0d61a48a8ca4da1674058837cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceec17b8f2b29cb2ad8841cb63393fc2"><td class="memItemLeft" align="right" valign="top">id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#aceec17b8f2b29cb2ad8841cb63393fc2">diafragm</a> ()</td></tr>
+<tr class="separator:aceec17b8f2b29cb2ad8841cb63393fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6a8bdc89430eab82dd6615cdf28be5c"><td class="memItemLeft" align="right" valign="top">lambda can has the structure <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> <a class="el" href="demosaic__mw_8m.html#ac75f411cdbfccdc95641ab89f59cdb06">RGB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#ab6a8bdc89430eab82dd6615cdf28be5c">lambda</a> (1:3)</td></tr>
+<tr class="separator:ab6a8bdc89430eab82dd6615cdf28be5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Zmienne</h2></td></tr>
+<tr class="memitem:a7506aef172c52006469b250d7cb0b8ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a></td></tr>
+<tr class="separator:a7506aef172c52006469b250d7cb0b8ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9430036a05dc518dd40e94924998ccbd"><td class="memItemLeft" align="right" valign="top">radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature <br class="typebreak"/>
+second lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a9430036a05dc518dd40e94924998ccbd">tc</a> = 1.8</td></tr>
+<tr class="separator:a9430036a05dc518dd40e94924998ccbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80b076bd55aee2293a92bc557b49e41a"><td class="memItemLeft" align="right" valign="top">thickness <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the whole lens <br class="typebreak"/>
+along optical axes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a80b076bd55aee2293a92bc557b49e41a">Distances</a></td></tr>
+<tr class="separator:a80b076bd55aee2293a92bc557b49e41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92194e0fd585cf13a4a3b76420356158"><td class="memItemLeft" align="right" valign="top">Distance between center <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the <br class="typebreak"/>
+trap and first diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a92194e0fd585cf13a4a3b76420356158">R_dis_Ring</a> = 29.68/2</td></tr>
+<tr class="separator:a92194e0fd585cf13a4a3b76420356158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4307d8b60524415f8e0763a528de1f6"><td class="memItemLeft" align="right" valign="top">outer radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> electrode <br class="typebreak"/>
+distancing ring <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#ac4307d8b60524415f8e0763a528de1f6">R_midl_El</a> = 29.64/2</td></tr>
+<tr class="separator:ac4307d8b60524415f8e0763a528de1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac93a21a997717f2426bb68373030a2a3"><td class="memItemLeft" align="right" valign="top">inner radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> midle <br class="typebreak"/>
+electrode <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> trap <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">l1</a> = 17</td></tr>
+<tr class="separator:ac93a21a997717f2426bb68373030a2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1058d9ad301258665d276a3182ac2cb2"><td class="memItemLeft" align="right" valign="top">Distance between center <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the <br class="typebreak"/>
+trap and first lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a1058d9ad301258665d276a3182ac2cb2">ll</a> = 37</td></tr>
+<tr class="separator:a1058d9ad301258665d276a3182ac2cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12c0e8c5f6ec2340f977ea2a57b8fe09"><td class="memItemLeft" align="right" valign="top">Distance between lenses <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a12c0e8c5f6ec2340f977ea2a57b8fe09">ld2</a> = 58.3 + <a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a></td></tr>
+<tr class="separator:a12c0e8c5f6ec2340f977ea2a57b8fe09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab586b8a47f2968cfaee012c8f55fb04"><td class="memItemLeft" align="right" valign="top">Distance to second diaphragm <br class="typebreak"/>
+First Diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#aab586b8a47f2968cfaee012c8f55fb04">dW</a> = 9</td></tr>
+<tr class="separator:aab586b8a47f2968cfaee012c8f55fb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a483471d881ab668d2b0837db0515bfb3"><td class="memItemLeft" align="right" valign="top">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a483471d881ab668d2b0837db0515bfb3">dH</a> = 4.27</td></tr>
+<tr class="separator:a483471d881ab668d2b0837db0515bfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab990f2b204fd217461e99e21ac3e559c"><td class="memItemLeft" align="right" valign="top">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm Second <br class="typebreak"/>
+diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#ab990f2b204fd217461e99e21ac3e559c">RDph</a> = 1</td></tr>
+<tr class="separator:ab990f2b204fd217461e99e21ac3e559c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29fb80597792f9f623544c5db18e4ad7"><td class="memItemLeft" align="right" valign="top">Radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> aperture <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a29fb80597792f9f623544c5db18e4ad7">W2</a> = 2</td></tr>
+<tr class="separator:a29fb80597792f9f623544c5db18e4ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e8e6416785c4fcf47c7749fad401061"><td class="memItemLeft" align="right" valign="top">thickness <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the diaphragm <br class="typebreak"/>
+wall CCD <a class="el" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a5e8e6416785c4fcf47c7749fad401061">lCCD</a> = 82.8</td></tr>
+<tr class="separator:a5e8e6416785c4fcf47c7749fad401061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b98e6005f19cfdc641a82e547c5184"><td class="memItemLeft" align="right" valign="top">Distance to CCD detector <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a09b98e6005f19cfdc641a82e547c5184">CCDPH</a> = 480</td></tr>
+<tr class="separator:a09b98e6005f19cfdc641a82e547c5184"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72dbc52291ac1d269355e4adf0500c4a"><td class="memItemLeft" align="right" valign="top">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD[Pix] <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a72dbc52291ac1d269355e4adf0500c4a">CCDPW</a> = 640</td></tr>
+<tr class="separator:a72dbc52291ac1d269355e4adf0500c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141992195c618a3c78b87ed867206a34"><td class="memItemLeft" align="right" valign="top">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD[Pix] <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">PixSize</a> = 7.4e-3</td></tr>
+<tr class="separator:a141992195c618a3c78b87ed867206a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980f8980e654dd7f9a630ab52940bb64"><td class="memItemLeft" align="right" valign="top">Pixel <a class="el" href="_pike_reader_8m.html#a49296279a1ca8bf4914ffc9d0ffbf029">size</a>[mm] Pike <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a980f8980e654dd7f9a630ab52940bb64">CCDH</a> = <a class="el" href="_set_system_8m.html#a09b98e6005f19cfdc641a82e547c5184">S.CCDPH</a> * <a class="el" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">S.PixSize</a></td></tr>
+<tr class="separator:a980f8980e654dd7f9a630ab52940bb64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db3c80d642443d795b2d4d576ae9edb"><td class="memItemLeft" align="right" valign="top">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a3db3c80d642443d795b2d4d576ae9edb">CCDW</a> = <a class="el" href="_set_system_8m.html#a72dbc52291ac1d269355e4adf0500c4a">S.CCDPW</a> * <a class="el" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">S.PixSize</a></td></tr>
+<tr class="separator:a3db3c80d642443d795b2d4d576ae9edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5af87bd8e9f0f9596eb498ecbf2914c3"><td class="memItemLeft" align="right" valign="top">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD Droplet position <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a5af87bd8e9f0f9596eb498ecbf2914c3">Pk</a> = [0,0,0]</td></tr>
+<tr class="separator:a5af87bd8e9f0f9596eb498ecbf2914c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b660e5d31ddcd39dd04cb3ad120d072"><td class="memItemLeft" align="right" valign="top">Position <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> droplet relativ to <br class="typebreak"/>
+the origin <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> coordinat system <br class="typebreak"/>
+Wavelength <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> incident ray <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a6b660e5d31ddcd39dd04cb3ad120d072">lambda</a> = 532</td></tr>
+<tr class="separator:a6b660e5d31ddcd39dd04cb3ad120d072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fbf3154550e3465e93cdaa0c4cbc99f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_set_system_8m.html#a7fbf3154550e3465e93cdaa0c4cbc99f">N</a> = 20</td></tr>
+<tr class="separator:a7fbf3154550e3465e93cdaa0c4cbc99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a class="anchor" id="aceec17b8f2b29cb2ad8841cb63393fc2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">id diafragm </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a86bdec0d61a48a8ca4da1674058837cc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">id g </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab6a8bdc89430eab82dd6615cdf28be5c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lambda can has the structure <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> <a class="el" href="demosaic__mw_8m.html#ac75f411cdbfccdc95641ab89f59cdb06">RGB</a> lambda </td>
+          <td>(</td>
+          <td class="paramtype">1:3&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3a198b0beef1d35ec220ce7a338f39bc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lens diametr Set instead of </td>
+          <td>(</td>
+          <td class="paramtype">real&#160;</td>
+          <td class="paramname"><em>aperture</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1c976c97efe790938640821499c097bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effective diameter <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> R </td>
+          <td>(</td>
+          <td class="paramtype">1&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af1bcf48d9168c563b2c30cc4f06cbaae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature first lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> R </td>
+          <td>(</td>
+          <td class="paramtype">2&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja zmiennych</h2>
+<a class="anchor" id="a980f8980e654dd7f9a630ab52940bb64"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Pixel <a class="el" href="_pike_reader_8m.html#a49296279a1ca8bf4914ffc9d0ffbf029">size</a> [ mm ] Pike <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> CCDH = <a class="el" href="_set_system_8m.html#a09b98e6005f19cfdc641a82e547c5184">S.CCDPH</a> * <a class="el" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">S.PixSize</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00037">37</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a09b98e6005f19cfdc641a82e547c5184"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Distance to CCD detector <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> CCDPH = 480</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00034">34</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a72dbc52291ac1d269355e4adf0500c4a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD [ Pix ] <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> CCDPW = 640</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00035">35</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3db3c80d642443d795b2d4d576ae9edb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> CCDW = <a class="el" href="_set_system_8m.html#a72dbc52291ac1d269355e4adf0500c4a">S.CCDPW</a> * <a class="el" href="_set_system_8m.html#a141992195c618a3c78b87ed867206a34">S.PixSize</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00038">38</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a483471d881ab668d2b0837db0515bfb3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> dH = 4.27</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00028">28</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a80b076bd55aee2293a92bc557b49e41a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">thickness <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the whole lens along optical axes Distances</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00019">19</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab586b8a47f2968cfaee012c8f55fb04"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Distance to second diaphragm First Diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> dW = 9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00027">27</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac93a21a997717f2426bb68373030a2a3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inner radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> midle electrode <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> trap <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> l1 = 17</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00023">23</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6b660e5d31ddcd39dd04cb3ad120d072"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Position <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> droplet relativ to the origin <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> coordinat system Wavelength <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> incident ray <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> lambda = 532</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00042">42</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e8e6416785c4fcf47c7749fad401061"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">thickness <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the diaphragm wall CCD <a class="el" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> lCCD = 82.8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00033">33</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a12c0e8c5f6ec2340f977ea2a57b8fe09"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Distance between lenses <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> ld2 = 58.3 + <a class="el" href="_set_system_8m.html#ac93a21a997717f2426bb68373030a2a3">S.l1</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00025">25</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1058d9ad301258665d276a3182ac2cb2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Distance between center <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the trap and first lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> ll = 37</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00024">24</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7fbf3154550e3465e93cdaa0c4cbc99f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> N = 20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00043">43</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a141992195c618a3c78b87ed867206a34"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD [Pix ] <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> PixSize = 7.4e-3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00036">36</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5af87bd8e9f0f9596eb498ecbf2914c3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">width <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> CCD Droplet position <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> Pk = [0,0,0]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00040">40</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a92194e0fd585cf13a4a3b76420356158"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Distance between center <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the trap and first diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> R_dis_Ring = 29.68/2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00020">20</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4307d8b60524415f8e0763a528de1f6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">outer radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> electrode distancing ring <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> R_midl_El = 29.64/2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00021">21</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab990f2b204fd217461e99e21ac3e559c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">height <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> diaphragm Second diaphragm <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> RDph = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00030">30</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7506aef172c52006469b250d7cb0b8ef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_calculate__m_8m.html#a620c273b62a1f455230fe4c42528ff31">function</a> S</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Wartość początkowa:</b><div class="fragment"><div class="line">= SetSystem</div>
+<div class="line">%  This <span class="keyword">function</span> creates initial structure <span class="keywordflow">for</span> objective and CCD</div>
+<div class="line">%  <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a>.</div>
+<div class="line">%  All <a class="code" href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a> are in [ mm ]</div>
+<div class="line">%  The origin <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> the system coordinate is the center <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> trap.</div>
+<div class="line">%</div>
+<div class="line"></div>
+<div class="line">% Parameters <a class="code" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens:</div>
+<div class="line"><a class="code" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a>.D    = 15</div>
+<div class="ttc" id="_set_system_8m_html_a3a198b0beef1d35ec220ce7a338f39bc"><div class="ttname"><a href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a></div><div class="ttdeci">lens diametr Set instead of(real aperture) is convenient for calculations S.efD</div></div>
+<div class="ttc" id="_calculate__m_8m_html_a70c8cb1145c8203acbdab7cdcaa65d14"><div class="ttname"><a href="_calculate__m_8m.html#a70c8cb1145c8203acbdab7cdcaa65d14">parameters</a></div><div class="ttdeci">Cauchy dispersion parameters</div><div class="ttdef"><b>Definition:</b> <a href="_calculate__m_8m_source.html#l00022">Calculate_m.m:22</a></div></div>
+<div class="ttc" id="_set_system_8m_html_a7506aef172c52006469b250d7cb0b8ef"><div class="ttname"><a href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a></div><div class="ttdeci">function S</div><div class="ttdef"><b>Definition:</b> <a href="_set_system_8m_source.html#l00001">SetSystem.m:1</a></div></div>
+</div><!-- fragment -->
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00001">1</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9430036a05dc518dd40e94924998ccbd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> lens curvature second lens <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> tc = 1.8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00013">13</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a29fb80597792f9f623544c5db18e4ad7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Radius <a class="el" href="_set_system_8m.html#a3a198b0beef1d35ec220ce7a338f39bc">of</a> aperture <a class="el" href="_set_system_8m.html#a7506aef172c52006469b250d7cb0b8ef">S</a> W2 = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definicja w linii <a class="el" href="_set_system_8m_source.html#l00031">31</a> pliku <a class="el" href="_set_system_8m_source.html">SetSystem.m</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_382e95b3446a02a720633edac7014b11.html">RayTracingCUDA_TJ</a></li><li class="navelem"><a class="el" href="_set_system_8m.html">SetSystem.m</a></li>
+    <li class="footer">Wygenerowano So, 7 maj 2016 15:31:38 dla PikeReaderCUDA_TJ programem
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>
