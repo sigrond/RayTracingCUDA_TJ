@@ -11,11 +11,16 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="null" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
 			</Target>
 		</Build>
 		<Unit filename="AviInfo.hpp" />
 		<Unit filename="CyclicBuffer.cpp" />
 		<Unit filename="CyclicBuffer.hpp" />
+		<Unit filename="FrameReader.cpp" />
+		<Unit filename="FrameReader.hpp" />
 		<Unit filename="IntensCalc.cu" />
 		<Unit filename="IntensCalc_CUDA.cu" />
 		<Unit filename="IntensCalc_CUDA.cuh" />
