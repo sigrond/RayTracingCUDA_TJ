@@ -89,3 +89,7 @@ Then next frame may be processed and so for the rest of movie.
 
 Intensity Calculation rewriten to CUDA C++ is much faster and reduces coputation times from
 hours or days to seconds or minutes.
+
+Project is available on github:
+https://github.com/sigrond/RayTracingCUDA_TJ
+
