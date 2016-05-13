@@ -1,0 +1,91 @@
+author: Tomasz Jakubczyk
+
+Intensity Calculation description
+
+Intensity Calculation is part of PikeReader and it is internaly named IntensCalc.
+Its purpose is to calculate average pixel intensity for Theta angles of the incident ray
+for each movie frame.
+
+Compute intensive calculation are writen in CUDA C/C++ for vast calculation speed improvment.
+C++ code is compiled to Matlab mex file (IntensCalc.mexw64) to interface with the rest of
+PikeReader Matlab application.
+
+IntensCalc require some pre-prepared data from PikeReader, it is:
+- Information about movie name, checked colors and other small things form PikeReader GUI
+(Graphical User Interface), all included in handles variable which contains moast of
+PikeReader enviorment.
+- Number of movie frames (NumFrames).
+- Vectors of indexes of masked pixels for each color (ipR, ipG, ipB).
+- Pre-calculated in RayTracingCUDA (CalcImaje in CI menu) ray intensity images based on
+measuring system setings. Images for each color must be normalized and have coresponding
+mask applied (ICR_N, ICG_N, ICB_N).
+- Sorted frame indexes by Theta angles, which are also calculated in RayTracingCUDA, whith
+mask applied for each color (I_S_R, I_S_G, I_S_B).
+
+IntensCalc's incredible speed was achived by identifying two very important bootlenecks.
+First obvious thing was that procesing every pixel of every frame on CPU must be very time
+consuming, so it was decided that thise calculations should be performed in parallel on CUDA
+capable GPU. It was decided that movie should be procesed on GPU frame by frame, just one
+frame at a time.
+Second major bootleneck happened to be reading movie from hard drive. Storage devices have
+their own haracteristicks which can't be surpased programisticly, so it is resonable to
+allow program to read from hard drive nonstop. So new only hard drive reading thread was
+separated.
+
+Hard drive movie reading thread was made fast and simple, it just read movie in optimal 64KB
+blocks and copies it to 640KB buffer which is slightly biger than one frame (614400B).
+640KB buffers are organized into cyclic buffer of pointers to 640KB buffers. Cyclic buffer is
+encapsulated in class usualy referd as monitor which allows easy and safe thread
+synchronization. Cyclic buffer solves problem of RAM being usualy smaller than movie.
+Reading thread fills cyclic buffer while calculation thread reads data from cyclic buffer,
+performs heavy computations and discards used data from cyclic buffer. To guarantee smooth
+flow of data, each 640KB buffer in cyclic buffer has 4 states: rady empty, read full,
+used for writing, used for reading, and so cyclic buffer has four coresponding methods:
+claimForWrite, writeEnd, claimForRead, readEnd. Additionally bigger size of cyclic buffer may
+help whith balancing uneven reading and calculations paces due to some operations overheads
+or resources being used by some other processes.
+
+Calculation thread first has to retrive frames form 640KB buffers from cyclic buffer, as for
+performence sake movie was read in 64K blocks. It is highly posible that in two following
+640KB buffers there will be at least one full frame. Unfortunetly movies are encoded in avi
+ARV6 raw format and frame do not need to be placed in fixed position form frames header and
+there may be additional JUNK sections. Decodec for this format is not decribed or it wasn't
+published in the internet so movies format was guessed by reading movies in HEX editor.
+So in this format to find frame data first, frame header (00db614400) must be found and then
+by jumping size of frame and searching there header of next frame needs to be found, but
+there could be JUNK section before next frames header and it also needs to be found. Then
+having all that information frame may be found sticked to the right to JUNK section if it
+was present (JUNK is sticked to the right to next frames header) or else sticked to the
+next frames header. To sum up garbage data may be between frames header and actual frames
+data and in JUNK section between actual frames data and next frames header.
+
+When frame is succesfully retrived from cyclic buffer it is copied to GPU global memmory,
+then CUDA GPU calculation are called.
+First CUDA kernel (GPU function which executes same algorithm for every given set of data in
+parallel) avi get value is called, it calculates real values of each pixel which was encoded
+in some peculiar 14bit format into 2 bytes, the first byte is older 8bit part of 14bit number,
+second byte contains in 6 younger bits younger part of 14bit number but reversed within these
+6 bits. So to calculate value of pixel first byte needs to be shifted right by 2 and the
+second byte needs to be 6bit reversed (by lookup table) and added to the first one.
+
+Second kernel demosaics frame so three colors (RGB) are extacted from frame, and then
+operations are made on these colors.
+Then for each color correction kernel is called, it devides frame by color corresponding
+intensity correction image and appllies color coresponding mask. These operation reduces
+ammount of data by removeing irrelevant masked data.
+
+Next kernel operation on each color of frame is moveing average. It writes new vectors
+(for each color) by choseing pixels by idexes sorted by Theta angle, and then smoothing it
+by aplaying moving average algorithm. Atomic additon dosn't realy block threads so in moving
+average its quite fast, but to preserve time and computation power divisions should be
+limited so additional helper kernel is called just for deviding each value to fullfil moveing
+average algorithm.
+
+The final kernel generates vector of fixed in matlab length (700) for each color of frame.
+Vector contains evenlly chosen pixels from coresponding vector of sorted by Theta and
+smoothed by moving average values.
+Then these vectors are copied form GPU memmory to corresponding addresses in Matlab memmory.
+Then next frame may be processed and so for the rest of movie.
+
+Intensity Calculation rewriten to CUDA C++ is much faster and reduces coputation times from
+hours or days to seconds or minutes.
