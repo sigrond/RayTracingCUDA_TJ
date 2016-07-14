@@ -21,7 +21,7 @@ S.R_dis_Ring = 29.68/2; % outer radius of electrode distancing ring
 S.R_midl_El  = 29.64/2;  % inner radius of midle electrode of trap
 
 S.l1   = 17;   % Distance between center of the trap and  first lens
-S.ll   = 37;   % Distance between lenses
+S.ll   = 37.4;   % Distance between lenses apex-apex + optical length in polarizer
 S.ld2  = 58.3 + S.l1; % 58.3 - distence from first lens to second diafragm  %76.6; % Distance to second diaphragm
 % First Diaphragm
 S.dW   = 9;    % width of diaphragm

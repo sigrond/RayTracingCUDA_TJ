@@ -57,7 +57,6 @@ handles.GPU=1;
 set(handles.edAperture,'string',num2str(handles.S.D));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
-set( handles.ed_Sh_l1,'string', num2str( handles.S.l1 ) );
 handles = Draw(hObject,handles);
 % Update handles structure
 guidata(hObject, handles);
@@ -214,7 +213,6 @@ function handles = Sight(hObject,handles)
   handles.S.CCDH = handles.S.CCDPH * handles.S.PixSize;  % height of CCD
   handles.S.CCDW = handles.S.CCDPW * handles.S.PixSize;  % width  of CCD
   % setting the distance between center of the trap and  first lens
-  handles.S.l1   = str2double( get( handles.ed_Sh_l1,'string' ) );
 
 handles = DrawTheorImage(hObject,handles);
 guidata(hObject,handles);
@@ -1442,27 +1440,6 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
         sprintf('Parameters has been saved to the directory:\n %s',savePath)
     end
     assignin('base','Save',Save);
-
-function ed_Sh_l1_Callback(hObject, eventdata, handles)
-% hObject    handle to ed_Sh_l1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles = Draw(hObject,handles);
-% Hints: get(hObject,'String') returns contents of ed_Sh_l1 as text
-%        str2double(get(hObject,'String')) returns contents of ed_Sh_l1 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function ed_Sh_l1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to ed_Sh_l1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 % --- Executes on button press in pbNA_Aprox.
