@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 14-Feb-2016 12:49:44
+% Last Modified by GUIDE v2.5 19-Jul-2016 13:32:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1791,12 +1791,12 @@ end
 close(hwb)
 
 
-% --- Executes on button press in checkbox6.
-function checkbox6_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox6 (see GCBO)
+% --- Executes on button press in ChGPU.
+function ChGPU_Callback(hObject, eventdata, handles)
+% hObject    handle to ChGPU (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of checkbox6
+% Hint: get(hObject,'Value') returns toggle state of ChGPU
 handles.GPU=get(hObject,'Value');
 guidata(hObject,handles);

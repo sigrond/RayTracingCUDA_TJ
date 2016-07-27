@@ -23,6 +23,8 @@ If you would like to adjust this code to work with another codecs you should cha
  * \date 23.03.2016
  * zmiany mające na celu umożliwienie poprawnego czytania również
  * nie podzielonych filmów
+ * \date 27.07.2016
+ * próba naprawienia czytania klatek
  */
 
 
@@ -251,10 +253,13 @@ try{
 
 	for(int i=0;i<8;i++)
     {
+        /*
         if(smallf)
             b&=frameStartCodeS[i]==codeBuff[i];
         else
             b&=frameStartCode[i]==codeBuff[i];
+        */
+        b&=frameStartCodeS[i]==codeBuff[i]||frameStartCode[i]==codeBuff[i];
         printf("0x%02X ",codeBuff[i]);
     }
     char junkCode[]="JUNK";
@@ -290,10 +295,13 @@ try{
                 b=true;
                 for(int i=0;i<8 && b;i++)
                 {
+                    /*
                     if(smallf)
                         b&=frameStartCodeS[i]==buff[j+i];
                     else
                         b&=frameStartCode[i]==buff[j+i];
+                    */
+                    b&=frameStartCodeS[i]==buff[j+i]||frameStartCode[i]==buff[j+i];
                 }
                 if(b)
                 {
