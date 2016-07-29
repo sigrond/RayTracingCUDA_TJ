@@ -1388,7 +1388,6 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
     Save.edCCD = get(handles.edCCD,'string');
     Save.edAperture = get(handles.edAperture,'string');
     Save.shLW     = get(handles.edLineSh,'string');
-    Save.ed_Sh_l1 = get(handles.ed_Sh_l1,'string'); % distance between lenses
 % Saving Frame step and Adjust box
     Save.edAdjust = get(handles.edAdjust,'string');
     Save.edSumFrameStep = get(handles.edSumFrameStep,'string');
