@@ -1726,9 +1726,9 @@ end
     % compound of masks  for red channel
     Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
-    handles.BackgroundMask = ~Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4;
+    handles.BackgroundMask = int8( ~Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_position = position; % coord handles for mascksinates of mask
-    %guidata(hObject,handles);
+    guidata(hObject,handles);
    
    
 

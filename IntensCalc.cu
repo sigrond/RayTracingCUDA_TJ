@@ -198,6 +198,29 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     isB=(bool)*value;
     printf("isB: %d\n",isB);
 
+    unsigned char * BgMask=nullptr;
+    tmp=mxGetField(prhs[0],0,"BackgroundMask");
+    if(tmp==nullptr)
+        printf("no handles.BackgroundMask?\n");
+    BgMask=(unsigned char*)mxGetPr(tmp);
+    if(BgMask==nullptr)
+        printf("BgMask==nullptr\n");
+    int BgM_N=mxGetN(tmp);
+    int BgM_M=mxGetM(tmp);
+    printf("BgM_N: %d, BgM_M: %d\n",BgM_N,BgM_M);
+
+    for(int i=0;i<BgM_M;i++)//480
+    {
+        for(int j=0;j<BgM_N;j++)//640
+        {
+            if(i%16==8 && j%16==8)
+            printf("%d ",BgMask[j*BgM_M+i]);
+        }
+        if(i%16==8)
+        printf("\n");
+    }
+
+
     count_step=*((int*)mxGetPr(prhs[1]));
     if(mxGetN(prhs[1])*mxGetM(prhs[1])!=1)
     {
