@@ -456,7 +456,18 @@ try
 
     setupCUDA_IC();
 
-    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B);
+    /**< szybkie obliczenie z ilu pikseli składa się tło */
+    float BgMaskSize=0.0f;
+    for(int i=0;i<BgM_M;i++)//480
+    {
+        for(int j=0;j<BgM_N;j++)//640
+        {
+            if(BgMask[j*BgM_M+i]==1)
+                BgMaskSize+=1.0f;
+        }
+    }
+
+    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,BgMask,BgMaskSize);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 

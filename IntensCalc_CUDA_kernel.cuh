@@ -16,7 +16,10 @@ __global__
 void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray);
 
 __global__
-void correctionD(short* color, int* mask, int mask_size, float* IC, float* I);
+void getBgD(short* color, unsigned char* BgMask, float* BgValue);
+
+__global__
+void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, float* BgValue);
 
 __global__
 void chooseRepresentativesD(float* I, int I_size, float* R, int R_size);
