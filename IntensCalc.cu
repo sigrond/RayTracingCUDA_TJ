@@ -532,7 +532,8 @@ try
                     b=false;
                     break;
                 }
-                b&=FrameStartCode[i]==tmpBuff[j+i];
+                //b&=FrameStartCode[i]==tmpBuff[j+i];
+                b&=frameStartCode[i]==tmpBuff[j+i] || frameStartCodeS[i]==tmpBuff[j+i];
                 if(b)
                 {
                     checkBuffForStartCodePosition=i;/**< zapisujemy na wypadek gdyby bufor przecioł nagłówek */
