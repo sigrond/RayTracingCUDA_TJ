@@ -28,7 +28,8 @@ S.ld2  = 58.3 + S.l1; % 58.3 - distence from first lens to second diafragm  %76.
 S.dW   = 9;    % width of diaphragm
 S.dH   = 4.27;    % height of diaphragm
 % Second diaphragm
-S.RDph  = 1;   % Radius of aperture
+% S.RDph  = 1;   % Radius of aperture - small chamber
+S.RDph  = 0.5;   % Radius of aperture - big chamber
 S.W2    = 1;   % thickness of the diaphragm wall
 % CCD parameters
 S.lCCD = 82.8; % Distance to CCD detector
