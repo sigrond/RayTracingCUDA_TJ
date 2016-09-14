@@ -54,7 +54,7 @@ handles.BWB = [];
 
 handles.GPU=1;
 
-set(handles.edAperture,'string',num2str(handles.S.D));
+set(handles.edAperture,'string',num2str(handles.S.efD));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
 handles = Draw(hObject,handles);
