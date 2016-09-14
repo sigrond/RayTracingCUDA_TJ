@@ -188,9 +188,12 @@ void getBgD(short* color, unsigned char* BgMask, float* BgValue)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=640*480)
         return;
-    if(BgMask[index]==0)
+    int j=index/640;
+    int i=index%640;
+    int wid=640, len=480;
+    if(BgMask[j+i*len]==0)
         return;
-    float value=color[index];
+    float value=(float)color[i+j*wid];//j+i*len
     atomicAdd(BgValue,value);
 }
 
@@ -214,7 +217,15 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, fl
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=mask_size)
         return;
-    I[index]=((float)color[(mask[index]-1)]-(*BgValue))/IC[index];
+    float tmpColor=(float)color[(mask[index]-1)]-(float)BgValue[0];
+    if(tmpColor<=0)
+    {
+        I[index]=0;
+    }
+    else
+    {
+        I[index]=tmpColor/IC[index];
+    }
 }
 
 /** \brief wybiera równomiernie rozłożone punkty

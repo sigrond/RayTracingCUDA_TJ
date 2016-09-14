@@ -1172,7 +1172,7 @@ elseif ischar( handles.f ) % The single file is chosen
         else
             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
         end
-%[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+%[I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 [I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 I_Red=I_RedM';
     I_Green=I_GreenM';
@@ -1726,7 +1726,7 @@ end
     % compound of masks  for red channel
     Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
-    handles.BackgroundMask = int8( ~Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
    

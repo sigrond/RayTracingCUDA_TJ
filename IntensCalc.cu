@@ -467,6 +467,8 @@ try
         }
     }
 
+    printf("BgMaskSize: %f\n",BgMaskSize);
+
     setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,BgMask,BgMaskSize);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
