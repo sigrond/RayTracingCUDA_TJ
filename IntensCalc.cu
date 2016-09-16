@@ -10,6 +10,7 @@
 #include "mex.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include <fstream>
 #include <string>

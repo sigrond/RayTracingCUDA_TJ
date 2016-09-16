@@ -343,6 +343,12 @@ void setMasksAndImagesAndSortedIndexes(
     BgMask_Size=BgMaskSize;
 }
 
+/** \brief kopiuje klatkę z podanego bufora do pamięci karty
+ *
+ * \param buff char* bufor z klatką
+ * \return void
+ *
+ */
 void copyBuff(char* buff)
 {
     /**< kopiujemy na kartę */
