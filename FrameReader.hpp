@@ -76,8 +76,28 @@ private:
         unsigned long int number;/**< numer nagłówka */
         unsigned long int size;/**< rozmiar nagłówka */
     } header;
-    char* junkPt;
-    bool emptyLeft;
-    bool emptyRight;
-    void findNextHeader()
+    struct Junk
+    {
+        Junk();
+        char* pt;/**< wskaźnik na ostatno znalezioną sekcję JUNK */
+        unsigned long int position;/**< pozycja ostatnio znalezionej sekcji JUNK */
+        unsigned long int number;/**< numer sekcji JUNK */
+        unsigned long int size;/**< całkowity rozmiar sekcji JUNK */
+        bool found;/**< czy sekcja JUNK została znaleziona przed nagłówkiem */
+        unsigned long int hSize;/**< rozmiar nagłówka sekcji JUNK */
+    } junk;
+    struct Frame
+    {
+        Frame();
+        unsigned long int size;
+        char* pt;
+        unsigned long int position;
+        bool found;
+    } frame;
+    bool emptyLeft;/**< czy lewa strona danych jest niezapełniona */
+    bool emptyRight;/**< czy prawa strona danych jest niezapełniona */
+    void findNextHeader();/**< wyszukanie następnego nagłówka */
+    void cycleDataSpace();/**< przesunięcie danych w lewo i doczytanie nowych */
+    void loadLeft();/**< wczytanie danych z bufora cyklicznego do lewej strony danych */
+    void loadRight();/**< wczytanie danych z bufora cyklicznego do prawej strony danych */
 };
