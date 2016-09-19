@@ -170,6 +170,33 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
     }
 }
 
+/** \brief oblicza wartość tła
+ *
+ * \param color short* klatka w wybranym kolorze
+ * \param BgMask unsigned char* maska tła
+ * \param BgValue float* zwracana wartość tła
+ * \return void
+ *
+ */
+__global__
+void getBgD(short* color, unsigned char* BgMask, float* BgValue)
+{
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
+    if(index>=640*480)
+        return;
+    int j=index/640;
+    int i=index%640;
+    int wid=640, len=480;
+    if(BgMask[j+i*len]==0)
+        return;
+    float value=(float)color[i+j*wid];//j+i*len
+    atomicAdd(BgValue,value);
+}
+
 /** \brief nałożenie maski na kolor klatki i podzielenie przez obraz korekcyjny
  *
  * \param color short* klatka w wybranym kolorze
@@ -181,7 +208,7 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
  *
  */
 __global__
-void correctionD(short* color, int* mask, int mask_size, float* IC, float* I)
+void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, float* BgValue)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
@@ -190,7 +217,15 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=mask_size)
         return;
-    I[index]=((float)color[(mask[index]-1)])/IC[index];
+    float tmpColor=(float)color[(mask[index]-1)]-(float)BgValue[0];
+    if(tmpColor<=0)
+    {
+        I[index]=0;
+    }
+    else
+    {
+        I[index]=tmpColor/IC[index];
+    }
 }
 
 /** \brief wybiera równomiernie rozłożone punkty

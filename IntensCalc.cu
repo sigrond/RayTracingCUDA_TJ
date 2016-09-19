@@ -2,7 +2,7 @@
  * \author Tomasz Jakubczyk
  * \brief
  * kompilacja w matlabie:
- * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
+ * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu FrameReader.cpp -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
  */
 
 #define WIN32
@@ -10,6 +10,7 @@
 #include "mex.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include <fstream>
 #include <string>
@@ -197,6 +198,29 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     value=(double*)mxGetPr(tmp);
     isB=(bool)*value;
     printf("isB: %d\n",isB);
+
+    unsigned char * BgMask=nullptr;
+    tmp=mxGetField(prhs[0],0,"BackgroundMask");
+    if(tmp==nullptr)
+        printf("no handles.BackgroundMask?\n");
+    BgMask=(unsigned char*)mxGetPr(tmp);
+    if(BgMask==nullptr)
+        printf("BgMask==nullptr\n");
+    int BgM_N=mxGetN(tmp);
+    int BgM_M=mxGetM(tmp);
+    printf("BgM_N: %d, BgM_M: %d\n",BgM_N,BgM_M);
+
+    for(int i=0;i<BgM_M;i++)//480
+    {
+        for(int j=0;j<BgM_N;j++)//640
+        {
+            if(i%16==8 && j%16==8)
+            printf("%d ",BgMask[j*BgM_M+i]);
+        }
+        if(i%16==8)
+        printf("\n");
+    }
+
 
     count_step=*((int*)mxGetPr(prhs[1]));
     if(mxGetN(prhs[1])*mxGetM(prhs[1])!=1)
@@ -433,7 +457,20 @@ try
 
     setupCUDA_IC();
 
-    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B);
+    /**< szybkie obliczenie z ilu pikseli składa się tło */
+    float BgMaskSize=0.0f;
+    for(int i=0;i<BgM_M;i++)//480
+    {
+        for(int j=0;j<BgM_N;j++)//640
+        {
+            if(BgMask[j*BgM_M+i]==1)
+                BgMaskSize+=1.0f;
+        }
+    }
+
+    printf("BgMaskSize: %f\n",BgMaskSize);
+
+    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,BgMask,BgMaskSize);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
@@ -509,7 +546,8 @@ try
                     b=false;
                     break;
                 }
-                b&=FrameStartCode[i]==tmpBuff[j+i];
+                //b&=FrameStartCode[i]==tmpBuff[j+i];
+                b&=frameStartCode[i]==tmpBuff[j+i] || frameStartCodeS[i]==tmpBuff[j+i];
                 if(b)
                 {
                     checkBuffForStartCodePosition=i;/**< zapisujemy na wypadek gdyby bufor przecioł nagłówek */

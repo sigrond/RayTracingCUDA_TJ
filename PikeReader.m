@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 14-Feb-2016 12:49:44
+% Last Modified by GUIDE v2.5 19-Jul-2016 13:32:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,10 +54,9 @@ handles.BWB = [];
 
 handles.GPU=1;
 
-set(handles.edAperture,'string',num2str(handles.S.D));
+set(handles.edAperture,'string',num2str(handles.S.efD));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
-set( handles.ed_Sh_l1,'string', num2str( handles.S.l1 ) );
 handles = Draw(hObject,handles);
 % Update handles structure
 guidata(hObject, handles);
@@ -214,7 +213,6 @@ function handles = Sight(hObject,handles)
   handles.S.CCDH = handles.S.CCDPH * handles.S.PixSize;  % height of CCD
   handles.S.CCDW = handles.S.CCDPW * handles.S.PixSize;  % width  of CCD
   % setting the distance between center of the trap and  first lens
-  handles.S.l1   = str2double( get( handles.ed_Sh_l1,'string' ) );
 
 handles = DrawTheorImage(hObject,handles);
 guidata(hObject,handles);
@@ -1174,7 +1172,7 @@ elseif ischar( handles.f ) % The single file is chosen
         else
             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
         end
-%[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+%[I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 [I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 I_Red=I_RedM';
     I_Green=I_GreenM';
@@ -1390,7 +1388,6 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
     Save.edCCD = get(handles.edCCD,'string');
     Save.edAperture = get(handles.edAperture,'string');
     Save.shLW     = get(handles.edLineSh,'string');
-    Save.ed_Sh_l1 = get(handles.ed_Sh_l1,'string'); % distance between lenses
 % Saving Frame step and Adjust box
     Save.edAdjust = get(handles.edAdjust,'string');
     Save.edSumFrameStep = get(handles.edSumFrameStep,'string');
@@ -1442,27 +1439,6 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
         sprintf('Parameters has been saved to the directory:\n %s',savePath)
     end
     assignin('base','Save',Save);
-
-function ed_Sh_l1_Callback(hObject, eventdata, handles)
-% hObject    handle to ed_Sh_l1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles = Draw(hObject,handles);
-% Hints: get(hObject,'String') returns contents of ed_Sh_l1 as text
-%        str2double(get(hObject,'String')) returns contents of ed_Sh_l1 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function ed_Sh_l1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to ed_Sh_l1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 % --- Executes on button press in pbNA_Aprox.
@@ -1726,6 +1702,33 @@ if get(handles.chB,'value') % mask for blue channel
     handles.B_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
 end
+
+% mask for background
+% Prepearing image
+    hf = imtool( handles.cF ./ str2double( get(handles.edAdjust,'string')) );
+    %hf = imshow( handles.cF );
+    set(hf,'name','Set Mask for background!')
+    ha = get(hf,'CurrentAxes');
+    hold(ha,'on');
+    plot(ha,get(handles.hl(1),'xdata'),...
+        get(handles.hl(1),'ydata'),'r');
+    plot(ha,get(handles.hl(4),'xdata'),...
+        get(handles.hl(4),'ydata'),'g');
+    plot(ha,get(handles.hl(7),'xdata'),...
+        get(handles.hl(7),'ydata'),'b');
+    % Start to drawing matrix
+    h = impoly(ha); % Create draggable, resizable polygon
+    position = wait(h);
+    delete(hf);
+    Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+    % mask from aperture
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    % compound of masks  for red channel
+    Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
+    Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
+    handles.BackgroundMask = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask_position = position; % coord handles for mascksinates of mask
+    guidata(hObject,handles);
    
    
 
@@ -1814,12 +1817,12 @@ end
 close(hwb)
 
 
-% --- Executes on button press in checkbox6.
-function checkbox6_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox6 (see GCBO)
+% --- Executes on button press in ChGPU.
+function ChGPU_Callback(hObject, eventdata, handles)
+% hObject    handle to ChGPU (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of checkbox6
+% Hint: get(hObject,'Value') returns toggle state of ChGPU
 handles.GPU=get(hObject,'Value');
 guidata(hObject,handles);

@@ -1,0 +1,20 @@
+Plan modyfikacji PikeReader i IntensCalc w celu dodania funkcjonalnoœci odejmowania
+t³a od ka¿dej klatki.
+
+Autor: Tomasz Jakubczyk
+
+Uœciœlenie zadania:
+T³o - nazwa dla obszaru klatki, na zewn¹trz obrazu rozproszeniowego.
+Odjêcie t³a od klatki - ojêcie od obrazu rozproszeniowego uœrednionej wartoœci t³a.
+Dodatkowo wartoœæ t³a nale¿y obliczyæ i odj¹æ osobno dla lewej i prawej strony klatki.
+
+Co jest potrzebne?:
+Maska dla t³a - nale¿y storzyæ lub zaadaptowaæ interfejs do zaznaczania tej maski,
+dodatkow¹ trudnoœci¹ jest przekazanie tej maski do IntensCalc, zatem potrzebne bêd¹
+zmiany w argumentach wywo³ania IntensCalc i zmiany wywo³añ IntensCalc w PikeReader.
+Czy wystarczy jedna maska t³a dla wszystkich kolorów, czy mo¿e dla ka¿dego z osobna
+(wydaje mi siê, ¿e wystarczy tylko jedna)?
+Kod CUDA C/C++ do IntensCalc obliczaj¹cy wartoœæ t³a dla zadanego obszaru i maski
+dla ka¿dej klatki.
+Kod CUDA C/C++ do IntensCalc odejmuj¹cy od ka¿dej klatki dla zadanego obszaru
+obliczon¹ wczeœniej wartoœæ t³a.

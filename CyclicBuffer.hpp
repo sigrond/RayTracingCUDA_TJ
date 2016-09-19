@@ -11,6 +11,8 @@
 #include <exception>
 #include <string>
 
+/** \brief klasa wyjątku dla bufora cyklicznego
+ */
 class CyclicBufferException : public std::exception
 {
 private:
@@ -23,6 +25,8 @@ public:
     }
 };
 
+/** \brief struktura zawierajaca wskaźnik na bufor i opisująca ten bufor
+ */
 struct buffId
 {
     buffId(int id,char* pt):id(id),frameNo(-1),pt(pt) {};
@@ -37,6 +41,8 @@ struct buffId
 #define ERRNUM 10
 namespace ErrorCode
 {
+    /** \brief kody błędów bufora cyklicznego
+     */
     enum ErrorCode
     {
         BufferOverflow=0,
@@ -47,6 +53,8 @@ namespace ErrorCode
         ReadEndAndNextBuffIsNotBeingWriten=5,
         ReadEndCousedNegativeNumberOfElements=6,
     };
+    /** \brief opisy błędów bufora cyklicznego
+     */
     static const char* ErrorNames[ERRNUM]={
         "BufferOverflow",
         "cBegIsNotcEndAtitemCount0",

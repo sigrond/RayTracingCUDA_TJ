@@ -22,7 +22,8 @@ void setupCUDA_IC();
 void setMasksAndImagesAndSortedIndexes(
     int* ipR,int ipR_size,int* ipG,int ipG_size,int* ipB, int ipB_size,
     float* ICR_N, float* ICG_N, float* ICB_N,
-    int* I_S_R, int* I_S_G, int* I_S_B);
+    int* I_S_R, int* I_S_G, int* I_S_B,
+    unsigned char* BgMask, float BgMaskSize);
 
 
 
