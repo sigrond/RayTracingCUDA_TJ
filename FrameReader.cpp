@@ -11,6 +11,20 @@
 #include "mex.h"
 #endif // MATLAB_MEX_FILE
 
+/** \brief wypisanie tekstu do matlaba
+ *
+ * \param c const char*
+ * \return void
+ *
+ */
+void printm(const char* c)
+{
+    printf("%s\n",c);
+    #ifdef MATLAB_MEX_FILE
+    mexEvalString("pause(.001);");
+    #endif // MATLAB_MEX_FILE
+}
+
 const char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
 const char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
 const char junkCode[]="JUNK";
@@ -18,16 +32,25 @@ const char junkCode[]="JUNK";
 FrameReader::FrameReader(CyclicBuffer* c) :
     dataSpace(nullptr),emptyLeft(true),emptyRight(true)
 {
+    #ifdef DEBUG
+    printm("FrameReader::FrameReader(CyclicBuffer* c)");
+    #endif // DEBUG
     dataSpace=new DataSpace(65535*10*2);
 }
 
 FrameReader::~FrameReader()
 {
+    #ifdef DEBUG
+    printm("FrameReader::~FrameReader()");
+    #endif // DEBUG
     delete dataSpace;
 }
 
 void FrameReader::loadLeft()
 {
+    #ifdef DEBUG
+    printm("void FrameReader::loadLeft()");
+    #endif // DEBUG
     buffId* tmpBuff=nullptr;
     tmpBuff=cyclicBuffer->claimForRead();
     memcpy(dataSpace->pt,tmpBuff->pt,dataSpace->halfSize);
@@ -38,6 +61,9 @@ void FrameReader::loadLeft()
 
 void FrameReader::loadRight()
 {
+    #ifdef DEBUG
+    printm("void FrameReader::loadRight()");
+    #endif // DEBUG
     buffId* tmpBuff=nullptr;
     tmpBuff=cyclicBuffer->claimForRead();
     memcpy(dataSpace->ptRight,tmpBuff->pt,dataSpace->halfSize);
@@ -48,6 +74,9 @@ void FrameReader::loadRight()
 
 void FrameReader::cycleDataSpace()
 {
+    #ifdef DEBUG
+    printm("void FrameReader::cycleDataSpace()");
+    #endif // DEBUG
     if(header.position>=dataSpace->halfSize)
     {
         header.position-=dataSpace->halfSize;
@@ -59,6 +88,9 @@ void FrameReader::cycleDataSpace()
 
 char* FrameReader::getFrame()
 {
+    #ifdef DEBUG
+    printm("char* FrameReader::getFrame()");
+    #endif // DEBUG
     if(emptyRight && !emptyLeft)
     {
         loadRight();
@@ -90,6 +122,9 @@ char* FrameReader::getFrame()
 
 void FrameReader::findNextHeader()
 {
+    #ifdef DEBUG
+    printm("void FrameReader::findNextHeader()");
+    #endif // DEBUG
     bool headerB=true;
     bool junkB=true;
     junk.found=false;
@@ -144,6 +179,9 @@ void FrameReader::findNextHeader()
 FrameReader::DataSpace::DataSpace(unsigned long int s) :
     pt(nullptr), size(s), ptLeft(nullptr), ptRight(nullptr), halfSize(s/2)
 {
+    #ifdef DEBUG
+    printm("FrameReader::DataSpace::DataSpace(unsigned long int s)");
+    #endif // DEBUG
     pt=new char[size];
     ptLeft=pt;
     ptRight=pt+size/2;
@@ -152,25 +190,34 @@ FrameReader::DataSpace::DataSpace(unsigned long int s) :
 
 FrameReader::DataSpace::~DataSpace()
 {
+    #ifdef DEBUG
+    printm("FrameReader::DataSpace::~DataSpace()");
+    #endif // DEBUG
     delete[] pt;
 }
 
 FrameReader::Header::Header() :
     pt(nullptr), position(0), found(false), number(0), size(8)
 {
-
+    #ifdef DEBUG
+    printm("FrameReader::Header::Header()");
+    #endif // DEBUG
 }
 
 FrameReader::Junk::Junk() :
     pt(nullptr), position(0), number(0), size(0), found(false)
 {
-
+    #ifdef DEBUG
+    printm("FrameReader::Junk::Junk()");
+    #endif // DEBUG
 }
 
 FrameReader::Frame::Frame() :
     size(614400), pt(nullptr), position(0),found(false)
 {
-
+    #ifdef DEBUG
+    printm("FrameReader::Frame::Frame()");
+    #endif // DEBUG
 }
 
 
