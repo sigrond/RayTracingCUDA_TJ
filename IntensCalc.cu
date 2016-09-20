@@ -18,6 +18,7 @@
 #include <exception>
 #include <chrono>
 
+#include "FrameReader.hpp"
 #include "CyclicBuffer.hpp"
 #include "IntensCalc_CUDA.cuh"
 
@@ -474,8 +475,22 @@ try
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
-    char* tmpBuff=nullptr;/**< tymczasowy adres bufora do odczytu */
     buffId* bID=nullptr;
+
+    #ifndef OLD_DECODEC
+
+    FrameReader frameReader(&cyclicBuffer);
+    char* frame=nullptr;
+    for(int k=0;k<NumFrames;k++)
+    {
+        frame=frameReader.getFrame();
+        copyBuff(frame);
+        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+    }
+
+    #else
+
+    char* tmpBuff=nullptr;/**< tymczasowy adres bufora do odczytu */
 
     long double licz=0.0f;
     int tmpFrameNo=-3;
@@ -715,6 +730,7 @@ try
             mexEvalString("pause(.001);");
         }
     }
+    #endif // OLD_DECODEC
     finished=true;
     printf("finshed reading from cyclic bufor\n");
     printf("itemCount: %d\n",cyclicBuffer.tellItemCount());
@@ -724,12 +740,16 @@ try
         bID=cyclicBuffer.claimForRead();
         cyclicBuffer.readEnd(bID);
     }
+
+
     readMovieThread.join();
     printf("readMovieThread joined\n");
     //mexEvalString("drawnow;");
 
+    #ifdef OLD_DECODEC
     delete[] currentFrame;
     delete[] nextFrame;
+    #endif // OLD_DECODEC
     //cyclicBuffer.~CyclicBuffer();
 
     freeCUDA_IC();
