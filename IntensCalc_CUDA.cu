@@ -404,6 +404,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
 
     if(ipR_Size>0)
     {
+        #ifdef DEBUG
         if(licznik_klatek++<20)/**< debug */
         {
             printf("frame: %d\n",licznik_klatek);
@@ -414,13 +415,14 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
                 {
                     if(i%16==8 && j%16==8)
                     //printf("%d ",previewFb2[i*640+j]>=1000?1:0);
-                    printf("%2d ",previewFb2[i*640+j]/100);
+                    printf("%2d",previewFb2[i*640+j]/100);
                 }
                 if(i%16==8)
                 printf("\n");
             }
             printf("\n");
         }
+        #endif // DEBUG
         /**< obliczyć wartość tła */
         computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
@@ -447,21 +449,23 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
         }
         tmpBgValue/=BgMask_Size;
-        if(tmpBgValue>=200.0f)
+        //printf("tmpBgValue: %f, ",tmpBgValue);
+        /*if(tmpBgValue>=200.0f)
         {
-            //printf("tmpBgValue: %f, ",tmpBgValue);
+            printf("tmpBgValue: %f, ",tmpBgValue);
             tmpBgValue=lastProbablyCorrectBgValue;
         }
         else
         {
             lastProbablyCorrectBgValue+=tmpBgValue;
             lastProbablyCorrectBgValue/=2.0f;
-        }
-        checkCudaErrors(cudaMemset(dev_BgValue,tmpBgValue,sizeof(float)));
+        }*/
+        //checkCudaErrors(cudaMemset(dev_BgValue,tmpBgValue,sizeof(float)));
+        checkCudaErrors(cudaMemcpy((void*)dev_BgValue, &tmpBgValue, sizeof(float), cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
-            printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
+            printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
         }
 
         /**< nałożyć maskę i skorygować */

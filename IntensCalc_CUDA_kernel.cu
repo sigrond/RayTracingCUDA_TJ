@@ -217,7 +217,13 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, fl
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=mask_size)
         return;
-    float tmpColor=(float)color[(mask[index]-1)]-(float)BgValue[0];
+    //float tmpColor=(float)color[(mask[index]-1)]-(float)BgValue[0];
+    float tmpBgValue=*BgValue;
+    //if(tmpBgValue>200.0f || tmpBgValue<=0.0f)
+    //{
+    //    tmpBgValue=-10000.0f;
+    //}
+    float tmpColor=(float)color[(mask[index]-1)]-tmpBgValue;
     if(tmpColor<=0)
     {
         I[index]=0;

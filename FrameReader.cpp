@@ -29,6 +29,7 @@ void printm(const char* c)
 const char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
 const char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
 const char junkCode[]="JUNK";
+unsigned long long int safetyCounter=0;
 
 FrameReader::FrameReader(CyclicBuffer* c) :
     cyclicBuffer(c),dataSpace(nullptr),emptyLeft(true),emptyRight(true)
@@ -53,7 +54,9 @@ void FrameReader::loadLeft()
     printm("void FrameReader::loadLeft()");
     #endif // DEBUG
     buffId* tmpBuff=nullptr;
+    #ifdef DEBUG
     printStatus();
+    #endif // DEBUG
     if(cyclicBuffer==nullptr)
     {
         #ifdef DEBUG
@@ -157,13 +160,31 @@ char* FrameReader::getFrame()
     {
         loadLeft();
     }
-    if(!header.found)
+    if(header.position>=dataSpace->halfSize)
+    {
+        cycleDataSpace();
+    }
+    if(!header.found)/**< jeśli jeszcze nie został znaleziony nagłówek */
+    {
+        findNextHeader();
+        #ifdef DEBUG
+        printStatus();
+        #endif // DEBUG
+    }
+    if(header.position-junk.size<frame.size)/**< jeśli przed nagłówkiem nie ma miejsca na klatkę to trzeba znaleźć następny nagłówek */
     {
         findNextHeader();
     }
-    if(header.position<frame.size)
+    else if(header.position+frame.size+junk.size+header.size<(emptyRight?dataSpace->halfSize:dataSpace->size))
     {
         findNextHeader();
+    }
+    else if(!emptyRight)
+    {
+        printm("to nie powinno się wydażyć #001");
+        printStatus();
+        system("PAUSE");
+        throw FrameReaderException("to nie powinno się wydażyć #001");
     }
     frame.position=(junk.found?junk.position:header.position)-frame.size;
     if(frame.position+frame.size+(junk.found?junk.size:0)+header.size>dataSpace->size)
@@ -174,12 +195,15 @@ char* FrameReader::getFrame()
         throw FrameReaderException("frame.position+frame.size+(junk.found?junk.size:0)+header.size>dataSpace->size");
     }
     frame.pt=dataSpace->pt+frame.position;
-    if(header.position>=dataSpace->halfSize)
+    frame.found=true;
+
+    #ifdef DEBUG
+    if(safetyCounter++<=5)
     {
-        cycleDataSpace();
+        printStatus();
+        //system("pause");
     }
-    printStatus();
-    system("pause");
+    #endif // DEBUG
     return frame.pt;
 }
 
@@ -191,8 +215,12 @@ void FrameReader::findNextHeader()
     bool headerB=true;
     bool junkB=true;
     junk.found=false;
+    if(header.found)
+    {
+        header.position+=frame.size;/**< najwcześniejsza możliwa pozycja następnego nagłówka */
+    }
 
-    for(int j=header.found?(header.position+frame.size):header.position;
+    for(int j=header.found?(header.position+header.size):header.position;
     j<(header.found?(dataSpace->size-header.size):dataSpace->halfSize-header.size);
     j++)
     {
@@ -268,7 +296,7 @@ FrameReader::Header::Header() :
 }
 
 FrameReader::Junk::Junk() :
-    pt(nullptr), position(0), number(0), size(0), found(false)
+    pt(nullptr), position(0), number(0), size(0), found(false), hSize(4)
 {
     #ifdef DEBUG
     printm("FrameReader::Junk::Junk()");
