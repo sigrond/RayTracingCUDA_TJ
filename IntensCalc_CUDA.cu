@@ -413,7 +413,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
                 for(int j=0;j<640;j++)//640
                 {
                     if(i%16==8 && j%16==8)
-                    printf("%d ",previewFb2[i*640+j]>=1000?1:0);
+                    //printf("%d ",previewFb2[i*640+j]>=1000?1:0);
+                    printf("%2d ",previewFb2[i*640+j]/100);
                 }
                 if(i%16==8)
                 printf("\n");

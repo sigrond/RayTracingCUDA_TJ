@@ -100,4 +100,5 @@ private:
     void cycleDataSpace();/**< przesunięcie danych w lewo i doczytanie nowych */
     void loadLeft();/**< wczytanie danych z bufora cyklicznego do lewej strony danych */
     void loadRight();/**< wczytanie danych z bufora cyklicznego do prawej strony danych */
+    void printStatus();
 };
