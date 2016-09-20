@@ -211,6 +211,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int BgM_M=mxGetM(tmp);
     printf("BgM_N: %d, BgM_M: %d\n",BgM_N,BgM_M);
 
+    #ifdef DEBUG
     for(int i=0;i<BgM_M;i++)//480
     {
         for(int j=0;j<BgM_N;j++)//640
@@ -221,6 +222,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         if(i%16==8)
         printf("\n");
     }
+    #endif // DEBUG
 
 
     count_step=*((int*)mxGetPr(prhs[1]));

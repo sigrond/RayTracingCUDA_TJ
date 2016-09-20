@@ -34,13 +34,17 @@ void MovingAverageD(float* I, unsigned int I_size, int* I_S, float* sI, float st
         return;
     float value;
     float* val0;
+    int hStep=step/2;
 
     #pragma unroll
-    for(unsigned int i=0;i<step && index+i<I_size;i++)
+    for(int i=-hStep;i<hStep && index+i<I_size;i++)
     {
-        val0=sI+index+i;
-        value=I[(unsigned int)round(I_S[index]-1.0f)];
-        atomicAdd(val0, value);
+        if(index+i>=0)
+        {
+            val0=sI+index+i;
+            value=I[(unsigned int)round(I_S[index]-1.0f)];
+            atomicAdd(val0, value);
+        }
     }
 }
 
@@ -54,13 +58,18 @@ void DivD(unsigned int I_size, float* sI, float step)
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=I_size)
         return;
-    if(index>=step-1)
+    int hStep=step/2;
+    if(index>hStep && index+hStep<I_size)
     {
         sI[index]/=(float)step;
     }
+    else if(index<=hStep)
+    {
+        sI[index]/=(float)(index+hStep);
+    }
     else
     {
-        sI[index]/=(float)(index+1);
+        sI[index]/=(float)((I_size-index)+hStep);
     }
 }
 
