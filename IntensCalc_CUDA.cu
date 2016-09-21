@@ -453,8 +453,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         tmpBgValue[1]/=BgMask_Size[1];
         if(licznik_klatek++<50)
         {
-            printf("tmpBgValue[0]: %f, ",tmpBgValue[0]);
-            printf("tmpBgValue[1]: %f\n",tmpBgValue[1]);
+            printf("(R)tmpBgValue[0]: %f, ",tmpBgValue[0]);
+            printf("(R)tmpBgValue[1]: %f\n",tmpBgValue[1]);
         }
         /*if(tmpBgValue>=200.0f)
         {
@@ -533,9 +533,49 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     }
     if(ipG_Size>0)
     {
-        computeGridSize(ipG_Size, 512, numBlocks, numThreads);
+        /**< obliczyć wartość tła */
+        computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid0(dimGridX,dimGridY);
+        checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)*2));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
+        }
+        getBgD<<< dimGrid0, numThreads >>>(dev_outArray+640*480,dev_BgMask,dev_BgValue);
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(getBgD R): %s\n", cudaGetErrorString(err));
+        }
+        //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
+        float tmpBgValue[2]={0.0f,0.0f};
+        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
+        }
+        tmpBgValue[0]/=BgMask_Size[0];
+        tmpBgValue[1]/=BgMask_Size[1];
+        if(licznik_klatek<50)
+        {
+            printf("(G)tmpBgValue[0]: %f, ",tmpBgValue[0]);
+            printf("(G)tmpBgValue[1]: %f\n",tmpBgValue[1]);
+        }
+        checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
+        }
+
+        /**< nałożyć maskę i skorygować */
+        computeGridSize(ipG_Size, 512, numBlocks, numThreads);
+        dimGridX=numBlocks<65535?numBlocks:65535;
+        dimGridY=numBlocks/65535+1;
         dim3 dimGrid(dimGridX,dimGridY);
         correctionD<<< dimGrid, numThreads >>>(dev_outArray+640*480,dev_ipG,ipG_Size,dev_ICG_N,dev_IG,dev_BgValue);
         err = cudaGetLastError();
@@ -575,9 +615,49 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     }
     if(ipB_Size>0)
     {
-        computeGridSize(ipB_Size, 512, numBlocks, numThreads);
+        /**< obliczyć wartość tła */
+        computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
+        dim3 dimGrid0(dimGridX,dimGridY);
+        checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)*2));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
+        }
+        getBgD<<< dimGrid0, numThreads >>>(dev_outArray,dev_BgMask,dev_BgValue);
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(getBgD R): %s\n", cudaGetErrorString(err));
+        }
+        //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
+        float tmpBgValue[2]={0.0f,0.0f};
+        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
+        }
+        tmpBgValue[0]/=BgMask_Size[0];
+        tmpBgValue[1]/=BgMask_Size[1];
+        if(licznik_klatek<50)
+        {
+            printf("(B)tmpBgValue[0]: %f, ",tmpBgValue[0]);
+            printf("(B)tmpBgValue[1]: %f\n",tmpBgValue[1]);
+        }
+        checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
+        err = cudaGetLastError();
+        if (err != cudaSuccess)
+        {
+            printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
+        }
+
+        /**< nałożyć maskę i skorygować */
+        computeGridSize(ipB_Size, 512, numBlocks, numThreads);
+        dimGridX=numBlocks<65535?numBlocks:65535;
+        dimGridY=numBlocks/65535+1;
         dim3 dimGrid(dimGridX,dimGridY);
         correctionD<<< dimGrid, numThreads >>>(dev_outArray,dev_ipB,ipB_Size,dev_ICB_N,dev_IB,dev_BgValue);
         err = cudaGetLastError();
