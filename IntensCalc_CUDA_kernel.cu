@@ -194,7 +194,15 @@ void getBgD(short* color, unsigned char* BgMask, float* BgValue)
     if(BgMask[j+i*len]==0)
         return;
     float value=(float)color[i+j*wid];//j+i*len
-    atomicAdd(BgValue,value);
+    if(i<wid/2)
+    {
+        atomicAdd(BgValue,value);
+    }
+    else
+    {
+        float* tmpBg=&(BgValue[1]);
+        atomicAdd(tmpBg,value);
+    }
 }
 
 /** \brief nałożenie maski na kolor klatki i podzielenie przez obraz korekcyjny
@@ -217,13 +225,13 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, fl
     uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
     if(index>=mask_size)
         return;
-    //float tmpColor=(float)color[(mask[index]-1)]-(float)BgValue[0];
-    float tmpBgValue=*BgValue;
-    //if(tmpBgValue>200.0f || tmpBgValue<=0.0f)
-    //{
-    //    tmpBgValue=-10000.0f;
-    //}
-    float tmpColor=(float)color[(mask[index]-1)]-tmpBgValue;
+    int maskIndex=mask[index]-1;
+    #ifndef ONE_BACKGROUND
+    float tmpBgValue=(maskIndex%640<320)?BgValue[0]:BgValue[1];
+    #else
+    float tmpBgValue=(BgValue[0]+BgValue[1])*0.5f;
+    #endif // ONE_BACKGROUND
+    float tmpColor=(float)color[maskIndex]-tmpBgValue;
     if(tmpColor<=0)
     {
         I[index]=0;

@@ -83,7 +83,7 @@ float* dev_RG=NULL;
 float* dev_RB=NULL;
 unsigned char* dev_BgMask=NULL;
 float* dev_BgValue=NULL;
-float BgMask_Size=0;
+float BgMask_Size[2]={0.0f, 0.0f};
 float lastProbablyCorrectBgValue=60;
 
 int licznik_klatek=0;
@@ -113,7 +113,7 @@ void setupCUDA_IC()
     checkCudaErrors(cudaMalloc((void**)&dev_buff, sizeof(char)*640*480*2));
     checkCudaErrors(cudaMalloc((void**)&dev_frame, sizeof(unsigned short)*640*480));
     checkCudaErrors(cudaMalloc((void**)&dev_outArray, sizeof(short)*640*480*3));
-    checkCudaErrors(cudaMalloc((void**)&dev_BgValue, sizeof(float)));
+    checkCudaErrors(cudaMalloc((void**)&dev_BgValue, sizeof(float)*2));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -122,7 +122,7 @@ void setupCUDA_IC()
     checkCudaErrors(cudaMemset(dev_buff,0,sizeof(char)*640*480*2));
     checkCudaErrors(cudaMemset(dev_frame,0,sizeof(unsigned short)*640*480));
     checkCudaErrors(cudaMemset(dev_outArray,0,sizeof(short)*640*480*3));
-    checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)));
+    checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)*2));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -134,7 +134,7 @@ void setMasksAndImagesAndSortedIndexes(
     int* ipR,int ipR_size,int* ipG,int ipG_size,int* ipB, int ipB_size,
     float* ICR_N, float* ICG_N, float* ICB_N,
     int* I_S_R, int* I_S_G, int* I_S_B,
-    unsigned char* BgMask, float BgMaskSize)
+    unsigned char* BgMask, float* BgMaskSize)
 {
     ipR_Size=ipR_size;
     ipG_Size=ipG_size;
@@ -340,7 +340,8 @@ void setMasksAndImagesAndSortedIndexes(
         return;
     }
 
-    BgMask_Size=BgMaskSize;
+    BgMask_Size[0]=BgMaskSize[0];
+    BgMask_Size[1]=BgMaskSize[1];
 }
 
 /** \brief kopiuje klatkę z podanego bufora do pamięci karty
@@ -428,7 +429,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
         dim3 dimGrid0(dimGridX,dimGridY);
-        checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)));
+        checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)*2));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
@@ -441,15 +442,20 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(getBgD R): %s\n", cudaGetErrorString(err));
         }
         //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
-        float tmpBgValue=0.0f;
-        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float),cudaMemcpyDeviceToHost));
+        float tmpBgValue[2]={0.0f,0.0f};
+        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
         }
-        tmpBgValue/=BgMask_Size;
-        //printf("tmpBgValue: %f, ",tmpBgValue);
+        tmpBgValue[0]/=BgMask_Size[0];
+        tmpBgValue[1]/=BgMask_Size[1];
+        if(licznik_klatek++<50)
+        {
+            printf("tmpBgValue[0]: %f, ",tmpBgValue[0]);
+            printf("tmpBgValue[1]: %f\n",tmpBgValue[1]);
+        }
         /*if(tmpBgValue>=200.0f)
         {
             printf("tmpBgValue: %f, ",tmpBgValue);
@@ -461,7 +467,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             lastProbablyCorrectBgValue/=2.0f;
         }*/
         //checkCudaErrors(cudaMemset(dev_BgValue,tmpBgValue,sizeof(float)));
-        checkCudaErrors(cudaMemcpy((void*)dev_BgValue, &tmpBgValue, sizeof(float), cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
