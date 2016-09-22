@@ -1708,7 +1708,7 @@ end
 if get(handles.chR,'value') % mask for red channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
-    Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) .* 10 ;
+    Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) . ;
     hf = imtool( Frame );
     %hf = imshow( handles.cF );
     set(hf,'name','Set Mask for red background!')
@@ -1733,13 +1733,12 @@ if get(handles.chR,'value') % mask for red channel background
     handles.BackgroundMask = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMaskR = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_positionR = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
 end
     %
 if get(handles.chG,'value') % mask for green channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
-    Frame(:,:,2)=temp(:,:,2) ./ max(max(temp(:,:,1))) .* 10;
+    Frame(:,:,2)=temp(:,:,2) ./ str2double( get(handles.edAdjust,'string'));
     hf = imtool( Frame );
     set(hf,'name','Set Mask for green background!')
     ha = get(hf,'CurrentAxes');
@@ -1762,13 +1761,12 @@ if get(handles.chG,'value') % mask for green channel background
     Bw4 = roipoly(handles.cF(:,:,2),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_positionG = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
 end
     %
 if get(handles.chB,'value') % mask for blue channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
-    Frame(:,:,3)=temp(:,:,3) ./ max(max(temp(:,:,1))) .* 10;
+    Frame(:,:,3)=temp(:,:,3) ./ str2double( get(handles.edAdjust,'string'));
     hf = imtool( Frame );
     set(hf,'name','Set Mask for blue background!')
     ha = get(hf,'CurrentAxes');
@@ -1791,9 +1789,8 @@ if get(handles.chB,'value') % mask for blue channel background
     Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_positionG = position; % coord handles for mascksinates of mask
-    guidata(hObject,handles);
 end
-
+    guidata(hObject,handles);
    
    
 
