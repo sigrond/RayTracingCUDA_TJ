@@ -33,6 +33,7 @@ If you would like to adjust this code to work with another codecs you should cha
 #include<fstream>
 #include<limits>
 #include<exception>
+#include<vector>
 
 using namespace std;
 
@@ -262,6 +263,18 @@ try{
         b&=frameStartCodeS[i]==codeBuff[i]||frameStartCode[i]==codeBuff[i];
         printf("0x%02X ",codeBuff[i]);
     }
+    struct JunkInfo
+    {
+        long long int size;
+        long long int position;
+        JunkInfo(long long int s, long long int p) :
+            size(s), position(p) {}
+        JunkInfo() :
+            size(0), position(0) {}
+        JunkInfo(JunkInfo& c) :
+            size(c.size), position(c.position) {}
+    };
+    vector<JunkInfo> v;
     char junkCode[]="JUNK";
     int junkCt=0;
     int junkSize=0;
@@ -271,7 +284,7 @@ try{
         printf("początek klatki: %hu nie znaleziony w przewidzianym miejscu\n",*numer);
         char* buff=new char[65535+8];
         file.seekg(8*65535,ios::cur);
-        int ct=0,ct2=0;
+        long long int ct=0,ct2=0;
         while(!b && file.good())
         {
             file.read(buff,65535);
@@ -286,9 +299,11 @@ try{
                 }
                 if(junkB)
                 {
-                    printf("znaleziono JUNK ct=%d\n",ct);
+                    /**< Chunks with fourcc 'JUNK' can appear anywhere and should be ignored. */
+                    printf("znaleziono JUNK ct=%lld\n",ct);
+                    v.push_back(JunkInfo(4+(*(int*)(buff+j+4)),ct));
+                    junkSize+=(*(int*)(buff+j+4));
                     junkCt=ct;
-                    junkSize=*(int*)(buff+j+4);
                     junkSize+=4;
                     printf("JUNK size: %d\n",junkSize);
                 }
@@ -306,19 +321,31 @@ try{
                 if(b)
                 {
                     file.seekg(-(65535-j)-614400-junkSize,ios::cur);
-                    printf("nagłówek klatki ct=%d\n",ct);
+                    printf("nagłówek klatki ct=%lld\n",ct);
                     printf("tellg: %lld\n",file.tellg());
+                    for(int i=0;i<v.size();i++)
+                    {
+                        v.at(i).position=614400-(ct-v.at(i).position);
+                    }
                     break;
                 }
             }
+            if(!b)
             printf("nie znaleziono początku klatki, przeszukuję następne 64KB\n");
         }
     }
 
 	//czytanie klatki
 	unsigned short int bl,bh;
+	int j=0;
 	for(int i=0;i<307200;i++)
     {
+        while(j<(v.size()-1) && (i*2==v.at(j).position || i*2+1==v.at(j).position))
+        {
+            printf("j: %d, i: %d, v.at(j).size: %d, v.at(j).position: %d\n",j,i,v.at(j).size,v.at(j).position);
+            file.seekg(v.at(j).size,ios::cur);
+            j++;
+        }
         bh=((unsigned short int)file.get())<<6;
         bl=reverse6bitLookupTable[file.get()>>2];
         klatka[i]=bh+bl;
