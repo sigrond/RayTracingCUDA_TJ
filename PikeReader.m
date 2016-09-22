@@ -1639,6 +1639,9 @@ end
 % hObject    handle to pbSetMask (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.BackgroundMaskR=zeros(size( handles.cF(:,:,1) ));
+handles.BackgroundMaskG=zeros(size( handles.cF(:,:,2) ));
+handles.BackgroundMaskB=zeros(size( handles.cF(:,:,3) ));
 % Setting the mask 
 if get(handles.chR,'value') % mask for red channel
     % Prepearing image
@@ -1789,8 +1792,8 @@ if get(handles.chB,'value') % mask for blue channel background
     % compound of masks  for red channel
     Bw3 = roipoly(handles.cF(:,:,3),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
-    handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
-    handles.BackgroundMask_positionG = position; % coord handles for mascksinates of mask
+    handles.BackgroundMaskB = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask_positionB = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
 end
 

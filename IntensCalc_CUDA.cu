@@ -81,9 +81,13 @@ float* dev_sIB=NULL;
 float* dev_RR=NULL;
 float* dev_RG=NULL;
 float* dev_RB=NULL;
-unsigned char* dev_BgMask=NULL;
+unsigned char* dev_BgMaskR=NULL;
+unsigned char* dev_BgMaskG=NULL;
+unsigned char* dev_BgMaskB=NULL;
 float* dev_BgValue=NULL;
-float BgMask_Size[2]={0.0f, 0.0f};
+float BgMask_SizeR[2]={0.0f, 0.0f};
+float BgMask_SizeG[2]={0.0f, 0.0f};
+float BgMask_SizeB[2]={0.0f, 0.0f};
 float lastProbablyCorrectBgValue=60;
 
 int licznik_klatek=0;
@@ -134,7 +138,9 @@ void setMasksAndImagesAndSortedIndexes(
     int* ipR,int ipR_size,int* ipG,int ipG_size,int* ipB, int ipB_size,
     float* ICR_N, float* ICG_N, float* ICB_N,
     int* I_S_R, int* I_S_G, int* I_S_B,
-    unsigned char* BgMask, float* BgMaskSize)
+    unsigned char* BgMaskR, float* BgMaskSizeR,
+    unsigned char* BgMaskG, float* BgMaskSizeG,
+    unsigned char* BgMaskB, float* BgMaskSizeB)
 {
     ipR_Size=ipR_size;
     ipG_Size=ipG_size;
@@ -260,7 +266,19 @@ void setMasksAndImagesAndSortedIndexes(
     }
     /** \todo pobrać zmienne z wymiarami maski tła
      */
-    checkCudaErrors(cudaMalloc((void**)&dev_BgMask, sizeof(unsigned char)*640*480));
+    checkCudaErrors(cudaMalloc((void**)&dev_BgMaskR, sizeof(unsigned char)*640*480));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_BgMaskG, sizeof(unsigned char)*640*480));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Malloc): %s\n", cudaGetErrorString(err));
+    }
+    checkCudaErrors(cudaMalloc((void**)&dev_BgMaskB, sizeof(unsigned char)*640*480));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -332,16 +350,36 @@ void setMasksAndImagesAndSortedIndexes(
         printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
         return;
     }
-    checkCudaErrors(cudaMemcpy((void*)dev_BgMask, BgMask, sizeof(unsigned char)*640*480, cudaMemcpyHostToDevice));
+
+    checkCudaErrors(cudaMemcpy((void*)dev_BgMaskR, BgMaskR, sizeof(unsigned char)*640*480, cudaMemcpyHostToDevice));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
         return;
     }
+    BgMask_SizeR[0]=BgMaskSizeR[0];
+    BgMask_SizeR[1]=BgMaskSizeR[1];
 
-    BgMask_Size[0]=BgMaskSize[0];
-    BgMask_Size[1]=BgMaskSize[1];
+    checkCudaErrors(cudaMemcpy((void*)dev_BgMaskG, BgMaskG, sizeof(unsigned char)*640*480, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    BgMask_SizeG[0]=BgMaskSizeG[0];
+    BgMask_SizeG[1]=BgMaskSizeG[1];
+
+    checkCudaErrors(cudaMemcpy((void*)dev_BgMaskB, BgMaskB, sizeof(unsigned char)*640*480, cudaMemcpyHostToDevice));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+        return;
+    }
+    BgMask_SizeB[0]=BgMaskSizeB[0];
+    BgMask_SizeB[1]=BgMaskSizeB[1];
 }
 
 /** \brief kopiuje klatkę z podanego bufora do pamięci karty
@@ -435,7 +473,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
         }
-        getBgD<<< dimGrid0, numThreads >>>(dev_outArray+640*480*2,dev_BgMask,dev_BgValue);
+        getBgD<<< dimGrid0, numThreads >>>(dev_outArray+640*480*2,dev_BgMaskR,dev_BgValue);
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
@@ -443,14 +481,14 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
         //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
         float tmpBgValue[2]={0.0f,0.0f};
-        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
+        checkCudaErrors(cudaMemcpy((void*)tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
         }
-        tmpBgValue[0]/=BgMask_Size[0];
-        tmpBgValue[1]/=BgMask_Size[1];
+        tmpBgValue[0]/=BgMask_SizeR[0];
+        tmpBgValue[1]/=BgMask_SizeR[1];
         if(licznik_klatek++<50)
         {
             printf("(R)tmpBgValue[0]: %f, ",tmpBgValue[0]);
@@ -544,22 +582,22 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
         }
-        getBgD<<< dimGrid0, numThreads >>>(dev_outArray+640*480,dev_BgMask,dev_BgValue);
+        getBgD<<< dimGrid0, numThreads >>>(dev_outArray+640*480,dev_BgMaskG,dev_BgValue);
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
-            printf("cudaError(getBgD R): %s\n", cudaGetErrorString(err));
+            printf("cudaError(getBgD G): %s\n", cudaGetErrorString(err));
         }
         //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
         float tmpBgValue[2]={0.0f,0.0f};
-        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
+        checkCudaErrors(cudaMemcpy((void*)tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
         }
-        tmpBgValue[0]/=BgMask_Size[0];
-        tmpBgValue[1]/=BgMask_Size[1];
+        tmpBgValue[0]/=BgMask_SizeG[0];
+        tmpBgValue[1]/=BgMask_SizeG[1];
         if(licznik_klatek<50)
         {
             printf("(G)tmpBgValue[0]: %f, ",tmpBgValue[0]);
@@ -626,22 +664,22 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         {
             printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
         }
-        getBgD<<< dimGrid0, numThreads >>>(dev_outArray,dev_BgMask,dev_BgValue);
+        getBgD<<< dimGrid0, numThreads >>>(dev_outArray,dev_BgMaskB,dev_BgValue);
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
-            printf("cudaError(getBgD R): %s\n", cudaGetErrorString(err));
+            printf("cudaError(getBgD B): %s\n", cudaGetErrorString(err));
         }
         //dev_BgValue[0]=(float)dev_BgValue[0]/(float)dev_BgMaskSize[0];
         float tmpBgValue[2]={0.0f,0.0f};
-        checkCudaErrors(cudaMemcpy((void*)&tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
+        checkCudaErrors(cudaMemcpy((void*)tmpBgValue,dev_BgValue,sizeof(float)*2,cudaMemcpyDeviceToHost));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
         }
-        tmpBgValue[0]/=BgMask_Size[0];
-        tmpBgValue[1]/=BgMask_Size[1];
+        tmpBgValue[0]/=BgMask_SizeB[0];
+        tmpBgValue[1]/=BgMask_SizeB[1];
         if(licznik_klatek<50)
         {
             printf("(B)tmpBgValue[0]: %f, ",tmpBgValue[0]);
@@ -730,7 +768,9 @@ void freeCUDA_IC()
     checkCudaErrors(cudaFree(dev_RR));
     checkCudaErrors(cudaFree(dev_RG));
     checkCudaErrors(cudaFree(dev_RB));
-    checkCudaErrors(cudaFree(dev_BgMask));
+    checkCudaErrors(cudaFree(dev_BgMaskR));
+    checkCudaErrors(cudaFree(dev_BgMaskG));
+    checkCudaErrors(cudaFree(dev_BgMaskB));
     checkCudaErrors(cudaFree(dev_BgValue));
 
     err = cudaGetLastError();

@@ -200,16 +200,38 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     isB=(bool)*value;
     printf("isB: %d\n",isB);
 
-    unsigned char * BgMask=nullptr;
-    tmp=mxGetField(prhs[0],0,"BackgroundMask");
+    unsigned char * BgMaskR=nullptr;
+    unsigned char * BgMaskG=nullptr;
+    unsigned char * BgMaskB=nullptr;
+    tmp=mxGetField(prhs[0],0,"BackgroundMaskR");
     if(tmp==nullptr)
-        printf("no handles.BackgroundMask?\n");
-    BgMask=(unsigned char*)mxGetPr(tmp);
-    if(BgMask==nullptr)
-        printf("BgMask==nullptr\n");
-    int BgM_N=mxGetN(tmp);
-    int BgM_M=mxGetM(tmp);
-    printf("BgM_N: %d, BgM_M: %d\n",BgM_N,BgM_M);
+        printf("no handles.BackgroundMaskR?\n");
+    BgMaskR=(unsigned char*)mxGetPr(tmp);
+    if(BgMaskR==nullptr)
+        printf("BgMaskR==nullptr\n");
+    int BgM_NR=mxGetN(tmp);
+    int BgM_MR=mxGetM(tmp);
+    printf("BgM_NR: %d, BgM_MR: %d\n",BgM_NR,BgM_MR);
+
+    tmp=mxGetField(prhs[0],0,"BackgroundMaskG");
+    if(tmp==nullptr)
+        printf("no handles.BackgroundMaskG?\n");
+    BgMaskG=(unsigned char*)mxGetPr(tmp);
+    if(BgMaskG==nullptr)
+        printf("BgMaskG==nullptr\n");
+    int BgM_NG=mxGetN(tmp);
+    int BgM_MG=mxGetM(tmp);
+    printf("BgM_NG: %d, BgM_MG: %d\n",BgM_NG,BgM_MG);
+
+    tmp=mxGetField(prhs[0],0,"BackgroundMaskB");
+    if(tmp==nullptr)
+        printf("no handles.BackgroundMaskB?\n");
+    BgMaskB=(unsigned char*)mxGetPr(tmp);
+    if(BgMaskB==nullptr)
+        printf("BgMaskB==nullptr\n");
+    int BgM_NB=mxGetN(tmp);
+    int BgM_MB=mxGetM(tmp);
+    printf("BgM_NB: %d, BgM_MB: %d\n",BgM_NB,BgM_MB);
 
     #ifdef DEBUG
     for(int i=0;i<BgM_M;i++)//480
@@ -461,29 +483,71 @@ try
     setupCUDA_IC();
 
     /**< szybkie obliczenie z ilu pikseli składa się tło */
-    float BgMaskSize[2]={0.0f, 0.0f};
-    for(int i=0;i<BgM_M;i++)//480
+    float BgMaskSizeR[2]={0.0f, 0.0f};
+    for(int i=0;i<BgM_MR;i++)//480
     {
-        for(int j=0;j<BgM_N;j++)//640
+        for(int j=0;j<BgM_NR;j++)//640
         {
-            if(BgMask[j*BgM_M+i]==1)
+            if(BgMaskR[j*BgM_MR+i]==1)
             {
-                if(j<BgM_N/2)
+                if(j<BgM_NR/2)
                 {
-                    BgMaskSize[0]+=1.0f;
+                    BgMaskSizeR[0]+=1.0f;
                 }
                 else
                 {
-                    BgMaskSize[1]+=1.0f;
+                    BgMaskSizeR[1]+=1.0f;
                 }
             }
         }
     }
+    printf("BgMaskSizeR[0]: %f\n",BgMaskSizeR[0]);
+    printf("BgMaskSizeR[1]: %f\n",BgMaskSizeR[1]);
 
-    printf("BgMaskSize[0]: %f\n",BgMaskSize[0]);
-    printf("BgMaskSize[1]: %f\n",BgMaskSize[1]);
+    float BgMaskSizeG[2]={0.0f, 0.0f};
+    for(int i=0;i<BgM_MG;i++)//480
+    {
+        for(int j=0;j<BgM_NG;j++)//640
+        {
+            if(BgMaskG[j*BgM_MG+i]==1)
+            {
+                if(j<BgM_NG/2)
+                {
+                    BgMaskSizeG[0]+=1.0f;
+                }
+                else
+                {
+                    BgMaskSizeG[1]+=1.0f;
+                }
+            }
+        }
+    }
+    printf("BgMaskSizeG[0]: %f\n",BgMaskSizeG[0]);
+    printf("BgMaskSizeG[1]: %f\n",BgMaskSizeG[1]);
 
-    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,BgMask,BgMaskSize);
+    float BgMaskSizeB[2]={0.0f, 0.0f};
+    for(int i=0;i<BgM_MB;i++)//480
+    {
+        for(int j=0;j<BgM_NB;j++)//640
+        {
+            if(BgMaskB[j*BgM_MB+i]==1)
+            {
+                if(j<BgM_NB/2)
+                {
+                    BgMaskSizeB[0]+=1.0f;
+                }
+                else
+                {
+                    BgMaskSizeB[1]+=1.0f;
+                }
+            }
+        }
+    }
+    printf("BgMaskSizeB[0]: %f\n",BgMaskSizeB[0]);
+    printf("BgMaskSizeB[1]: %f\n",BgMaskSizeB[1]);
+
+    setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,
+                                      BgMaskR,BgMaskSizeR,BgMaskG,BgMaskSizeG,BgMaskB,BgMaskSizeB);
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
