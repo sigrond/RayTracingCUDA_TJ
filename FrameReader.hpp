@@ -9,6 +9,9 @@
 #include "CyclicBuffer.hpp"
 #include <exception>
 #include <string>
+#include <queue>
+#include <mutex>
+#include <vector>
 
 /** \brief klasa wyjątku dla FrameReader
  */
@@ -100,5 +103,58 @@ private:
     void cycleDataSpace();/**< przesunięcie danych w lewo i doczytanie nowych */
     void loadLeft();/**< wczytanie danych z bufora cyklicznego do lewej strony danych */
     void loadRight();/**< wczytanie danych z bufora cyklicznego do prawej strony danych */
-    void printStatus();
+    void printStatus();/**< wypisanie stanu FrameReader */
+    /** \brief struktura(klasa) pomagająca wykrywać i poprawiać klatki, które zostały
+     * błędnie zdekodowane (dodatkowe sekcje JUNK w środku klatki).
+     * przejżenie pamięci w poszukiwaniu nieprzewidzanych sekcji JUNK może być
+     * czasochłonne, a dodoatkowy JUNK występuje dość rzadko, dlatego tą operację
+     * powinno wykonać się w osobnym wątku i w razie wykrycia dodatkowego JUNK
+     * wykonać dekodowanie i obliczenia dla takiej klatki jeszcze raz.
+     */
+    struct CorrectnessControl
+    {
+        CorrectnessControl();
+        ~CorrectnessControl();
+        /** \brief zbiór danych potrzebnych do sprawdzenia danej klatki
+         */
+        struct FrameData
+        {
+            FrameData(DataSpace* d,Header* h,Junk* j,Frame* f);
+            FrameData(FrameData& o);/**< konstruktor kopiujący. nie chcielibyśmy, żeby był wywoływany */
+            ~FrameData();
+            DataSpace* dataSpacePt;/**< wskaźnik na kopię danych dla danej klatki */
+            Header* headerPt;
+            Junk* junkPt;
+            Frame* framePt;
+            std::vector<Junk> junkV;
+            std::vector<Header> headerV;
+        };
+        /** \brief dodanie klatki do sprawdzenia
+         * dane są kopiowane
+         * \param d DataSpace* wskaźnik na dane klatki
+         * \param h Header* wskaźnik na informacje o nagłówku klatki
+         * \param j Junk* wskaźnik na informacj o sekcji JUNK
+         * \param f Frame* wskaźnik na informacje o klatce
+         * \return void
+         *
+         */
+        void addFrame(DataSpace* d,Header* h,Junk* j,Frame* f);
+        /** \brief sprawdza czy klatka na początku kolejki została dobrze zdekodowana,
+         * jeśli tak, to zdejmuje ją z koejki, jeśli nie to zostawia
+         * \return bool zwraca true, jeśli klatka była poprawnie zdekodowana,
+         * jeśli nie, to false
+         */
+        bool checkFrame();
+        /** \brief dekoduje klatkę z  uwzględnieniem wszystkich sekcji JUNK.
+         * po skopiowaniu do miejsca na klatkę miejsce w kolejce zostaje zwolnione
+         * \return char* wskaźnik na zdekodowaną klatkę
+         *
+         */
+        char* decodeFrame();
+    private:
+        std::queue<FrameData*> q;/**< kolejka z danymi do sprawdzenia */
+        std::mutex m;/**< zamek na elementy wymagające zabezpieczenia */
+        bool lastFrameCorrect;/**< czy ostatnio sprawdzona klatka była poprawnie zdekodowana */
+        char* decodedFrame;/**< wskaźnik do obszaru przeznaczonego dla zdekodowanej klatki */
+    } correctnessControl;
 };

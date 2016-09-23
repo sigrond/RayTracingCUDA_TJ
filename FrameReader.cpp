@@ -11,6 +11,7 @@
 #ifdef MATLAB_MEX_FILE
 #include "mex.h"
 #endif // MATLAB_MEX_FILE
+#include <vector>
 
 /** \brief wypisanie tekstu do matlaba
  *
@@ -239,8 +240,8 @@ void FrameReader::findNextHeader()
             junk.number++;
             junk.position=j;
             junk.pt=dataSpace->pt+junk.position;
-            junk.size=*(int*)(dataSpace->pt+j+4);
-            junk.size+=4;
+            junk.size=*(int*)(dataSpace->pt+j+junk.hSize);
+            junk.size+=junk.hSize;
             j+=junk.size;
         }
         headerB=true;
@@ -340,6 +341,119 @@ void FrameReader::printStatus()
     printf(emptyRight?"emptyRight: true\n":"emptyRight: false\n");
     printm("void FrameReader::printStatus() end");
 }
+
+FrameReader::CorrectnessControl::CorrectnessControl() :
+    lastFrameCorrect(true), decodedFrame(nullptr)
+{
+    decodedFrame=new char[frame.size];
+}
+
+FrameReader::CorrectnessControl::~CorrectnessControl()
+{
+    if(!q.empty())
+    {
+        printm("kolejka korekcji poprawności nie jest pusta");
+        throw FrameReaderException("kolejka korekcji poprawności nie jest pusta");
+    }
+    delete[] decodedFrame;
+}
+
+void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Frame* f)
+{
+    FrameData* frameData=new FrameData(d,h,j,f);
+    m.lock();
+    q.push(frameData);
+    m.unlock();
+}
+
+bool FrameReader::CorrectnessControl::checkFrame()
+{
+    m.lock();
+    FrameData* frameData=q.front();
+    m.unlock();
+    bool headerB=true;
+    bool junkB=true;
+    for(int j=0;j<frameData->dataSpacePt->size;j++)
+    {
+        junkB=true;
+        for(int i=0;i<frameData->junkPt->hSize;i++)
+        {
+            junkB&=junkCode[i]==frameData->dataSpacePt->pt[j+i];
+        }
+        if(junkB)
+        {
+            frameData->junkV.emplace_back();
+            frameData->junkV.back().position=j;
+            frameData->junkV.back().size=*(int*)(frameData->dataSpacePt->pt+j+4);
+            frameData->junkV.back().size+=4;
+            j+=frameData->junkV.back().size;
+        }
+        headerB=true;
+        for(int i=0;i<frameData->headerPt->size)
+        {
+            headerB&=frameStartCode[i]==frameData->dataSpacePt->pt[j+i] ||
+             frameStartCodeS[i]==frameData->dataSpacePt->pt[j+i];
+        }
+        if(headerB)
+        {
+            frameData->headerV.emplace_back();
+            frameData->headerV.back().position=j;
+            j+=frameData->headerV.back().size;
+        }
+    }
+    for(int i=0;i<frameData->headerV.size();i++)
+    {
+        if(frameData->headerV.at(i).position==frameData->headerPt->position)
+        {
+            if(frameData->junkV.empty())
+            {
+                if(frameData->junkPt->found)
+                {
+                    return false;///dziwny przrypadek, raczej nie powinien się zdażyć
+                }
+                else
+                {
+                    if(frameData->headerV.at(i).position>=frameData->framePt->size)
+                    {
+                        if(i==0)
+                        {
+                            m.lock();
+                            q.pop();
+                            m.unlock();
+                            return true;///nie ma JUNK, nie ma wcześniejszego nagłówka, a klatka w całości mieści się przed nagłówkiem
+                        }
+                        else if(frameData->headerV.at(i-1).position+frameData->headerV.at(i-1).size+frameData->framePt->size<=frameData->headerV.at(i).position)
+                        {
+                            m.lock();
+                            q.pop();
+                            m.unlock();
+                            return true;///nie ma JUNK, a klatka w całości zmieśiła się mi,ędzy nagłówkami
+                        }
+                        else
+                        {
+                            return false;///za mało miejsca na całą klatkę pomiędzy nagłówkami klatek, to było by dziwne
+                        }
+                    }
+                    else
+                    {
+                        return false;///urżnięta klatka, raczej nie powinno sie wydażyć
+                    }
+                }
+            }
+            else
+            {
+                /// \todo sprawdzicz czy JUNK jest w środku klatki
+            }
+        }
+    }
+    return false;
+}
+
+
+
+
+
+
 
 
 
