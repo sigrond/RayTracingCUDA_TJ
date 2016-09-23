@@ -1712,7 +1712,7 @@ if get(handles.chR,'value') % mask for red channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
     Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) .* 10 ;
-    hf = imtool( Frame );
+    hf = imtool( Frame(:,:,1) );
     %hf = imshow( handles.cF );
     set(hf,'name','Set Mask for red background!')
     ha = get(hf,'CurrentAxes');
@@ -1743,7 +1743,7 @@ if get(handles.chG,'value') % mask for green channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
     Frame(:,:,2)=temp(:,:,2) ./ max(max(temp(:,:,1))) .* 10;
-    hf = imtool( Frame );
+    hf = imtool( Frame(:,:,2) );
     set(hf,'name','Set Mask for green background!')
     ha = get(hf,'CurrentAxes');
     hold(ha,'on');
@@ -1772,7 +1772,7 @@ if get(handles.chB,'value') % mask for blue channel background
     temp = handles.cF;
     Frame =  zeros(size(temp));
     Frame(:,:,3)=temp(:,:,3) ./ max(max(temp(:,:,1))) .* 10;
-    hf = imtool( Frame );
+    hf = imtool( Frame(:,:,3) );
     set(hf,'name','Set Mask for blue background!')
     ha = get(hf,'CurrentAxes');
     hold(ha,'on');

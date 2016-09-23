@@ -407,6 +407,10 @@ void copyBuff(char* buff)
 
 //extern unsigned short previewFa[640*480];
 
+float avgBgValueR[2]={0.0f,0.0f};
+float avgBgValueG[2]={0.0f,0.0f};
+float avgBgValueB[2]={0.0f,0.0f};
+
 
 void doIC(float* I_Red, float* I_Green, float* I_Blue)
 {
@@ -440,6 +444,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     if(licznik_klatek==1)
     checkCudaErrors(cudaMemcpy((void*)previewFb,dev_outArray+640*480*2,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
     #endif // DEBUG
+
+    licznik_klatek++;
 
     if(ipR_Size>0)
     {
@@ -489,11 +495,13 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
         tmpBgValue[0]/=BgMask_SizeR[0];
         tmpBgValue[1]/=BgMask_SizeR[1];
-        if(licznik_klatek++<50)
+        avgBgValueR[0]+=tmpBgValue[0];
+        avgBgValueR[1]+=tmpBgValue[1];
+        /*if(licznik_klatek++<50)
         {
             printf("(R)tmpBgValue[0]: %f, ",tmpBgValue[0]);
             printf("(R)tmpBgValue[1]: %f\n",tmpBgValue[1]);
-        }
+        }*/
         /*if(tmpBgValue>=200.0f)
         {
             printf("tmpBgValue: %f, ",tmpBgValue);
@@ -598,11 +606,13 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
         tmpBgValue[0]/=BgMask_SizeG[0];
         tmpBgValue[1]/=BgMask_SizeG[1];
-        if(licznik_klatek<50)
+        avgBgValueG[0]+=tmpBgValue[0];
+        avgBgValueG[1]+=tmpBgValue[1];
+        /*if(licznik_klatek<50)
         {
             printf("(G)tmpBgValue[0]: %f, ",tmpBgValue[0]);
             printf("(G)tmpBgValue[1]: %f\n",tmpBgValue[1]);
-        }
+        }*/
         checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -680,11 +690,13 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
         tmpBgValue[0]/=BgMask_SizeB[0];
         tmpBgValue[1]/=BgMask_SizeB[1];
-        if(licznik_klatek<50)
+        avgBgValueB[0]+=tmpBgValue[0];
+        avgBgValueB[1]+=tmpBgValue[1];
+        /*if(licznik_klatek<50)
         {
             printf("(B)tmpBgValue[0]: %f, ",tmpBgValue[0]);
             printf("(B)tmpBgValue[1]: %f\n",tmpBgValue[1]);
-        }
+        }*/
         checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -746,6 +758,13 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
 
 void freeCUDA_IC()
 {
+    printf("avgBgValueR[0]: %f, ",(avgBgValueR[0]/(float)licznik_klatek));
+    printf("avgBgValueR[1]: %f\n",(avgBgValueR[1]/(float)licznik_klatek));
+    printf("avgBgValueG[0]: %f,",(avgBgValueG[0]/(float)licznik_klatek));
+    printf("avgBgValueG[1]: %f\n",(avgBgValueG[1]/(float)licznik_klatek));
+    printf("avgBgValueB[0]: %f, ",(avgBgValueB[0]/(float)licznik_klatek));
+    printf("avgBgValueB[1]: %f\n",(avgBgValueB[1]/(float)licznik_klatek));
+
     checkCudaErrors(cudaFree(dev_buff));
     checkCudaErrors(cudaFree(dev_frame));
     checkCudaErrors(cudaFree(dev_outArray));
