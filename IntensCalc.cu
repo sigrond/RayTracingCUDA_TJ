@@ -556,6 +556,41 @@ try
     #ifndef OLD_DECODEC
 
     FrameReader frameReader(&cyclicBuffer);
+
+    thread correctnessControlThread([&]
+    {
+        try
+        {
+            char* tmpFrame=nullptr;
+            for(int k=0;k<NumFrames;k++)
+            {
+                if(!frameReader.correctnessControl.checkFrame())
+                {
+                    tmpFrame=frameReader.correctnessControl.decodeFrame();
+                    if(tmpFrame!=nullptr)
+                    {
+                        copyBuff(tmpFrame);
+                        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                    }
+                }
+            }
+        }
+        catch(exception& e)
+        {
+            printf("wyjątek: %s",e.what());
+            string s=e.what();
+            MessageBox(NULL,s.c_str(),NULL,NULL);
+            system("pause");
+        }
+        catch(...)
+        {
+            printf("nieznany wyjątek");
+            string s="nieznany wyjątek";
+            MessageBox(NULL,s.c_str(),NULL,NULL);
+            system("pause");
+        }
+    });
+
     char* frame=nullptr;
     for(int k=0;k<NumFrames;k++)
     {
@@ -828,6 +863,9 @@ try
     readMovieThread.join();
     printf("readMovieThread joined\n");
     //mexEvalString("drawnow;");
+
+    correctnessControlThread.join();
+    printf("correctnessControlThread joined\n");
 
     #ifdef OLD_DECODEC
     delete[] currentFrame;

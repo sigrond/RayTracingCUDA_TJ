@@ -12,6 +12,7 @@
 #include <queue>
 #include <mutex>
 #include <vector>
+#include <condition_variable>
 
 /** \brief klasa wyjątku dla FrameReader
  */
@@ -63,6 +64,7 @@ private:
     {
     public:
         DataSpace(unsigned long int);
+        DataSpace(const DataSpace& o);
         ~DataSpace();
         char* pt;/**< wskaźnik na dane */
         unsigned long int size;/**< rozmiar danych */
@@ -104,6 +106,7 @@ private:
     void loadLeft();/**< wczytanie danych z bufora cyklicznego do lewej strony danych */
     void loadRight();/**< wczytanie danych z bufora cyklicznego do prawej strony danych */
     void printStatus();/**< wypisanie stanu FrameReader */
+public:
     /** \brief struktura(klasa) pomagająca wykrywać i poprawiać klatki, które zostały
      * błędnie zdekodowane (dodatkowe sekcje JUNK w środku klatki).
      * przejżenie pamięci w poszukiwaniu nieprzewidzanych sekcji JUNK może być
@@ -113,6 +116,8 @@ private:
      */
     struct CorrectnessControl
     {
+        friend class FrameReader;
+    private:
         CorrectnessControl();
         ~CorrectnessControl();
         /** \brief zbiór danych potrzebnych do sprawdzenia danej klatki
@@ -120,7 +125,7 @@ private:
         struct FrameData
         {
             FrameData(DataSpace* d,Header* h,Junk* j,Frame* f);
-            FrameData(FrameData& o);/**< konstruktor kopiujący. nie chcielibyśmy, żeby był wywoływany */
+            FrameData(const FrameData& o);/**< konstruktor kopiujący. nie chcielibyśmy, żeby był wywoływany */
             ~FrameData();
             DataSpace* dataSpacePt;/**< wskaźnik na kopię danych dla danej klatki */
             Header* headerPt;
@@ -139,6 +144,7 @@ private:
          *
          */
         void addFrame(DataSpace* d,Header* h,Junk* j,Frame* f);
+    public:
         /** \brief sprawdza czy klatka na początku kolejki została dobrze zdekodowana,
          * jeśli tak, to zdejmuje ją z koejki, jeśli nie to zostawia
          * \return bool zwraca true, jeśli klatka była poprawnie zdekodowana,
@@ -154,6 +160,7 @@ private:
     private:
         std::queue<FrameData*> q;/**< kolejka z danymi do sprawdzenia */
         std::mutex m;/**< zamek na elementy wymagające zabezpieczenia */
+        std::condition_variable empty;
         bool lastFrameCorrect;/**< czy ostatnio sprawdzona klatka była poprawnie zdekodowana */
         char* decodedFrame;/**< wskaźnik do obszaru przeznaczonego dla zdekodowanej klatki */
     } correctnessControl;

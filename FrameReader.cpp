@@ -198,6 +198,8 @@ char* FrameReader::getFrame()
     frame.pt=dataSpace->pt+frame.position;
     frame.found=true;
 
+    correctnessControl.addFrame(dataSpace,&header,&junk,&frame);
+
     #ifdef DEBUG
     if(safetyCounter++<=5)
     {
@@ -280,6 +282,18 @@ FrameReader::DataSpace::DataSpace(unsigned long int s) :
 
 }
 
+FrameReader::DataSpace::DataSpace(const DataSpace& o) :
+    pt(nullptr), size(o.size), ptLeft(nullptr), ptRight(nullptr), halfSize(o.halfSize)
+{
+    while(pt==nullptr)
+    {
+        pt=new (nothrow) char[size];
+    }
+    ptLeft=pt;
+    ptRight=pt+size/2;
+    memcpy(pt,o.pt,size);
+}
+
 FrameReader::DataSpace::~DataSpace()
 {
     #ifdef DEBUG
@@ -358,19 +372,52 @@ FrameReader::CorrectnessControl::~CorrectnessControl()
     delete[] decodedFrame;
 }
 
+FrameReader::CorrectnessControl::FrameData::FrameData(DataSpace* d,Header* h,Junk* j,Frame* f) :
+    dataSpacePt(nullptr),headerPt(nullptr),junkPt(nullptr),framePt(nullptr)
+{
+    dataSpacePt=new DataSpace(*d);
+    headerPt=new Header(*h);
+    junkPt=new Junk(*j);
+    framePt=new Frame(*f);
+}
+
+FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)
+{
+    printm("FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)");
+    throw FrameReaderException("FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)");
+}
+
+FrameReader::CorrectnessControl::FrameData::~FrameData()
+{
+    delete dataSpacePt;
+    dataSpacePt=nullptr;
+    delete headerPt;
+    headerPt=nullptr;
+    delete junkPt;
+    junkPt=nullptr;
+    delete framePt;
+    framePt=nullptr;
+}
+
 void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Frame* f)
 {
     FrameData* frameData=new FrameData(d,h,j,f);
     m.lock();
     q.push(frameData);
     m.unlock();
+    empty.notify_one();
 }
 
 bool FrameReader::CorrectnessControl::checkFrame()
 {
-    m.lock();
+    unique_lock<mutex> lck(m);
+    while(q.empty())
+    {
+        empty.wait(lck);
+    }
     FrameData* frameData=q.front();
-    m.unlock();
+    lck.unlock();
+    lck.release();
     bool headerB=true;
     bool junkB=true;
     for(int j=0;j<frameData->dataSpacePt->size;j++)
@@ -404,49 +451,229 @@ bool FrameReader::CorrectnessControl::checkFrame()
     for(int i=0;i<frameData->headerV.size();i++)
     {
         if(frameData->headerV.at(i).position==frameData->headerPt->position)
-        {
+        {//nagłówek znaleziony na wcześniej ustalonej pozycji
             if(frameData->junkV.empty())
-            {
+            {//nie znaleziono żadnego JUNK
                 if(frameData->junkPt->found)
-                {
+                {//było zaznaczone, że wcześniej znaleziono w danym segmncie JUNK
+                    lastFrameCorrect=false;
                     return false;///dziwny przrypadek, raczej nie powinien się zdażyć
                 }
                 else
                 {
                     if(frameData->headerV.at(i).position>=frameData->framePt->size)
-                    {
+                    {//przed nagłówkiem jest dość miejsca na klatkę
                         if(i==0)
-                        {
+                        {//jest to pierwszy nagłówek z kolei
                             m.lock();
                             q.pop();
                             m.unlock();
+                            lastFrameCorrect=true;
                             return true;///nie ma JUNK, nie ma wcześniejszego nagłówka, a klatka w całości mieści się przed nagłówkiem
                         }
                         else if(frameData->headerV.at(i-1).position+frameData->headerV.at(i-1).size+frameData->framePt->size<=frameData->headerV.at(i).position)
-                        {
+                        {//między nagłówkami jest dość miejsca na klatkę
                             m.lock();
                             q.pop();
                             m.unlock();
+                            lastFrameCorrect=true;
                             return true;///nie ma JUNK, a klatka w całości zmieśiła się mi,ędzy nagłówkami
                         }
                         else
                         {
+                            lastFrameCorrect=false;
                             return false;///za mało miejsca na całą klatkę pomiędzy nagłówkami klatek, to było by dziwne
                         }
                     }
                     else
                     {
+                        lastFrameCorrect=false;
                         return false;///urżnięta klatka, raczej nie powinno sie wydażyć
                     }
                 }
             }
             else
             {
-                /// \todo sprawdzicz czy JUNK jest w środku klatki
+                for(int j=0;j<frameData->junkV.size();j++)
+                {
+                    if(frameData->junkV.at(j).position==frameData->junkPt->position)
+                    {//zaneziono wykożystany JUNK
+                        if(frameData->junkV.at(j).position+frameData->junkV.at(j).size==frameData->headerPt->position)
+                        {//JUNK jest przyklejony do odpowiadającego nagłówka
+                            if(j==0)
+                            {//jest to pierwszy JUNK z kolei
+                                if(frameData->junkV.at(j).position>=frameData->framePt->size)
+                                {//przed JUNK jest dość miejsca na klatkę
+                                    if(i==0)
+                                    {//i jest to pierwszy nagłówek z kolei
+                                        m.lock();
+                                        q.pop();
+                                        m.unlock();
+                                        lastFrameCorrect=true;
+                                        return true;///pierwszy nagłowek i pierwszy JUNK sklejone, a przed nimi jest dość miejsca na całą klatkę
+                                    }
+                                    else
+                                    {//wcześniej był inny nagłówek
+                                        if(frameData->junkV.at(j).position-(frameData->headerV.at(i).position+frameData->headerPt->size)>=frameData->framePt->size)
+                                        {//między JUNK a header jest dość miejsca na klatkę
+                                            m.lock();
+                                            q.pop();
+                                            m.unlock();
+                                            lastFrameCorrect=true;
+                                            return true;///między JUNK(przyklejonym do nagłówka), a poprzednim nagłówkiem jest dość miejsca na klatkę i nie ma tam dodatkowego JUNK
+                                        }
+                                        else
+                                        {
+                                            lastFrameCorrect=false;
+                                            return false;///między JUNK, a poprzednim nagłówkiem jest za mało miejsca na całą klatkę, dziwny przypadek, raczej nie powinien się wydażyć
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    lastFrameCorrect=false;
+                                    return false;///urżnięta klatka, bo przed JUNK jest za mało miejsca, raczej nie powinno się wydażyć
+                                }
+                            }
+                            else
+                            {//nie pierwszy JUNK z kolei
+                                if(i==0)
+                                {//pierwszy nagłówek z kolei
+                                    if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
+                                    {//między JUNK przyklejonym do nagłówka a poprzednim JUNK jest dość miejsca na klatkę
+                                        m.lock();
+                                        q.pop();
+                                        m.unlock();
+                                        lastFrameCorrect=true;
+                                        return true;///oznaczało by to, że bezpośrednio za nagłówkiem, który się nie zmieścił w bloku danych był JUNK i było dość miejsca na klatkę do następnego JUNK przyklejonego do nagłówka
+                                    }
+                                    else
+                                    {
+                                        lastFrameCorrect=false;
+                                        return false;///JUNK wystąpił w śrdoku klatki i wcześniejszy nagłówek nie zmieścił się w DataSpace
+                                    }
+                                }
+                                else
+                                {//nie pierwszy nagłówek z kolei
+                                    if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
+                                    {
+                                        m.lock();
+                                        q.pop();
+                                        m.unlock();
+                                        lastFrameCorrect=true;
+                                        return true;///przed JUNK przyklejonym do nagłówka było dość miejsca na klatkę
+                                    }
+                                    else
+                                    {
+                                        lastFrameCorrect=false;
+                                        return false;///JUNK wystąpił w środku klatki
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            lastFrameCorrect=false;
+                            return false;///JUNK nie przyklejony do nagłówka klatki
+                        }
+                    }
+                }
             }
         }
     }
-    return false;
+    lastFrameCorrect=false;
+    return false;///nie znalezion wcześniej znalezionego nagłówka, albo nie znaleziono wcześniej znalezionego JUNK, albo inny błąd
+}
+
+char* FrameReader::CorrectnessControl::decodeFrame()
+{
+    if(lastFrameCorrect)
+    {
+        printm("próbujemy zdekodować ponownie klatkę oznaczoną jako poprawnie zdekodowaną");
+        throw FrameReaderException("próbujemy zdekodować ponownie klatkę oznaczoną jako poprawnie zdekodowaną");
+    }
+    m.lock();
+    FrameData* frameData=q.front();
+    m.unlock();
+    if(frameData->headerV.empty())
+    {
+        m.lock();
+        q.pop();
+        m.unlock();
+        printm("duża przestrzeń bez klatek?");
+        return nullptr;///duża przestrzeń bez klatek?
+    }
+    if(frameData->junkV.empty())
+    {
+        if(frameData->headerPt->position>=frameData->framePt->size)
+        {
+            printm("klatka która powinna być dobrze zdekodowana, została oznaczona jako źle zdekodowana");
+            memcpy(decodedFrame,frameData->dataSpacePt->pt,frameData->framePt->size);
+            m.lock();
+            q.pop();
+            m.unlock();
+            return decodedFrame;
+        }
+        else
+        {
+            printm("utrata części klatki?");
+            memcpy(decodedFrame+(frameData->framePt->size-frameData->headerPt->position),frameData->dataSpacePt->pt,frameData->headerPt->position);
+            m.lock();
+            q.pop();
+            m.unlock();
+            return decodedFrame;
+        }
+    }
+    int copiedFrame=0;/**< ile klatki zostało skopiowane */
+    int lastSkipedPosition=frameData->headerPt->position;/**< ostatnio ominięty fragment */
+    int sizeToCopy=0;
+    for(int i=0;i<frameData->headerV.size();i++)
+    {
+        if(frameData->headerV.at(i).position==frameData->headerPt->position)
+        {//jest przynajmniej jeden JUNK i header
+            for(int j=frameData->junkV.size()-1;j>=0;j--)
+            {
+                if(frameData->junkV.at(j).position<frameData->headerPt->position)
+                {//JUNK jest przed nagłówkiem
+                    if(frameData->junkV.at(j).position+frameData->junkV.at(j).size>=frameData->headerPt->position)
+                    {//JUNK przyklejony do nagłówka
+                        lastSkipedPosition=frameData->junkV.at(j).position;
+                    }
+                    else
+                    {
+                        if(copiedFrame>=frameData->framePt->size)
+                        {
+                            m.lock();
+                            q.pop();
+                            m.unlock();
+                            return decodedFrame;
+                        }
+                        sizeToCopy=(lastSkipedPosition-(frameData->junkV.at(j).position+frameData->junkV.at(j).size))<=(frameData->framePt->size-copiedFrame)?(lastSkipedPosition-(frameData->junkV.at(j).position+frameData->junkV.at(j).size)):(frameData->framePt->size-copiedFrame);
+                        memcpy(decodedFrame+(frameData->framePt->size-copiedFrame),
+                               frameData->dataSpacePt->pt+(frameData->junkV.at(j).position+frameData->junkV.at(j).size),
+                               sizeToCopy);
+                        lastSkipedPosition=frameData->junkV.at(j).position;
+                        copiedFrame+=sizeToCopy;
+                    }
+                }
+            }
+        }
+    }
+    if(copiedFrame<frameData->framePt->size)
+    {
+        if(lastSkipedPosition-frameData->framePt->size+copiedFrame>=0)
+        {//jest z kąd kopiować
+            memcpy(decodedFrame,frameData->dataSpacePt->pt+(lastSkipedPosition-frameData->framePt->size+copiedFrame),frameData->framePt->size-copiedFrame);
+        }
+        else
+        {
+            memcpy(decodedFrame+(frameData->framePt->size-copiedFrame-lastSkipedPosition),rameData->dataSpacePt->pt,lastSkipedPosition);
+        }
+    }
+    m.lock();
+    q.pop();
+    m.unlock();
+    return decodedFrame;
 }
 
 
