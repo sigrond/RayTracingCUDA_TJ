@@ -94,7 +94,7 @@ private:
     struct Frame
     {
         Frame();
-        unsigned long int size;
+        static const unsigned long int size=614400;
         char* pt;
         unsigned long int position;
         bool found;
@@ -105,8 +105,8 @@ private:
     void cycleDataSpace();/**< przesunięcie danych w lewo i doczytanie nowych */
     void loadLeft();/**< wczytanie danych z bufora cyklicznego do lewej strony danych */
     void loadRight();/**< wczytanie danych z bufora cyklicznego do prawej strony danych */
-    void printStatus();/**< wypisanie stanu FrameReader */
 public:
+    void printStatus();/**< wypisanie stanu FrameReader */
     /** \brief struktura(klasa) pomagająca wykrywać i poprawiać klatki, które zostały
      * błędnie zdekodowane (dodatkowe sekcje JUNK w środku klatki).
      * przejżenie pamięci w poszukiwaniu nieprzewidzanych sekcji JUNK może być
@@ -157,11 +157,14 @@ public:
          *
          */
         char* decodeFrame();
+        void test1();
     private:
         std::queue<FrameData*> q;/**< kolejka z danymi do sprawdzenia */
         std::mutex m;/**< zamek na elementy wymagające zabezpieczenia */
         std::condition_variable empty;
         bool lastFrameCorrect;/**< czy ostatnio sprawdzona klatka była poprawnie zdekodowana */
         char* decodedFrame;/**< wskaźnik do obszaru przeznaczonego dla zdekodowanej klatki */
-    } correctnessControl;
+    };
+    static CorrectnessControl* correctnessControl;
+    void test2();
 };

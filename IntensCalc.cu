@@ -17,6 +17,7 @@
 #include <thread>
 #include <exception>
 #include <chrono>
+#include <mutex>
 
 #include "FrameReader.hpp"
 #include "CyclicBuffer.hpp"
@@ -555,37 +556,106 @@ try
 
     #ifndef OLD_DECODEC
 
-    FrameReader frameReader(&cyclicBuffer);
+    FrameReader* frameReader=new FrameReader(&cyclicBuffer);
+
+    try
+    {
+        frameReader->correctnessControl->test1();
+        frameReader->test2();
+        printf("frameReader: %p\n",frameReader);
+        frameReader->printStatus();
+    }
+    catch(string& e)
+    {
+        printf("wyjątek (string) test: %s",e.c_str());
+        string s="wyjątek (string) test: "+e;
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(FrameReaderException& e)
+    {
+        printf("wyjątek (FrameReaderException) test: %s",e.what());
+        string s=e.what();
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(exception& e)
+    {
+        printf("wyjątek (exception) test: %s",e.what());
+        string s=e.what();
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(...)
+    {
+        printf("nieznany wyjątek test");
+        string s="nieznany wyjątek test";
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+
+    mutex cudaMemGuard;
 
     thread correctnessControlThread([&]
     {
         try
         {
+            #ifdef DEBUG_CORRECTNESSCONTROL
+            printf("DEBUG build for correctnessControl debuging\n");
+            #endif // DEBUG_CORRECTNESSCONTROL
+            printf("frameReader->correctnessControl: %p\n",frameReader->correctnessControl);
+            printf("frameReader: %p\n",frameReader);
+            frameReader->printStatus();
+            frameReader->test2();
+            frameReader->correctnessControl->test1();
             char* tmpFrame=nullptr;
             for(int k=0;k<NumFrames;k++)
             {
-                if(!frameReader.correctnessControl.checkFrame())
+                if(frameReader->correctnessControl!=nullptr)
                 {
-                    tmpFrame=frameReader.correctnessControl.decodeFrame();
-                    if(tmpFrame!=nullptr)
+                    if(!(frameReader->correctnessControl->checkFrame()))
                     {
-                        copyBuff(tmpFrame);
-                        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                        tmpFrame=frameReader->correctnessControl->decodeFrame();
+                        if(tmpFrame!=nullptr)
+                        {
+                            cudaMemGuard.lock();
+                            copyBuff(tmpFrame);
+                            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                            cudaMemGuard.unlock();
+                        }
                     }
+                }
+                else
+                {
+                    printf("frameReader->correctnessControl==nullptr");
                 }
             }
         }
+        catch(string& e)
+        {
+            printf("wyjątek (string) correctnessControlThread: %s",e.c_str());
+            string s="wyjątek (string) correctnessControlThread: "+e;
+            MessageBox(NULL,s.c_str(),NULL,NULL);
+            system("pause");
+        }
+        catch(FrameReaderException& e)
+        {
+            printf("wyjątek (FrameReaderException) correctnessControlThread: %s",e.what());
+            string s=e.what();
+            MessageBox(NULL,s.c_str(),NULL,NULL);
+            system("pause");
+        }
         catch(exception& e)
         {
-            printf("wyjątek: %s",e.what());
+            printf("wyjątek (exception) correctnessControlThread: %s",e.what());
             string s=e.what();
             MessageBox(NULL,s.c_str(),NULL,NULL);
             system("pause");
         }
         catch(...)
         {
-            printf("nieznany wyjątek");
-            string s="nieznany wyjątek";
+            printf("nieznany wyjątek correctnessControlThread");
+            string s="nieznany wyjątek correctnessControlThread";
             MessageBox(NULL,s.c_str(),NULL,NULL);
             system("pause");
         }
@@ -594,9 +664,11 @@ try
     char* frame=nullptr;
     for(int k=0;k<NumFrames;k++)
     {
-        frame=frameReader.getFrame();
+        frame=frameReader->getFrame();
+        cudaMemGuard.lock();
         copyBuff(frame);
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+        cudaMemGuard.unlock();
 
         if(k%500==0 || k==NumFrames-1)
         {
@@ -866,6 +938,8 @@ try
 
     correctnessControlThread.join();
     printf("correctnessControlThread joined\n");
+
+    delete frameReader;
 
     #ifdef OLD_DECODEC
     delete[] currentFrame;

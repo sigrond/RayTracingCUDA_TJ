@@ -12,6 +12,10 @@
 #include "mex.h"
 #endif // MATLAB_MEX_FILE
 #include <vector>
+#include <thread>
+#include <chrono>
+
+using namespace std;
 
 /** \brief wypisanie tekstu do matlaba
  *
@@ -32,6 +36,8 @@ const char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
 const char junkCode[]="JUNK";
 unsigned long long int safetyCounter=0;
 
+FrameReader::CorrectnessControl* FrameReader::correctnessControl=nullptr;
+
 FrameReader::FrameReader(CyclicBuffer* c) :
     cyclicBuffer(c),dataSpace(nullptr),emptyLeft(true),emptyRight(true)
 {
@@ -39,6 +45,7 @@ FrameReader::FrameReader(CyclicBuffer* c) :
     printm("FrameReader::FrameReader(CyclicBuffer* c)");
     #endif // DEBUG
     dataSpace=new DataSpace(65535*10*2);
+    correctnessControl=new CorrectnessControl();
 }
 
 FrameReader::~FrameReader()
@@ -47,6 +54,7 @@ FrameReader::~FrameReader()
     printm("FrameReader::~FrameReader()");
     #endif // DEBUG
     delete dataSpace;
+    delete correctnessControl;
 }
 
 void FrameReader::loadLeft()
@@ -198,7 +206,7 @@ char* FrameReader::getFrame()
     frame.pt=dataSpace->pt+frame.position;
     frame.found=true;
 
-    correctnessControl.addFrame(dataSpace,&header,&junk,&frame);
+    correctnessControl->addFrame(dataSpace,&header,&junk,&frame);
 
     #ifdef DEBUG
     if(safetyCounter++<=5)
@@ -285,8 +293,16 @@ FrameReader::DataSpace::DataSpace(unsigned long int s) :
 FrameReader::DataSpace::DataSpace(const DataSpace& o) :
     pt(nullptr), size(o.size), ptLeft(nullptr), ptRight(nullptr), halfSize(o.halfSize)
 {
+    pt=new (nothrow) char[size];
+    if(pt==nullptr)
+    {
+        printm("Low memory! Buy more RAM! :D");
+        this_thread::sleep_for (chrono::seconds(1));
+        pt=new (nothrow) char[size];
+    }
     while(pt==nullptr)
     {
+        //this_thread::sleep_for (chrono::seconds(1));
         pt=new (nothrow) char[size];
     }
     ptLeft=pt;
@@ -319,9 +335,12 @@ FrameReader::Junk::Junk() :
 }
 
 FrameReader::Frame::Frame() :
-    size(614400), pt(nullptr), position(0),found(false)
+    pt(nullptr), position(0),found(false)
 {
     #ifdef DEBUG
+    printm("FrameReader::Frame::Frame()");
+    #endif // DEBUG
+    #ifdef DEBUG_CORRECTNESSCONTROL
     printm("FrameReader::Frame::Frame()");
     #endif // DEBUG
 }
@@ -359,15 +378,28 @@ void FrameReader::printStatus()
 FrameReader::CorrectnessControl::CorrectnessControl() :
     lastFrameCorrect(true), decodedFrame(nullptr)
 {
-    decodedFrame=new char[frame.size];
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("FrameReader::CorrectnessControl::CorrectnessControl(const FrameReader& parent)");
+    printf("Frame::size: %d\n",Frame::size);
+    printm("OK");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    decodedFrame=new char[Frame::size];
 }
 
 FrameReader::CorrectnessControl::~CorrectnessControl()
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("FrameReader::CorrectnessControl::~CorrectnessControl()");
+    #endif // DEBUG_CORRECTNESSCONTROL
     if(!q.empty())
     {
         printm("kolejka korekcji poprawności nie jest pusta");
-        throw FrameReaderException("kolejka korekcji poprawności nie jest pusta");
+        while(!q.empty())
+        {
+            delete q.front();
+            q.pop();
+        }
+        //throw FrameReaderException("kolejka korekcji poprawności nie jest pusta");
     }
     delete[] decodedFrame;
 }
@@ -375,6 +407,9 @@ FrameReader::CorrectnessControl::~CorrectnessControl()
 FrameReader::CorrectnessControl::FrameData::FrameData(DataSpace* d,Header* h,Junk* j,Frame* f) :
     dataSpacePt(nullptr),headerPt(nullptr),junkPt(nullptr),framePt(nullptr)
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL2
+    printm("FrameReader::CorrectnessControl::FrameData::FrameData(DataSpace* d,Header* h,Junk* j,Frame* f)");
+    #endif // DEBUG_CORRECTNESSCONTROL
     dataSpacePt=new DataSpace(*d);
     headerPt=new Header(*h);
     junkPt=new Junk(*j);
@@ -383,12 +418,18 @@ FrameReader::CorrectnessControl::FrameData::FrameData(DataSpace* d,Header* h,Jun
 
 FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)");
+    #endif // DEBUG_CORRECTNESSCONTROL
     printm("FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)");
     throw FrameReaderException("FrameReader::CorrectnessControl::FrameData::FrameData(const FrameData& o)");
 }
 
 FrameReader::CorrectnessControl::FrameData::~FrameData()
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL2
+    printm("FrameReader::CorrectnessControl::FrameData::~FrameData()");
+    #endif // DEBUG_CORRECTNESSCONTROL
     delete dataSpacePt;
     dataSpacePt=nullptr;
     delete headerPt;
@@ -401,23 +442,62 @@ FrameReader::CorrectnessControl::FrameData::~FrameData()
 
 void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Frame* f)
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL2
+    printm("void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Frame* f)");
+    #endif // DEBUG_CORRECTNESSCONTROL
     FrameData* frameData=new FrameData(d,h,j,f);
-    m.lock();
+    unique_lock<mutex> lck(m);
     q.push(frameData);
-    m.unlock();
+    lck.unlock();
     empty.notify_one();
 }
 
 bool FrameReader::CorrectnessControl::checkFrame()
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("bool FrameReader::CorrectnessControl::checkFrame()");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    if(this==nullptr)
+    {
+        printm("FrameReader::CorrectnessControl::checkFrame() this==nullptr");
+        throw FrameReaderException("FrameReader::CorrectnessControl::checkFrame() this==nullptr");
+    }
+    try
+    {
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("checkFrame try lck");
+        #endif // DEBUG_CORRECTNESSCONTROL
+        unique_lock<mutex> lck(m);
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("lck locked");
+        #endif // DEBUG_CORRECTNESSCONTROL
+        lck.release();
+    }
+    catch(...)
+    {
+        printm("unique_lock<mutex> lck(m) throwed smth");
+        q.pop();
+        return true;
+    }
     unique_lock<mutex> lck(m);
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("unique_lock<mutex> lck(m);");
+    #endif // DEBUG_CORRECTNESSCONTROL
     while(q.empty())
     {
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("while(q.empty())");
+        #endif // DEBUG_CORRECTNESSCONTROL
         empty.wait(lck);
     }
     FrameData* frameData=q.front();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("FrameData* frameData=q.front();");
+    #endif // DEBUG_CORRECTNESSCONTROL
     lck.unlock();
-    lck.release();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("lck.unlock();");
+    #endif // DEBUG_CORRECTNESSCONTROL
     bool headerB=true;
     bool junkB=true;
     for(int j=0;j<frameData->dataSpacePt->size;j++)
@@ -436,7 +516,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
             j+=frameData->junkV.back().size;
         }
         headerB=true;
-        for(int i=0;i<frameData->headerPt->size)
+        for(int i=0;i<frameData->headerPt->size;i++)
         {
             headerB&=frameStartCode[i]==frameData->dataSpacePt->pt[j+i] ||
              frameStartCodeS[i]==frameData->dataSpacePt->pt[j+i];
@@ -448,6 +528,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
             j+=frameData->headerV.back().size;
         }
     }
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("przeglądanie dataSpace zakończone");
+    #endif // DEBUG_CORRECTNESSCONTROL
     for(int i=0;i<frameData->headerV.size();i++)
     {
         if(frameData->headerV.at(i).position==frameData->headerPt->position)
@@ -465,17 +548,17 @@ bool FrameReader::CorrectnessControl::checkFrame()
                     {//przed nagłówkiem jest dość miejsca na klatkę
                         if(i==0)
                         {//jest to pierwszy nagłówek z kolei
-                            m.lock();
+                            lck.lock();
                             q.pop();
-                            m.unlock();
+                            lck.unlock();
                             lastFrameCorrect=true;
                             return true;///nie ma JUNK, nie ma wcześniejszego nagłówka, a klatka w całości mieści się przed nagłówkiem
                         }
                         else if(frameData->headerV.at(i-1).position+frameData->headerV.at(i-1).size+frameData->framePt->size<=frameData->headerV.at(i).position)
                         {//między nagłówkami jest dość miejsca na klatkę
-                            m.lock();
+                            lck.lock();
                             q.pop();
-                            m.unlock();
+                            lck.unlock();
                             lastFrameCorrect=true;
                             return true;///nie ma JUNK, a klatka w całości zmieśiła się mi,ędzy nagłówkami
                         }
@@ -506,9 +589,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                 {//przed JUNK jest dość miejsca na klatkę
                                     if(i==0)
                                     {//i jest to pierwszy nagłówek z kolei
-                                        m.lock();
+                                        lck.lock();
                                         q.pop();
-                                        m.unlock();
+                                        lck.unlock();
                                         lastFrameCorrect=true;
                                         return true;///pierwszy nagłowek i pierwszy JUNK sklejone, a przed nimi jest dość miejsca na całą klatkę
                                     }
@@ -516,9 +599,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     {//wcześniej był inny nagłówek
                                         if(frameData->junkV.at(j).position-(frameData->headerV.at(i).position+frameData->headerPt->size)>=frameData->framePt->size)
                                         {//między JUNK a header jest dość miejsca na klatkę
-                                            m.lock();
+                                            lck.lock();
                                             q.pop();
-                                            m.unlock();
+                                            lck.unlock();
                                             lastFrameCorrect=true;
                                             return true;///między JUNK(przyklejonym do nagłówka), a poprzednim nagłówkiem jest dość miejsca na klatkę i nie ma tam dodatkowego JUNK
                                         }
@@ -541,9 +624,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                 {//pierwszy nagłówek z kolei
                                     if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
                                     {//między JUNK przyklejonym do nagłówka a poprzednim JUNK jest dość miejsca na klatkę
-                                        m.lock();
+                                        lck.lock();
                                         q.pop();
-                                        m.unlock();
+                                        lck.unlock();
                                         lastFrameCorrect=true;
                                         return true;///oznaczało by to, że bezpośrednio za nagłówkiem, który się nie zmieścił w bloku danych był JUNK i było dość miejsca na klatkę do następnego JUNK przyklejonego do nagłówka
                                     }
@@ -557,9 +640,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                 {//nie pierwszy nagłówek z kolei
                                     if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
                                     {
-                                        m.lock();
+                                        lck.lock();
                                         q.pop();
-                                        m.unlock();
+                                        lck.unlock();
                                         lastFrameCorrect=true;
                                         return true;///przed JUNK przyklejonym do nagłówka było dość miejsca na klatkę
                                     }
@@ -587,6 +670,9 @@ bool FrameReader::CorrectnessControl::checkFrame()
 
 char* FrameReader::CorrectnessControl::decodeFrame()
 {
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("char* FrameReader::CorrectnessControl::decodeFrame()");
+    #endif // DEBUG_CORRECTNESSCONTROL
     if(lastFrameCorrect)
     {
         printm("próbujemy zdekodować ponownie klatkę oznaczoną jako poprawnie zdekodowaną");
@@ -667,7 +753,7 @@ char* FrameReader::CorrectnessControl::decodeFrame()
         }
         else
         {
-            memcpy(decodedFrame+(frameData->framePt->size-copiedFrame-lastSkipedPosition),rameData->dataSpacePt->pt,lastSkipedPosition);
+            memcpy(decodedFrame+(frameData->framePt->size-copiedFrame-lastSkipedPosition),frameData->dataSpacePt->pt,lastSkipedPosition);
         }
     }
     m.lock();
@@ -676,6 +762,19 @@ char* FrameReader::CorrectnessControl::decodeFrame()
     return decodedFrame;
 }
 
+void FrameReader::CorrectnessControl::test1()
+{
+    printm("void FrameReader::CorrectnessControl::test1()");
+    printf("this: %p, q.size(): %d, decodedFrame: %p\n",this,q.size(),decodedFrame);
+    printm("OK");
+}
+
+void FrameReader::test2()
+{
+    printm("void FrameReader::test2()");
+    printf("correctnessControl: %p, correctnessControl->q.size(): %d, correctnessControl->decodedFrame: %p\n",correctnessControl,correctnessControl->q.size(),correctnessControl->decodedFrame);
+    printm("OK");
+}
 
 
 
