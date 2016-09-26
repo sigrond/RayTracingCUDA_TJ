@@ -27,6 +27,34 @@ public:
         return str.c_str();
     }
 };
+#define ERRNUM2 10
+namespace SetToReDecode
+{
+    enum SetToReDecode
+    {
+        junkSetAsFoundAndThenNotFound=0,
+        notEnoughPlaceForFrameBetweenHeaders=1,
+        frameIsCut=2,
+        notEnoughPlaceForFrameBetweenJunkAndPreviosHeader=3,
+        frameIsCutBecauseNotEnoughPlaceBeforeJunk=4,
+        junkInsideFrameAndPreviousHeaderDidntFitInDataSpace=5,
+        junkInsideFrame=6,
+        junkDidntStickToHeader=7,
+        didntFindPreviouslyFoundHeaderOrDidntFindPreviouslyFoundJunkOrOtherError=8,
+    };
+    static const char* ErrorNames[ERRNUM2]={
+        "junkSetAsFoundAndThenNotFound",
+        "notEnoughPlaceForFrameBetweenHeaders",
+        "frameIsCut",
+        "notEnoughPlaceForFrameBetweenJunkAndPreviosHeader",
+        "frameIsCutBecauseNotEnoughPlaceBeforeJunk",
+        "junkInsideFrameAndPreviousHeaderDidntFitInDataSpace",
+        "junkInsideFrame",
+        "junkDidntStickToHeader",
+        "didntFindPreviouslyFoundHeaderOrDidntFindPreviouslyFoundJunkOrOtherError",
+        ""
+    };
+}
 
 class FrameReader;
 
@@ -172,6 +200,7 @@ public:
         std::condition_variable empty;
         bool lastFrameCorrect;/**< czy ostatnio sprawdzona klatka była poprawnie zdekodowana */
         char* decodedFrame;/**< wskaźnik do obszaru przeznaczonego dla zdekodowanej klatki */
+        int errorCount[ERRNUM];
     };
     static CorrectnessControl* correctnessControl;
     void test2();

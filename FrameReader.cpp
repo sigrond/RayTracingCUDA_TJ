@@ -406,10 +406,15 @@ FrameReader::CorrectnessControl::CorrectnessControl() :
     printm("OK");
     #endif // DEBUG_CORRECTNESSCONTROL
     decodedFrame=new char[Frame::size];
+    for(int i=0;i<ERRNUM2;i++)
+    {
+        errorCount[i]=0;
+    }
 }
 
 FrameReader::CorrectnessControl::~CorrectnessControl()
 {
+    using namespace SetToReDecode;
     #ifdef DEBUG_CORRECTNESSCONTROL
     printm("FrameReader::CorrectnessControl::~CorrectnessControl()");
     #endif // DEBUG_CORRECTNESSCONTROL
@@ -424,6 +429,11 @@ FrameReader::CorrectnessControl::~CorrectnessControl()
         //throw FrameReaderException("kolejka korekcji poprawności nie jest pusta");
     }
     printf("reDecodedFrames: %d\n",reDecodedFrames);
+    for(int i=0;i<ERRNUM;i++)
+    {
+        if(errorCount[i]!=0)
+        printf("errorCount[%d]: %d - %s\n",i,errorCount[i],ErrorNames[i]);
+    }
     delete[] decodedFrame;
 }
 
@@ -475,8 +485,10 @@ void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Fr
     empty.notify_one();
 }
 
+
 bool FrameReader::CorrectnessControl::checkFrame()
 {
+    using namespace SetToReDecode;
     #ifdef DEBUG_CORRECTNESSCONTROL
     printm("bool FrameReader::CorrectnessControl::checkFrame()");
     #endif // DEBUG_CORRECTNESSCONTROL
@@ -581,6 +593,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                 if(frameData->junkPt->found)
                 {//było zaznaczone, że wcześniej znaleziono w danym segmncie JUNK
                     lastFrameCorrect=false;
+                    errorCount[junkSetAsFoundAndThenNotFound]++;
                     return false;///dziwny przrypadek, raczej nie powinien się zdażyć
                 }
                 else
@@ -608,12 +621,14 @@ bool FrameReader::CorrectnessControl::checkFrame()
                         else
                         {
                             lastFrameCorrect=false;
+                            errorCount[notEnoughPlaceForFrameBetweenHeaders]++;
                             return false;///za mało miejsca na całą klatkę pomiędzy nagłówkami klatek, to było by dziwne
                         }
                     }
                     else
                     {
                         lastFrameCorrect=false;
+                        errorCount[frameIsCut]++;
                         return false;///urżnięta klatka, raczej nie powinno sie wydażyć
                     }
                 }
@@ -624,7 +639,12 @@ bool FrameReader::CorrectnessControl::checkFrame()
                 {
                     if(frameData->junkV.at(j).position==frameData->junkPt->position)
                     {//zaneziono wykożystany JUNK
-                        if(frameData->junkV.at(j).position+frameData->junkV.at(j).size==frameData->headerPt->position)
+                        #ifdef EXTRA_DEBUG1
+                        printf("frameData->junkV.at(j).position: %d\n",frameData->junkV.at(j).position);
+                        printf("frameData->junkV.at(j).size: %d\n",frameData->junkV.at(j).size);
+                        printf("frameData->headerPt->position: %d\n",frameData->headerPt->position);
+                        #endif // EXTRA_DEBUG1
+                        if(frameData->junkV.at(j).position+frameData->junkV.at(j).size+frameData->junkV.at(j).hSize==frameData->headerPt->position)
                         {//JUNK jest przyklejony do odpowiadającego nagłówka
                             if(j==0)
                             {//jest to pierwszy JUNK z kolei
@@ -653,6 +673,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                         else
                                         {
                                             lastFrameCorrect=false;
+                                            errorCount[notEnoughPlaceForFrameBetweenJunkAndPreviosHeader]++;
                                             return false;///między JUNK, a poprzednim nagłówkiem jest za mało miejsca na całą klatkę, dziwny przypadek, raczej nie powinien się wydażyć
                                         }
                                     }
@@ -660,6 +681,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                 else
                                 {
                                     lastFrameCorrect=false;
+                                    errorCount[frameIsCutBecauseNotEnoughPlaceBeforeJunk]++;
                                     return false;///urżnięta klatka, bo przed JUNK jest za mało miejsca, raczej nie powinno się wydażyć
                                 }
                             }
@@ -679,6 +701,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     else
                                     {
                                         lastFrameCorrect=false;
+                                        errorCount[junkInsideFrameAndPreviousHeaderDidntFitInDataSpace]++;
                                         return false;///JUNK wystąpił w śrdoku klatki i wcześniejszy nagłówek nie zmieścił się w DataSpace
                                     }
                                 }
@@ -696,6 +719,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     else
                                     {
                                         lastFrameCorrect=false;
+                                        errorCount[junkInsideFrame]++;
                                         return false;///JUNK wystąpił w środku klatki
                                     }
                                 }
@@ -704,6 +728,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                         else
                         {
                             lastFrameCorrect=false;
+                            errorCount[junkDidntStickToHeader]++;
                             return false;///JUNK nie przyklejony do nagłówka klatki
                         }
                     }
@@ -712,6 +737,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
         }
     }
     lastFrameCorrect=false;
+    errorCount[didntFindPreviouslyFoundHeaderOrDidntFindPreviouslyFoundJunkOrOtherError]++;
     return false;///nie znalezion wcześniej znalezionego nagłówka, albo nie znaleziono wcześniej znalezionego JUNK, albo inny błąd
 }
 
