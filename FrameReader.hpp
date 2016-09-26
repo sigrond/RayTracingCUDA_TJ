@@ -28,6 +28,13 @@ public:
     }
 };
 
+class FrameReader;
+
+void test3(FrameReader* f);
+void test4(FrameReader* f);
+void test5();
+void test6();
+
 /** \brief Klasa maj¹ca za zadanie czytaæ film
  * z bufora cyklicznego i zwracaæ jego klatki klatki
  *
@@ -42,6 +49,7 @@ public:
  */
 class FrameReader
 {
+    friend void test3(FrameReader* f);
 public:
     /** \brief Default constructor
      * \param CyclicBuffer* bufor cykliczny z którego bêdziemy pobieraæ film

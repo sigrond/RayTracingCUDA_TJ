@@ -35,6 +35,78 @@ extern float* previewFc;
 extern float* previewFd;
 #endif // DEBUG
 
+thread::id mainThreadId=this_thread::get_id();
+
+int NumFrames=0;/**< liczba klatek */
+float* I_Red=nullptr;
+float* I_Green=nullptr;
+float* I_Blue=nullptr;
+
+mutex cudaMemGuard;
+
+
+void CorrectnessControlThread(FrameReader * const frameReader)
+{
+    try
+    {
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printf("DEBUG build for correctnessControl debuging\n");
+        #endif // DEBUG_CORRECTNESSCONTROL
+        char* tmpFrame=nullptr;
+        for(int k=0;k<NumFrames;k++)
+        {
+            if(frameReader->correctnessControl!=nullptr)
+            {
+                if(!(frameReader->correctnessControl->checkFrame()))
+                {
+                    tmpFrame=frameReader->correctnessControl->decodeFrame();
+                    if(tmpFrame!=nullptr)
+                    {
+                        cudaMemGuard.lock();
+                        copyBuff(tmpFrame);
+                        doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
+                        cudaMemGuard.unlock();
+                    }
+                }
+            }
+            else
+            {
+                printf("frameReader->correctnessControl==nullptr");
+            }
+        }
+    }
+    catch(string& e)
+    {
+        printf("wyjątek (string) correctnessControlThread: %s",e.c_str());
+        string s="wyjątek (string) correctnessControlThread: "+e;
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(FrameReaderException& e)
+    {
+        printf("wyjątek (FrameReaderException) correctnessControlThread: %s !!!\n\n\n\n\n\n\n",e.what());
+        string s=e.what();
+        s.insert(0,"wyjątek (FrameReaderException) correctnessControlThread: ");
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(const exception& e)
+    {
+        printf("wyjątek (exception) correctnessControlThread: %s !!!\n\n\n\n\n\n\n",e.what());
+        string s=e.what();
+        s.insert(0,"wyjątek (exception) correctnessControlThread: ");
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+    catch(...)
+    {
+        printf("nieznany wyjątek correctnessControlThread");
+        string s="nieznany wyjątek correctnessControlThread";
+        MessageBox(NULL,s.c_str(),NULL,NULL);
+        system("pause");
+    }
+}
+
 
 /** \brief
  * function [I_Red,I_Green,I_Blue] = IntensCalc(handles,count_step,NumFrames,ipR,ipG,ipB,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B)
@@ -53,7 +125,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     #endif // DEBUG
 
     int count_step=1;/**< co która klatka */
-    int NumFrames;/**< liczba klatek */
     int* ipR;/**< indeksy czerwonej maski */
     int ipR_size=0;/**< rozmiar czerwonej maski */
     int* ipG;/**< indeksy zielonej maski */
@@ -292,13 +363,13 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     /**< przygotowanie zwracanych macierzy */
     int dimsI_Red[2]={700,NumFrames};
     plhs[0]=mxCreateNumericArray(2,dimsI_Red,mxSINGLE_CLASS,mxREAL);
-    float* I_Red=(float*)mxGetPr(plhs[0]);
+    I_Red=(float*)mxGetPr(plhs[0]);
     int dimsI_Green[2]={700,NumFrames};
     plhs[1]=mxCreateNumericArray(2,dimsI_Green,mxSINGLE_CLASS,mxREAL);
-    float* I_Green=(float*)mxGetPr(plhs[1]);
+    I_Green=(float*)mxGetPr(plhs[1]);
     int dimsI_Blue[2]={700,NumFrames};
     plhs[2]=mxCreateNumericArray(2,dimsI_Blue,mxSINGLE_CLASS,mxREAL);
-    float* I_Blue=(float*)mxGetPr(plhs[2]);
+    I_Blue=(float*)mxGetPr(plhs[2]);
     printf("I_Blue NxM: %dx%d\n",mxGetN(plhs[2]),mxGetM(plhs[2]));
 
     #ifdef DEBUG
@@ -411,7 +482,7 @@ try
             delete[] buff0;
             FrameStartCode=frameStartCode;
             fileFirstFrame=ct;
-            printf("Warning! JUNK skipping is still experimental!\n");
+            //printf("Warning! JUNK skipping is still experimental!\n");
             //return;
         }
     }
@@ -456,11 +527,12 @@ try
             //mexEvalString("drawnow;");
             //exit(0);
         }
-        catch(exception& e)
+        catch(const exception& e)
         {
             printf("wyjątek: %s",e.what());
             string s=e.what();
             MessageBox(NULL,s.c_str(),NULL,NULL);
+            mexEvalString("pause(.001);");
             system("pause");
             cyclicBuffer.writeEnd(bId);
             file.close();
@@ -558,109 +630,9 @@ try
 
     FrameReader* frameReader=new FrameReader(&cyclicBuffer);
 
-    try
-    {
-        frameReader->correctnessControl->test1();
-        frameReader->test2();
-        printf("frameReader: %p\n",frameReader);
-        frameReader->printStatus();
-    }
-    catch(string& e)
-    {
-        printf("wyjątek (string) test: %s",e.c_str());
-        string s="wyjątek (string) test: "+e;
-        MessageBox(NULL,s.c_str(),NULL,NULL);
-        system("pause");
-    }
-    catch(FrameReaderException& e)
-    {
-        printf("wyjątek (FrameReaderException) test: %s",e.what());
-        string s=e.what();
-        MessageBox(NULL,s.c_str(),NULL,NULL);
-        system("pause");
-    }
-    catch(exception& e)
-    {
-        printf("wyjątek (exception) test: %s",e.what());
-        string s=e.what();
-        MessageBox(NULL,s.c_str(),NULL,NULL);
-        system("pause");
-    }
-    catch(...)
-    {
-        printf("nieznany wyjątek test");
-        string s="nieznany wyjątek test";
-        MessageBox(NULL,s.c_str(),NULL,NULL);
-        system("pause");
-    }
+    thread correctnessControlThread(CorrectnessControlThread,frameReader);
 
-    mutex cudaMemGuard;
-
-    thread correctnessControlThread([&]
-    {
-        try
-        {
-            #ifdef DEBUG_CORRECTNESSCONTROL
-            printf("DEBUG build for correctnessControl debuging\n");
-            #endif // DEBUG_CORRECTNESSCONTROL
-            printf("frameReader->correctnessControl: %p\n",frameReader->correctnessControl);
-            printf("frameReader: %p\n",frameReader);
-            frameReader->printStatus();
-            frameReader->test2();
-            frameReader->correctnessControl->test1();
-            char* tmpFrame=nullptr;
-            for(int k=0;k<NumFrames;k++)
-            {
-                if(frameReader->correctnessControl!=nullptr)
-                {
-                    if(!(frameReader->correctnessControl->checkFrame()))
-                    {
-                        tmpFrame=frameReader->correctnessControl->decodeFrame();
-                        if(tmpFrame!=nullptr)
-                        {
-                            cudaMemGuard.lock();
-                            copyBuff(tmpFrame);
-                            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
-                            cudaMemGuard.unlock();
-                        }
-                    }
-                }
-                else
-                {
-                    printf("frameReader->correctnessControl==nullptr");
-                }
-            }
-        }
-        catch(string& e)
-        {
-            printf("wyjątek (string) correctnessControlThread: %s",e.c_str());
-            string s="wyjątek (string) correctnessControlThread: "+e;
-            MessageBox(NULL,s.c_str(),NULL,NULL);
-            system("pause");
-        }
-        catch(FrameReaderException& e)
-        {
-            printf("wyjątek (FrameReaderException) correctnessControlThread: %s",e.what());
-            string s=e.what();
-            MessageBox(NULL,s.c_str(),NULL,NULL);
-            system("pause");
-        }
-        catch(exception& e)
-        {
-            printf("wyjątek (exception) correctnessControlThread: %s",e.what());
-            string s=e.what();
-            MessageBox(NULL,s.c_str(),NULL,NULL);
-            system("pause");
-        }
-        catch(...)
-        {
-            printf("nieznany wyjątek correctnessControlThread");
-            string s="nieznany wyjątek correctnessControlThread";
-            MessageBox(NULL,s.c_str(),NULL,NULL);
-            system("pause");
-        }
-    });
-
+    printf("\n%5.2f%%\n",0.0f);
     char* frame=nullptr;
     for(int k=0;k<NumFrames;k++)
     {
@@ -934,10 +906,12 @@ try
 
     readMovieThread.join();
     printf("readMovieThread joined\n");
+    mexEvalString("pause(.001);");
     //mexEvalString("drawnow;");
 
     correctnessControlThread.join();
     printf("correctnessControlThread joined\n");
+    mexEvalString("pause(.001);");
 
     delete frameReader;
 
@@ -957,11 +931,13 @@ catch(string& e)
     system("pause");
     //readMovieThread.join();
 }
-catch(exception& e)
+catch(const exception& e)
 {
     printf("wyjątek: %s",e.what());
     string s=e.what();
+    s.insert(0,"wyjątek (exception): ");
     MessageBox(NULL,s.c_str(),NULL,NULL);
+    mexEvalString("pause(.001);");
     system("pause");
     //readMovieThread.join();
 }

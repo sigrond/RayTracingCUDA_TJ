@@ -14,9 +14,15 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <mutex>
 
 using namespace std;
 
+extern thread::id mainThreadId;
+
+int reDecodedFrames=0;
+
+mutex printmMutex;
 /** \brief wypisanie tekstu do matlaba
  *
  * \param c const char*
@@ -25,10 +31,25 @@ using namespace std;
  */
 void printm(const char* c)
 {
-    printf("%s\n",c);
-    #ifdef MATLAB_MEX_FILE
-    mexEvalString("pause(.001);");
-    #endif // MATLAB_MEX_FILE
+    try
+    {
+        //lock_guard<mutex> lck(printmMutex);//ma chronić przed zaklesczeniem przy wyjątku
+        printf("%s\n",c);
+        #ifdef MATLAB_MEX_FILE
+        if(mainThreadId==this_thread::get_id())
+        mexEvalString("pause(.001);");
+        #endif // MATLAB_MEX_FILE
+    }
+    catch(const exception& e)
+    {
+        printf("wyjątek (exception) printm: %s !!!\n\n\n\n\n\n\n",e.what());
+        throw;
+    }
+    catch(...)
+    {
+        printf("nieznany wyjątek printm !!!\n\n\n\n\n\n\n");
+        throw;
+    }
 }
 
 const char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
@@ -347,6 +368,7 @@ FrameReader::Frame::Frame() :
 
 void FrameReader::printStatus()
 {
+    printf("FrameReader this: %p\n",this);
     printm("void FrameReader::printStatus()");
     printf("cyclicBuffer: 0x%p\n",cyclicBuffer);
     printf("dataSpace: 0x%p\n",dataSpace);
@@ -401,6 +423,7 @@ FrameReader::CorrectnessControl::~CorrectnessControl()
         }
         //throw FrameReaderException("kolejka korekcji poprawności nie jest pusta");
     }
+    printf("reDecodedFrames: %d\n",reDecodedFrames);
     delete[] decodedFrame;
 }
 
@@ -465,17 +488,22 @@ bool FrameReader::CorrectnessControl::checkFrame()
     try
     {
         #ifdef DEBUG_CORRECTNESSCONTROL
-        printm("checkFrame try lck");
+        printm("checkFrame try lck0");
         #endif // DEBUG_CORRECTNESSCONTROL
-        unique_lock<mutex> lck(m);
+        unique_lock<mutex> lck0(m);
         #ifdef DEBUG_CORRECTNESSCONTROL
-        printm("lck locked");
+        printm("lck0 locked");
         #endif // DEBUG_CORRECTNESSCONTROL
-        lck.release();
+        lck0.unlock();
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("lck0 unlocked");
+        #endif // DEBUG_CORRECTNESSCONTROL
+        lck0.release();
     }
     catch(...)
     {
-        printm("unique_lock<mutex> lck(m) throwed smth");
+        printm("unique_lock<mutex> lck0(m) throwed smth");
+        delete q.front();
         q.pop();
         return true;
     }
@@ -531,6 +559,19 @@ bool FrameReader::CorrectnessControl::checkFrame()
     #ifdef DEBUG_CORRECTNESSCONTROL
     printm("przeglądanie dataSpace zakończone");
     #endif // DEBUG_CORRECTNESSCONTROL
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printf("frameData->headerV.size(): %d\n",frameData->headerV.size());
+    printf("frameData->junkV.size(): %d\n",frameData->junkV.size());
+    for(int i=0;i<frameData->headerV.size();i++)
+    {
+        printf("frameData->headerV.at(i).position: %d\n",frameData->headerV.at(i).position);
+    }
+    for(int j=0;j<frameData->junkV.size();j++)
+    {
+        printf("frameData->junkV.at(j).position: %d\n",frameData->junkV.at(j).position);
+    }
+    printm("znalezione znaczniki end");
+    #endif // DEBUG_CORRECTNESSCONTROL
     for(int i=0;i<frameData->headerV.size();i++)
     {
         if(frameData->headerV.at(i).position==frameData->headerPt->position)
@@ -549,6 +590,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                         if(i==0)
                         {//jest to pierwszy nagłówek z kolei
                             lck.lock();
+                            delete q.front();
                             q.pop();
                             lck.unlock();
                             lastFrameCorrect=true;
@@ -557,6 +599,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                         else if(frameData->headerV.at(i-1).position+frameData->headerV.at(i-1).size+frameData->framePt->size<=frameData->headerV.at(i).position)
                         {//między nagłówkami jest dość miejsca na klatkę
                             lck.lock();
+                            delete q.front();
                             q.pop();
                             lck.unlock();
                             lastFrameCorrect=true;
@@ -590,6 +633,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     if(i==0)
                                     {//i jest to pierwszy nagłówek z kolei
                                         lck.lock();
+                                        delete q.front();
                                         q.pop();
                                         lck.unlock();
                                         lastFrameCorrect=true;
@@ -600,6 +644,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                         if(frameData->junkV.at(j).position-(frameData->headerV.at(i).position+frameData->headerPt->size)>=frameData->framePt->size)
                                         {//między JUNK a header jest dość miejsca na klatkę
                                             lck.lock();
+                                            delete q.front();
                                             q.pop();
                                             lck.unlock();
                                             lastFrameCorrect=true;
@@ -625,6 +670,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
                                     {//między JUNK przyklejonym do nagłówka a poprzednim JUNK jest dość miejsca na klatkę
                                         lck.lock();
+                                        delete q.front();
                                         q.pop();
                                         lck.unlock();
                                         lastFrameCorrect=true;
@@ -641,6 +687,7 @@ bool FrameReader::CorrectnessControl::checkFrame()
                                     if(frameData->junkV.at(j-1).position+frameData->junkV.at(j-1).size+frameData->framePt->size<=frameData->junkV.at(j).position)
                                     {
                                         lck.lock();
+                                        delete q.front();
                                         q.pop();
                                         lck.unlock();
                                         lastFrameCorrect=true;
@@ -678,65 +725,143 @@ char* FrameReader::CorrectnessControl::decodeFrame()
         printm("próbujemy zdekodować ponownie klatkę oznaczoną jako poprawnie zdekodowaną");
         throw FrameReaderException("próbujemy zdekodować ponownie klatkę oznaczoną jako poprawnie zdekodowaną");
     }
-    m.lock();
+    unique_lock<mutex> lck(m);
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("unique_lock<mutex> lck(m);");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    while(q.empty())
+    {
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("while(q.empty())");
+        #endif // DEBUG_CORRECTNESSCONTROL
+        empty.wait(lck);
+    }
     FrameData* frameData=q.front();
-    m.unlock();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("FrameData* frameData=q.front();");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    lck.unlock();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printf("frameData->headerPt->position: %d\n",frameData->headerPt->position);
+    #endif // DEBUG_CORRECTNESSCONTROL
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printf("lck.unlock();");
+    #endif // DEBUG_CORRECTNESSCONTROL
     if(frameData->headerV.empty())
     {
-        m.lock();
+        lck.lock();
+        delete q.front();
         q.pop();
-        m.unlock();
+        lck.unlock();
         printm("duża przestrzeń bez klatek?");
         return nullptr;///duża przestrzeń bez klatek?
     }
+    reDecodedFrames++;
     if(frameData->junkV.empty())
     {
         if(frameData->headerPt->position>=frameData->framePt->size)
         {
             printm("klatka która powinna być dobrze zdekodowana, została oznaczona jako źle zdekodowana");
             memcpy(decodedFrame,frameData->dataSpacePt->pt,frameData->framePt->size);
-            m.lock();
+            lck.lock();
+            delete q.front();
             q.pop();
-            m.unlock();
+            lck.unlock();
             return decodedFrame;
         }
         else
         {
             printm("utrata części klatki?");
             memcpy(decodedFrame+(frameData->framePt->size-frameData->headerPt->position),frameData->dataSpacePt->pt,frameData->headerPt->position);
-            m.lock();
+            lck.lock();
+            delete q.front();
             q.pop();
-            m.unlock();
+            lck.unlock();
             return decodedFrame;
         }
     }
     int copiedFrame=0;/**< ile klatki zostało skopiowane */
     int lastSkipedPosition=frameData->headerPt->position;/**< ostatnio ominięty fragment */
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printf("lastSkipedPosition: %d\n",lastSkipedPosition);
+    #endif // DEBUG_CORRECTNESSCONTROL
     int sizeToCopy=0;
+    int dstOffset=0;
+    int srcOffset=0;
     for(int i=0;i<frameData->headerV.size();i++)
     {
         if(frameData->headerV.at(i).position==frameData->headerPt->position)
         {//jest przynajmniej jeden JUNK i header
+            #ifdef DEBUG_CORRECTNESSCONTROL
+            printm("(1) jest przynajmniej jeden JUNK i header");
+            #endif // DEBUG_CORRECTNESSCONTROL
             for(int j=frameData->junkV.size()-1;j>=0;j--)
             {
                 if(frameData->junkV.at(j).position<frameData->headerPt->position)
                 {//JUNK jest przed nagłówkiem
+                    #ifdef DEBUG_CORRECTNESSCONTROL
+                    printm("(2) JUNK jest przed nagłówkiem");
+                    #endif // DEBUG_CORRECTNESSCONTROL
                     if(frameData->junkV.at(j).position+frameData->junkV.at(j).size>=frameData->headerPt->position)
                     {//JUNK przyklejony do nagłówka
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printm("(3) JUNK przyklejony do nagłówka");
+                        #endif // DEBUG_CORRECTNESSCONTROL
                         lastSkipedPosition=frameData->junkV.at(j).position;
                     }
                     else
                     {
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printm("(4) JUNK nie przyklejony do nagłówka");
+                        #endif // DEBUG_CORRECTNESSCONTROL
                         if(copiedFrame>=frameData->framePt->size)
-                        {
-                            m.lock();
+                        {//klatka została już skopiowana
+                            #ifdef DEBUG_CORRECTNESSCONTROL
+                            printm("(5) klatka została już skopiowana");
+                            #endif // DEBUG_CORRECTNESSCONTROL
+                            lck.lock();
+                            delete q.front();
                             q.pop();
-                            m.unlock();
+                            lck.unlock();
                             return decodedFrame;
                         }
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printm("(6) kopiujemy fragment klatki");
+                        #endif // DEBUG_CORRECTNESSCONTROL
                         sizeToCopy=(lastSkipedPosition-(frameData->junkV.at(j).position+frameData->junkV.at(j).size))<=(frameData->framePt->size-copiedFrame)?(lastSkipedPosition-(frameData->junkV.at(j).position+frameData->junkV.at(j).size)):(frameData->framePt->size-copiedFrame);
-                        memcpy(decodedFrame+(frameData->framePt->size-copiedFrame),
-                               frameData->dataSpacePt->pt+(frameData->junkV.at(j).position+frameData->junkV.at(j).size),
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printf("sizeToCopy: %d\n",sizeToCopy);
+                        #endif // DEBUG_CORRECTNESSCONTROL
+                        if(sizeToCopy<0)
+                        {
+                            printm("sizeToCopy<0");
+                            throw FrameReaderException("sizeToCopy<0");
+                        }
+                        if(sizeToCopy>frameData->framePt->size)
+                        {
+                            printm("sizeToCopy>frameData->framePt->size");
+                            throw FrameReaderException("sizeToCopy>frameData->framePt->size");
+                        }
+                        dstOffset=frameData->framePt->size-copiedFrame-sizeToCopy;
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printf("dstOffset: %d\n",dstOffset);
+                        #endif // DEBUG_CORRECTNESSCONTROL
+                        if(dstOffset<0)
+                        {
+                            printm("dstOffset<0");
+                            throw FrameReaderException("dstOffset<0");
+                        }
+                        if(dstOffset>frameData->framePt->size)
+                        {
+                            printm("dstOffset>frameData->framePt->size");
+                            throw FrameReaderException("dstOffset>frameData->framePt->size");
+                        }
+                        srcOffset=frameData->junkV.at(j).position+frameData->junkV.at(j).size;
+                        #ifdef DEBUG_CORRECTNESSCONTROL
+                        printf("srcOffset: %d\n",srcOffset);
+                        #endif // DEBUG_CORRECTNESSCONTROL
+                        memcpy(decodedFrame+dstOffset,
+                               frameData->dataSpacePt->pt+srcOffset,
                                sizeToCopy);
                         lastSkipedPosition=frameData->junkV.at(j).position;
                         copiedFrame+=sizeToCopy;
@@ -747,18 +872,40 @@ char* FrameReader::CorrectnessControl::decodeFrame()
     }
     if(copiedFrame<frameData->framePt->size)
     {
+        #ifdef DEBUG_CORRECTNESSCONTROL
+        printm("(7) potrzebny jeszcze jeden fragment klatki");
+        #endif // DEBUG_CORRECTNESSCONTROL
         if(lastSkipedPosition-frameData->framePt->size+copiedFrame>=0)
         {//jest z kąd kopiować
+            #ifdef DEBUG_CORRECTNESSCONTROL
+            printm("(8) jest z kąd kopiować");
+            #endif // DEBUG_CORRECTNESSCONTROL
             memcpy(decodedFrame,frameData->dataSpacePt->pt+(lastSkipedPosition-frameData->framePt->size+copiedFrame),frameData->framePt->size-copiedFrame);
         }
         else
         {
+            #ifdef DEBUG_CORRECTNESSCONTROL
+            printm("(9) brakuje danych, żeby skopiować całą klatkę");
+            #endif // DEBUG_CORRECTNESSCONTROL
             memcpy(decodedFrame+(frameData->framePt->size-copiedFrame-lastSkipedPosition),frameData->dataSpacePt->pt,lastSkipedPosition);
         }
     }
-    m.lock();
+    lck.lock();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("(10) lck.lock()");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    delete q.front();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("(11) delete q.front()");
+    #endif // DEBUG_CORRECTNESSCONTROL
     q.pop();
-    m.unlock();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("(12) q.pop()");
+    #endif // DEBUG_CORRECTNESSCONTROL
+    lck.unlock();
+    #ifdef DEBUG_CORRECTNESSCONTROL
+    printm("(12.5) lck.unlock()");
+    #endif // DEBUG_CORRECTNESSCONTROL
     return decodedFrame;
 }
 
@@ -776,8 +923,41 @@ void FrameReader::test2()
     printm("OK");
 }
 
+void test3(FrameReader* f)
+{
+    printm("void test3(FrameReader* f)");
+    printf("FrameReader* f: %p\n",f);
+    //f->printStatus();
+    printm("test3 end");
+}
 
+void test4(FrameReader* f)
+{
+    printm("void test4(FrameReader* f)");
+    printf("FrameReader* f: %p\n",f);
+    //f->printStatus();
+    printm("test4 end");
+}
 
+void test5()
+{
+    printm("void test5()");
+    printf("i=");
+    for(int i=0;i<4;i++)
+    printf("%d, ",i);
+    printf("\n");
+    printm("void test5() end");
+}
+
+void test6()
+{
+    printf("void test6()\n");
+    printf("i=");
+    for(int i=0;i<4;i++)
+    printf("%d, ",i);
+    printf("\n");
+    printf("void test6() end\n");
+}
 
 
 
