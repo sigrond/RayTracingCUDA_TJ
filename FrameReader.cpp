@@ -22,6 +22,8 @@ extern thread::id mainThreadId;
 
 int reDecodedFrames=0;
 
+int microSearchCount=0;
+
 mutex printmMutex;
 /** \brief wypisanie tekstu do matlaba
  *
@@ -434,6 +436,7 @@ FrameReader::CorrectnessControl::~CorrectnessControl()
         if(errorCount[i]!=0)
         printf("errorCount[%d]: %d - %s\n",i,errorCount[i],ErrorNames[i]);
     }
+    printf("microSearchCount: %d\n",microSearchCount);
     delete[] decodedFrame;
 }
 
@@ -478,6 +481,8 @@ void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Fr
     #ifdef DEBUG_CORRECTNESSCONTROL2
     printm("void FrameReader::CorrectnessControl::addFrame(DataSpace* d,Header* h,Junk* j,Frame* f)");
     #endif // DEBUG_CORRECTNESSCONTROL
+    while(!q.empty())
+    this_thread::yield();
     FrameData* frameData=new FrameData(d,h,j,f);
     unique_lock<mutex> lck(m);
     q.push(frameData);
@@ -540,26 +545,29 @@ bool FrameReader::CorrectnessControl::checkFrame()
     #endif // DEBUG_CORRECTNESSCONTROL
     bool headerB=true;
     bool junkB=true;
+    bool microSearch=false;
+    char* tmpPt=frameData->dataSpacePt->pt;
     for(int j=0;j<frameData->dataSpacePt->size;j++)
     {
         junkB=true;
         for(int i=0;i<frameData->junkPt->hSize;i++)
         {
-            junkB&=junkCode[i]==frameData->dataSpacePt->pt[j+i];
+            junkB&=junkCode[i]==tmpPt[j+i];
         }
         if(junkB)
         {
             frameData->junkV.emplace_back();
             frameData->junkV.back().position=j;
-            frameData->junkV.back().size=*(int*)(frameData->dataSpacePt->pt+j+4);
+            frameData->junkV.back().size=*(int*)(tmpPt+j+4);
             frameData->junkV.back().size+=4;
             j+=frameData->junkV.back().size;
+            microSearch=false;
         }
         headerB=true;
         for(int i=0;i<frameData->headerPt->size;i++)
         {
-            headerB&=frameStartCode[i]==frameData->dataSpacePt->pt[j+i] ||
-             frameStartCodeS[i]==frameData->dataSpacePt->pt[j+i];
+            headerB&=frameStartCode[i]==tmpPt[j+i] ||
+             frameStartCodeS[i]==tmpPt[j+i];
         }
         if(headerB)
         {
@@ -568,6 +576,16 @@ bool FrameReader::CorrectnessControl::checkFrame()
             j+=frameData->headerV.back().size;
         }
     }
+
+    if(frameData->headerV.empty())
+    {
+        if(frameData->headerPt->found)
+        {
+            frameData->headerV.emplace_back();
+            frameData->headerV.back().position=frameData->framePt->position;
+        }
+    }
+
     #ifdef DEBUG_CORRECTNESSCONTROL
     printm("przeglądanie dataSpace zakończone");
     #endif // DEBUG_CORRECTNESSCONTROL
@@ -783,6 +801,18 @@ char* FrameReader::CorrectnessControl::decodeFrame()
         return nullptr;///duża przestrzeń bez klatek?
     }
     reDecodedFrames++;
+    #ifdef EXTRA_DEBUG2
+    printf("frameData->headerV.size(): %d\n",frameData->headerV.size());
+    printf("frameData->junkV.size(): %d\n",frameData->junkV.size());
+    for(int i=0;i<frameData->headerV.size();i++)
+    {
+        printf("frameData->headerV.at(i).position: %d\n",frameData->headerV.at(i).position);
+    }
+    for(int j=0;j<frameData->junkV.size();j++)
+    {
+        printf("frameData->junkV.at(j).position: %d\n",frameData->junkV.at(j).position);
+    }
+    #endif // EXTRA_DEBUG2
     if(frameData->junkV.empty())
     {
         if(frameData->headerPt->position>=frameData->framePt->size)

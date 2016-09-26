@@ -68,6 +68,12 @@ void CorrectnessControlThread(FrameReader * const frameReader)
                         cudaMemGuard.unlock();
                     }
                 }
+                if(k%500==0 || k==NumFrames-1)
+                {
+                    printf("\b\b\b\b\b\b\b\b\n%5.2f%%\n",(float)(k*100)/(float)NumFrames);
+                    //mexEvalString("drawnow;");
+                    //mexEvalString("pause(.001);");
+                }
             }
             else
             {
