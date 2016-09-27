@@ -1000,8 +1000,7 @@ if get(handles.chR,'value')
     icr=handles.ICR';
     ICR_N = icr(ipR);                 % Correction 
     Lvl1ValR=min(min(ICR_N));
-    ICR_N=ICR_N-(Lvl1ValR-1);
-    %ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
+    ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
 end
 if get(handles.chG,'value')
