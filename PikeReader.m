@@ -1019,7 +1019,9 @@ if get(handles.chG,'value')
     nThetaG = zeros( 1,handles.NP ); 
     icg=handles.ICG';
     ICG_N = icg(ipG);
-    ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
+    Lvl1ValG=min(min(ICG_N));
+    ICG_N=ICG_N-(Lvl1ValG-1);
+    %ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
     
 end
 if get(handles.chB,'value')
@@ -1036,7 +1038,9 @@ if get(handles.chB,'value')
     nThetaB = zeros( 1,handles.NP );
     icb=handles.ICB';
     ICB_N = icb( ipB );
-    ICB_N = ICB_N./max( ICB_N(:) ); 
+    Lvl1ValB=min(min(ICB_N));
+    ICB_N=ICB_N-(Lvl1ValB-1);
+    %ICB_N = ICB_N./max( ICB_N(:) ); 
                                         
 end
 % 
