@@ -1001,6 +1001,7 @@ if get(handles.chR,'value')
     ICR_N = icr(ipR);                 % Correction 
     Lvl1ValR=min(min(ICR_N));
     ICR_N=ICR_N-(Lvl1ValR-1);
+%     ICR_N=ICR_N./Lvl1ValR;
     %ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
 end
@@ -1016,11 +1017,12 @@ if get(handles.chG,'value')
     deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; % Angle's step
     I_Green = zeros(handles.N_frames,handles.NP);   % Creation of empty matrix for intensity recording
     
-    nThetaG = zeros( 1,handles.NP ); 
+    nThetaG = single(zeros( 1,handles.NP )); 
     icg=handles.ICG';
     ICG_N = icg(ipG);
     Lvl1ValG=min(min(ICG_N));
     ICG_N=ICG_N-(Lvl1ValG-1);
+%     ICG_N=ICG_N./Lvl1ValG;
     %ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
     
 end
@@ -1035,11 +1037,12 @@ if get(handles.chB,'value')
     
     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
     I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
-    nThetaB = zeros( 1,handles.NP );
+    nThetaB = single(zeros( 1,handles.NP ));
     icb=handles.ICB';
     ICB_N = icb( ipB );
     Lvl1ValB=min(min(ICB_N));
     ICB_N=ICB_N-(Lvl1ValB-1);
+%     ICB_N=ICB_N./Lvl1ValB;
     %ICB_N = ICB_N./max( ICB_N(:) ); 
                                         
 end

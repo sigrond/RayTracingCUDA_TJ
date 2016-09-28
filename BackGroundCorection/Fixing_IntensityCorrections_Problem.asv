@@ -112,27 +112,8 @@ ylim([0 2e3])
 waves.wavelength = 458;
 waves.theta = 0;
 waves.polarization = 0;
-r = sqrt(1-linspace(0,0.98,2000))*14e3;
-m = 1.4;
+r = sqrt(1-linspace(0,0.98,200))*14e3;
 
-% theta = (ThetaB+90)*pi/180;
-%
-theta = (linspace(-20,20,700)+90)*pi/180;
-I = GeneratePattern(r, m, theta, waves);
-figure; surf(I,'linestyle','none')
-title('Mie theory')
 %%
-figure; surf(I_B(:,50:650),'linestyle','none')
-title('I_B')
-%%
-waves.wavelength = 458;
-waves.theta = 0;
-waves.polarization = 0;
-r = 5e3;
-m = 1.45;
+I = GeneratePattern(r, m, theta, waves)
 
-theta = (0:360)*pi/180;
-%
-I = GeneratePattern(r, m, theta, waves);
-figure; polar(theta,log(I))
-title('Mie theory')
