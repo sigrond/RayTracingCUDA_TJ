@@ -6,10 +6,13 @@
 
 #pragma once
 
-/** \brief struktura JunkStruct
- */
-struct JunkStruct
+extern "C"
 {
-    long int position;/**< pozycja JUNK */
-    long int size;/**< rozmiar JUNK */
-};
+    /** \brief struktura JunkStruct
+     */
+    struct JunkStruct
+    {
+        long int position;/**< pozycja JUNK */
+        long int size;/**< rozmiar JUNK */
+    };
+}

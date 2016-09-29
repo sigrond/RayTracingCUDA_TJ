@@ -36,7 +36,7 @@ extern "C"
  *
  */
 __global__
-void findJunkAndHeadersD(char* DataSpace,JunkStruct* junkList,long int* junkCounter,long int* headerList,long int* headerCounter)
+void findJunkAndHeadersD(char* DataSpace,long long int* junkList,long int* junkCounter,long int* headerList,long int* headerCounter)
 {
     // unique block index inside a 3D block grid
     const unsigned int blockId = blockIdx.x //1D
@@ -59,13 +59,25 @@ void findJunkAndHeadersD(char* DataSpace,JunkStruct* junkList,long int* junkCoun
     }
     if(junkB)
     {
-        long int tmpJunkCounter=atomicAdd(junkCounter,1);
-        junkList[tmpJunkCounter].position=index;
-        junkList[tmpJunkCounter].size=*(long int*)(DataSpace+index+4);
-        return;
+        long int tmpJunkCounter=atomicAdd((int*)junkCounter,1);
+        long int* tmpJunkList=(long int*)(junkList+tmpJunkCounter);
+        *tmpJunkList=index;
+        long int* tmpJunkSizePt=(long int*)(DataSpace+index+4);
+        long int tmpJunkSize=(long int)*tmpJunkSizePt;
+        int tmpVal=500;
+        //if(tmpJunkSize>0 && tmpJunkSize<=2048)
+        tmpVal=(int)tmpJunkSize;
+        tmpVal=tmpVal%2049;
+        tmpJunkList[1]=(int)500;//500;
+        //return;
+        //junkList[tmpJunkCounter].position=index;
+        //junkList[tmpJunkCounter]=0x00000000FFFFFFFF&(long long int)index;
+        //junkList[tmpJunkCounter]+=0xFFFFFFFF00000000&(long long int)(*(long int*)(DataSpace+index+4));
+        //junkList[tmpJunkCounter].size=*(long int*)(DataSpace+index+4);
+        //return;
     }
     bool headerB=true;
-    for(int i=0;i<header.size;i++)
+    for(int i=0;i<8;i++)
     {
         headerB&=frameStartCode[i]==DataSpace[index+i] || frameStartCodeS[i]==DataSpace[index+i];
         if(!headerB)
@@ -75,8 +87,8 @@ void findJunkAndHeadersD(char* DataSpace,JunkStruct* junkList,long int* junkCoun
     }
     if(headerB)
     {
-        long int tmpHeaderCounter=atomicAdd(headerCounter,1);
-        headerList[tmpHeaderCounter]=index;
+        long int tmpHeaderCounter=atomicAdd((int*)headerCounter,1);
+        headerList[tmpHeaderCounter]=(long int)index;
     }
 }
 

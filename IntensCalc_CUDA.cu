@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+#include <exception>
+#include <string>
 #include <cuda_runtime.h>
 #include <helper_functions.h>
 #include <helper_cuda.h>
@@ -95,8 +97,10 @@ float lastProbablyCorrectBgValue=60;
 char* dev_DataSpace=NULL;
 long int headerPosition=0;/**< pozycja nagłówka w DataSpace z przed którego ostatnio była skopiowana klatka */
 #define MAX_JUNK_CHUNKS_PER_DATA_SPACE 128
-JunkStruct* dev_junkList=NULL;
-JunkStruct junkList[MAX_JUNK_CHUNKS_PER_DATA_SPACE];
+//JunkStruct* dev_junkList=NULL;
+long long int* dev_junkList=NULL;
+//JunkStruct junkList[MAX_JUNK_CHUNKS_PER_DATA_SPACE];
+long long int junkList[MAX_JUNK_CHUNKS_PER_DATA_SPACE];
 long int* dev_junkCounter=NULL;
 long int junkCounter=0;
 #define MAX_HEADERS_PER_DATA_SPACE 8
@@ -134,10 +138,11 @@ void setupCUDA_IC()
     checkCudaErrors(cudaMalloc((void**)&dev_outArray, sizeof(short)*640*480*3));
     checkCudaErrors(cudaMalloc((void**)&dev_BgValue, sizeof(float)*2));
     checkCudaErrors(cudaMalloc((void**)&dev_DataSpace, sizeof(char)*65535*10*2));
-    checkCudaErrors(cudaMalloc((void**)&dev_junkList, sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    //checkCudaErrors(cudaMalloc((void**)&dev_junkList, sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    checkCudaErrors(cudaMalloc((void**)&dev_junkList, sizeof(long long int)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
     checkCudaErrors(cudaMalloc((void**)&dev_junkCounter, sizeof(long int)));
     checkCudaErrors(cudaMalloc((void**)&dev_headerList, sizeof(long int)*MAX_HEADERS_PER_DATA_SPACE));
-    checkCudaErrors(cudaMalloc((void**)&dev_headerCounter, sizeof(long int));
+    checkCudaErrors(cudaMalloc((void**)&dev_headerCounter, sizeof(long int)));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -147,7 +152,8 @@ void setupCUDA_IC()
     checkCudaErrors(cudaMemset(dev_frame,0,sizeof(unsigned short)*640*480));
     checkCudaErrors(cudaMemset(dev_outArray,0,sizeof(short)*640*480*3));
     checkCudaErrors(cudaMemset(dev_BgValue,0,sizeof(float)*2));
-    checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    //checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(long long int)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_junkCounter,0,sizeof(long int)));
     checkCudaErrors(cudaMemset(dev_headerList,0,sizeof(long int)*MAX_HEADERS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_headerCounter,0,sizeof(long int)));
@@ -437,7 +443,7 @@ void loadLeft(char* buff)
     {
         printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
     }
-    checkCudaErrors(cudaMemcpy((void*)dev_DataSpace, buff, sizeof(char)655350, cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy((void*)dev_DataSpace, buff, sizeof(char)*655350, cudaMemcpyHostToDevice));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -453,7 +459,7 @@ void loadRight(char* buff)
     {
         printf("cudaError(cudaSetDevice): %s\n", cudaGetErrorString(err));
     }
-    checkCudaErrors(cudaMemcpy((void*)(dev_DataSpace+655350), buff, sizeof(char)655350, cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy((void*)(dev_DataSpace+655350), buff, sizeof(char)*655350, cudaMemcpyHostToDevice));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
@@ -493,8 +499,11 @@ inline bool compJunk(const JunkStruct& a, const JunkStruct& b)
 
 void findJunkAndHeaders()
 {
+try
+{
     //zerujemy listy junk i headers oraz ich liczniki
-    checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    //checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
+    checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(long long int)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_junkCounter,0,sizeof(long int)));
     checkCudaErrors(cudaMemset(dev_headerList,0,sizeof(long int)*MAX_HEADERS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_headerCounter,0,sizeof(long int)));
@@ -502,6 +511,7 @@ void findJunkAndHeaders()
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaMemset): %s\n", cudaGetErrorString(err));
+        throw std::string("cudaError(cudaMemset)");
     }
 
     //kernel szukający junk i headers
@@ -515,25 +525,40 @@ void findJunkAndHeaders()
     if (err != cudaSuccess)
     {
         printf("cudaError(findJunkAndHeadersD): %s\n", cudaGetErrorString(err));
+        throw std::string("cudaError(findJunkAndHeadersD)");
     }
 
     //kopiujemy listy junk i headers do pamięci host
-    checkCudaErrors(cudaMemcpy((void*)junkList,dev_junkList,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
-    checkCudaErrors(cudaMemcpy((void*)junkCounter,dev_junkCounter,sizeof(long int),cudaMemcpyDeviceToHost));
-    checkCudaErrors(cudaMemcpy((void*)headerList,dev_headerList,sizeof(long int)*MAX_HEADERS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
-    checkCudaErrors(cudaMemcpy((void*)headerCounter,dev_headerCounter,sizeof(long int),cudaMemcpyDeviceToHost));
+    int* tmpDst=(int*)junkList;
+    int* tmpSrc=(int*)dev_junkList;
+    //checkCudaErrors(cudaMemcpy((void*)tmpDst,tmpSrc,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)tmpDst,tmpSrc,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
     err = cudaGetLastError();
     if (err != cudaSuccess)
     {
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
+        throw std::string("cudaError(cudaMemcpyDeviceToHost)");
     }
+    checkCudaErrors(cudaMemcpy((void*)&junkCounter,dev_junkCounter,sizeof(long int),cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)headerList,dev_headerList,sizeof(long int)*MAX_HEADERS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy((void*)&headerCounter,dev_headerCounter,sizeof(long int),cudaMemcpyDeviceToHost));
+    err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
+        throw std::string("cudaError(cudaMemcpyDeviceToHost)");
+    }
+    #ifdef DEBUG_CUDA_DECODEC1
+    printf("junkCounter: %d\n",junkCounter);
+    printf("headerCounter: %d\n",headerCounter);
+    #endif // DEBUG_CUDA_DECODEC1
 
     //wybieramy fragmenty DataSpace do skopiowania (i kopujemy) do obszaru pamięci klatki na podstawie list junk, headers i pozycji nagłówka ostatnio skopiowanej klatki
     //szukamy następnego nagłówka
     long int currentHeader=0;/**< pozycja nagłówka za szukaną klatką */
     for(int i=0;i<headerCounter;i++)
     {
-        if(headerList[i]>0 && headerList[i]>headerPosition)
+        if(headerList[i]>0 && headerList[i]>headerPosition && headerList[i]>640*480*2)
         {
             if(currentHeader==0 || currentHeader>headerList[i])
             {
@@ -541,11 +566,15 @@ void findJunkAndHeaders()
             }
         }
     }
+    #ifdef DEBUG_CUDA_DECODEC1
+    printf("currentHeader: %d\n",currentHeader);
+    #endif // DEBUG_CUDA_DECODEC1
     //tworzymy vector z junk list i sortujemy
     std::vector<JunkStruct> junkVector;/**< wektor z pozycjami i rozmiarami sekcji JUNK */
     for(int i=0;i<junkCounter;i++)
     {
-        junkVector.push_back(junkList[i]);
+        JunkStruct* tmpJunkStruct=(JunkStruct*)junkList+i;
+        junkVector.push_back(*tmpJunkStruct);
     }
     std::sort(junkVector.begin(),junkVector.end(),compJunk);
     //wybieramy fragmenty do skopiowania i kopiujemy
@@ -563,39 +592,51 @@ void findJunkAndHeaders()
             {
                 bytesToCopy=640*480*2-copiedBytes;
             }
-            if(bytesToCopy<=0)
+            if(bytesToCopy<0)
             {
-                printf("bytesToCopy<=0\n");
+                printf("bytesToCopy<0\n");
+                //throw std::string("bytesToCopy<0");
                 break;
             }
             srcOffset=junkVector.at(i).position+junkVector.at(i).size+4;
             if(srcOffset+bytesToCopy>655350*2)
             {
                 printf("srcOffset+bytesToCopy>655350*2\n");
-                break;
+                throw std::string("srcOffset+bytesToCopy>655350*2");
+                //break;
             }
             if(srcOffset<0)
             {
                 printf("srcOffset<0\n");
-                break;
+                throw std::string("srcOffset<0");
+                //break;
             }
             dstOffset=640*480*2-copiedBytes-bytesToCopy;
             if(dstOffset+bytesToCopy>640*480*2)
             {
                 printf("dstOffset+bytesToCopy>640*480*2\n");
-                break;
+                throw std::string("dstOffset+bytesToCopy>640*480*2");
+                //break;
             }
             if(dstOffset<0)
             {
                 printf("dstOffset<0\n");
-                break;
+                throw std::string("dstOffset<0");
+                //break;
             }
-
+            #ifdef DEBUG_CUDA_DECODEC1
+            printf("dstOffset: %d\n",dstOffset);
+            printf("srcOffset: %d\n",srcOffset);
+            printf("bytesToCopy: %d\n",bytesToCopy);
+            printf("headerPosition: %d\n",headerPosition);
+            printf("currentHeader: %d\n",currentHeader);
+            #endif // DEBUG_CUDA_DECODEC1
             checkCudaErrors(cudaMemcpy((void*)(dev_buff+dstOffset), dev_DataSpace+srcOffset , sizeof(char)*bytesToCopy , cudaMemcpyDeviceToDevice));
             err = cudaGetLastError();
             if (err != cudaSuccess)
             {
                 printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+                throw std::string("cudaError(Memcpy)");
             }
             lastSkipedPossition=junkVector.at(i).position;
             copiedBytes+=bytesToCopy;
@@ -611,13 +652,15 @@ void findJunkAndHeaders()
         if(bytesToCopy<=0)
         {
             printf("bytesToCopy<=0\n");
-            break;
+            headerPosition=currentHeader;
+            return;
         }
         srcOffset=lastSkipedPossition-bytesToCopy;
         if(srcOffset+bytesToCopy>655350*2)
         {
             printf("srcOffset+bytesToCopy>655350*2\n");
-            break;
+            headerPosition=currentHeader;
+            return;
         }
         if(srcOffset<0)
         {
@@ -627,22 +670,48 @@ void findJunkAndHeaders()
         if(dstOffset+bytesToCopy>640*480*2)
         {
             printf("dstOffset+bytesToCopy>640*480*2\n");
-            break;
+            headerPosition=currentHeader;
+            return;
         }
         if(dstOffset<0)
         {
             printf("dstOffset<0\n");
-            break;
+            headerPosition=currentHeader;
+            return;
         }
+        #ifdef DEBUG_CUDA_DECODEC1
+        printf("dstOffset: %d\n",dstOffset);
+        printf("srcOffset: %d\n",srcOffset);
+        printf("bytesToCopy: %d\n",bytesToCopy);
+        printf("headerPosition: %d\n",headerPosition);
+        printf("currentHeader: %d\n",currentHeader);
+        #endif // DEBUG_CUDA_DECODEC1
 
         checkCudaErrors(cudaMemcpy((void*)(dev_buff+dstOffset), dev_DataSpace+srcOffset , sizeof(char)*bytesToCopy , cudaMemcpyDeviceToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
         {
             printf("cudaError(Memcpy): %s\n", cudaGetErrorString(err));
+            throw std::string("cudaError(Memcpy)");
         }
     }
     headerPosition=currentHeader;
+}
+catch(const std::exception& e)
+{
+    printf("findJunkAndHeaders std::exception: %s\n",((std::string)e.what()).c_str());
+    //throw e;
+}
+catch(const std::string& s)
+{
+    printf("findJunkAndHeaders std::string exception: %s\n",s.c_str());
+    //throw s;
+}
+catch(...)
+{
+    printf("findJunkAndHeaders exception\n");
+    //throw;
+}
 }
 
 //extern unsigned short previewFa[640*480];

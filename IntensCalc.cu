@@ -2,7 +2,7 @@
  * \author Tomasz Jakubczyk
  * \brief
  * kompilacja w matlabie:
- * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu FrameReader.cpp -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
+ * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
  */
 
 #define WIN32
@@ -19,7 +19,7 @@
 #include <chrono>
 #include <mutex>
 
-#include "FrameReader.hpp"
+//#include "FrameReader.hpp"
 #include "CyclicBuffer.hpp"
 #include "IntensCalc_CUDA.cuh"
 
@@ -47,7 +47,7 @@ mutex cudaMemGuard;
 extern long int headerPosition;
 
 
-void CorrectnessControlThread(FrameReader * const frameReader)
+/*void CorrectnessControlThread(FrameReader * const frameReader)
 {
     try
     {
@@ -107,7 +107,7 @@ void CorrectnessControlThread(FrameReader * const frameReader)
         MessageBox(NULL,s.c_str(),NULL,NULL);
         system("pause");
     }
-}
+}*/
 
 
 /** \brief
@@ -626,7 +626,7 @@ try
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
-    //buffId* bID=nullptr;
+    buffId* bID=nullptr;
 
 
     //FrameReader* frameReader=new FrameReader(&cyclicBuffer);
@@ -637,11 +637,11 @@ try
     char* frame=nullptr;
     buffId* tmpBuff=nullptr;
     tmpBuff=cyclicBuffer.claimForRead();
-    loadLeft(tmpBuff);
+    loadLeft(tmpBuff->pt);
     cyclicBuffer.readEnd(tmpBuff);
     tmpBuff=nullptr;
     tmpBuff=cyclicBuffer.claimForRead();
-    loadRight(tmpBuff);
+    loadRight(tmpBuff->pt);
     cyclicBuffer.readEnd(tmpBuff);
     tmpBuff=nullptr;
 
@@ -651,7 +651,7 @@ try
         if(headerPosition>=655350)
         {
             tmpBuff=cyclicBuffer.claimForRead();
-            cycleDataSpace(tmpBuff);
+            cycleDataSpace(tmpBuff->pt);
             cyclicBuffer.readEnd(tmpBuff);
             tmpBuff=nullptr;
         }
