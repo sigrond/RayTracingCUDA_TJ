@@ -44,6 +44,8 @@ float* I_Blue=nullptr;
 
 mutex cudaMemGuard;
 
+extern long int headerPosition;
+
 
 void CorrectnessControlThread(FrameReader * const frameReader)
 {
@@ -67,12 +69,6 @@ void CorrectnessControlThread(FrameReader * const frameReader)
                         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
                         cudaMemGuard.unlock();
                     }
-                }
-                if(k%500==0 || k==NumFrames-1)
-                {
-                    printf("\b\b\b\b\b\b\b\b\n%5.2f%%\n",(float)(k*100)/(float)NumFrames);
-                    //mexEvalString("drawnow;");
-                    //mexEvalString("pause(.001);");
                 }
             }
             else
@@ -630,21 +626,38 @@ try
 
     /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
-    buffId* bID=nullptr;
+    //buffId* bID=nullptr;
 
-    #ifndef OLD_DECODEC
 
-    FrameReader* frameReader=new FrameReader(&cyclicBuffer);
+    //FrameReader* frameReader=new FrameReader(&cyclicBuffer);
 
-    thread correctnessControlThread(CorrectnessControlThread,frameReader);
+    //thread correctnessControlThread(CorrectnessControlThread,frameReader);
 
-    printf("\n%5.2f%%\n",0.0f);
+    printf("\nProgress: \n%5.2f%%\n",0.0f);
     char* frame=nullptr;
+    buffId* tmpBuff=nullptr;
+    tmpBuff=cyclicBuffer.claimForRead();
+    loadLeft(tmpBuff);
+    cyclicBuffer.readEnd(tmpBuff);
+    tmpBuff=nullptr;
+    tmpBuff=cyclicBuffer.claimForRead();
+    loadRight(tmpBuff);
+    cyclicBuffer.readEnd(tmpBuff);
+    tmpBuff=nullptr;
+
     for(int k=0;k<NumFrames;k++)
     {
-        frame=frameReader->getFrame();
+        //frame=frameReader->getFrame();
+        if(headerPosition>=655350)
+        {
+            tmpBuff=cyclicBuffer.claimForRead();
+            cycleDataSpace(tmpBuff);
+            cyclicBuffer.readEnd(tmpBuff);
+            tmpBuff=nullptr;
+        }
         cudaMemGuard.lock();
-        copyBuff(frame);
+        //copyBuff(frame);
+        findJunkAndHeaders();
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
         cudaMemGuard.unlock();
 
@@ -656,249 +669,6 @@ try
         }
     }
 
-    #else
-
-    char* tmpBuff=nullptr;/**< tymczasowy adres bufora do odczytu */
-
-    long double licz=0.0f;
-    int tmpFrameNo=-3;
-    int frameEnd=614400;/**< miejsce od którego w buforze może wystąpić nagłówek następnej klatki */
-    char* currentFrame=new char[655350];
-    char* nextFrame=new char[655350];
-    int nextFrameElements=0;
-    int garbageElements=0;
-    int dstOff=0;
-    int srcOff=0;
-    int cpyNum=0;
-    char* tmpFrame=nullptr;
-    int checkBuffForStartCodePosition=0;
-    int lastFrameNo=-1;
-    char junkCode[]="JUNK";
-    //long long int junkCt=0;
-    int junkSize=0;
-    bool junkB=true;
-    int checkBuffForJunkPosition=0;
-    printf("Progress:   %5.2f%%\n",0.0f);
-    for(int k=0;k<NumFrames;k+=count_step)
-    {
-        bID=cyclicBuffer.claimForRead();
-        tmpBuff=bID->pt;
-        if(tmpBuff==nullptr)
-        {
-            printf("Critical Error tmpBuff==nullptr k: %d\n",k);
-        }
-        tmpFrameNo=bID->frameNo;
-        if(tmpFrameNo!=k)
-        {
-            //printf("tmpFrameNo: %d k: %d\n",tmpFrameNo,k);
-            //throw string("zgubiona numeracja klatek");
-        }
-
-        if(lastFrameNo+1!=tmpFrameNo)
-        {
-            printf("lastFrameNo: %d tmpFrameNo: %d\n",lastFrameNo,tmpFrameNo);
-            cyclicBuffer.printStatus();
-        }
-        lastFrameNo=tmpFrameNo;
-
-        for(int j=frameEnd;j<65535*10-8;j++)
-        {
-            junkB=true;
-            for(int i=checkBuffForJunkPosition;i<4 && junkB;i++)
-            {
-                junkB&=junkCode[i]==tmpBuff[j+i];
-                if(junkB)
-                    checkBuffForJunkPosition=i;
-                else
-                    checkBuffForJunkPosition=0;
-            }
-            if(junkB)
-            {
-                //printf("znaleziono JUNK ct=%d\n",ct);
-                //junkCt=ct;
-                junkSize=*(int*)(tmpBuff+j+4);
-                junkSize+=4;
-                //printf("JUNK size: %d\n",junkSize);
-            }
-            b=true;
-            for(int i=checkBuffForStartCodePosition;i<8 && b;i++)
-            {
-                if(j+i<0 || j+i>=65535*10)
-                {
-                    printf("error-1 k: %d próba odczytu z poza zakresu tmpBuff\n",k);
-                    b=false;
-                    break;
-                }
-                //b&=FrameStartCode[i]==tmpBuff[j+i];
-                b&=frameStartCode[i]==tmpBuff[j+i] || frameStartCodeS[i]==tmpBuff[j+i];
-                if(b)
-                {
-                    checkBuffForStartCodePosition=i;/**< zapisujemy na wypadek gdyby bufor przecioł nagłówek */
-                }
-                else
-                {
-                    checkBuffForStartCodePosition=0;
-                }
-            }
-
-            if(b)
-            {
-                if(k==0)
-                {
-                    srcOff=j-640*480*2-junkSize;
-                    junkSize=0;
-                    if(srcOff<0 || srcOff>65535*10)
-                    {
-                        printf("error1 k: %d srcOff: %d\n",k,srcOff);
-                        break;
-                    }
-                    memcpy(currentFrame,tmpBuff+srcOff,640*480*2);/**< wszystko co jest klatką */
-                    srcOff=j+8;
-                    if(srcOff<0 || srcOff>65535*10)
-                    {
-                        printf("error2 k: %d srcOff: %d\n",k,srcOff);
-                        break;
-                    }
-                    cpyNum=65535*10-(j+8);
-                    if(cpyNum<0 || cpyNum>614400)
-                    {
-                        printf("error3 k: %d cpyNum: %d\n",k,cpyNum);
-                        break;
-                    }
-                    memcpy(nextFrame,tmpBuff+srcOff,cpyNum);/**< nadmiar do następnej klatki */
-                    nextFrameElements=65535*10-(j+8);/**< ile elementów weszło do następnej klatki */
-                    garbageElements=j-640*480*2;/**< ile śmieci mamy za nagłówkiem klatki */
-                }
-                else
-                {
-                    //if(j<=40950)
-                    //{
-                    //    printf("debug1 k: %d j: %d\n",k,j);
-                    //}
-                    garbageElements=nextFrameElements+j-640*480*2-junkSize;/**< śmieci za nagłówkiem klatki */
-                    if(garbageElements<0 || garbageElements>614400)
-                    {
-                        //printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
-                        //break;
-                        garbageElements=nextFrameElements;
-                    }
-                    cpyNum=nextFrameElements-garbageElements;
-                    if(cpyNum<0 || cpyNum>614400)
-                    {
-                        printf("error5 k: %d cpyNum: %d           \n",k,cpyNum);
-                        break;
-                    }
-                    if(cpyNum+garbageElements<0 || cpyNum+garbageElements>655350)
-                    {
-                        printf("error5b k: %d cpyNum: %d garbageElements: %d           \n",k,cpyNum, garbageElements);
-                        break;
-                    }
-                    if(cpyNum>0 && cpyNum<=614400)
-                        memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
-                    dstOff=nextFrameElements-garbageElements;/**< gdzie w obecnej klatce kończą się dane z poprzedniego bloku */
-                    if(dstOff<0 || dstOff>614400)
-                    {
-                        printf("error6 k: %d dstOff: %d\n",k,dstOff);
-                        break;
-                    }
-                    //srcOff=j-640*480*2-(nextFrameElements-garbageElements);
-                    srcOff=j>614400?j-614400:0;
-                    if(srcOff<0 || srcOff>65535*10)
-                    {
-                        printf("error7 k: %d srcOff: %d\n",k,srcOff);
-                        break;
-                    }
-                    /**<                      v- kopiujemy do nagłówka, albo tylko do JUNK'u przed nagłówkiem */
-                    /**<                            v- j wskazuje na nagłówek jeszcze następnej klatki i tylko dopychamy dane do obecnej klatki */
-                    cpyNum=j-junkSize+dstOff<=614400?(j-junkSize>=0?j-junkSize:0):614400-dstOff;/**< większa manifestacja chaosu */
-                    if(cpyNum<0 || cpyNum>614400)
-                    {
-                        printf("error8 k: %d cpyNum: %d\n",k,cpyNum);
-                        break;
-                    }
-                    if((dstOff+cpyNum)<0 || (dstOff+cpyNum)>614400)
-                    {
-                        printf("error9 k: %d dstOff: %d cpyNum: %d\n",k,dstOff,cpyNum);
-                        break;
-                    }
-                    if((srcOff+cpyNum)<0 || (srcOff+cpyNum)>655350)
-                    {
-                        printf("error10 k: %d srcOff: %d cpyNum: %d\n",k,srcOff,cpyNum);
-                        break;
-                    }
-                    if(cpyNum>0)
-                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,cpyNum);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
-                    srcOff=j+8;
-                    if(srcOff<0 || srcOff>65535*10)
-                    {
-                        printf("error11 k: %d srcOff: %d\n",k,srcOff);
-                        break;
-                    }
-                    cpyNum=65535*10-(j+8);
-                    if(cpyNum<0 || cpyNum>65535*10)
-                    {
-                        printf("error12 k: %d cpyNum: %d\n",k,cpyNum);
-                        break;
-                    }
-                    if(cpyNum+j+8<0 || cpyNum+j+8>65535*10)
-                    {
-                        printf("error12b k: %d cpyNum: %d j: %d\n",k,cpyNum,j);
-                        break;
-                    }
-                    if(cpyNum>0)
-                        memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
-                    nextFrameElements=65535*10-(j+8);
-                    junkSize=0;/**< nie zawsze przed nagłowkiem musi być JUNK */
-                    if(nextFrameElements>=614400)
-                    {
-                        //printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
-                        copyBuff(currentFrame);
-                        if(k<NumFrames)
-                        {
-                            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
-                        }
-                        else
-                        {
-                            printf("pominięcie operacji dla nieprzewidzianych klatek k: %d\n",k);
-                        }
-                        k++;
-                        j+=614400;
-                        continue;
-                    }
-                }
-                frameEnd=j+8-40950;
-                //if(frameEnd<40950)
-                //{
-                //    printf("debug4 k: %d frameEnd: %d\n",k,frameEnd);
-                    //break;
-                //}
-                break;
-            }
-        }
-        copyBuff(currentFrame);
-
-        #ifdef SIM_HEAVY_CALC
-        this_thread::sleep_for (chrono::milliseconds(10));
-        #endif // SIM_HEAVY_CALC
-
-        //copyBuff(tmpBuff);
-        cyclicBuffer.readEnd(bID);
-        if(k<NumFrames)
-        {
-            doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
-        }
-        else
-        {
-            printf("pominięcie operacji dla nieprzewidzianych klatek k: %d\n",k);
-        }
-        if(k%500==0 || k==NumFrames-1)
-        {
-            printf("\b\b\b\b\b\b\b%5.2f%%\n",(float)(k*100)/(float)NumFrames);
-            //mexEvalString("drawnow;");
-            mexEvalString("pause(.001);");
-        }
-    }
-    #endif // OLD_DECODEC
     finished=true;
     printf("finshed reading from cyclic bufor\n");
     printf("itemCount: %d\n",cyclicBuffer.tellItemCount());
@@ -915,11 +685,11 @@ try
     mexEvalString("pause(.001);");
     //mexEvalString("drawnow;");
 
-    correctnessControlThread.join();
-    printf("correctnessControlThread joined\n");
-    mexEvalString("pause(.001);");
+    //correctnessControlThread.join();
+    //printf("correctnessControlThread joined\n");
+    //mexEvalString("pause(.001);");
 
-    delete frameReader;
+    //delete frameReader;
 
     #ifdef OLD_DECODEC
     delete[] currentFrame;

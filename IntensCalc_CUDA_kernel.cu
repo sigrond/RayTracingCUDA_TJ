@@ -17,11 +17,68 @@
 #include <vector_types.h>
 #include "helper_math.h"
 #include "math_constants.h"
+#include "JunkStruct.h"
 
 #include <stdio.h>
 
 extern "C"
 {
+
+
+/** \brief każdy watek sprawdza swój bajt danych i jeśli jest to początek jednego z kodów
+ * JUNK albo header to zapisuje je synchronizowanej do listy
+ * \param DataSpace char* wskaźnik na dane
+ * \param junkList JunkStruct* wskaźnik na listę junk
+ * \param junkCounter long int* wskaźnik na licznik znalezionych sekcji junk
+ * \param headerList long int* wskaźnik na listę nagłówków
+ * \param headerCounter long int* wskaźnik na licznik znalezionych nagłówków
+ * \return void
+ *
+ */
+__global__
+void findJunkAndHeadersD(char* DataSpace,JunkStruct* junkList,long int* junkCounter,long int* headerList,long int* headerCounter)
+{
+    // unique block index inside a 3D block grid
+    const unsigned int blockId = blockIdx.x //1D
+        + blockIdx.y * gridDim.x //2D
+        + gridDim.x * gridDim.y * blockIdx.z; //3D
+    uint index = __mul24(blockId,blockDim.x) + threadIdx.x;
+    if(index>=655350*2-8)
+        return;
+    const char frameStartCode[8]={'0','0','d','b',0x00,0x60,0x09,0x00};
+    const char frameStartCodeS[8]={'0','0','d','c',0x00,0x60,0x09,0x00};
+    const char junkCode[]="JUNK";
+    bool junkB=true;
+    for(int i=0;i<4;i++)
+    {
+        junkB&=junkCode[i]==DataSpace[index+i];
+        if(!junkB)
+        {
+            break;
+        }
+    }
+    if(junkB)
+    {
+        long int tmpJunkCounter=atomicAdd(junkCounter,1);
+        junkList[tmpJunkCounter].position=index;
+        junkList[tmpJunkCounter].size=*(long int*)(DataSpace+index+4);
+        return;
+    }
+    bool headerB=true;
+    for(int i=0;i<header.size;i++)
+    {
+        headerB&=frameStartCode[i]==DataSpace[index+i] || frameStartCodeS[i]==DataSpace[index+i];
+        if(!headerB)
+        {
+            return;
+        }
+    }
+    if(headerB)
+    {
+        long int tmpHeaderCounter=atomicAdd(headerCounter,1);
+        headerList[tmpHeaderCounter]=index;
+    }
+}
 
 
 /** \brief wyliczanie wartości pixeli z bajtów filmu

@@ -31,11 +31,42 @@ void setMasksAndImagesAndSortedIndexes(
 
 /** \brief kopiuje bufor do GPU
  *
- * \param buff char* bufor z pliku 640*48*2
+ * \param buff char* bufor z pliku 640*480*2
  * \return void
  *
  */
 void copyBuff(char* buff);
+
+/** \brief wczytaj dane do lewej strony przestrzeni danych
+ *
+ * \param buff char* 640KB
+ * \return void
+ *
+ */
+void loadLeft(char* buff);
+
+/** \brief wczytaj dane do prawej strony przestrzeni danych
+ *
+ * \param buff char* 640KB
+ * \return void
+ *
+ */
+void loadRight(char* buff);
+
+/** \brief przesuń dalej dane z filmu
+ *
+ * \param buff char* 640KB
+ * \return void
+ *
+ */
+void cycleDataSpace(char* buff);
+
+/** \brief znajdź pozycje i rozmiary sekcji JUNK i header
+ * skopiuj wybrane fragmenty do bufora na klatkę
+ * \return void
+ *
+ */
+void findJunkAndHeaders();
 
 /** \brief zwraca wektor natężeń od theta
  *

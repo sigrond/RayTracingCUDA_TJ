@@ -6,8 +6,13 @@
  *
  */
 
+ #include "JunkStruct.h"
+
 extern "C"
 {
+
+__global__
+void findJunkAndHeadersD(char* DataSpace,JunkStruct* junkList,long int* junkCounter,long int* headerList,long int* headerCounter);
 
 __global__
 void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size);

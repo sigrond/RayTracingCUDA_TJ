@@ -26,6 +26,7 @@
 		<Unit filename="IntensCalc_CUDA.cuh" />
 		<Unit filename="IntensCalc_CUDA_kernel.cu" />
 		<Unit filename="IntensCalc_CUDA_kernel.cuh" />
+		<Unit filename="JunkStruct.h" />
 		<Unit filename="OneshotAviread.cpp" />
 		<Unit filename="avireadtest.cpp" />
 		<Extensions>
