@@ -587,18 +587,18 @@ try
     {
         if(junkVector.at(i).position<currentHeader && junkVector.at(i).position>headerPosition && copiedBytes<(640*480*2))
         {
-            bytesToCopy=lastSkipedPossition-(junkVector.at(i).position+junkVector.at(i).size+4);
+            bytesToCopy=lastSkipedPossition-(junkVector.at(i).position+junkVector.at(i).size+8);
             if(bytesToCopy>(640*480*2-copiedBytes))
             {
                 bytesToCopy=640*480*2-copiedBytes;
             }
             if(bytesToCopy<0)
             {
-                printf("bytesToCopy<0\n");
+                //printf("bytesToCopy<0\n");
                 //throw std::string("bytesToCopy<0");
                 break;
             }
-            srcOffset=junkVector.at(i).position+junkVector.at(i).size+4;
+            srcOffset=junkVector.at(i).position+junkVector.at(i).size+8;
             if(srcOffset+bytesToCopy>655350*2)
             {
                 printf("srcOffset+bytesToCopy>655350*2\n");

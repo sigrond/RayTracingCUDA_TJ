@@ -60,15 +60,31 @@ void findJunkAndHeadersD(char* DataSpace,long long int* junkList,long int* junkC
     if(junkB)
     {
         long int tmpJunkCounter=atomicAdd((int*)junkCounter,1);
-        long int* tmpJunkList=(long int*)(junkList+tmpJunkCounter);
-        *tmpJunkList=index;
-        long int* tmpJunkSizePt=(long int*)(DataSpace+index+4);
-        long int tmpJunkSize=(long int)*tmpJunkSizePt;
-        int tmpVal=500;
+        unsigned long long int tmpULL=0;
+        tmpULL+=0x00000000000000FF&(unsigned long long int)*(char*)(DataSpace+index+7);
+        tmpULL<<=8;
+        tmpULL&=0x000000000000FF00;
+        tmpULL+=0x00000000000000FF&(unsigned long long int)*(char*)(DataSpace+index+6);
+        tmpULL<<=8;
+        tmpULL&=0x0000000000FFFF00;
+        tmpULL+=0x00000000000000FF&(unsigned long long int)*(char*)(DataSpace+index+5);
+        tmpULL<<=8;
+        tmpULL&=0x00000000FFFFFF00;
+        tmpULL+=0x00000000000000FF&(unsigned long long int)*(char*)(DataSpace+index+4);
+        tmpULL<<=32;
+        tmpULL&=0xFFFFFFFF00000000;
+        //tmpULL&=0x0000000000000000;
+        tmpULL+=0x00000000FFFFFFFF&(unsigned long long int)index;
+        junkList[tmpJunkCounter]=tmpULL;
+        //long int* tmpJunkList=(long int*)(junkList+tmpJunkCounter);
+        //*tmpJunkList=index;
+        //long int* tmpJunkSizePt=(long int*)(DataSpace+index+4);
+        //long int tmpJunkSize=(long int)*tmpJunkSizePt;
+        //int tmpVal=500;
         //if(tmpJunkSize>0 && tmpJunkSize<=2048)
-        tmpVal=(int)tmpJunkSize;
-        tmpVal=tmpVal%2049;
-        tmpJunkList[1]=(int)500;//500;
+        //tmpVal=(int)tmpJunkSize;
+        //tmpVal=tmpVal%2049;
+        //tmpJunkList[1]=(int)500;//500;
         //return;
         //junkList[tmpJunkCounter].position=index;
         //junkList[tmpJunkCounter]=0x00000000FFFFFFFF&(long long int)index;
