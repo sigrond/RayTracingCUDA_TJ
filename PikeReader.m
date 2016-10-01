@@ -403,17 +403,19 @@ if handles.GPU==1
     %imtool(PXZ);
 
     %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
-    [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
+    %[THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
+    THETA=PXX;
+    PHI=PXY;
     %imtool(THETA);
     %imtool(PHI);
     %imtool(R);
-    ICT=IC;
-    THETAT=THETA;
-    PHIT=PHI;
-    RT=R;
-    PXXT=PXX;
-    PXYT=PXY;
-    PXZT=PXZ;
+ %   ICT=IC;
+  %  THETAT=THETA;
+   % PHIT=PHI;
+%    RT=R;
+   % PXXT=PXX;
+    %PXYT=PXY;
+    %PXZT=PXZ;
     %save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');
 else
 handles.S.N = 3e3; % Number of points per side

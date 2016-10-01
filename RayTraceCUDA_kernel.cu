@@ -111,6 +111,16 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
         //P[index*7]=make_float3(-200,-200,-200);//error1
         return;//critical error
     }
+    float delta1=(float)indexi/(float)Vb_length;
+    if(delta1<0 || delta1>1)
+        return;
+    float delta2=(float)indexj/(float)Vb_length;
+    if(delta2<0 || delta2>1)
+        return;
+    //float theta=2.0f*3.1415f*delta1;
+    //float phi=2.0f*asin(sqrt(delta2));
+    float theta=0.5f*3.1415f*delta1-3.1415f/4.0f;
+    float phi=0.5f*asin(sqrt(delta2))-3.1415f/8.0f;
 
     float3 P2=make_float3(Br[indexj],Vb[indexj],VH[indexi]);/**< point on the surface of the first diaphragm */
 
@@ -123,18 +133,24 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     float3 P1 = S.Pk;//droplet coordinates
 
-    float3 v = normalize(P2 - P1);//direction vector of the line
+    //float3 v = normalize(P2 - P1);//direction vector of the line
+    float3 v = make_float3( cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) );
+    /// \todo z theta i phi uzyskaæ wektor kierunkowy
     //looking for the point of intersection of the line and lenses
-    float t = (S.l1 - P2.x)/v.x;
-    float3 P3 = P2 + t*v;//Point in the plane parallel to the flat surface of the lens
+    //float t = (S.l1 - P2.x)/v.x;/// \todo
+    float t = (S.l1 - P1.x)/v.x;
+    //float3 P3 = P2 + t*v;//Point in the plane parallel to the flat surface of the lens
+    float3 P3 = P1 + t*v;
+    /// \todo P3.x=l1-P1.x
 
     if (length(make_float2(P3.y,P3.z)) > (S.efD/2))//verification whether  the point inside the aperture of the lens or not
     {
         //recalculate coordinates
-        float Kp = length(make_float2(P3.y,P3.z))/(S.efD/2);
-        P3.y/=Kp;
-        P3.z/=Kp;
-        v = normalize(P3 - P1);//direction vector of the line
+        //float Kp = length(make_float2(P3.y,P3.z))/(S.efD/2);
+        //P3.y/=Kp;
+        //P3.z/=Kp;
+        //v = normalize(P3 - P1);//direction vector of the line
+        return;
     }
 
     //normal vector to the surface
@@ -268,11 +284,13 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
     float value=1.0f;
     float* val0;
     val0=(float*)PX+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    atomicAdd(val0, P2.x);
+    //atomicAdd(val0, P2.x);/// \todo zwracaæ theta i phi + korekcje w matlabie
+    atomicAdd(val0, theta);
     val0=(float*)PX+1+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    atomicAdd(val0, P2.y);
-    val0=(float*)PX+2+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    atomicAdd(val0, P2.z);
+    //atomicAdd(val0, P2.y);
+    atomicAdd(val0, phi);
+    //val0=(float*)PX+2+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
+    //atomicAdd(val0, P2.z);
     val0=(float*)PX+3+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, value);//+1
 

@@ -403,7 +403,9 @@ if handles.GPU==1
     %imtool(PXZ);
 
     %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
-    [THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
+    %[THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
+    THETA=PXX;
+    PHI=PXY;
     %imtool(THETA);
     %imtool(PHI);
     %imtool(R);
@@ -1037,7 +1039,7 @@ if get(handles.chB,'value')
     
     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; % Angle's step
     I_Blue = zeros(handles.N_frames,handles.NP); % Creation of empty matrix for intensity recording  
-    nThetaB = zeros( 1,handles.NP );
+    nThetaB = single(zeros( 1,handles.NP ));
     icb=handles.ICB';
     ICB_N = icb( ipB );
     Lvl1ValB=min(min(ICB_N));
