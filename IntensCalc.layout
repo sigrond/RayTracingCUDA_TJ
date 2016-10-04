@@ -2,39 +2,14 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="JunkStruct.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc_CUDA.cu" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="334" topLine="0" />
+			<Cursor1 position="21455" topLine="583" />
 		</Cursor>
 	</File>
-	<File name="CyclicBuffer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc.cu" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1298" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="CyclicBuffer.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2534" topLine="45" />
-		</Cursor>
-	</File>
-	<File name="FrameReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8050" topLine="270" />
-		</Cursor>
-	</File>
-	<File name="FrameReader.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3642" topLine="86" />
-		</Cursor>
-	</File>
-	<File name="IntensCalc.cu" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="19604" topLine="642" />
-		</Cursor>
-	</File>
-	<File name="IntensCalc_CUDA.cu" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="18894" topLine="502" />
+			<Cursor1 position="20438" topLine="660" />
 		</Cursor>
 	</File>
 	<File name="IntensCalc_CUDA.cuh" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -42,14 +17,39 @@
 			<Cursor1 position="1324" topLine="53" />
 		</Cursor>
 	</File>
-	<File name="IntensCalc_CUDA_kernel.cu" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="FrameReader.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2714" topLine="60" />
+			<Cursor1 position="3642" topLine="86" />
 		</Cursor>
 	</File>
-	<File name="IntensCalc_CUDA_kernel.cuh" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="FrameReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8050" topLine="270" />
+		</Cursor>
+	</File>
+	<File name="IntensCalc_CUDA_kernel.cu" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2493" topLine="57" />
+		</Cursor>
+	</File>
+	<File name="IntensCalc_CUDA_kernel.cuh" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="398" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="CyclicBuffer.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2534" topLine="45" />
+		</Cursor>
+	</File>
+	<File name="JunkStruct.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="334" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="CyclicBuffer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1298" topLine="30" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

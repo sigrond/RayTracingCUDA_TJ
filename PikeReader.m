@@ -404,8 +404,8 @@ if handles.GPU==1
 
     %[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));
     %[THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);
-    THETA=PXX;
-    PHI=PXY;
+    THETA=PXY;
+    PHI=PXX;
     %imtool(THETA);
     %imtool(PHI);
     %imtool(R);
@@ -1002,7 +1002,7 @@ if get(handles.chR,'value')
     icr=handles.ICR';
     ICR_N = icr(ipR);                 % Correction 
     Lvl1ValR=min(min(ICR_N));
-    ICR_N=ICR_N-(Lvl1ValR-1);
+    %ICR_N=ICR_N-(Lvl1ValR-1);
 %     ICR_N=ICR_N./Lvl1ValR;
     %ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector
     
@@ -1023,7 +1023,7 @@ if get(handles.chG,'value')
     icg=handles.ICG';
     ICG_N = icg(ipG);
     Lvl1ValG=min(min(ICG_N));
-    ICG_N=ICG_N-(Lvl1ValG-1);
+    %ICG_N=ICG_N-(Lvl1ValG-1);
 %     ICG_N=ICG_N./Lvl1ValG;
     %ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector
     
@@ -1043,7 +1043,7 @@ if get(handles.chB,'value')
     icb=handles.ICB';
     ICB_N = icb( ipB );
     Lvl1ValB=min(min(ICB_N));
-    ICB_N=ICB_N-(Lvl1ValB-1);
+    %ICB_N=ICB_N-(Lvl1ValB-1);
 %     ICB_N=ICB_N./Lvl1ValB;
     %ICB_N = ICB_N./max( ICB_N(:) ); 
                                         
@@ -1330,7 +1330,12 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
 % hObject    handle to pbLoadParam (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-    Save = evalin('base','Save');
+try
+Save = evalin('base','Save');
+catch 
+    h = errordlg('Load Parameters into Workspace'); uiwait(h);
+    return
+end
 % loading checkbox structure
     set(handles.chR,'value',Save.chR_value);
     set(handles.chG,'value',Save.chG_value);
@@ -1347,7 +1352,7 @@ function pbLoadParam_Callback(hObject, eventdata, handles)
     set(handles.edCCD,'string',Save.edCCD);
     set(handles.edAperture,'string',Save.edAperture);
     set(handles.edLineSh,'string',Save.shLW);
-    set(handles.ed_Sh_l1,'string',Save.ed_Sh_l1);
+%   set(handles.ed_Sh_l1,'string',Save.ed_Sh_l1); wyrzucone okienko
 % Loading frame step and Adjust box    
     set(handles.edAdjust,'string',Save.edAdjust);
     set(handles.edSumFrameStep,'string',Save.edSumFrameStep);
@@ -1617,7 +1622,7 @@ if get(handles.chG,'value') % mask for green channel
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for green channel
     handles.BWG = Bw1.*Bw2;
     handles.G_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
@@ -1638,7 +1643,7 @@ if get(handles.chB,'value') % mask for blue channel
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for blue channel
     handles.BWB = Bw1.*Bw2;
     handles.B_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
@@ -1690,7 +1695,7 @@ if get(handles.chG,'value') % mask for green channel
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for green channel
     handles.BWG = Bw1.*Bw2;
     handles.G_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
@@ -1711,7 +1716,7 @@ if get(handles.chB,'value') % mask for blue channel
     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for blue channel
     handles.BWB = Bw1.*Bw2;
     handles.B_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
@@ -1734,7 +1739,7 @@ if get(handles.chR,'value') % mask for red channel background
         get(handles.hl(4),'ydata'),'g');
     plot(ha,get(handles.hl(7),'xdata'),...
         get(handles.hl(7),'ydata'),'b');
-    % Start to drawing matrix
+    % Start drawing matrix
     h = impoly(ha); % Create draggable, resizable polygon
     position = wait(h);
     delete(hf);
@@ -1764,14 +1769,14 @@ if get(handles.chG,'value') % mask for green channel background
         get(handles.hl(4),'ydata'),'g');
     plot(ha,get(handles.hl(7),'xdata'),...
         get(handles.hl(7),'ydata'),'b');
-    % Start to drawing matrix
+    % Start drawing matrix
     h = impoly(ha); % Create draggable, resizable polygon
     position = wait(h);
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,2),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,2),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for green channel
     Bw3 = roipoly(handles.cF(:,:,2),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,2),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
@@ -1793,14 +1798,14 @@ if get(handles.chB,'value') % mask for blue channel background
         get(handles.hl(4),'ydata'),'g');
     plot(ha,get(handles.hl(7),'xdata'),...
         get(handles.hl(7),'ydata'),'b');
-    % Start to drawing matrix
+    % Start drawing matrix
     h = impoly(ha); % Create draggable, resizable polygon
     position = wait(h);
     delete(hf);
     Bw1 = roipoly(handles.cF(:,:,3),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
     % mask from aperture
     Bw2 = roipoly(handles.cF(:,:,3),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
-    % compound of masks  for red channel
+    % compound of masks  for blue channel
     Bw3 = roipoly(handles.cF(:,:,3),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
     handles.BackgroundMaskB = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
