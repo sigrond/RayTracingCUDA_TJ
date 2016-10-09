@@ -35,7 +35,11 @@ float* previewFc=nullptr;
 
 extern float* previewFd;/**< czerwona klatka po sumowaniu pixeli */
 float* previewFd=nullptr;
+
+extern int frameToPrev;
 #endif // DEBUG
+
+extern int SubBg;
 
 __host__
 //Round a / b to nearest higher integer value
@@ -737,8 +741,8 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         printf("cudaError(aviGetValueD): %s\n", cudaGetErrorString(err));
     }
     #ifdef DEBUG
-    if(licznik_klatek==1)
-    checkCudaErrors(cudaMemcpy((void*)previewFa,dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
+    if(licznik_klatek>=frameToPrev && licznik_klatek<(frameToPrev+100))
+    checkCudaErrors(cudaMemcpy((void*)(previewFa+640*480*(licznik_klatek-frameToPrev)),dev_frame,sizeof(unsigned short)*640*480,cudaMemcpyDeviceToHost));
     #endif // DEBUG
 
     /**< demosaic */
@@ -750,16 +754,15 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     }
 
     #ifdef DEBUG
-    if(licznik_klatek==1)
-    checkCudaErrors(cudaMemcpy((void*)previewFb,dev_outArray+640*480*2,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
+    if(licznik_klatek>=frameToPrev && licznik_klatek<(frameToPrev+100))
+    checkCudaErrors(cudaMemcpy((void*)(previewFb+640*480*(licznik_klatek-frameToPrev)),dev_outArray+640*480*2,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
     #endif // DEBUG
 
-    licznik_klatek++;
 
     if(ipR_Size>0)
     {
-        #ifdef DEBUG
-        if(licznik_klatek++<20)/**< debug */
+        #ifdef DEBUG2
+        if(licznik_klatek<20)/**< debug */
         {
             printf("frame: %d\n",licznik_klatek);
             checkCudaErrors(cudaMemcpy((void*)previewFb2,dev_outArray+640*480*2,sizeof(short)*640*480,cudaMemcpyDeviceToHost));
@@ -822,6 +825,11 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             lastProbablyCorrectBgValue/=2.0f;
         }*/
         //checkCudaErrors(cudaMemset(dev_BgValue,tmpBgValue,sizeof(float)));
+        if(SubBg==0)
+        {
+            tmpBgValue[0]=0.0f;
+            tmpBgValue[1]=0.0f;
+        }
         checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -842,6 +850,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
 
         #ifdef DEBUG
+        if(licznik_klatek==frameToPrev)
         checkCudaErrors(cudaMemcpy((void*)previewFc,dev_IR,sizeof(float)*ipR_Size,cudaMemcpyDeviceToHost));
         #endif // DEBUG
         /**< przydatna sztuczka do podglądania w matlabie:
@@ -861,6 +870,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         }
 
         #ifdef DEBUG
+        if(licznik_klatek==frameToPrev)
         checkCudaErrors(cudaMemcpy((void*)previewFd,dev_sIR,sizeof(float)*ipR_Size,cudaMemcpyDeviceToHost));
         #endif // DEBUG
 
@@ -922,6 +932,11 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("(G)tmpBgValue[0]: %f, ",tmpBgValue[0]);
             printf("(G)tmpBgValue[1]: %f\n",tmpBgValue[1]);
         }*/
+        if(SubBg==0)
+        {
+            tmpBgValue[0]=0.0f;
+            tmpBgValue[1]=0.0f;
+        }
         checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -1006,6 +1021,11 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("(B)tmpBgValue[0]: %f, ",tmpBgValue[0]);
             printf("(B)tmpBgValue[1]: %f\n",tmpBgValue[1]);
         }*/
+        if(SubBg==0)
+        {
+            tmpBgValue[0]=0.0f;
+            tmpBgValue[1]=0.0f;
+        }
         checkCudaErrors(cudaMemcpy((void*)dev_BgValue, tmpBgValue, sizeof(float)*2, cudaMemcpyHostToDevice));
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -1063,6 +1083,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     {
         printf("cudaError(cudaMemcpyDeviceToHost): %s\n", cudaGetErrorString(err));
     }
+    licznik_klatek++;
 }
 
 void freeCUDA_IC()

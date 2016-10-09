@@ -51,6 +51,16 @@ handles.shLW = 0;
 handles.BWR = [];
 handles.BWG = [];
 handles.BWB = [];
+handles.BackgroundMaskR = [];
+handles.BackgroundMaskG = [];
+handles.BackgroundMaskB = [];
+% handles for mask borders
+handles.R_position = [];
+handles.G_position = [];
+handles.B_position = [];
+handles.BackgroundMask_positionR = [];
+handles.BackgroundMask_positionG = [];
+handles.BackgroundMask_positionB = [];
 
 handles.GPU=1;
 
@@ -494,7 +504,7 @@ end
 function pbLoad_Callback(hObject, eventdata, handles)
 % pbLoad_Callback - wczytuje film *.avi
 %I:\!From Justice\0.1ml\Splited
-[handles.f,handles.dir] = uigetfile( {'*.avi';'*.*'},'Load files','D:\!Work\!Projects\Aberration correction\AVI','MultiSelect','on' );
+[handles.f,handles.dir] = uigetfile( {'*.avi';'*.*'},'Load files','F:\','MultiSelect','on' );
 % wyœwietlamy na panelu nazwe filmu
     if ischar( handles.f )
         set( handles.up1, 'title', handles.f );
@@ -1073,9 +1083,10 @@ if iscell( handles.f ) % In case of multi select function is enabled
         handles.fn=path;
         itb=ite+1;
         ite=ite+inf.NumFrames;
+        handles.Prev=16;
      %I_RedM=zeros(700,inf.NumFrames,'single');
-%[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
-[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+[I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+%[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 	I_Red(itb:ite,:)=I_RedM';
     I_Green(itb:ite,:)=I_GreenM';
     I_Blue(itb:ite,:)=I_BlueM';
@@ -1182,9 +1193,11 @@ elseif ischar( handles.f ) % The single file is chosen
             handles.N_frames = inf.NumFrames; % total number of frames
         else
             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
-        end
-%[I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
-[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+     end
+handles.Prev=1;%%numer klatki do podgl¹du
+handles.SubBg=1;%%czy odejmujemy t³o
+[I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+%[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 I_Red=I_RedM';
     I_Green=I_GreenM';
     I_Blue=I_BlueM';     
@@ -1357,28 +1370,29 @@ end
     set(handles.edAdjust,'string',Save.edAdjust);
     set(handles.edSumFrameStep,'string',Save.edSumFrameStep);
     set(handles.edFrameStep,'string',Save.edFrameStep);
-% Loading ThetaPhiR structure
-    % Saving angles and masks
-%      --  masks --
-    handles.BWR = Save.BWR;
-    handles.BWG = Save.BWG;
-    handles.BWB = Save.BWB;
-%      --  border of masks --
-    handles.R_position = Save.R_position;
-    handles.G_position = Save.G_position;
-    handles.B_position = Save.B_position;
-% Correction masks
-    handles.ICR = Save.ICR;
-    handles.ICG = Save.ICG;
-    handles.ICB = Save.ICB;
-% Angles matrix    
-    handles.THETA_R = Save.THETA_R;
-    handles.THETA_G = Save.THETA_G;
-    handles.THETA_B = Save.THETA_B;
-%      ---    
+% Loading angles, masks and Theta/Phi structure
+    
+if get(handles.chR,'value')
+    handles.BWR = Save.BWR; % masks --
+    handles.R_position = Save.R_position; % border of masks --
+    handles.ICR = Save.ICR; % Correction matrices
+    handles.THETA_R = Save.THETA_R; % Angles matrix  
     handles.PHI_R   = Save.PHI_R;
+end
+if get(handles.chG,'value')
+    handles.BWG = Save.BWG;
+    handles.G_position = Save.G_position;
+    handles.ICG = Save.ICG;
+    handles.THETA_G = Save.THETA_G;
     handles.PHI_G   = Save.PHI_G;
+end
+if get(handles.chB,'value')
+    handles.BWB = Save.BWB;
+    handles.B_position = Save.B_position;
+    handles.ICB = Save.ICB;
+    handles.THETA_B = Save.THETA_B;
     handles.PHI_B   = Save.PHI_B;
+end
     handles = Draw(hObject,handles);
 
 
@@ -1409,37 +1423,44 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
     Save.edSumFrameStep = get(handles.edSumFrameStep,'string');
     Save.edFrameStep = get(handles.edFrameStep,'string');
 % Saving angles and masks
-%      --  masks --
-    Save.BWR = handles.BWR;
-    Save.BWG = handles.BWG;
-    Save.BWB = handles.BWB;
-%      --  border of masks --
-    Save.R_position = handles.R_position;
-    Save.G_position = handles.G_position;
-    Save.B_position = handles.B_position;
-% Correction masks
-    Save.ICR = handles.ICR;
-    Save.ICG = handles.ICG;
-    Save.ICB = handles.ICB;
-% Angles matrix    
-    Save.THETA_R = handles.THETA_R;
-    Save.THETA_G = handles.THETA_G;
-    Save.THETA_B = handles.THETA_B;
-%      ---    
+if get(handles.chR,'value')
+    Save.BWR = handles.BWR; %  main masks
+    Save.BackgroundMaskR = handles.BackgroundMaskR; % background masks
+    Save.R_position = handles.R_position; %  border of masks
+    Save.BackgroundMask_positionR = handles.BackgroundMask_positionR;
+    Save.ICR = handles.ICR; % correction matrices
+    Save.THETA_R = handles.THETA_R; % Angles matrix
     Save.PHI_R   = handles.PHI_R;
+end
+if get(handles.chG,'value')
+    Save.BWG = handles.BWG;
+    Save.BackgroundMaskG = handles.BackgroundMaskG;
+    Save.G_position = handles.G_position;
+    Save.BackgroundMask_positionG = handles.BackgroundMask_positionG;
+    Save.ICG = handles.ICG;
+    Save.THETA_G = handles.THETA_G;
     Save.PHI_G   = handles.PHI_G;
+end
+if get(handles.chB,'value') 
+    Save.BWB = handles.BWB;
+    Save.BackgroundMaskB = handles.BackgroundMaskB;
+    Save.B_position = handles.B_position;
+    Save.BackgroundMask_positionB = handles.BackgroundMask_positionB;
+    Save.ICB = handles.ICB;
+    Save.THETA_B = handles.THETA_B;
     Save.PHI_B   = handles.PHI_B;
-    handles.dir;
-    savePath = [ handles.dir 'SaveParams.mat'];
+end
+% handles.dir;
+savePath = [ handles.dir handles.f(1,1:end-4) 'Params.mat'];
     if exist(savePath)
     % File exist!
        button = questdlg('File already exists!','Warning!!!','Rewrite','NO','Cancel','Cancel');
        switch button
            case 'Rewrite'
                save(savePath,'Save');
-               sprintf('Parameters has been saved to the directory:\n %s',savePath)
+               sprintf('Parameters has been saved to:\n %s',savePath)
            case 'NO'
-             [file,path] = uiputfile('SaveParams_1.mat','Save file name', savePath);  
+             [file,path] = uiputfile([handles.f(1,1:end-4) 'Params_1.mat'],'Save file name', savePath);  
              if file == 0
                  return;
              end;
@@ -1452,7 +1473,7 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
     else
     % File dose not exist.
         save(savePath,'Save');
-        sprintf('Parameters has been saved to the directory:\n %s',savePath)
+        sprintf('Parameters has been saved to :\n %s',savePath)
     end
     assignin('base','Save',Save);
 
@@ -1648,6 +1669,107 @@ if get(handles.chB,'value') % mask for blue channel
     handles.B_position = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
 end
+% ----------------- mask for background -------------------
+% Prepearing image
+if get(handles.chR,'value') % mask for red channel background
+    temp = handles.cF;
+    Frame =  zeros(size(temp));
+    Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) .* 10 ;
+    hf = imtool( Frame(:,:,1) );
+    %hf = imshow( handles.cF );
+    set(hf,'name','Set Mask for red background!')
+    ha = get(hf,'CurrentAxes');
+    hold(ha,'on');
+    plot(ha,get(handles.hl(1),'xdata'),...
+        get(handles.hl(1),'ydata'),'r');
+    plot(ha,get(handles.hl(4),'xdata'),...
+        get(handles.hl(4),'ydata'),'g');
+    plot(ha,get(handles.hl(7),'xdata'),...
+        get(handles.hl(7),'ydata'),'b');
+    % Start drawing matrix
+    if isempty(handles.BackgroundMask_positionR)
+        h = impoly(ha);
+    else
+        h = impoly(ha,handles.BackgroundMask_positionR); % Create draggable, resizable polygon
+    end
+    position = wait(h);
+    delete(hf);
+    Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+    % mask from aperture
+    Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    % compound of masks  for red channel
+    Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
+    Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
+    handles.BackgroundMaskR = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask_positionR = position; % coord handles for mascksinates of mask
+    guidata(hObject,handles);
+end
+    %
+if get(handles.chG,'value') % mask for green channel background
+    temp = handles.cF;
+    Frame =  zeros(size(temp));
+    Frame(:,:,2)=temp(:,:,2) ./ max(max(temp(:,:,1))) .* 10;
+    hf = imtool( Frame(:,:,2) );
+    set(hf,'name','Set Mask for green background!')
+    ha = get(hf,'CurrentAxes');
+    hold(ha,'on');
+    plot(ha,get(handles.hl(1),'xdata'),...
+        get(handles.hl(1),'ydata'),'r');
+    plot(ha,get(handles.hl(4),'xdata'),...
+        get(handles.hl(4),'ydata'),'g');
+    plot(ha,get(handles.hl(7),'xdata'),...
+        get(handles.hl(7),'ydata'),'b');
+    % Start drawing matrix
+    if isempty(handles.BackgroundMask_positionG)
+        h = impoly(ha);
+    else
+        h = impoly(ha,handles.BackgroundMask_positionG); % Create draggable, resizable polygon
+    end
+    position = wait(h);
+    delete(hf);
+    Bw1 = roipoly(handles.cF(:,:,2),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+    % mask from aperture
+    Bw2 = roipoly(handles.cF(:,:,2),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    % compound of masks  for green channel
+    Bw3 = roipoly(handles.cF(:,:,2),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
+    Bw4 = roipoly(handles.cF(:,:,2),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
+    handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask_positionG = position; % coord handles for mascksinates of mask
+    guidata(hObject,handles);
+end
+    %
+if get(handles.chB,'value') % mask for blue channel background
+    temp = handles.cF;
+    Frame =  zeros(size(temp));
+    Frame(:,:,3)=temp(:,:,3) ./ max(max(temp(:,:,1))) .* 10;
+    hf = imtool( Frame(:,:,3) );
+    set(hf,'name','Set Mask for blue background!')
+    ha = get(hf,'CurrentAxes');
+    hold(ha,'on');
+    plot(ha,get(handles.hl(1),'xdata'),...
+        get(handles.hl(1),'ydata'),'r');
+    plot(ha,get(handles.hl(4),'xdata'),...
+        get(handles.hl(4),'ydata'),'g');
+    plot(ha,get(handles.hl(7),'xdata'),...
+        get(handles.hl(7),'ydata'),'b');
+    % Start drawing matrix
+    if isempty(handles.BackgroundMask_positionB)
+        h = impoly(ha);
+    else
+        h = impoly(ha,handles.BackgroundMask_positionB); % Create draggable, resizable polygon
+    end
+    position = wait(h);
+    delete(hf);
+    Bw1 = roipoly(handles.cF(:,:,3),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+    % mask from aperture
+    Bw2 = roipoly(handles.cF(:,:,3),get(handles.hl(1),'xdata'),get(handles.hl(1),'ydata'));
+    % compound of masks  for blue channel
+    Bw3 = roipoly(handles.cF(:,:,3),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
+    Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
+    handles.BackgroundMaskB = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+    handles.BackgroundMask_positionB = position; % coord handles for mascksinates of mask
+    guidata(hObject,handles);
+end
 
 % --- Executes on button press in pbSetMask.
 
@@ -1722,7 +1844,7 @@ if get(handles.chB,'value') % mask for blue channel
     guidata(hObject,handles);
 end
 
-% mask for background
+% ----------------- mask for background -------------------
 % Prepearing image
 if get(handles.chR,'value') % mask for red channel background
     temp = handles.cF;
@@ -1749,7 +1871,6 @@ if get(handles.chR,'value') % mask for red channel background
     % compound of masks  for red channel
     Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),'xdata'),get(handles.hl(4),'ydata'));
     Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),'xdata'),get(handles.hl(7),'ydata'));
-    handles.BackgroundMask = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMaskR = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
     handles.BackgroundMask_positionR = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
