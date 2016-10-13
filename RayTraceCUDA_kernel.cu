@@ -119,8 +119,8 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
         return;
     //float theta=2.0f*3.1415f*delta1;
     //float phi=2.0f*asin(sqrt(delta2));
-    float theta=0.5f*3.1415f*delta1-3.1415f/4.0f;
-    float phi=0.5f*asin(sqrt(delta2))-3.1415f/8.0f;
+    float phi=0.5f*3.1415f*delta1-3.1415f/4.0f;
+    float theta=0.5f*asin(sqrt(delta2))-3.1415f/8.0f;
 
     float3 P2=make_float3(Br[indexj],Vb[indexj],VH[indexi]);/**< point on the surface of the first diaphragm */
 
