@@ -2,11 +2,6 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="IntensCalc_CUDA_kernel.cuh" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="398" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="FrameReader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="8050" topLine="270" />
@@ -39,17 +34,22 @@
 	</File>
 	<File name="IntensCalc.cu" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="20438" topLine="660" />
+			<Cursor1 position="18241" topLine="848" />
 		</Cursor>
 	</File>
-	<File name="IntensCalc_CUDA_kernel.cu" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="IntensCalc_CUDA_kernel.cu" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2762" topLine="156" />
+			<Cursor1 position="2762" topLine="297" />
 		</Cursor>
 	</File>
 	<File name="IntensCalc_CUDA.cu" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="21455" topLine="583" />
+			<Cursor1 position="26281" topLine="465" />
+		</Cursor>
+	</File>
+	<File name="IntensCalc_CUDA_kernel.cuh" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="398" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

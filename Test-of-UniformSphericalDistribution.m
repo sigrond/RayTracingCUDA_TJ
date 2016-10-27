@@ -30,16 +30,16 @@ figure
 plot3(x,y,z,'.')
 axis equal
 %% Uniform Grid Distribution
-rvals = 0:0.05:1;
+rvals = 0:0.1:.5;
 % elevation = asin(2*rvals-1);
-elevation = 2*asin(sqrt(rvals))-pi/2;
-rvals2 =  0:0.025:1; % 2 times denser
+elevation = 2*asin(sqrt(rvals))+pi/2;
+rvals2 =  0:0.05:1; % 2 times denser
 azimuth = 2*pi*rvals2-pi;
 [elevationgrid azimuthgrid] = meshgrid(elevation, azimuth);
 radii=1;
 [x,y,z] = sph2cart(azimuthgrid,elevationgrid,radii);
 figure
-plot3(x,y,z,'.')
+plot3(x,y,z,'.b')
 axis equal
 %% sector of uniform grid distribution - no sqrt - OK
 rvals2 =  0:0.0025:.1 ; % 2 times denser
@@ -51,17 +51,17 @@ elevation = asin(rvals);
 radii=1;
 [x,y,z] = sph2cart(azimuthgrid,elevationgrid,radii);
 figure
-plot3(x,y,z,'.')
+plot3(x,y,z,'.b')
 axis equal
 %% sector of uniform grid distribution w/sqrt
-rvals2 =  0:0.0025:.1 ; % 2 times denser
+rvals2 =  0:0.01:.1 ; % sholud be 2 times denser than for elevation
 azimuth = 2*pi*rvals2-pi;
-rvalsrange = (sind(8.3));
-rvals = -rvalsrange:rvalsrange/10:rvalsrange;
-elevation = asin((rvals));
+rvalsrange = (sind(45))^2;%8.3
+rvals = 0:rvalsrange/10:rvalsrange;
+elevation = 2*asin(sqrt(rvals))+pi/2;
 [elevationgrid azimuthgrid] = meshgrid(elevation, azimuth);
 radii=1;
 [x,y,z] = sph2cart(azimuthgrid,elevationgrid,radii);
 figure
-plot3(x,y,z,'.')
- axis equal
+plot3(x,y,z,'.b')
+axis equal
