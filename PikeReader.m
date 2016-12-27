@@ -64,7 +64,7 @@ handles.BackgroundMask_positionB = [];
 
 handles.GPU=1;
 
-set(handles.edAperture,'string',num2str(handles.S.efD));
+% set(handles.edAperture,'string',num2str(handles.S.efD));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
 handles = Draw(hObject,handles);
@@ -173,6 +173,7 @@ function handles = Draw(hObject,handles)
         if get(handles.chR,'value')
             handles.S.lambda = str2double(get(handles.edR,'string'));
             handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
+            handles.S.efD  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
             handles.ChKey = 1;
             guidata(hObject,handles);
                 handles = Sight(hObject,handles);
@@ -184,6 +185,7 @@ function handles = Draw(hObject,handles)
         if get(handles.chG,'value')
             handles.S.lambda = str2double(get(handles.edG,'string'));
             handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
+            handles.S.efD  = 10;%effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
              handles.ChKey = 2;
              guidata(hObject,handles);
                 handles = Sight(hObject,handles);
@@ -196,6 +198,7 @@ function handles = Draw(hObject,handles)
         if get(handles.chB,'value')
             handles.S.lambda = str2double(get(handles.edB,'string'));
              handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
+             handles.S.efD  = 10;%effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
              handles.ChKey = 3;
             guidata(hObject,handles);
                 handles = Sight(hObject,handles);
@@ -217,7 +220,7 @@ function handles = Sight(hObject,handles)
   handles.shX = vel(2);
   handles.shY = vel(3);
   % setting the effective aperture
-  handles.S.efD = str2double(get(handles.edAperture,'string'));
+%   handles.S.efD = str2double(get(handles.edAperture,'string'));
   % setting the position of additional line
   handles.shLW = str2double(get(handles.edLineSh,'string'));
   handles.S.CCDH = handles.S.CCDPH * handles.S.PixSize;  % height of CCD
@@ -1416,7 +1419,7 @@ function pbSaveParam_Callback(hObject, eventdata, handles)
 % Saving position paramiters
     Save.Pk    = get(handles.edPdrop,'string');
     Save.edCCD = get(handles.edCCD,'string');
-    Save.edAperture = get(handles.edAperture,'string');
+%     Save.edAperture = get(handles.edAperture,'string');
     Save.shLW     = get(handles.edLineSh,'string');
 % Saving Frame step and Adjust box
     Save.edAdjust = get(handles.edAdjust,'string');
@@ -1957,9 +1960,7 @@ if get(handles.chB,'value') % mask for blue channel background
     handles.BackgroundMask_positionB = position; % coord handles for mascksinates of mask
     guidata(hObject,handles);
 end
-
-   
-   
+ 
 
 
 
