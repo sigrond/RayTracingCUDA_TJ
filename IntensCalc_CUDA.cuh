@@ -1,6 +1,6 @@
 /** \file IntensCalc_CUDA.cuh
  * \author Tomasz Jakubczyk
- * \brief plik nagłówkowy funkcji wywołujących CUDA'ę
+ * \brief header file of functions calling CUDA
  *
  *
  *
@@ -11,7 +11,7 @@ extern "C"
 {
 
 
-/** \brief przygotowanie do obliczeń
+/** \brief prepare GPU
  *
  * \return void
  *
@@ -29,15 +29,15 @@ void setMasksAndImagesAndSortedIndexes(
 
 
 
-/** \brief kopiuje bufor do GPU
+/** \brief copy buffer to GPU
  *
- * \param buff char* bufor z pliku 640*480*2
+ * \param buff char* file buffer 640*480*2
  * \return void
  *
  */
 void copyBuff(char* buff);
 
-/** \brief wczytaj dane do lewej strony przestrzeni danych
+/** \brief load data to left side of DataSpace
  *
  * \param buff char* 640KB
  * \return void
@@ -45,7 +45,7 @@ void copyBuff(char* buff);
  */
 void loadLeft(char* buff);
 
-/** \brief wczytaj dane do prawej strony przestrzeni danych
+/** \brief load data to right side of DataSpace
  *
  * \param buff char* 640KB
  * \return void
@@ -53,7 +53,7 @@ void loadLeft(char* buff);
  */
 void loadRight(char* buff);
 
-/** \brief przesuń dalej dane z filmu
+/** \brief move to next part of data
  *
  * \param buff char* 640KB
  * \return void
@@ -61,24 +61,24 @@ void loadRight(char* buff);
  */
 void cycleDataSpace(char* buff);
 
-/** \brief znajdź pozycje i rozmiary sekcji JUNK i header
- * skopiuj wybrane fragmenty do bufora na klatkę
+/** \brief find positions and sizes of JUNK and header sections
+ * copy selected fragments to buffer for frame
  * \return void
  *
  */
 void findJunkAndHeaders();
 
-/** \brief zwraca wektor natężeń od theta
+/** \brief returns intensity vectors by theta
  *
- * \param I_Red float* wektor 700 czerwonego natężenia
- * \param I_Green float* wektor 700 zielonego natężenia
- * \param I_Blue float* wektor 700 niebieskiego natężenia
+ * \param I_Red float* red intensity vector of 700 elements
+ * \param I_Green float* green intensity vector of 700 elements
+ * \param I_Blue float* blue intensity vector of 700 elements
  * \return void
  *
  */
 void doIC(float* I_Red, float* I_Green, float* I_Blue);
 
-/** \brief zwalnianie zajętych zasobów CUDA
+/** \brief free used CUDA resources
  *
  * \return void
  *
