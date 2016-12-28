@@ -135,7 +135,7 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     //float3 v = normalize(P2 - P1);//direction vector of the line
     float3 v = make_float3( cos(theta)*cos(phi), cos(theta)*sin(phi), sin(theta) );
-    /// \todo z theta i phi uzyskaæ wektor kierunkowy
+
     //looking for the point of intersection of the line and lenses
     //float t = (S.l1 - P2.x)/v.x;/// \todo
     float t = (S.l1 - P1.x)/v.x;
@@ -145,11 +145,6 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     if (length(make_float2(P3.y,P3.z)) > (S.efD/2))//verification whether  the point inside the aperture of the lens or not
     {
-        //recalculate coordinates
-        //float Kp = length(make_float2(P3.y,P3.z))/(S.efD/2);
-        //P3.y/=Kp;
-        //P3.z/=Kp;
-        //v = normalize(P3 - P1);//direction vector of the line
         return;
     }
 
@@ -165,15 +160,6 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     if(isnan(rc.a.x))
     {
-        /*p=0;
-        P[index*7+p++]=P1;
-        P[index*7+p++]=P2;
-        P[index*7+p++]=P3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;*/
-        //P[index*7]=make_float3(100,100,100);//error1
         return;
     }
 
@@ -187,30 +173,12 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     if(length(make_float2(rc.a.y,rc.a.z)) > S.D/2)
     {
-        /*p=0;
-        P[index*7+p++]=P1;
-        P[index*7+p++]=P2;
-        P[index*7+p++]=P3;
-        P[index*7+p++]=P4;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;*/
-        //P[index*7]=make_float3(200,200,200);//error2
         return;
     }
 
     rcstruct rc1 = SphereCross( make_float3(P4.x-S.Cs2,P4.y,P4.z), v4,S.R2 );
     if(isnan( rc1.a.x ))
     {
-        /*p=0;
-        P[index*7+p++]=P1;
-        P[index*7+p++]=P2;
-        P[index*7+p++]=P3;
-        P[index*7+p++]=P4;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;*/
-        //P[index*7]=make_float3(300,300,300);//error3
         return;
     }
     float3 P5 = rc1.b;
@@ -219,15 +187,6 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     if(length(make_float2(rc1.b.y,rc1.b.z)) > S.D/2)
     {
-        /*p=0;
-        P[index*7+p++]=P1;
-        P[index*7+p++]=P2;
-        P[index*7+p++]=P3;
-        P[index*7+p++]=P5;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;
-        P[index*7+p++]=nan3;*/
-        //P[index*7]=make_float3(400,400,400);//error4
         return;
     }
 
@@ -252,81 +211,36 @@ void RayTraceD(float* Br, float* Vb, float* VH, int Vb_length, int VH_length, Ha
 
     float3 P7 = P6 + v6*t;
 
-    /*p=0;
-    P[index*7+p++]=P1;
-    P[index*7+p++]=P2;
-    P[index*7+p++]=P3;
-    P[index*7+p++]=P4;
-    P[index*7+p++]=P5;
-    P[index*7+p++]=P6;
-    P[index*7+p++]=P7;*/
-
-    /*if(IM==NULL || IM==0)
-    {
-        //P[index*7]=make_float3(500,500,500);//error5
-        return;//no need to calculate image
-    }*/
-
-    /*float dist=length(P1-P2)+length(P2-P3)+
-                length(P3-P4)+length(P4-P5)+
-                length(P5-P6)+length(P6-P7);
-    float3 vR = normalize(P7-P6);
-    float alp = acos(dot(make_float3(1,0,0),vR));*/
     float W  = S.shX + ( S.CCDW/2.0f +P7.y)/S.PixSize - 1.0f;
     if(round(W)>=640 || round(W)<0)
         return;
     float Hi = S.shY + ( S.CCDH/2.0f +P7.z)/S.PixSize - 1.0f;
     if(round(Hi)>=480 || round(Hi)<0)
         return;
-    //float value=cos(alp)/(dist*dist);
+
 
     //Recording position of rays and a number of rays that walk into the cell
     float value=1.0f;
     float* val0;
     val0=(float*)PX+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    //atomicAdd(val0, P2.x);/// \todo zwracaæ theta i phi + korekcje w matlabie
+
     atomicAdd(val0, theta);
     val0=(float*)PX+1+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    //atomicAdd(val0, P2.y);
+
     atomicAdd(val0, phi);
-    //val0=(float*)PX+2+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
-    //atomicAdd(val0, P2.z);
+
     val0=(float*)PX+3+(unsigned int)round(Hi)*4+(unsigned int)round(W)*480*4;
     atomicAdd(val0, value);//+1
 
     //The calculation of energy loss,  caused by reflection on lens surfaces and rising distance
-//    value=0.01f*(length(P1-P2) + length(P2-P3));
-//    value*=value;//fast square
+
     float Ka1 = cos(P8)/value;
 
-    //KA1[index]=Ka1;
-
-//    value=0.01f*length(P3-P4);
-//    value*=value;
-//    float Ka2 = Ka1*cos(P9)/value;
-    //KA1[index]=Ka2;
-//    value=0.01f*length(P4-P5);
-//    value*=value;
-//    float Ka3 = Ka2*cos(P10)/value;
-    //KA1[index]=Ka3;
-//    value=cos(P11);//in calculation intensive code calculating same cosine twice isn't wise
-//    value*=value;
-//    float Ka4 = Ka3*value;
-//    value=0.01f*(length(P5-P6) + length(P6-P7));
-//    value*=value;
-//    Ka4/=value;
-    //KA1[index]=Ka4;
-//    value=1.0f/Ka4;
     value=1.0f;
-    //KA1[index]=value;
+
     val0=IC+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
     atomicAdd(val0, value);
 
-    //val0=&KA1[indexi];
-    //value=1.0f;
-    //atomicAdd(val0, value);
 
-    //float* val0=IM+(unsigned int)round(Hi)+(unsigned int)round(W)*480;
-    //atomicAdd(val0, value);
 }
 }//extern "C"
