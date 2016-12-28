@@ -1,6 +1,6 @@
 /** \file MovingAverage_CUDA_kernel.cu
  * \author Tomasz Jakubczyk
- * \brief plik z kernelem CUDA wyg³adzaj¹cym za pomoc¹ œredniej krocz¹cej
+ * \brief file with CUDA kernel smoothing with MovingAverage
  *
  *
  *
