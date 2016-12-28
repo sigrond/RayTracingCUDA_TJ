@@ -1,6 +1,6 @@
 /** \file IntensCalc_CUDA_kernel.cuh
  * \author Tomasz Jakubczyk
- * \brief plik nagłówkowy dla funkcji CUDA na GPU
+ * \brief header file of CUDA functions for GPU
  *
  *
  *
