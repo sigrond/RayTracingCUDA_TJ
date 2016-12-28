@@ -1,6 +1,6 @@
 /** \file CyclicBuffer.cpp
  * \author Tomasz Jakubczyk
- * \brief plik z implementacjami metod klasy monitora z buforem cyklicznym
+ * \brief file with implementations of cyclic buffer methods
  *
  *
  *
@@ -16,16 +16,16 @@
 using namespace std;
 using namespace ErrorCode;
 
-/** \brief konstruktor
+/** \brief constructor
  */
 CyclicBuffer::CyclicBuffer() :
     cBuffS(CBUFFS), cBeg(0), cEnd(0), itemCount(0), averageLoad(0.0f), loadCount(0.0f)
 {
-    for(int i=0;i<cBuffS;i++)/**< alokowanie pamięci bufora */
+    for(int i=0;i<cBuffS;i++)/**< alocate buffer memmory */
     {
         cBuff[i]=new char[65535*10];
-        frameNo[i]=-7;/**< niech oznacza to, że nigdy nie było użyte */
-        buffReady[i]=1;/**< na początku żaden bufor nie jest używany */
+        frameNo[i]=-7;/**< never used */
+        buffReady[i]=1;/**< no buffer is used */
     }
     for(int i=0;i<ERRNUM;i++)
     {
@@ -33,7 +33,7 @@ CyclicBuffer::CyclicBuffer() :
     }
 }
 
-/** \brief destruktor
+/** \brief destructor
  */
 CyclicBuffer::~CyclicBuffer()
 {
@@ -59,7 +59,7 @@ CyclicBuffer::~CyclicBuffer()
     lck.unlock();
 }
 
-/** \brief zajmij wskaźnik bufora do zapisu
+/** \brief claim buffer pointer for writing
  * \return char*
  */
 buffId* CyclicBuffer::claimForWrite()
@@ -73,7 +73,7 @@ buffId* CyclicBuffer::claimForWrite()
     while(itemCount==cBuffS || ((cEnd+1)%cBuffS==cBeg && itemCount!=0))
     {
         //printf("claimForWrite full cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
-        full.wait(lck);/**< czekamy jeśli bufor cykliczny jest pełny */
+        full.wait(lck);/**< wait if cyclic buffer is full */
     }
     unsigned int tmpEnd=cEnd;
     if(itemCount>0)
@@ -87,19 +87,19 @@ buffId* CyclicBuffer::claimForWrite()
     if(tmpEnd==cBeg && itemCount!=0)
     {
         errorCount[BufferOverflow]++;
-        printf("błąd krytyczny, przepełnienie bufora");
+        printf("błąd krytyczny, przepełnienie bufora");//buffer overflow
         throw string("błąd krytyczny, przepełnienie bufora");
     }
     while(buffReady[tmpEnd]!=1)
     {
-        buffReadyCond[tmpEnd].wait(lck);/**< jeśli coś używa bufora to czekamy poza monitorem */
+        buffReadyCond[tmpEnd].wait(lck);/**< if something uses buffer then wait outside the monitor */
     }
-    buffReady[tmpEnd]=-1;/**< zaznaczamy, że bufor jest używany */
+    buffReady[tmpEnd]=-1;/**< mark that buffer is used */
     lck.unlock();
     return new buffId(tmpEnd,cBuff[tmpEnd],frameNo[tmpEnd]);
 }
 
-/** \brief zwolnienie bufora po zapisaniu
+/** \brief unclaim buffer after writing
  * \param id buffId*
  * \return void
  */
@@ -114,15 +114,15 @@ void CyclicBuffer::writeEnd(buffId* id)
     cEnd=id->id;
     itemCount++;
     frameNo[id->id]=id->frameNo;
-    buffReady[id->id]=2;/**< zaznaczamy, że nie używamy już bufora */
-    monitorMtx.unlock();/**< odblokowujemy monitor */
-    buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
-    delete id;/**< zwalniamy wskaźnik strukturę */
+    buffReady[id->id]=2;/**< mark that buffer isn't used */
+    monitorMtx.unlock();/**< unlock monitor */
+    buffReadyCond[id->id].notify_one();/**< notify thread that buffer isn't used */
+    delete id;/**< free pointer to structure */
     id=nullptr;
-    empty.notify_one();/**< powiadamiamy, że bufor cykliczny nie jest już pusty */
+    empty.notify_one();/**< notify thread that cyclic buffer isn't empty */
 }
 
-/** \brief zajmij wskaźnik bufora do odczytu
+/** \brief claim buffer pointer for reading
  * \return buffId*
  */
 buffId* CyclicBuffer::claimForRead()
@@ -161,14 +161,14 @@ buffId* CyclicBuffer::claimForRead()
         #ifdef VERBOSE2
         printf("claimForRead buff not ready cBeg: %d cEnd: %d itemCount: %d\n",cBeg,cEnd,itemCount);
         #endif // VERBOSE2
-        buffReadyCond[tmpBeg].wait(lck);/**< jeśli coś używa bufora to czekamy poza monitorem */
+        buffReadyCond[tmpBeg].wait(lck);/**< if something uses buffer then wait outside the monitor */
     }
-    buffReady[tmpBeg]=-2;/**< zaznaczamy, że bufor jest używany */
+    buffReady[tmpBeg]=-2;/**< mark that buffer is used */
     lck.unlock();
     return new buffId(tmpBeg,cBuff[tmpBeg],frameNo[tmpBeg]);
 }
 
-/** \brief zwolnienie bufora po odczytaniu
+/** \brief unclaim buffer after reading
  * \param id buffId*
  * \return void
  */
@@ -229,9 +229,9 @@ void CyclicBuffer::readEnd(buffId* id)
         throw string("błąd krytyczny, ujemna liczba elementów bufora");
     }
     frameNo[id->id]=-2;
-    buffReady[id->id]=1;/**< zaznaczamy, że nie używamy już bufora */
+    buffReady[id->id]=1;/**< mark that buffer isn't used */
     lck.unlock();
-    buffReadyCond[id->id].notify_one();/**< powiadamiamy, że bufor jest nie używany */
+    buffReadyCond[id->id].notify_one();/**< notify thread that buffer isn't used */
     delete id;
     id=nullptr;
     full.notify_one();
