@@ -1,6 +1,6 @@
 /** \file CyclicBuffer.hpp
  * \author Tomasz Jakubczyk
- * \brief plik nagłówkowy klasy monitora z buforem cyklicznym
+ * \brief header file for monitor class with cyclic buffer
  *
  *
  *
@@ -13,7 +13,7 @@
 #include <exception>
 #include <string>
 
-/** \brief klasa wyjątku dla bufora cyklicznego
+/** \brief exception class for cyclic buffer
  */
 class CyclicBufferException : public std::exception
 {
@@ -27,7 +27,7 @@ public:
     }
 };
 
-/** \brief struktura zawierajaca wskaźnik na bufor i opisująca ten bufor
+/** \brief structure containing pointer to buffer and describing it
  */
 struct buffId
 {
@@ -43,7 +43,7 @@ struct buffId
 #define ERRNUM 10
 namespace ErrorCode
 {
-    /** \brief kody błędów bufora cyklicznego
+    /** \brief cyclic buffer error codes
      */
     enum ErrorCode
     {
@@ -55,7 +55,7 @@ namespace ErrorCode
         ReadEndAndNextBuffIsNotBeingWriten=5,
         ReadEndCousedNegativeNumberOfElements=6,
     };
-    /** \brief opisy błędów bufora cyklicznego
+    /** \brief cyclic bufer errors descriptions
      */
     static const char* ErrorNames[ERRNUM]={
         "BufferOverflow",
@@ -70,63 +70,63 @@ namespace ErrorCode
         ""
         };
 }
-/** \brief monitor dla bufora cyklicznego
+/** \brief monitor for cyclic buffer
  */
 class CyclicBuffer
 {
 private:
-    const int cBuffS;/**< rozmiar bufora cyklicznego */
-    int cBeg,cEnd;/**< początek i koniec bufora cyklicznego */
+    const int cBuffS;/**< size of cyclic buffer */
+    int cBeg,cEnd;/**< beginig and end of cyclic buffer */
     int itemCount;
-    std::condition_variable full;/**< bufor cykliczny pełny */
-    std::condition_variable empty;/**< bufor cykliczny pusty */
-    int buffReady[CBUFFS];/**< czy bufor nie jest już używany
-    1 - gotowy pusty
-    2 - gotowy pełny
-    -1 - używany do zapisu
-    -2 - używany do odczytu */
-    int frameNo[CBUFFS];/**< numery klatek pomogą znaleźć błędy */
+    std::condition_variable full;/**< cyclic buffer full */
+    std::condition_variable empty;/**< cyclic buffer empty */
+    int buffReady[CBUFFS];/**< is buffer already used
+    1 - ready empty
+    2 - ready full
+    -1 - used for writing
+    -2 - used for reading */
+    int frameNo[CBUFFS];/**< numbers of frames may help to find errors */
     std::condition_variable buffReadyCond[CBUFFS];
-    char* cBuff[CBUFFS];/**< bufor cykliczny z buforami odczytu z dysku */
+    char* cBuff[CBUFFS];/**< cyclic buffer of buffers for reading from hard drive */
     std::condition_variable monitorCond;
     std::mutex monitorMtx;
     int errorCount[ERRNUM];
-    /** \brief wypisuje status bez blokowania
+    /** \brief prints status without blocking
      * \return void
      */
     void _printStatus();
     float averageLoad;
     float loadCount;
 public:
-    /** \brief konstruktor
+    /** \brief constructor
      */
     CyclicBuffer();
-    /** \brief destruktor
+    /** \brief destructor
      */
     ~CyclicBuffer();
-    /** \brief zajmij wskaźnik bufora do zapisu
+    /** \brief claim buffer pointer for writing
      * \return char*
      */
     buffId* claimForWrite();
-    /** \brief zwolnienie bufora po zapisaniu
+    /** \brief unclaim buffer after writing
      * \param id buffId*
      * \return void
      */
     void writeEnd(buffId* id);
-    /** \brief zajmij wskaźnik bufora do odczytu
+    /** \brief claim buffer pointer for reading
      * \return buffId*
      */
     buffId* claimForRead();
-    /** \brief zwolnienie bufora po odczytaniu
+    /** \brief unclaim buffer after reading
      * \param id buffId*
      * \return void
      */
     void readEnd(buffId* id);
-    /** \brief zwraca aktualną chwilową liczbę elementów
+    /** \brief return current temporary number of elements
      * \return int itemCount
      */
     int tellItemCount();
-    /** \brief blokuje i wypisuje informacje o buforze
+    /** \brief block and print information about buffer
      * \return void
      */
     void printStatus();
