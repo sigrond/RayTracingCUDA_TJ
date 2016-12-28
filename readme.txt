@@ -15,6 +15,12 @@ Tip:
 If you get an error while execution, first try reseting matlab.
 
 
+IntensCalc
+
+build in Matlab command line:
+nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
+
+
 
 
 
