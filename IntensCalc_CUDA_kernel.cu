@@ -1,6 +1,6 @@
 /** \file IntensCalc_CUDA_kernel.cu
  * \author Tomasz Jakubczyk
- * \brief funkcje CUDA na GPU
+ * \brief CUDA functions for GPU
  *
  *
  *
@@ -25,13 +25,13 @@ extern "C"
 {
 
 
-/** \brief każdy watek sprawdza swój bajt danych i jeśli jest to początek jednego z kodów
- * JUNK albo header to zapisuje je synchronizowanej do listy
- * \param DataSpace char* wskaźnik na dane
- * \param junkList JunkStruct* wskaźnik na listę junk
- * \param junkCounter long int* wskaźnik na licznik znalezionych sekcji junk
- * \param headerList long int* wskaźnik na listę nagłówków
- * \param headerCounter long int* wskaźnik na licznik znalezionych nagłówków
+/** \brief each thread checks own byte of data and if it is begining of one of JUNK or header codes 
+ * if it is JUNK or header adequate lists are filled with syncronisation
+ * \param DataSpace char* pointer to data
+ * \param junkList JunkStruct* pointer to junk list
+ * \param junkCounter long int* pointer to counter of found junk sections
+ * \param headerList long int* pointer to headers list
+ * \param headerCounter long int* pointer to counter of found header sections
  * \return void
  *
  */
@@ -76,21 +76,6 @@ void findJunkAndHeadersD(char* DataSpace,long long int* junkList,long int* junkC
         //tmpULL&=0x0000000000000000;
         tmpULL+=0x00000000FFFFFFFF&(unsigned long long int)index;
         junkList[tmpJunkCounter]=tmpULL;
-        //long int* tmpJunkList=(long int*)(junkList+tmpJunkCounter);
-        //*tmpJunkList=index;
-        //long int* tmpJunkSizePt=(long int*)(DataSpace+index+4);
-        //long int tmpJunkSize=(long int)*tmpJunkSizePt;
-        //int tmpVal=500;
-        //if(tmpJunkSize>0 && tmpJunkSize<=2048)
-        //tmpVal=(int)tmpJunkSize;
-        //tmpVal=tmpVal%2049;
-        //tmpJunkList[1]=(int)500;//500;
-        //return;
-        //junkList[tmpJunkCounter].position=index;
-        //junkList[tmpJunkCounter]=0x00000000FFFFFFFF&(long long int)index;
-        //junkList[tmpJunkCounter]+=0xFFFFFFFF00000000&(long long int)(*(long int*)(DataSpace+index+4));
-        //junkList[tmpJunkCounter].size=*(long int*)(DataSpace+index+4);
-        //return;
     }
     bool headerB=true;
     for(int i=0;i<8;i++)
@@ -109,7 +94,7 @@ void findJunkAndHeadersD(char* DataSpace,long long int* junkList,long int* junkC
 }
 
 
-/** \brief wyliczanie wartości pixeli z bajtów filmu
+/** \brief calculate correct value of pixels
  *
  * \param buff char*
  * \param frame unsigned short*
@@ -132,10 +117,10 @@ void aviGetValueD(char* buff, unsigned short* frame, unsigned int frame_size)
 0x02,0x22,0x12,0x32,0x0A,0x2A,0x1A,0x3A,0x06,0x26,0x16,0x36,0x0E,0x2E,0x1E,0x3E,
 0x01,0x21,0x11,0x31,0x09,0x29,0x19,0x39,0x05,0x25,0x15,0x35,0x0D,0x2D,0x1D,0x3D,
 0x03,0x23,0x13,0x33,0x0B,0x2B,0x1B,0x3B,0x07,0x27,0x17,0x37,0x0F,0x2F,0x1F,0x3F};
-/**< tablica odwracająca kolejność 6 młodszych bitów */
+/**< table reverting 6 Least Significant bits */
 
     unsigned short bl,bh;
-    bh=0x00FF&buff[2*index];/**< CUDA zdaje się sama nie zerować starszego bajtu ze śmieci */
+    bh=0x00FF&buff[2*index];/**< CUDA seems to not zero first byte by itself as x86 does */
     bh=bh<<6;
     bl=0x00FF&buff[2*index+1];
     bl=bl>>2;
@@ -255,7 +240,7 @@ void demosaicD(unsigned short* frame, unsigned int frame_size, short* outArray)
     }
 }
 
-/** \brief oblicza wartość tła
+/** \brief calculate background (mean) value
  *
  * \param color short* klatka w wybranym kolorze
  * \param BgMask unsigned char* maska tła
@@ -290,13 +275,13 @@ void getBgD(short* color, unsigned char* BgMask, float* BgValue)
     }
 }
 
-/** \brief nałożenie maski na kolor klatki i podzielenie przez obraz korekcyjny
+/** \brief nałożenie maski na kolor klatki i podzielenie przez obraz korekcyjny apply mask and correction image for one color (chanel) frame
  *
- * \param color short* klatka w wybranym kolorze
- * \param mask int* nakładana maska
- * \param mask_size int rozmiar maski
- * \param IC float* obraz korekcyjny
- * \param I float* zwracana skorygowana klatka w wybranym kolorze
+ * \param color short* frame in selected color
+ * \param mask int* given mask
+ * \param mask_size int size of mask
+ * \param IC float* correction image
+ * \param I float* returned corrected frame in selected color
  * \return void
  *
  */
@@ -327,12 +312,12 @@ void correctionD(short* color, int* mask, int mask_size, float* IC, float* I, fl
     }
 }
 
-/** \brief wybiera równomiernie rozłożone punkty
+/** \brief selects evenly spaced points
  *
- * \param I float* duży zbiór danych
- * \param I_size int rozmiar dużego zbioru
- * \param R float* zbiór wybranych danych
- * \param R_size int rozmiar wybranych danych
+ * \param I float* big set of data
+ * \param I_size int big set size
+ * \param R float* set of selected data
+ * \param R_size int size of selected data
  * \return void
  *
  */
