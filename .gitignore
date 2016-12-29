@@ -42,7 +42,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-.layout
+*.layout
 
 # Matlab
 *.asv
@@ -53,4 +53,6 @@ Temporary Items
 *.log
 
 NewSession*
+
+*.pdb
 
