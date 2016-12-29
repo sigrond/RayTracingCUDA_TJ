@@ -55,6 +55,7 @@ Temporary Items
 NewSession*
 
 *.pdb
+*.obj
 
 *.cbp
 
