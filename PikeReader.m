@@ -166,7 +166,7 @@ function handles = Draw(hObject,handles)
            set(handles.hImSh,'Cdata',uint16(Frame));
         end
     end
-    % If sight checkbox is active then draw theoretical image
+    % If viewfinder checkbox is active then draw theoretical image
     if get(handles.chSight,'value')
        
         % setting the wavelength value
@@ -185,7 +185,7 @@ function handles = Draw(hObject,handles)
         if get(handles.chG,'value')
             handles.S.lambda = str2double(get(handles.edG,'string'));
             handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
-            handles.S.efD  = 10;%effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
+            handles.S.efD  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
              handles.ChKey = 2;
              guidata(hObject,handles);
                 handles = Sight(hObject,handles);
@@ -198,7 +198,7 @@ function handles = Draw(hObject,handles)
         if get(handles.chB,'value')
             handles.S.lambda = str2double(get(handles.edB,'string'));
              handles.S.m2 = Calculate_m(25,handles.S.lambda, 'BK7');
-             handles.S.efD  = 10;%effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
+             handles.S.efD  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,handles.S.lambda,25);
              handles.ChKey = 3;
             guidata(hObject,handles);
                 handles = Sight(hObject,handles);
@@ -316,7 +316,7 @@ for i = 1:size(handles.Br,1)
  end
 % Recalculation meters to pixels
 % shifting the  origin to middle of the image.
-% The center of image isn't placed  on [0,0] point, but on [240,320] point
+% The center of image isn't placed @ [0,0], but @ [240,320]
  handles.R1(1,:) = (handles.S.CCDW/2 + W1)/handles.S.PixSize;  % [ Pix ]
  handles.R1(2,:) = (handles.S.CCDH/2 + Hi1)/handles.S.PixSize; % [ Pix ]
   
@@ -366,9 +366,10 @@ guidata(hObject,handles)
 function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)
 % The IC_Calculation function, calculates 
 % intensity correction matrix for experimental data.       
-%% Creation of electrode border
-%% FIXME: could be sped up!!! with GPU  
-%handles.S.N = 3e3; % Number of points per side
+% Creation of rays set evenly distributed on the surface of a sphere concentric with the drolet
+% (previously the viewing window border - still persists in non-GPU version)
+
+%handles.S.N = 3e3; % Number of points per side - low number for non-GPU
 handles.S.N = 25000; %5e2 ; % Number of points per side
 
 %KA1=zeros(20,20);
@@ -389,8 +390,7 @@ if handles.GPU==1
     %na SPICA'y nie uda³o mi siê go odtworzyæ
     %zakomentowana linijka ze zmienionym zakresem nie powoduje tego b³êdu
     %nie wiem dlaczego tak siê dzieje, ale mo¿e byæ to bug w matlabie
-    %edit: b³¹d by³ zwi¹zany z nie sprawdzaniem, czy promieñ nie wyszed³
-    %poza macierz
+    %edit: there was an error associated with lack of checking for off-CCD rays
     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
     toc
     %[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);
@@ -505,10 +505,9 @@ end
 
 % --- Executes on button press in pbLoad.
 function pbLoad_Callback(hObject, eventdata, handles)
-% pbLoad_Callback - wczytuje film *.avi
-%I:\!From Justice\0.1ml\Splited
+% pbLoad_Callback - reads *.avi movie
 [handles.f,handles.dir] = uigetfile( {'*.avi';'*.*'},'Load files','F:\','MultiSelect','on' );
-% wyœwietlamy na panelu nazwe filmu
+% the movie name is displayed in the panel
     if ischar( handles.f )
         set( handles.up1, 'title', handles.f );
         handles.avi_title = handles.f;
@@ -961,7 +960,6 @@ function pbAngleCalc_Callback(hObject, eventdata, handles)
 %    guidata(hObject,handles);
 
 
-
 % --- Executes on button press in pbIntensCalc.
 function pbIntensCalc_Callback(hObject, eventdata, handles)
 % hObject    handle to pbIntensCalc (see GCBO)
@@ -1197,8 +1195,8 @@ elseif ischar( handles.f ) % The single file is chosen
         else
             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
      end
-handles.Prev=1;%%numer klatki do podgl¹du
-handles.SubBg=1;%%czy odejmujemy t³o
+handles.Prev=1; % frame number for preview
+handles.SubBg=1;% whether th background is subtracted
 %[I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 [I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
 I_Red=I_RedM';
@@ -1798,8 +1796,7 @@ if get(handles.chB,'value') % mask for blue channel background
     guidata(hObject,handles);
 end
 
-% --- Executes on button press in pbSetMask.
-
+% --- Executes on button press in pbSetMask - CAN POSSIBLY BE DELETED
  function pbSetMask_Callback(hObject, eventdata, handles)
 % hObject    handle to pbSetMask (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1961,8 +1958,6 @@ if get(handles.chB,'value') % mask for blue channel background
     guidata(hObject,handles);
 end
  
-
-
 
 % --------------------------------------------------------------------
 function Untitled_1_Callback(hObject, eventdata, handles)
