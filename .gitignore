@@ -44,3 +44,10 @@ Temporary Items
 
 .layout
 
+# Matlab
+*.asv
+*.mat
+
+*.odt
+*.exe
+
