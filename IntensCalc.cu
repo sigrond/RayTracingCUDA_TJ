@@ -1,7 +1,7 @@
 /** \file IntensCalc.cu
  * \author Tomasz Jakubczyk
  * \brief
- * kompilacja w matlabie:
+ * build in Matlab command line:
  * nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
  */
 
@@ -27,7 +27,7 @@ using namespace std;
 
 #ifdef DEBUG
 extern unsigned short* previewFa;
-//unsigned short* previewFa;
+
 extern short* previewFb;
 
 extern float* previewFc;
@@ -43,7 +43,7 @@ int SubBg=1;
 
 thread::id mainThreadId=this_thread::get_id();
 
-int NumFrames=0;/**< liczba klatek */
+int NumFrames=0;/**< number of frames */
 float* I_Red=nullptr;
 float* I_Green=nullptr;
 float* I_Blue=nullptr;
@@ -70,22 +70,22 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf("DEBUG ver.\n");
     #endif // DEBUG
 
-    int count_step=1;/**< co która klatka */
-    int* ipR;/**< indeksy czerwonej maski */
-    int ipR_size=0;/**< rozmiar czerwonej maski */
-    int* ipG;/**< indeksy zielonej maski */
-    int ipG_size=0;/**< rozmiar zielonej maski */
-    int* ipB;/**< indeksy niebieskiej maski */
-    int ipB_size=0;/**< rozmiar niebieskiej maski */
-    char* name;/**< nazwa pliku z pe³n¹ œcierzk¹ */
-    float* ICR_N;/**< czerwony wymaskowany obraz */
-    float* ICG_N;/**< zielony wymaskowany obraz */
-    float* ICB_N;/**< niebieski wymaskowany obraz */
-    int* I_S_R;/**< indexy według wymaskowanej posortowanej thety */
-    int* I_S_G;/**< indexy według wymaskowanej posortowanej thety */
-    int* I_S_B;/**< indexy według wymaskowanej posortowanej thety */
+    int count_step=1;/**< every "count_step" frame is processed */
+    int* ipR;/**< selected indexes of red frame */
+    int ipR_size=0;/**< size of red mask */
+    int* ipG;/**< selected indexes of green mask */
+    int ipG_size=0;/**< size of green mask */
+    int* ipB;/**< selected indexes of blue mask */
+    int ipB_size=0;/**< size of blue mask */
+    char* name;/**< full path file name */
+    float* ICR_N;/**< red masked image */
+    float* ICG_N;/**< green masked image */
+    float* ICB_N;/**< blue masked image */
+    int* I_S_R;/**< indexes by masked and sorted theta */
+    int* I_S_G;/**< indexes by masked and sorted theta */
+    int* I_S_B;/**< indexes by masked and sorted theta */
 
-    /**< sprawdzanie argumentów */
+    /**< checking arguments */
     if(nlhs!=
     #ifdef DEBUG
         7)
@@ -164,12 +164,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         return;
     }
 
-    /**< pobieranie danych */
-    bool isR=false, isG=false, isB=false;/**< czy jest zaznaczony kolor */
+    /**< geting data from Matlab */
+    bool isR=false, isG=false, isB=false;/**< is color checkbox marked */
     double* value;
     mxArray* tmp;
     mxArray* tmp2;
-    tmp=mxGetField(prhs[0],0,"fn");/**< nazwa pliku */
+    tmp=mxGetField(prhs[0],0,"fn");/**< file name */
     name=mxArrayToString(tmp);
     printf("name: %s\n",name);
 
@@ -186,7 +186,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         tmp=tmp2;
     }
     value=(double*)mxGetPr(tmp);
-    //printf("isR value: %lf\n",*value);
+
     isR=(bool)*value;
     printf("isR: %d\n",isR);
 
@@ -310,8 +310,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     printf(": %d\n",mxGetN(prhs[7])*mxGetM(prhs[7]));
     ICB_N=(float*)mxGetPr(prhs[8]);
     printf(": %d\n",mxGetN(prhs[8])*mxGetM(prhs[8]));
-    //for(int i=0;i<ipB_size;i++)
-    //    printf("%f,",ICB_N[i]);
+
 
     I_S_R=(int*)mxGetPr(prhs[9]);
     printf(": %d\n",mxGetN(prhs[9])*mxGetM(prhs[9]));
@@ -320,7 +319,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     I_S_B=(int*)mxGetPr(prhs[11]);
     printf(": %d\n",mxGetN(prhs[11])*mxGetM(prhs[11]));
 
-    /**< przygotowanie zwracanych macierzy */
+    /**< preparing output matrices */
     int dimsI_Red[2]={700,NumFrames};
     plhs[0]=mxCreateNumericArray(2,dimsI_Red,mxSINGLE_CLASS,mxREAL);
     I_Red=(float*)mxGetPr(plhs[0]);
@@ -359,9 +358,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 try
 {
 
-    /**< wczytaæ klatkê */
-    /**< wzorzec konsument producent */
-    CyclicBuffer cyclicBuffer;
+    /**< read frame */
+    
+    CyclicBuffer cyclicBuffer;/**< Producer–consumer design pattern */
 
     ifstream file (name, ios::in|ios::binary);
     if(!file.is_open())
@@ -397,7 +396,7 @@ try
     }
     else
     {
-        //przypadek 2 - duży plik
+        //case 2 - big file
         file.seekg(bigFileFirstFrame-8,ios::beg);
         file.read(codeBuff,8);
         b=true;
@@ -415,7 +414,7 @@ try
         }
         else
         {
-            //przypadek 3 - trzeba przejżeć nagłówek
+            //case 3 - need to look through the file header
             printf("format pliku #3\n");
             char* buff0=new char[65535+8];
             int ct=0;
@@ -442,35 +441,29 @@ try
             delete[] buff0;
             FrameStartCode=frameStartCode;
             fileFirstFrame=ct;
-            //printf("Warning! JUNK skipping is still experimental!\n");
-            //return;
         }
     }
 
     bool finished=false;
 
-    /**< wątek z wyrażenia lmbda wykonuje się poprawnie :D */
+    /**< thread with lambda expression */
     thread readMovieThread([&]
-    {/**< uwaga wyra¿enie lambda w w¹tku */
+    {
         buffId* bId=nullptr;
         try
         {
-        //throw 0;
         printf("readMovieThread\n");
-        //return;
         const int skok = (640*480*2)+8;
-        char* buff=nullptr;/**< aktualny adres zapisu z dysku */
+        char* buff=nullptr;/**< current address for writing data from hard drive */
         file.seekg(fileFirstFrame,ios::beg);
-        for(int i=0;i<NumFrames && !finished;i+=count_step)/**< czytanie klatek */
+        for(int i=0;i<NumFrames && !finished;i+=count_step)/**< reading frames*/
         {
-            //file.seekg((34824+(skok*(i))),ios::beg);
-/**< \todo można poprawić, żeby przesunięcie było względem obecnej pozycji i dało się czytać filmy >4GB */
             bId=cyclicBuffer.claimForWrite();
             buff=bId->pt;
             bId->frameNo=i;
             for(int j=0;j<10 && file.good();j++)
             {
-                file.read(buff+j*65535,65535);/**< 64KB to optymalny rozmiar bloku czytanego z dysku */
+                file.read(buff+j*65535,65535);/**< 64KB is optimal block size for reading from hard drive */
             }
             cyclicBuffer.writeEnd(bId);
         }
@@ -484,8 +477,6 @@ try
             system("pause");
             cyclicBuffer.writeEnd(bId);
             file.close();
-            //mexEvalString("drawnow;");
-            //exit(0);
         }
         catch(const exception& e)
         {
@@ -496,8 +487,6 @@ try
             system("pause");
             cyclicBuffer.writeEnd(bId);
             file.close();
-            //mexEvalString("drawnow;");
-            //exit(0);
         }
         catch(...)
         {
@@ -507,15 +496,14 @@ try
             system("pause");
             cyclicBuffer.writeEnd(bId);
             file.close();
-            //mexEvalString("drawnow;");
-            //exit(0);
+
         }
 
     });/**< readMovieThread lambda */
 
     setupCUDA_IC();
 
-    /**< szybkie obliczenie z ilu pikseli składa się tło */
+    /**< fast calculation of how many pixels background consists */
     float BgMaskSizeR[2]={0.0f, 0.0f};
     for(int i=0;i<BgM_MR;i++)//480
     {
@@ -582,7 +570,6 @@ try
     setMasksAndImagesAndSortedIndexes(ipR,ipR_size,ipG,ipG_size,ipB,ipB_size,ICR_N,ICG_N,ICB_N,I_S_R,I_S_G,I_S_B,
                                       BgMaskR,BgMaskSizeR,BgMaskG,BgMaskSizeG,BgMaskB,BgMaskSizeB);
 
-    /**< napisaæ szybsze odwracanie bajtu przy wyko¿ystaniu lookuptable */
 
     buffId* bID=nullptr;
 
@@ -603,7 +590,6 @@ try
 
     for(int k=0;k<NumFrames;k++)
     {
-        //frame=frameReader->getFrame();
         if(headerPosition>=655350)
         {
             tmpBuff=cyclicBuffer.claimForRead();
@@ -612,7 +598,6 @@ try
             tmpBuff=nullptr;
         }
         cudaMemGuard.lock();
-        //copyBuff(frame);
         findJunkAndHeaders();
         doIC(I_Red+k*700,I_Green+k*700,I_Blue+k*700);
         cudaMemGuard.unlock();
@@ -620,7 +605,6 @@ try
         if(k%500==0 || k==NumFrames-1)
         {
             printf("\b\b\b\b\b\b\b\b\n%5.2f%%\n",(float)(k*100)/(float)NumFrames);
-            //mexEvalString("drawnow;");
             mexEvalString("pause(.001);");
         }
     }
@@ -629,11 +613,11 @@ try
 
     printf("\nUsing old decodec!\n\n");
 
-    char* tmpBuff=nullptr;/**< tymczasowy adres bufora do odczytu */
+    char* tmpBuff=nullptr;/**< temporary address of reading buffer */
 
     long double licz=0.0f;
     int tmpFrameNo=-3;
-    int frameEnd=614400;/**< miejsce od którego w buforze może wystąpić nagłówek następnej klatki */
+    int frameEnd=614400;/**< point from which in buffer next frame header may occur */
     char* currentFrame=new char[655350];
     char* nextFrame=new char[655350];
     int nextFrameElements=0;
@@ -645,7 +629,7 @@ try
     int checkBuffForStartCodePosition=0;
     int lastFrameNo=-1;
     char junkCode[]="JUNK";
-    //long long int junkCt=0;
+
     int junkSize=0;
     bool junkB=true;
     int checkBuffForJunkPosition=0;
@@ -685,11 +669,8 @@ try
             }
             if(junkB)
             {
-                //printf("znaleziono JUNK ct=%d\n",ct);
-                //junkCt=ct;
                 junkSize=*(int*)(tmpBuff+j+4);
                 junkSize+=4;
-                //printf("JUNK size: %d\n",junkSize);
             }
             b=true;
             for(int i=checkBuffForStartCodePosition;i<8 && b;i++)
@@ -700,11 +681,10 @@ try
                     b=false;
                     break;
                 }
-                //b&=FrameStartCode[i]==tmpBuff[j+i];
                 b&=frameStartCode[i]==tmpBuff[j+i] || frameStartCodeS[i]==tmpBuff[j+i];
                 if(b)
                 {
-                    checkBuffForStartCodePosition=i;/**< zapisujemy na wypadek gdyby bufor przecioł nagłówek */
+                    checkBuffForStartCodePosition=i;/**< in case buffer cuts header in half */
                 }
                 else
                 {
@@ -723,7 +703,7 @@ try
                         printf("error1 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    memcpy(currentFrame,tmpBuff+srcOff,640*480*2);/**< wszystko co jest klatką */
+                    memcpy(currentFrame,tmpBuff+srcOff,640*480*2);/**< everything what is a frame */
                     srcOff=j+8;
                     if(srcOff<0 || srcOff>65535*10)
                     {
@@ -736,21 +716,15 @@ try
                         printf("error3 k: %d cpyNum: %d\n",k,cpyNum);
                         break;
                     }
-                    memcpy(nextFrame,tmpBuff+srcOff,cpyNum);/**< nadmiar do następnej klatki */
-                    nextFrameElements=65535*10-(j+8);/**< ile elementów weszło do następnej klatki */
-                    garbageElements=j-640*480*2;/**< ile śmieci mamy za nagłówkiem klatki */
+                    memcpy(nextFrame,tmpBuff+srcOff,cpyNum);/**< excess to the next frame */
+                    nextFrameElements=65535*10-(j+8);/**< how many elements enters to next frame */
+                    garbageElements=j-640*480*2;/**< how much garbage after frame header  */
                 }
                 else
                 {
-                    //if(j<=40950)
-                    //{
-                    //    printf("debug1 k: %d j: %d\n",k,j);
-                    //}
-                    garbageElements=nextFrameElements+j-640*480*2-junkSize;/**< śmieci za nagłówkiem klatki */
+                    garbageElements=nextFrameElements+j-640*480*2-junkSize;/**< garbage after frame header */
                     if(garbageElements<0 || garbageElements>614400)
                     {
-                        //printf("debug2 k: %d garbageElements: %d nextFrameElements: %d j: %d\n",k,garbageElements,nextFrameElements,j);
-                        //break;
                         garbageElements=nextFrameElements;
                     }
                     cpyNum=nextFrameElements-garbageElements;
@@ -765,23 +739,22 @@ try
                         break;
                     }
                     if(cpyNum>0 && cpyNum<=614400)
-                        memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< obecną klatkę dopełniamy tym co zostało z poprzedniego odczytu */
-                    dstOff=nextFrameElements-garbageElements;/**< gdzie w obecnej klatce kończą się dane z poprzedniego bloku */
+                        memcpy(currentFrame,nextFrame+garbageElements,cpyNum);/**< current frame is complemented with its data from previous reading */
+                    dstOff=nextFrameElements-garbageElements;/**< where in current frame data from previous block ends */
                     if(dstOff<0 || dstOff>614400)
                     {
                         printf("error6 k: %d dstOff: %d\n",k,dstOff);
                         break;
                     }
-                    //srcOff=j-640*480*2-(nextFrameElements-garbageElements);
                     srcOff=j>614400?j-614400:0;
                     if(srcOff<0 || srcOff>65535*10)
                     {
                         printf("error7 k: %d srcOff: %d\n",k,srcOff);
                         break;
                     }
-                    /**<                      v- kopiujemy do nagłówka, albo tylko do JUNK'u przed nagłówkiem */
-                    /**<                            v- j wskazuje na nagłówek jeszcze następnej klatki i tylko dopychamy dane do obecnej klatki */
-                    cpyNum=j-junkSize+dstOff<=614400?(j-junkSize>=0?j-junkSize:0):614400-dstOff;/**< większa manifestacja chaosu */
+                    /**<                      v- copying to header or to JUNK before header */
+                    /**<                            v- j points to header of next next frame */
+                    cpyNum=j-junkSize+dstOff<=614400?(j-junkSize>=0?j-junkSize:0):614400-dstOff;
                     if(cpyNum<0 || cpyNum>614400)
                     {
                         printf("error8 k: %d cpyNum: %d\n",k,cpyNum);
@@ -798,7 +771,7 @@ try
                         break;
                     }
                     if(cpyNum>0)
-                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,cpyNum);/**< następnie dopełniamy obecną klatkę tym co właśnie przeczytaliśmy */
+                        memcpy(currentFrame+dstOff,tmpBuff+srcOff,cpyNum);/**< fill up current frame with the most recent data */
                     srcOff=j+8;
                     if(srcOff<0 || srcOff>65535*10)
                     {
@@ -817,12 +790,11 @@ try
                         break;
                     }
                     if(cpyNum>0)
-                        memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< zapisujemy odczytany nadmiar */
+                        memcpy(nextFrame,tmpBuff+j+8,cpyNum);/**< copy excess data  */
                     nextFrameElements=65535*10-(j+8);
-                    junkSize=0;/**< nie zawsze przed nagłowkiem musi być JUNK */
+                    junkSize=0;/**< not always after header there must be JUNK */
                     if(nextFrameElements>=614400)
                     {
-                        //printf("debug3 k: %d nextFrameElements: %d\n",k,nextFrameElements);
                         copyBuff(currentFrame);
                         if(k<NumFrames)
                         {
@@ -838,11 +810,6 @@ try
                     }
                 }
                 frameEnd=j+8-40950;
-                //if(frameEnd<40950)
-                //{
-                //    printf("debug4 k: %d frameEnd: %d\n",k,frameEnd);
-                    //break;
-                //}
                 break;
             }
         }
@@ -852,7 +819,6 @@ try
         this_thread::sleep_for (chrono::milliseconds(10));
         #endif // SIM_HEAVY_CALC
 
-        //copyBuff(tmpBuff);
         cyclicBuffer.readEnd(bID);
         if(k<NumFrames)
         {
@@ -865,7 +831,6 @@ try
         if(k%500==0 || k==NumFrames-1)
         {
             printf("\b\b\b\b\b\b\b%5.2f%%\n",(float)(k*100)/(float)NumFrames);
-            //mexEvalString("drawnow;");
             mexEvalString("pause(.001);");
         }
     }
@@ -886,19 +851,11 @@ try
     readMovieThread.join();
     printf("readMovieThread joined\n");
     mexEvalString("pause(.001);");
-    //mexEvalString("drawnow;");
-
-    //correctnessControlThread.join();
-    //printf("correctnessControlThread joined\n");
-    //mexEvalString("pause(.001);");
-
-    //delete frameReader;
 
     #ifdef OLD_DECODEC
     delete[] currentFrame;
     delete[] nextFrame;
     #endif // OLD_DECODEC
-    //cyclicBuffer.~CyclicBuffer();
 
     freeCUDA_IC();
 }
@@ -928,11 +885,5 @@ catch(...)
     system("pause");
     //readMovieThread.join();
 }
-    /**< czytaæ wêksze bloki danych z pliku ni¿ po jednym znaku */
-    /**< dla klatki zastosowaæ demosaic */
-    /**< uzyskaæ wymaskowan¹ klatkê */
-    /**< podzieliæ wymaskowan¹ klatkê przez macierz korekcyjn¹ */
-    /**< u¿ywaæ strumieni CUDA i lub w¹tków, ¿eby jednoczeœnie czytaæ plik i liczyæ */
-    /**< ka¿d¹ posortowan¹ klatkê wyg³adziæ œredni¹ krocz¹c¹ */
-    /**< zwróciæ 700 równomiernie wybranych punktów dla ka¿dej klatki */
+
 }

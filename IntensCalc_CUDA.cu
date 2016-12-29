@@ -1,6 +1,6 @@
 /** \file IntensCalc_CUDA.cu
  * \author Tomasz Jakubczyk
- * \brief plik z implementacjami funkcji wywołujących CUDA'ę
+ * \brief file with functions implementations which call CUDA
  *
  *
  *
@@ -24,16 +24,16 @@
 #include "JunkStruct.h"
 
 #ifdef DEBUG
-extern unsigned short* previewFa;/**< klatka po obliczeniu wartości pixeli */
+extern unsigned short* previewFa;/**< frame after calculation pixels values */
 unsigned short* previewFa=nullptr;
 
-extern short* previewFb;/**< czerwona klatka po demosaicu */
+extern short* previewFb;/**< red frame after demosaic */
 short* previewFb=nullptr;
 
-extern float* previewFc;/**< czerwona klatka po nałożeniu obrazu korekcyjnego */
+extern float* previewFc;/**< red frame after applaying correction image */
 float* previewFc=nullptr;
 
-extern float* previewFd;/**< czerwona klatka po sumowaniu pixeli */
+extern float* previewFd;/**< red frame after summing pixels */
 float* previewFd=nullptr;
 
 extern int frameToPrev;
@@ -99,7 +99,7 @@ float BgMask_SizeG[2]={0.0f, 0.0f};
 float BgMask_SizeB[2]={0.0f, 0.0f};
 float lastProbablyCorrectBgValue=60;
 char* dev_DataSpace=NULL;
-long int headerPosition=0;/**< pozycja nagłówka w DataSpace z przed którego ostatnio była skopiowana klatka */
+long int headerPosition=0;/**< header position in DataSpace from before which previously frame was copied */
 #define MAX_JUNK_CHUNKS_PER_DATA_SPACE 128
 //JunkStruct* dev_junkList=NULL;
 long long int* dev_junkList=NULL;
@@ -121,7 +121,7 @@ extern "C"
 
 void setupCUDA_IC()
 {
-    /**< przygotowanie CUDA'y */
+    /**< prepare CUDA */
 
     checkCudaErrors(cudaSetDevice(0));
     err = cudaGetLastError();
@@ -416,15 +416,14 @@ void setMasksAndImagesAndSortedIndexes(
     BgMask_SizeB[1]=BgMaskSizeB[1];
 }
 
-/** \brief kopiuje klatkę z podanego bufora do pamięci karty
+/** \brief copy frame from given buffer to GPU memmory
  *
- * \param buff char* bufor z klatką
+ * \param buff char* buffer with frame
  * \return void
  *
  */
 void copyBuff(char* buff)
 {
-    /**< kopiujemy na kartę */
     checkCudaErrors(cudaSetDevice(0));
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -505,7 +504,7 @@ void findJunkAndHeaders()
 {
 try
 {
-    //zerujemy listy junk i headers oraz ich liczniki
+    //set to zero junk and headers lists
     //checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_junkList,0,sizeof(long long int)*MAX_JUNK_CHUNKS_PER_DATA_SPACE));
     checkCudaErrors(cudaMemset(dev_junkCounter,0,sizeof(long int)));
@@ -518,7 +517,7 @@ try
         throw std::string("cudaError(cudaMemset)");
     }
 
-    //kernel szukający junk i headers
+    //kernel searching for JUNK and headers 
     uint numThreads, numBlocks;
     computeGridSize(655350*2, 512, numBlocks, numThreads);
     unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
@@ -532,7 +531,7 @@ try
         throw std::string("cudaError(findJunkAndHeadersD)");
     }
 
-    //kopiujemy listy junk i headers do pamięci host
+    //copy junk and headers lists to host memmory
     int* tmpDst=(int*)junkList;
     int* tmpSrc=(int*)dev_junkList;
     //checkCudaErrors(cudaMemcpy((void*)tmpDst,tmpSrc,sizeof(JunkStruct)*MAX_JUNK_CHUNKS_PER_DATA_SPACE,cudaMemcpyDeviceToHost));
@@ -557,9 +556,9 @@ try
     printf("headerCounter: %d\n",headerCounter);
     #endif // DEBUG_CUDA_DECODEC1
 
-    //wybieramy fragmenty DataSpace do skopiowania (i kopujemy) do obszaru pamięci klatki na podstawie list junk, headers i pozycji nagłówka ostatnio skopiowanej klatki
-    //szukamy następnego nagłówka
-    long int currentHeader=0;/**< pozycja nagłówka za szukaną klatką */
+	//select fragments of DataSpace to copy to correct frame memory segment based on junk and headers lists and position of last copied frame
+    //searching for next header
+    long int currentHeader=0;/**< position of header after frame we look for */
     for(int i=0;i<headerCounter;i++)
     {
         if(headerList[i]>0 && headerList[i]>headerPosition && headerList[i]>640*480*2)
@@ -573,20 +572,20 @@ try
     #ifdef DEBUG_CUDA_DECODEC1
     printf("currentHeader: %d\n",currentHeader);
     #endif // DEBUG_CUDA_DECODEC1
-    //tworzymy vector z junk list i sortujemy
-    std::vector<JunkStruct> junkVector;/**< wektor z pozycjami i rozmiarami sekcji JUNK */
+    //create vector with junk list and sort
+    std::vector<JunkStruct> junkVector;/**< vector with positions and sizes of JUNK sections */
     for(int i=0;i<junkCounter;i++)
     {
         JunkStruct* tmpJunkStruct=(JunkStruct*)junkList+i;
         junkVector.push_back(*tmpJunkStruct);
     }
     std::sort(junkVector.begin(),junkVector.end(),compJunk);
-    //wybieramy fragmenty do skopiowania i kopiujemy
-    long int copiedBytes=0;/**< już skopiowanych bajtów */
-    long int dstOffset=0;/**< do kąd kopiować */
-    long int srcOffset=0;/**< z kąd kopiować */
-    long int bytesToCopy=0;/**< bajtów do skopiowania */
-    long int lastSkipedPossition=currentHeader;/**< prawy ogranicznik kopiowania fragmentu */
+    //select fragments and copy
+    long int copiedBytes=0;/**< already copied bytes */
+    long int dstOffset=0;/**< copy to */
+    long int srcOffset=0;/**< copy from */
+    long int bytesToCopy=0;/**< bytes to copy */
+    long int lastSkipedPossition=currentHeader;/**< right stop of copying fragment */
     for(int i=junkVector.size()-1;i>=0;i--)
     {
         if(junkVector.at(i).position<currentHeader && junkVector.at(i).position>headerPosition && copiedBytes<(640*480*2))
@@ -598,8 +597,6 @@ try
             }
             if(bytesToCopy<0)
             {
-                //printf("bytesToCopy<0\n");
-                //throw std::string("bytesToCopy<0");
                 break;
             }
             srcOffset=junkVector.at(i).position+junkVector.at(i).size+8;
@@ -607,26 +604,22 @@ try
             {
                 printf("srcOffset+bytesToCopy>655350*2\n");
                 throw std::string("srcOffset+bytesToCopy>655350*2");
-                //break;
             }
             if(srcOffset<0)
             {
                 printf("srcOffset<0\n");
                 throw std::string("srcOffset<0");
-                //break;
             }
             dstOffset=640*480*2-copiedBytes-bytesToCopy;
             if(dstOffset+bytesToCopy>640*480*2)
             {
                 printf("dstOffset+bytesToCopy>640*480*2\n");
                 throw std::string("dstOffset+bytesToCopy>640*480*2");
-                //break;
             }
             if(dstOffset<0)
             {
                 printf("dstOffset<0\n");
                 throw std::string("dstOffset<0");
-                //break;
             }
             #ifdef DEBUG_CUDA_DECODEC1
             printf("dstOffset: %d\n",dstOffset);
@@ -733,7 +726,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     unsigned int dimGridY=numBlocks/65535+1;
     dim3 dimGrid(dimGridX,dimGridY);
 
-    /**< Jeśli tutaj będzie działało za wolno, to można wykozystać dodatkowy wątek CPU i CUDA streams */
+    /**< possible speedup by use of streams */
     aviGetValueD<<< dimGrid, numThreads >>>(dev_buff,dev_frame,640*480);
     err = cudaGetLastError();
     if (err != cudaSuccess)
@@ -771,7 +764,6 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
                 for(int j=0;j<640;j++)//640
                 {
                     if(i%16==8 && j%16==8)
-                    //printf("%d ",previewFb2[i*640+j]>=1000?1:0);
                     printf("%2d",previewFb2[i*640+j]/100);
                 }
                 if(i%16==8)
@@ -780,7 +772,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("\n");
         }
         #endif // DEBUG
-        /**< obliczyć wartość tła */
+        /**< calculate background value */
         computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
@@ -809,22 +801,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         tmpBgValue[1]/=BgMask_SizeR[1];
         avgBgValueR[0]+=tmpBgValue[0];
         avgBgValueR[1]+=tmpBgValue[1];
-        /*if(licznik_klatek++<50)
-        {
-            printf("(R)tmpBgValue[0]: %f, ",tmpBgValue[0]);
-            printf("(R)tmpBgValue[1]: %f\n",tmpBgValue[1]);
-        }*/
-        /*if(tmpBgValue>=200.0f)
-        {
-            printf("tmpBgValue: %f, ",tmpBgValue);
-            tmpBgValue=lastProbablyCorrectBgValue;
-        }
-        else
-        {
-            lastProbablyCorrectBgValue+=tmpBgValue;
-            lastProbablyCorrectBgValue/=2.0f;
-        }*/
-        //checkCudaErrors(cudaMemset(dev_BgValue,tmpBgValue,sizeof(float)));
+		
         if(SubBg==0)
         {
             tmpBgValue[0]=0.0f;
@@ -837,7 +814,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
         }
 
-        /**< nałożyć maskę i skorygować */
+        /**< apply mask and correction image */
         computeGridSize(ipR_Size, 512, numBlocks, numThreads);
         dimGridX=numBlocks<65535?numBlocks:65535;
         dimGridY=numBlocks/65535+1;
@@ -853,15 +830,9 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
         if(licznik_klatek==frameToPrev)
         checkCudaErrors(cudaMemcpy((void*)previewFc,dev_IR,sizeof(float)*ipR_Size,cudaMemcpyDeviceToHost));
         #endif // DEBUG
-        /**< przydatna sztuczka do podglądania w matlabie:
-        tmpIM=zeros(640,480,'single');
-        tmpIM=reshape(tmpIM,640*480,[]);
-        tmpIM(ipR)=prevRC;
-        tmpIM=reshape(tmpIM,640,480);
-        imtool(tmpIM')
-         */
 
-        /**< średnia krocząca */
+
+        /**< moving average kernel call */
         MovingAverageD<<< dimGrid, numThreads >>>(dev_IR,ipR_Size,dev_I_S_R,dev_sIR,64.0f);
         err = cudaGetLastError();
         if (err != cudaSuccess)
@@ -882,7 +853,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(DivD): %s\n", cudaGetErrorString(err));
         }
 
-        /**< wybór reprezentantów */
+        /**< select representatives */
         computeGridSize(700, 512, numBlocks, numThreads);
         dimGridX=numBlocks<65535?numBlocks:65535;
         dimGridY=numBlocks/65535+1;
@@ -898,7 +869,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     }
     if(ipG_Size>0)
     {
-        /**< obliczyć wartość tła */
+        /**< calculate background value */
         computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
@@ -944,7 +915,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
         }
 
-        /**< nałożyć maskę i skorygować */
+        /**< apply mask and correction image */
         computeGridSize(ipG_Size, 512, numBlocks, numThreads);
         dimGridX=numBlocks<65535?numBlocks:65535;
         dimGridY=numBlocks/65535+1;
@@ -987,7 +958,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
     }
     if(ipB_Size>0)
     {
-        /**< obliczyć wartość tła */
+        /**< calculate background value */
         computeGridSize(640*480, 512, numBlocks, numThreads);
         unsigned int dimGridX=numBlocks<65535?numBlocks:65535;
         unsigned int dimGridY=numBlocks/65535+1;
@@ -1033,7 +1004,7 @@ void doIC(float* I_Red, float* I_Green, float* I_Blue)
             printf("cudaError(cudaMemcpy): %s\n", cudaGetErrorString(err));
         }
 
-        /**< nałożyć maskę i skorygować */
+        /**< apply mask and correction image */
         computeGridSize(ipB_Size, 512, numBlocks, numThreads);
         dimGridX=numBlocks<65535?numBlocks:65535;
         dimGridY=numBlocks/65535+1;

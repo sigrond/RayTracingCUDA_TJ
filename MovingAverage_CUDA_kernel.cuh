@@ -1,6 +1,6 @@
 /** \file MovingAverage_CUDA_kernel.cuh
  * \author Tomasz Jakubczyk
- * \brief plik nag³ówkowy kernelu CUDA
+ * \brief header file for MovingAverage CUDA kernel
  *
  *
  *
