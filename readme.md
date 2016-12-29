@@ -34,9 +34,13 @@ In current version of app frames are found and put together on CPU. The rest of 
 
 ##### compilation line:
 32bit:
+`
 nvmex -f nvmexopts.bat RayTracing.cu RayTraceCUDA.cu RayTraceCUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\win32 -lcufft -lcudart -lcuda -output RayTracingCUDA
+`
 64bit:
+`
 nvmex -f nvmexopts64.bat RayTracing.cu RayTraceCUDA.cu RayTraceCUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda -output RayTracingCUDA
+`
 
 
 Tip:
@@ -46,6 +50,7 @@ If you get an error while execution, first try reseting matlab.
 #### IntensCalc
 
 ##### build in Matlab command line:
+`
 nvmex -f nvmexopts64.bat IntensCalc.cu IntensCalc_CUDA_kernel.cu IntensCalc_CUDA.cu CyclicBuffer.cpp MovingAverage_CUDA_kernel.cu -IC:\CUDA\include -IC:\CUDA\inc -LC:\cuda\lib\x64 -lcufft -lcudart -lcuda COMPFLAGS="$COMPFLAGS -std=c++11"
-
+`
 
