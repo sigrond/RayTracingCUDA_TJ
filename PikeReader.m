@@ -86,7 +86,8 @@ function varargout = PikeReader_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 %% My functions
 %=============== My functions =========================================
-function Frame = FrameRider(hObject,handles)
+
+    function Frame = FrameRider(hObject,handles)
 % reads frame from movie ->
 if isempty( handles.fn )
 %     In case when movie is not loaded
@@ -399,9 +400,10 @@ if handles.GPU==1
 
     %IC = IC./max(IC(:));
     
-    %imtool(IC);
+%     imtool(IC);
     figure;
-    mesh(double(IC));
+%     mesh(double(IC));
+    surf(IC,'linestyle','none');view([0,90]);
     
     %PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)
     PXX=PX(1,:,:)./PX(4,:,:);

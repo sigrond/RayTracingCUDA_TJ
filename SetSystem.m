@@ -6,9 +6,11 @@ function S = SetSystem
 %
 
 % Parameters of lens:
-S.D    = 11.87;         % lens diametr. Actually defined by the inner diameter of the objective tube
-                        % from Mr. Wódka workshop - www.poioptyka.com.pl:
-                        % 12.4 + 0.2 is the edge cut --> 0.14142 in diam. and thickness
+S.D    = 12;            % lens diametr. Actually defined by the inner diameter of the objective tube 
+                        % nominal according to drawing is 12
+                        % big chaber objectives: 11.88
+                        % whole lens from Mr. Wódka workshop - www.poioptyka.com.pl:
+                        % 12.4 - 0.2 is the edge cut --> 0.14142 in diam. and thickness
                         % Setting 15 is sometimes convenient for calculations
 S.R(1)    = 10.3; % radius of lens curvature first lens
 S.R(2)    = 10.3; % radius of lens curvature second lens
@@ -24,8 +26,8 @@ S.R_dis_Ring = 29.68/2; % outer radius of electrode distancing ring
 S.R_midl_El  = 29.64/2;  % outer radius of midle electrode of trap
 
 S.l1   = 17.33;   %  Distance between center of the trap and  first lens
-%S.ll   = 37.4;   % Distance between lenses apex-apex + optical length in polarizer - small chamber
-S.ll   = 37.4+1.3;   % Distance between lenses apex-apex + optical length in polarizer - big chamber
+S.ll   = 37.4;   % Distance between lenses apex-apex + optical length in polarizer - small chamber
+% S.ll   = 37.4+1.3;   % Distance between lenses apex-apex + optical length in polarizer - big chamber
 S.ld2  = 58.3 + S.l1; % 58.3 - distence from first lens to second diafragm  %76.6; % Distance to second diaphragm
 % Wavelength of incident ray
 S.lambda = [];  %lambda can have the structure of RGB lambda(1:3) = [R,G,B] but so far it does not;
