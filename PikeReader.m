@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 19-Jul-2016 13:32:38
+% Last Modified by GUIDE v2.5 27-Feb-2017 20:21:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2053,3 +2053,32 @@ function ChGPU_Callback(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of ChGPU
 handles.GPU=get(hObject,'Value');
 guidata(hObject,handles);
+
+
+% --- Executes on button press in pushbutton_Auto_Find.
+function pushbutton_Auto_Find_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_Auto_Find (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if ~isempty(handles.sF)
+	temp = handles.sF;
+else
+    temp = handles.cF;
+end
+Pk=handles.S.Pk;
+PCCD=[handles.shX, handles.shY, handles.S.lCCD];
+[ Pk, PCCD ]=BorderRecognition(temp, [Pk PCCD])
+handles.S.Pk=Pk;
+handles.shX=PCCD(1);
+handles.shY=PCCD(2);
+handles.S.lCCD=PCCD(3);
+% setting the droplet's position
+set(handles.edPdrop,'string',num2str(Pk));
+ % setting the CCD's position
+set(handles.edCCD,'string',num2str([handles.S.lCCD, handles.shX, handles.shY]));
+handles = Draw(hObject,handles);
+guidata(hObject,handles);
+
+
+
+

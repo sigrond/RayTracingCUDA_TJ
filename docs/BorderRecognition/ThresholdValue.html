@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ThresholdValue</title>
+  <meta name="keywords" content="ThresholdValue">
+  <meta name="description" content="ThresholdValue znajdowanie wartoœci progowej miêdzy jasnym a ciemnym pixelem">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>ThresholdValue
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>ThresholdValue znajdowanie wartoœci progowej miêdzy jasnym a ciemnym pixelem</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ alpha1, alpha2 ] = ThresholdValue( Frame ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">ThresholdValue znajdowanie wartoœci progowej miêdzy jasnym a ciemnym pixelem
+   szukamy wyszukiwaniem binarnym zadanej proporcji jasnych do ciemnych</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderRecognition.html" class="code" title="function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )">BorderRecognition</a>	BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ alpha1, alpha2 ] = ThresholdValue( Frame )</a>
+0002 <span class="comment">%ThresholdValue znajdowanie wartoœci progowej miêdzy jasnym a ciemnym pixelem</span>
+0003 <span class="comment">%   szukamy wyszukiwaniem binarnym zadanej proporcji jasnych do ciemnych</span>
+0004 proportion=80402/226798;<span class="comment">%szukana proporcja jasnych do ciemnych</span>
+0005 epsylon=0.001;<span class="comment">%zadana dok³adnoœæ</span>
+0006 x=0;<span class="comment">%aktualna proporcja od 0 do 307200 (lub infty)</span>
+0007 alpha1=0.5;<span class="comment">%aktualny próg od 0 do 1</span>
+0008 al=0;<span class="comment">%próg z lewej</span>
+0009 ar=1;<span class="comment">%próg z prawej</span>
+0010 <span class="comment">%i=0;</span>
+0011 <span class="comment">%proportion</span>
+0012 <span class="keyword">while</span> (x &gt; proportion + epsylon || x &lt; proportion - epsylon)
+0013     fge=(Frame(:,:,1)./max(max(Frame(:,:,1))))&gt;alpha1;
+0014     bs=sum(sum(fge));
+0015     x=bs/(307200-bs);
+0016     <span class="comment">%x</span>
+0017     <span class="keyword">if</span> x &gt; proportion + epsylon
+0018         al=alpha1;
+0019         alpha1=mean([ar,alpha1]);
+0020     <span class="keyword">elseif</span> x &lt; proportion - epsylon
+0021         ar=alpha1;
+0022         alpha1=mean([al,alpha1]);
+0023     <span class="keyword">end</span>
+0024     <span class="comment">%alpha1</span>
+0025     <span class="comment">%i=i+1</span>
+0026 <span class="keyword">end</span>
+0027 
+0028 epsylon=0.01;
+0029 x=0;<span class="comment">%aktualna proporcja od 0 do 307200 (lub infty)</span>
+0030 alpha2=0.5;<span class="comment">%aktualny próg od 0 do 1</span>
+0031 al=0;<span class="comment">%próg z lewej</span>
+0032 ar=1;<span class="comment">%próg z prawej</span>
+0033 <span class="keyword">while</span> x &gt; proportion + epsylon || x &lt; proportion - epsylon
+0034     fge=(Frame(:,:,3)./max(max(Frame(:,:,3))))&gt;alpha2;
+0035     bs=sum(sum(fge));
+0036     x=bs/(307200-bs);
+0037     <span class="keyword">if</span> x &gt; proportion + epsylon
+0038         al=alpha2;
+0039         alpha2=mean([ar,alpha2]);
+0040     <span class="keyword">elseif</span> x &lt; proportion - epsylon
+0041         ar=alpha2;
+0042         alpha2=mean([al,alpha2]);
+0043     <span class="keyword">end</span>
+0044 <span class="keyword">end</span>
+0045 
+0046 <span class="keyword">end</span>
+0047</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

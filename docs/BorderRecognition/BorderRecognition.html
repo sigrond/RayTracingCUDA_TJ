@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BorderRecognition</title>
+  <meta name="keywords" content="BorderRecognition">
+  <meta name="description" content="BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>BorderRecognition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li><li><a href="BrightnesScalarization.html" class="code" title="function [ score ] = BrightnesScalarization( Frame,a1,a2, Args )">BrightnesScalarization</a>	BrightnesScalarization funkcja skalaryzujaca jasnoœæ na zewn¹trz i</li><li><a href="FindBorderPoints.html" class="code" title="function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )">FindBorderPoints</a>	FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z</li><li><a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>	MEANSQUAREDDISTANCE Ta funkcja ma byæ minimalizowan¹ funkcj¹ celu</li><li><a href="ThresholdValue.html" class="code" title="function [ alpha1, alpha2 ] = ThresholdValue( Frame )">ThresholdValue</a>	ThresholdValue znajdowanie wartoœci progowej miêdzy jasnym a ciemnym pixelem</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="quickstart.html" class="code" title="">quickstart</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function stop = myoutfun(x, optimValues, state)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )</a>
+0002 <span class="comment">%BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</span>
+0003 <span class="comment">%   Detailed explanation goes here</span>
+0004 
+0005 <span class="keyword">if</span>(exist(<span class="string">'initial_point'</span>,<span class="string">'var'</span>))
+0006     <span class="keyword">if</span>(length(initial_point)~=6)
+0007         initial_point=[0,0,0,0,0,82];
+0008     <span class="keyword">end</span>
+0009 <span class="keyword">else</span>
+0010     initial_point=[0,0,0,0,0,82];
+0011 <span class="keyword">end</span>
+0012 
+0013 <span class="keyword">if</span> 0
+0014 <span class="comment">%hf = imtool( Frame./(max(max(max(Frame)))/20) );</span>
+0015 hf = imtool( Frame(:,:,1), [ min(min(Frame(:,:,1))) max(max(Frame(:,:,1))) ]);
+0016 set(hf,<span class="string">'name'</span>,<span class="string">'Select Border Points for red color!'</span>)
+0017 ha = get(hf,<span class="string">'CurrentAxes'</span>);
+0018 hold(ha,<span class="string">'on'</span>);
+0019 h = impoly(ha);
+0020 positionr = wait(h);
+0021 delete(h);
+0022 
+0023 delete(hf);
+0024 hf = imtool( Frame(:,:,3), [ min(min(Frame(:,:,3))) max(max(Frame(:,:,3))) ]);
+0025 ha = get(hf,<span class="string">'CurrentAxes'</span>);
+0026 hold(ha,<span class="string">'on'</span>);
+0027 
+0028 hs=scatter(ha,positionr(:,1),positionr(:,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'m'</span>);
+0029 
+0030 set(hf,<span class="string">'name'</span>,<span class="string">'Select Border Points for blue color!'</span>)
+0031 hb = impoly(ha);
+0032 positionb = wait(hb);
+0033 delete(hb);
+0034 
+0035 delete(hf);
+0036 
+0037 hf = imtool( Frame./(max(max(max(Frame)))/20) );
+0038 <span class="keyword">end</span>
+0039 [a1 a2]=<a href="ThresholdValue.html" class="code" title="function [ alpha1, alpha2 ] = ThresholdValue( Frame )">ThresholdValue</a>(Frame);
+0040 hf = imtool( (Frame(:,:,1)./max(max(Frame(:,:,1)))&gt;a1)|(Frame(:,:,3)./max(max(Frame(:,:,3)))&gt;a2) );
+0041 <span class="comment">%imtool( (Frame(:,:,1)./max(max(Frame(:,:,1)))&lt;a1)&amp;(Frame(:,:,3)./max(max(Frame(:,:,3)))&lt;a2) );</span>
+0042 <span class="comment">%imtool( (Frame(:,:,3)./max(max(Frame(:,:,3)))&gt;0.09) );</span>
+0043 ha = get(hf,<span class="string">'CurrentAxes'</span>);
+0044 hold(ha,<span class="string">'on'</span>);
+0045 <span class="keyword">if</span> 0
+0046 hs=scatter(ha,positionr(:,1),positionr(:,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'m'</span>);
+0047 
+0048 hs=scatter(ha,positionb(:,1),positionb(:,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'c'</span>);
+0049 <span class="keyword">end</span>
+0050 
+0051 t0=tic;
+0052 t1=0;
+0053 
+0054 <span class="comment">%Position=position;</span>
+0055 
+0056 r=658;
+0057 g=532;
+0058 b=458;
+0059 
+0060 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(0,0,0,0,0,82,r);
+0061 hp=plot(ha,X,Y,<span class="string">'-xr'</span>);
+0062 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(0,0,0,0,0,82,b);
+0063 hpb=plot(ha,X,Y,<span class="string">'-xb'</span>);
+0064 
+0065 <a name="_sub1" href="#_subfunctions" class="code">function stop = myoutfun(x, optimValues, state)</a>
+0066 stop = false;
+0067 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(x(1),x(2),x(3),x(4),x(5),x(6),r);
+0068 <span class="comment">%[Br, Dr]=BrightInDimOut(Frame(:,:,1),X,Y);</span>
+0069 delete(hp);
+0070 hp=plot(ha,X,Y,<span class="string">'-xr'</span>);
+0071 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(x(1),x(2),x(3),x(4),x(5),x(6),b);
+0072 <span class="comment">%[Bb, Db]=BrightInDimOut(Frame(:,:,3),X,Y);</span>
+0073 delete(hpb);
+0074 hpb=plot(ha,X,Y,<span class="string">'-xb'</span>);
+0075 set(hf,<span class="string">'name'</span>,sprintf(<span class="string">'%f %f %f %f %f %f'</span>,x(1),x(2),x(3),x(4),x(5),x(6)))
+0076 drawnow
+0077 <span class="comment">%display(Br+Bb+Dr+Db);</span>
+0078 <span class="keyword">if</span>(toc(t0)&gt;200)
+0079     stop=true;
+0080 <span class="keyword">end</span>
+0081 <span class="keyword">if</span>(toc(t1)&gt;90)
+0082     stop=true;
+0083 <span class="keyword">end</span>
+0084 <span class="keyword">end</span>
+0085 
+0086 <span class="keyword">if</span> 0
+0087     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'MaxIter'</span>,1200,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9);
+0088 
+0089     [Args, f,exitflag,output]=fminsearch(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0090 
+0091 <span class="keyword">elseif</span> 0
+0092     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'bfgs'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0093     [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0094 <span class="keyword">elseif</span> 0
+0095     t1=tic;
+0096     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'MaxIter'</span>,1200,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9);
+0097     [Args, f,exitflag,output]=fminsearch(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0098     Pk=[Args(1),Args(2),Args(3)];
+0099     PCCD=[Args(4),Args(5),Args(6)];
+0100     toc(t1)
+0101     
+0102     t1=tic;
+0103     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'bfgs'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0104     [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0105     Pk=[Args(1),Args(2),Args(3)];
+0106     PCCD=[Args(4),Args(5),Args(6)];
+0107     toc(t1)
+0108     
+0109     t1=tic;
+0110     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'dfp'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0111     [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0112     Pk=[Args(1),Args(2),Args(3)];
+0113     PCCD=[Args(4),Args(5),Args(6)];
+0114     toc(t1)
+0115     
+0116     t1=tic;
+0117     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'steepdesc'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0118     [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0119     Pk=[Args(1),Args(2),Args(3)];
+0120     PCCD=[Args(4),Args(5),Args(6)];
+0121     toc(t1)
+0122 <span class="keyword">elseif</span> 0
+0123     t1=tic;
+0124     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'bfgs'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0125     [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),initial_point,options);
+0126     Pk=[Args(1),Args(2),Args(3)];
+0127     PCCD=[Args(4),Args(5),Args(6)];
+0128     toc(t1)
+0129     
+0130     t1=tic;
+0131     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'MaxIter'</span>,1200,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9);
+0132     [Args, f,exitflag,output]=fminsearch(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(positionr,positionb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
+0133     Pk=[Args(1),Args(2),Args(3)];
+0134     PCCD=[Args(4),Args(5),Args(6)];
+0135     toc(t1)
+0136 <span class="keyword">else</span>
+0137     t1=tic;
+0138     options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'MaxIter'</span>,1200,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9);
+0139     [Args, f,exitflag,output]=fminsearch(@(x)<a href="BrightnesScalarization.html" class="code" title="function [ score ] = BrightnesScalarization( Frame,a1,a2, Args )">BrightnesScalarization</a>(Frame,a1,a2,x),initial_point,options);
+0140     Pk=[Args(1),Args(2),Args(3)];
+0141     PCCD=[Args(4),Args(5),Args(6)];
+0142     toc(t1)
+0143 <span class="keyword">end</span>
+0144 
+0145 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
+0146 delete(hp);
+0147 hp=plot(ha,X,Y,<span class="string">'-xr'</span>);
+0148 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),b);
+0149 delete(hpb);
+0150 hpb=plot(ha,X,Y,<span class="string">'-xb'</span>);
+0151 
+0152 output
+0153 
+0154 Pk=[Args(1),Args(2),Args(3)];
+0155 PCCD=[Args(4),Args(5),Args(6)];
+0156 [pointsr, pointsb]=<a href="FindBorderPoints.html" class="code" title="function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )">FindBorderPoints</a>(Frame, [Pk,PCCD]);
+0157 
+0158 hf = imtool( Frame./(max(max(max(Frame)))/20) );
+0159 <span class="comment">%hf = imtool( Frame(:,:,1), [ min(min(Frame(:,:,1))) max(max(Frame(:,:,1))) ]);</span>
+0160 ha = get(hf,<span class="string">'CurrentAxes'</span>);
+0161 hold(ha,<span class="string">'on'</span>);
+0162 hs=scatter(ha,pointsr(:,1),pointsr(:,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'m'</span>);
+0163 hs=scatter(ha,pointsb(:,1),pointsb(:,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'c'</span>);
+0164 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
+0165 hp=plot(ha,X,Y,<span class="string">'-xr'</span>);
+0166 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),b);
+0167 hpb=plot(ha,X,Y,<span class="string">'-xb'</span>);
+0168 
+0169 t1=tic;
+0170 options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'Diagnostics'</span>,<span class="string">'on'</span>,<span class="string">'MaxFunEvals'</span>,1200,<span class="string">'HessUpdate'</span>,<span class="string">'bfgs'</span>,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9,<span class="string">'TypicalX'</span>,[1e-1,1,1,1,1,1e-1]);
+0171 [Args, f,exitflag,output]=fminunc(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
+0172 Pk=[Args(1),Args(2),Args(3)];
+0173 PCCD=[Args(4),Args(5),Args(6)];
+0174 toc(t1)
+0175 
+0176 t1=tic;
+0177 options = optimset(<span class="string">'Display'</span>,<span class="string">'iter'</span>,<span class="string">'OutputFcn'</span>,@<a href="#_sub1" class="code" title="subfunction stop = myoutfun(x, optimValues, state)">myoutfun</a>,<span class="string">'MaxIter'</span>,1200,<span class="string">'TolFun'</span>,1e-9,<span class="string">'TolX'</span>,1e-9);
+0178 [Args, f,exitflag,output]=fminsearch(@(x)<a href="MeanSquaredDistance.html" class="code" title="function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )">MeanSquaredDistance</a>(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
+0179 Pk=[Args(1),Args(2),Args(3)];
+0180 PCCD=[Args(4),Args(5),Args(6)];
+0181 toc(t1)
+0182 
+0183 toc(t0)
+0184 <span class="keyword">end</span>
+0185</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

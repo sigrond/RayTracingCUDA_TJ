@@ -1,0 +1,2 @@
+void cudaReferenceDistance(float const * const patterns, float const * const references, int * const min,  int const mPatterns, int const nPatterns, int const mReferences, int const nReferences, int polarization);
+//void cudaReferenceDistance(float const * const patterns, float const * const references, int * const minIndex, float *const median,   int const mPatterns, int const nPatterns, int const mReferences, int const nReferences, int polarization);

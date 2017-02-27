@@ -1,0 +1,9 @@
+sprobowaæ opisaæ krzywe
+wzór generuj¹cy punkty ramki
+lok angesiego
+a^3/(a^2+x^2)
+
+http://hyperphysics.phy-astr.gsu.edu/hbase/phyopt/difopa.html
+
+otwieraæ ustawianie jasnoœci
+otwieraæ w fullscrean i fitscale

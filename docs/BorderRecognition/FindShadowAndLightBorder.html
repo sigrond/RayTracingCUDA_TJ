@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindShadowAndLightBorder</title>
+  <meta name="keywords" content="FindShadowAndLightBorder">
+  <meta name="description" content="FindShadowAndLightBorder Summary of this function goes here">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>FindShadowAndLightBorder
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>FindShadowAndLightBorder Summary of this function goes here</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ point ] = FindShadowAndLightBorder( line ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">FindShadowAndLightBorder Summary of this function goes here
+   Detailed explanation goes here
+dl=grad(line);</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="FindBorderPoints.html" class="code" title="function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )">FindBorderPoints</a>	FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ point ] = FindShadowAndLightBorder( line )</a>
+0002 <span class="comment">%FindShadowAndLightBorder Summary of this function goes here</span>
+0003 <span class="comment">%   Detailed explanation goes here</span>
+0004 <span class="comment">%dl=grad(line);</span>
+0005 
+0006 <span class="comment">%znajdowanie extremów</span>
+0007 k=0;
+0008 extremum=zeros(80,3);
+0009 <span class="keyword">for</span> i=2:length(line)-1
+0010     <span class="keyword">if</span> line(i-1)&gt;line(i) &amp;&amp; line(i+1)&gt;line(i) <span class="comment">%minimum</span>
+0011         k=k+1;
+0012         extremum(k,1)=line(i);
+0013         extremum(k,2)=-1;
+0014         extremum(k,3)=i;
+0015     <span class="keyword">elseif</span> line(i-1)&lt;line(i) &amp;&amp; line(i+1)&lt;line(i) <span class="comment">%maximum</span>
+0016         k=k+1;
+0017         extremum(k,1)=line(i);
+0018         extremum(k,2)=1;
+0019         extremum(k,3)=i;
+0020     <span class="keyword">end</span>
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="comment">%figure</span>
+0024 <span class="comment">%pl=plot(line(:));</span>
+0025 <span class="comment">%hold on;</span>
+0026 <span class="comment">%plot(extremum(1:k,3),extremum(1:k,1),'LineStyle','none','Marker','x','MarkerEdgeColor','r');</span>
+0027 
+0028 
+0029 <span class="comment">%znajdowanie najwy¿szej &quot;amplitudy&quot;</span>
+0030 maxDifference=0;
+0031 minDiffInd=0;
+0032 maxDiffInd=0;
+0033 firstDifMin=0;
+0034 <span class="keyword">for</span> i=2:k
+0035     difference=abs(extremum(i-1,1)-extremum(i,1));
+0036     <span class="keyword">if</span> difference&gt;maxDifference
+0037         maxDifference=difference;
+0038         <span class="keyword">if</span> extremum(i,2)==1
+0039             maxDiffInd=extremum(i,3);
+0040             minDiffInd=extremum(i-1,3);
+0041             firstDifMin=i+1;
+0042         <span class="keyword">else</span>
+0043             maxDiffInd=extremum(i-1,3);
+0044             minDiffInd=extremum(i,3);
+0045             firstDifMin=i-2;
+0046         <span class="keyword">end</span>
+0047     <span class="keyword">end</span>
+0048 <span class="keyword">end</span>
+0049 
+0050 <span class="comment">%P=(a+b)/2</span>
+0051 <span class="comment">%2*P=a+b</span>
+0052 <span class="comment">%2*P-b=a</span>
+0053 
+0054 <span class="comment">%plot(maxDiffInd,line(maxDiffInd),'LineStyle','none','Marker','o','MarkerEdgeColor','m');</span>
+0055 <span class="comment">%plot(minDiffInd,line(minDiffInd),'LineStyle','none','Marker','o','MarkerEdgeColor','c');</span>
+0056 
+0057 <span class="comment">%firstDifMin</span>
+0058 <span class="comment">%maxDiffInd+(maxDiffInd-minDiffInd);</span>
+0059 
+0060 <span class="comment">%point=2*maxDiffInd-minDiffInd;</span>
+0061 point=2*maxDiffInd-extremum(firstDifMin,3);
+0062 <span class="comment">%plot(point,line(point),'LineStyle','none','Marker','+','MarkerEdgeColor','b');</span>
+0063 
+0064 <span class="keyword">end</span>
+0065</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

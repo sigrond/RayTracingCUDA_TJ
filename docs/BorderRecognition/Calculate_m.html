@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Calculate_m</title>
+  <meta name="keywords" content="Calculate_m">
+  <meta name="description" content="This function -">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>Calculate_m
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This function -</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ m ] = Calculate_m(Temperature,lambda, liquid) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This function -
+     [ m ] = Calculate_m(Temperature,lambda, liquid)
+ calculates refractive index for several liquids:
+ liquid = 'EG',...
+           EG, 2EG, 3EG, 4EG, DMI, DMSO, uPS, fSiO2, BK7, H2O, MetOH, EG+6G,
+           H2O+2EG, H2O+3EG, Au, Au r &lt; 20[ nm ] (sic!)
+
+ lambda - wavelength in [nm]
+ Temperature in deg Celsius
+
+ Example:
+ [ m ] = Calculate_m(25,532, 'EG')</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li><li><a href="PikeReader.html" class="code" title="function varargout = PikeReader(varargin)">PikeReader</a>	</li><li><a href="effective_aperture.html" class="code" title="function eff_app = effective_aperture(lens_radius,lens_barrel_thickness,FFL,lambda,temperature)">effective_aperture</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ m ] = Calculate_m(Temperature,lambda, liquid)</a>
+0002 <span class="comment">% This function -</span>
+0003 <span class="comment">%     [ m ] = Calculate_m(Temperature,lambda, liquid)</span>
+0004 <span class="comment">% calculates refractive index for several liquids:</span>
+0005 <span class="comment">% liquid = 'EG',...</span>
+0006 <span class="comment">%           EG, 2EG, 3EG, 4EG, DMI, DMSO, uPS, fSiO2, BK7, H2O, MetOH, EG+6G,</span>
+0007 <span class="comment">%           H2O+2EG, H2O+3EG, Au, Au r &lt; 20[ nm ] (sic!)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% lambda - wavelength in [nm]</span>
+0010 <span class="comment">% Temperature in deg Celsius</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Example:</span>
+0013 <span class="comment">% [ m ] = Calculate_m(25,532, 'EG')</span>
+0014 
+0015 T_ref = 20;
+0016 
+0017 <span class="keyword">switch</span> liquid
+0018 
+0019 <span class="keyword">case</span> <span class="string">'EG'</span>
+0020 A0 = 1.42522;
+0021 <span class="comment">% Cauchy dispersion parameters:</span>
+0022 A1 = 1984.54821;
+0023 A2 = 104174632;
+0024 m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0025 
+0026 <span class="keyword">case</span> <span class="string">'2EG'</span>
+0027 A0 = 1.4406; 
+0028 <span class="comment">% Cauchy dispersion parameters:</span>
+0029 A1 = 1984.54821;
+0030 A2 = 104174632;
+0031 m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0032 
+0033 <span class="keyword">case</span> <span class="string">'3EG'</span>
+0034 A0 = 1.4492;
+0035 <span class="comment">% Cauchy dispersion parameters:</span>
+0036 A1 = 1984.54821;
+0037 A2 = 104174632;
+0038 m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0039 
+0040 <span class="keyword">case</span> <span class="string">'4EG'</span>
+0041 A0 = 1.4511;
+0042 <span class="comment">% Cauchy dispersion parameters:</span>
+0043 A1 = 1984.54821;
+0044 A2 = 104174632;
+0045 m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0046 
+0047 <span class="keyword">case</span> <span class="string">'DMI'</span>
+0048 A0 = 1.4664;  
+0049 <span class="comment">% Cauchy dispersion parameters:</span>
+0050 A1 = 1984.54821;
+0051 A2 = 104174632;
+0052 m = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0053 
+0054 <span class="keyword">case</span> <span class="string">'DMSO'</span>
+0055 A0 = 1.4585;  
+0056 <span class="comment">% Cauchy dispersion parameters:</span>
+0057 A1 = 8584;
+0058 A2 = -485600000;
+0059 m = -0.00044*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0060 
+0061 <span class="keyword">case</span> <span class="string">'uPS'</span>
+0062 <span class="comment">% PS microspheres @24 deg. C</span>
+0063 <span class="comment">% Cauchy dispersion parameters from Ma et al.:</span>
+0064 A0 = 1.5725;  
+0065 A1 = 3108;
+0066 A2 = 347790000;
+0067 m = A0+A1/lambda^2+A2/lambda^4;
+0068 
+0069 <span class="keyword">case</span> <span class="string">'fSiO2'</span>
+0070     <span class="comment">%three term temperature-dependent effective Sellmeier model from</span>
+0071     <span class="comment">%Leviton et al.</span>
+0072     TKelvin = Temperature+273.15;
+0073     lambda = lambda/1000;
+0074 
+0075 S1 = 1.10127 - TKelvin * 4.94251*10^(-5) + (TKelvin^2) * 5.27414*10^(-7) - (TKelvin^3) * 1.597*10^(-9) + (TKelvin^4) * 1.75949*10^(-12);
+0076 S2 = 1.78752*10^(-5) + TKelvin * 4.76391*10^(-5) - (TKelvin^2) * 4.49019*10^(-7) + (TKelvin^3) * 1.44546*10^(-9) - (TKelvin^4) * 1.57223*10^(-12);
+0077 S3 = 7.93552*10^(-1) - TKelvin * 1.27815*10^(-3) + (TKelvin^2) * 1.84595*10^(-5) - (TKelvin^3) * 9.20275*10^(-8) + (TKelvin^4) * 1.48829*10^(-10);
+0078 
+0079 lambda1 = -8.906*10^(-2) + TKelvin * 9.0873*10^(-6) - (TKelvin^2) * 6.53638*10^(-8) + (TKelvin^3) * 7.77072*10^(-11) + (TKelvin^4) * 6.84605*10^(-14);
+0080 lambda2 = 2.97562*10^(-1) - TKelvin * 8.59578*10^(-4) + (TKelvin^2) * 6.59069*10^(-6) - (TKelvin^3) * 1.09482*10^(-8) + (TKelvin^4) * 7.85145*10^(-13);
+0081 lambda3 = 9.34454 - TKelvin * 7.09788*10^(-3) + (TKelvin^2) * 1.01968*10^(-4) - (TKelvin^3) * 5.07660*10^(-7) + (TKelvin^4) * 8.21348*10^(-10);
+0082 
+0083 m = (1 + (S1*lambda^2)/(lambda^2 - lambda1^2) + (S2*lambda^2)/(lambda^2 - lambda2^2) + (S3*lambda^2)/(lambda^2 - lambda3^2))^0.5; 
+0084 
+0085 <span class="keyword">case</span> <span class="string">'BK7'</span>
+0086 <span class="comment">%% wspó³czynniki dyspersji</span>
+0087 B1=1.03961212;
+0088 B2=0.231792344;
+0089 B3=1.01046945;
+0090 C1=6.00069867e-3;
+0091 C2=2.00179144e-2;
+0092 C3=103.560653;
+0093 lambda = lambda/1000;
+0094 
+0095 m = sqrt((B1*lambda^2)/(lambda^2-C1)+(B2*lambda^2)/(lambda^2-C2)+(B3*lambda^2)/(lambda^2-C3)+1);
+0096 
+0097 <span class="keyword">case</span> <span class="string">'H2O'</span>
+0098 <span class="comment">% dispersion parameters for water:</span>
+0099 a0 = 0.244257733; 
+0100 a1 = 9.74634476*10^(-3);
+0101 a2 = (-3.73234996)*10^(-3); 
+0102 a3 = 2.68678472*10^(-4);
+0103 a4 = 1.5892057*10^(-3);
+0104 a5 = 2.45934259*10^(-3);
+0105 a6 = 0.90070492;
+0106 a7 = (-1.66626219)*10^(-2);
+0107 lambda_uv = 0.229202;
+0108 lambda_IR = 5.432937;
+0109 laser = lambda/589;
+0110 
+0111 T_K = 273.15 + Temperature;
+0112 
+0113 <span class="keyword">if</span> ((0&lt;=Temperature)&amp;&amp;(Temperature&lt;=40))
+0114     <span class="comment">% Thiesen formula for 0 - 40 degC from Tanaka</span>
+0115     b1 = -3.983035;
+0116     b2 = 301.797;
+0117     b3 = 522528.9;
+0118     b4 = 69.34881;
+0119 <span class="comment">%     b5 = 999.974950; % Standard Mean Ocean Water (isotopic composition)</span>
+0120     b5 = 999.972; <span class="comment">% tap water (Chappuis)</span>
+0121     Rho = <span class="keyword">...</span>
+0122         b5 * ( 1 - ((Temperature + b1)^2)*(Temperature + b2)/(b3 * (Temperature + b4)));
+0123     Rho = Rho/1000;
+0124 <span class="keyword">else</span>
+0125     <span class="comment">% from McCutcheon book</span>
+0126     Rho = 1 - (Temperature + 288.9414)/(508929.2*((Temperature + 68.12963))) <span class="keyword">...</span>
+0127         *((Temperature - 3.9863)^2);
+0128 <span class="comment">%     Rho*1000</span>
+0129 <span class="keyword">end</span>    
+0130 F = Rho * (a0 + a1*Rho + a2*T_K/273.15 + a3*laser^2*T_K/273.15 + a4/laser^2 <span class="keyword">...</span>
+0131     + a5/(laser^2 - lambda_uv^2) + a6/(laser^2 - lambda_IR^2) + a7*Rho^2);
+0132 m = sqrt((2*F+1)/(1-F));
+0133 
+0134 <span class="comment">% added by Tho Do Duc</span>
+0135     <span class="keyword">case</span> <span class="string">'MetOH'</span>
+0136         <span class="comment">% Cauchy dispersion parameters:</span>
+0137         A0=1.3195;
+0138         A1=3053.64419;
+0139         A2=-34163639.3011;
+0140         A3=2.622128e+12;
+0141         m=-0.00040*(Temperature-T_ref)+A0+A1/(lambda^2)+A2/(lambda^4)+A3/(lambda^6);
+0142         
+0143 
+0144     <span class="keyword">case</span> <span class="string">'EG+6G'</span>
+0145         A0 = 1.4257;
+0146         <span class="comment">% Cauchy dispersion parameters EG+temperaturowa zaleznosc roztworu EG+6G:</span>
+0147         A1 = 1984.54821;
+0148         A2 = 104174632; 
+0149         m = -0.0003*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0150     <span class="keyword">case</span> <span class="string">'H2O+2EG'</span>
+0151         <span class="comment">% dispersion parameters for water:</span>
+0152         a0 = 0.244257733;
+0153         a1 = 9.74634476*10^(-3);
+0154         a2 = (-3.73234996)*10^(-3);
+0155         a3 = 2.68678472*10^(-4);
+0156         a4 = 1.5892057*10^(-3);
+0157         a5 = 2.45934259*10^(-3);
+0158         a6 = 0.90070492;
+0159         a7 = (-1.66626219)*10^(-2);
+0160         lambda_uv = 0.229202;
+0161         lambda_IR = 5.432937;
+0162         laser = lambda/589;
+0163 
+0164         T_K = 273.15 + Temperature;
+0165 
+0166         <span class="keyword">if</span> ((0&lt;=Temperature)&amp;&amp;(Temperature&lt;=40))
+0167             <span class="comment">% Thiesen formula for 0 - 40 degC from Tanaka</span>
+0168             b1 = -3.983035;
+0169             b2 = 301.797;
+0170             b3 = 522528.9;
+0171             b4 = 69.34881;
+0172             <span class="comment">%     b5 = 999.974950; % Standard Mean Ocean Water (isotopic composition)</span>
+0173             b5 = 999.972; <span class="comment">% tap water (Chappuis)</span>
+0174             Rho = <span class="keyword">...</span>
+0175                 b5 * ( 1 - ((Temperature + b1)^2)*(Temperature + b2)/(b3 * (Temperature + b4)));
+0176             Rho = Rho/1000;
+0177         <span class="keyword">else</span>
+0178             <span class="comment">% from McCutcheon book</span>
+0179             Rho = 1 - (Temperature + 288.9414)/(508929.2*((Temperature + 68.12963))) <span class="keyword">...</span>
+0180                 *((Temperature - 3.9863)^2);
+0181             <span class="comment">%     Rho*1000</span>
+0182         <span class="keyword">end</span>
+0183         F = Rho * (a0 + a1*Rho + a2*T_K/273.15 + a3*laser^2*T_K/273.15 + a4/laser^2 <span class="keyword">...</span>
+0184             + a5/(laser^2 - lambda_uv^2) + a6/(laser^2 - lambda_IR^2) + a7*Rho^2);
+0185         mh = sqrt((2*F+1)/(1-F));
+0186         A0 = 1.4406;
+0187         <span class="comment">% Cauchy dispersion parameters:</span>
+0188         A1 = 1984.54821;
+0189         A2 = 104174632;
+0190         mEG = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0191         m = (mh + mEG)/2;
+0192        <span class="keyword">case</span> <span class="string">'H2O+3EG'</span>
+0193            A0 = 1.4492;
+0194            <span class="comment">% Cauchy dispersion parameters:</span>
+0195            A1 = 1984.54821;
+0196            A2 = 104174632;
+0197            m3EG = -0.00026*(Temperature-T_ref)+A0+A1/lambda^2+A2/lambda^4;
+0198            
+0199            <span class="comment">% dispersion parameters for water:</span>
+0200         a0 = 0.244257733;
+0201         a1 = 9.74634476*10^(-3);
+0202         a2 = (-3.73234996)*10^(-3);
+0203         a3 = 2.68678472*10^(-4);
+0204         a4 = 1.5892057*10^(-3);
+0205         a5 = 2.45934259*10^(-3);
+0206         a6 = 0.90070492;
+0207         a7 = (-1.66626219)*10^(-2);
+0208         lambda_uv = 0.229202;
+0209         lambda_IR = 5.432937;
+0210         laser = lambda/589;
+0211 
+0212         T_K = 273.15 + Temperature;
+0213 
+0214         <span class="keyword">if</span> ((0&lt;=Temperature)&amp;&amp;(Temperature&lt;=40))
+0215             <span class="comment">% Thiesen formula for 0 - 40 degC from Tanaka</span>
+0216             b1 = -3.983035;
+0217             b2 = 301.797;
+0218             b3 = 522528.9;
+0219             b4 = 69.34881;
+0220             <span class="comment">%     b5 = 999.974950; % Standard Mean Ocean Water (isotopic composition)</span>
+0221             b5 = 999.972; <span class="comment">% tap water (Chappuis)</span>
+0222             Rho = <span class="keyword">...</span>
+0223                 b5 * ( 1 - ((Temperature + b1)^2)*(Temperature + b2)/(b3 * (Temperature + b4)));
+0224             Rho = Rho/1000;
+0225         <span class="keyword">else</span>
+0226             <span class="comment">% from McCutcheon book</span>
+0227             Rho = 1 - (Temperature + 288.9414)/(508929.2*((Temperature + 68.12963))) <span class="keyword">...</span>
+0228                 *((Temperature - 3.9863)^2);
+0229             <span class="comment">%     Rho*1000</span>
+0230         <span class="keyword">end</span>
+0231         F = Rho * (a0 + a1*Rho + a2*T_K/273.15 + a3*laser^2*T_K/273.15 + a4/laser^2 <span class="keyword">...</span>
+0232             + a5/(laser^2 - lambda_uv^2) + a6/(laser^2 - lambda_IR^2) + a7*Rho^2);
+0233         mh = sqrt((2*F+1)/(1-F));
+0234         m = ( mh + m3EG ) / 2;
+0235     <span class="keyword">case</span> <span class="string">'Au'</span>
+0236         <span class="keyword">if</span> lambda == 532.07
+0237             m = complex( 0.46636,2.40877);
+0238         <span class="keyword">elseif</span> lambda == 654.25
+0239             m = complex( 0.16573,3.17963);
+0240         <span class="keyword">end</span>
+0241 <span class="comment">%         c = 299792458;</span>
+0242 <span class="comment">%         h = 6.6260755e-34;</span>
+0243 <span class="comment">%         e = 1.60217733e-19;</span>
+0244 <span class="comment">%         omega_pl = 9.096; % eV;</span>
+0245 <span class="comment">%         gamma = 0.072; % eV;</span>
+0246 <span class="comment">%         omega = c * h / ( e * lambda * 1e-9 );</span>
+0247 <span class="comment">%         eps_infty = 9.84;</span>
+0248 <span class="comment">%         eps = eps_infty - ( omega_pl ^ 2 ) / ( omega^2 + complex(0,1) * gamma * omega );</span>
+0249 <span class="comment">%         m = sqrt( eps );</span>
+0250         <span class="keyword">case</span> <span class="string">'Au r &lt; 20[ nm ]'</span>
+0251         c = 299792458;
+0252         h = 6.6260755e-34;
+0253         e = 1.60217733e-19;
+0254         omega_pl = 9.096;<span class="comment">% eV;</span>
+0255         gamma = 0.072;<span class="comment">% eV;</span>
+0256         V_fermi = 1.4e6;<span class="comment">%(M/S), E8(SM/S)</span>
+0257         r = 10; <span class="comment">%[nm]                       TO  DO !!!!!!!!!!!!!!!</span>
+0258         gam = gamma + C*(V_fermi/(r*1e-9))*h/(2*pi*e);
+0259         omega = c*h / ( e*lambda*1e-9 );
+0260         eps_infty = 9.84;
+0261         eps = eps_infty - ( omega_pl ^ 2 ) / ( omega^2 + complex(0,1) * gamma * omega );
+0262     <span class="keyword">otherwise</span>
+0263         m = 0;
+0264            s = sprintf(<span class="string">'Liquid not found \nm = %1.f !!!'</span>,m)
+0265        errordlg(s,<span class="string">'m Error'</span>);     
+0266 <span class="keyword">end</span>
+0267 
+0268 
+0269 
+0270</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FindBorderPoints</title>
+  <meta name="keywords" content="FindBorderPoints">
+  <meta name="description" content="FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>FindBorderPoints
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z
+teori¹ na podstawie przybli¿onych parametrów ramki
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li><li><a href="FindShadowAndLightBorder.html" class="code" title="function [ point ] = FindShadowAndLightBorder( line )">FindShadowAndLightBorder</a>	FindShadowAndLightBorder Summary of this function goes here</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderRecognition.html" class="code" title="function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )">BorderRecognition</a>	BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )</a>
+0002 <span class="comment">%FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z</span>
+0003 <span class="comment">%teori¹ na podstawie przybli¿onych parametrów ramki</span>
+0004 <span class="comment">%   Detailed explanation goes here</span>
+0005 r=658;
+0006 g=532;
+0007 b=458;
+0008 Px=Args(1);
+0009 Py=Args(2);
+0010 Pz=Args(3);
+0011 ShX=Args(4);
+0012 ShY=Args(5);
+0013 lCCD=Args(6);
+0014 
+0015 k=0;
+0016 
+0017 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,r);
+0018 
+0019 v=zeros(80,2);
+0020 line=zeros(80,1);
+0021 
+0022 selectedPoints=[3:2:10 11:4:40 41:2:50 51:4:80];
+0023 
+0024 <span class="keyword">for</span> i=selectedPoints<span class="comment">%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu</span>
+0025     j=0;
+0026     d=30;<span class="comment">%odleg³oœæ od zadanego punktu do brzegu otoczenia</span>
+0027     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));<span class="comment">%wpó³czynnik kierunkowy stycznej do ramki w punkcie</span>
+0028     <span class="keyword">if</span> atand(a1)&gt;0
+0029         a=tand(atand(a1)-90);<span class="comment">%wsp kierunkowy prostej prostopad³ej do stycznej do ramki w punkcie</span>
+0030     <span class="keyword">else</span>
+0031         a=tand(atand(a1)+90);<span class="comment">%wsp kierunkowy prostej prostopad³ej do stycznej do ramki w punkcie</span>
+0032     <span class="keyword">end</span>
+0033     b0=Y(i)-a*X(i);<span class="comment">%prosta na której szukamy wartoœci jest w postaci y=ax+b</span>
+0034     b=b0;
+0035     <span class="comment">%y=a*X(i)+b0</span>
+0036     <span class="comment">%Y(i)</span>
+0037     <span class="comment">%b=b0-Y(i);%przesuniecie uk³adu wsp</span>
+0038     <span class="comment">%do znalezienia pixeli na odcinku pos³u¿y algorytm Bresenhama</span>
+0039     <span class="comment">%delta=(2*a*b)^2-4*(1+a^2)*(b^2-d^2);</span>
+0040     delta=(((a^2)+2*a*b-2*X(i)-2*Y(i)*a)^2)-4*(1+(a^2))*((b^2)+(X(i)^2)+(Y(i)^2)-2*Y(i)*b-(d^2));
+0041     <span class="keyword">if</span> delta&gt;0
+0042         <span class="comment">%x1=(-(2*a*b)-(delta)^0.5)/(2*(1+a^2))+X(i);</span>
+0043         <span class="comment">%y1=a*x1+b0;</span>
+0044         <span class="comment">%x2=(-(2*a*b)+(delta)^0.5)/(2*(1+a^2))+X(i);</span>
+0045         <span class="comment">%y2=a*x2+b0;</span>
+0046         x1=(-(a^2+2*a*b-2*X(i)-2*Y(i)*a)-delta^0.5)/(2*(1+a^2));
+0047         y1=a*x1+b;
+0048         x2=2*X(i)-x1;
+0049         y2=2*Y(i)-y1;
+0050     <span class="keyword">else</span>
+0051         <span class="comment">%b=b0-X(i)*a;</span>
+0052         <span class="comment">%delta=(-2*b/a^2)^2-4*(1+1/a^2)*(b^2/a^2-d^2);</span>
+0053         <span class="comment">%y1=(2*b/a^2-(delta)^0.5)/(2*(1+1/a^2))+Y(i);</span>
+0054         <span class="comment">%x1=(y1-b0)/a;</span>
+0055         <span class="comment">%y2=(2*b/a^2+(delta)^0.5)/(2*(1+1/a^2))+Y(i);</span>
+0056         <span class="comment">%x2=(y2-b0)/a;</span>
+0057         delta=((-2*b)/(a^2)-2*Y(i))^2-4*(1+1/a^2)*((b^2)/(a^2)+Y(i)^2-d^2);
+0058         <span class="keyword">if</span> delta&gt;0
+0059             y1=(-((-2*b)/(a^2)-2*Y(i))-delta^0.5)/(2*(1+(1/(a^2))));
+0060             x1=(y1-b)/a;
+0061             x2=2*X(i)-x1;
+0062             y2=2*Y(i)-y1;
+0063         <span class="keyword">else</span>
+0064             x1=(Y(i)+d-b)/a;
+0065             y1=a*x1+b;
+0066             x2=2*X(i)-x1;
+0067             y2=2*Y(i)-y1;
+0068         <span class="keyword">end</span>
+0069     <span class="keyword">end</span>
+0070     <span class="comment">%y=a*x1+b0</span>
+0071     <span class="comment">%y1</span>
+0072     <span class="comment">%y=a*x2+b0</span>
+0073     <span class="comment">%y2</span>
+0074     <span class="comment">%((X(i)-x1)^2+(Y(i)-y1)^2)^0.5</span>
+0075     <span class="comment">%((X(i)-x2)^2+(Y(i)-y2)^2)^0.5</span>
+0076     
+0077     <span class="comment">%x1=int32(round(x1));</span>
+0078     <span class="comment">%y1=int32(round(y1));</span>
+0079     <span class="comment">%x2=int32(round(x2));</span>
+0080     <span class="comment">%y2=int32(round(y2));</span>
+0081     x=int32(round(x1));
+0082     y=int32(round(y1));
+0083     <span class="comment">% ustalenie kierunku rysowania</span>
+0084 
+0085     <span class="keyword">if</span> x1&lt;x2
+0086         xi=int32(1);
+0087         dx=int32(x2-x1);
+0088     <span class="keyword">else</span>
+0089         xi=int32(-1);
+0090         dx=int32(x1-x2);
+0091     <span class="keyword">end</span>
+0092     <span class="comment">% ustalenie kierunku rysowania</span>
+0093     <span class="keyword">if</span> y1&lt;y2
+0094         yi=int32(1);
+0095         dy=int32(y2-y1);
+0096     <span class="keyword">else</span>
+0097         yi=int32(-1);
+0098         dy=int32(y1-y2);
+0099     <span class="keyword">end</span>
+0100     <span class="comment">% pierwszy piksel</span>
+0101     j=j+1;
+0102     v(j,1)=x;<span class="comment">%+X(i);</span>
+0103     v(j,2)=y;<span class="comment">%+Y(i);</span>
+0104     <span class="keyword">if</span> x&lt;1
+0105         v(j,1)=1;
+0106     <span class="keyword">end</span>
+0107     <span class="keyword">if</span> x&gt;640
+0108         v(j,1)=640;
+0109     <span class="keyword">end</span>
+0110     <span class="keyword">if</span> y&lt;1
+0111         v(j,2)=1;
+0112     <span class="keyword">end</span>
+0113     <span class="keyword">if</span> y&gt;480
+0114         v(j,2)=480;
+0115     <span class="keyword">end</span>
+0116     <span class="comment">%j</span>
+0117     line(j)=Frame(v(j,2),v(j,1),1);
+0118     <span class="comment">% oœ wiod¹ca OX</span>
+0119     <span class="keyword">if</span> dx&gt;dy
+0120         ai=(dy-dx)*2;
+0121         bi=dy*2;
+0122         d=bi-dx;
+0123         <span class="comment">% pêtla po kolejnych x</span>
+0124         <span class="keyword">while</span> x~=int32(round(x2))
+0125             <span class="comment">% test wspó³czynnika</span>
+0126             <span class="keyword">if</span> d&gt;=0
+0127                 x=x+xi;
+0128                 y=y+yi;
+0129                 d=d+ai;
+0130             <span class="keyword">else</span>
+0131                 d=d+bi;
+0132                 x=x+xi;
+0133             <span class="keyword">end</span>
+0134             j=j+1;
+0135             v(j,1)=x;<span class="comment">%+X(i);</span>
+0136             v(j,2)=y;<span class="comment">%+Y(i);</span>
+0137             <span class="keyword">if</span> x&lt;1
+0138                 v(j,1)=1;
+0139             <span class="keyword">end</span>
+0140             <span class="keyword">if</span> x&gt;640
+0141                 v(j,1)=640;
+0142             <span class="keyword">end</span>
+0143             <span class="keyword">if</span> y&lt;1
+0144                 v(j,2)=1;
+0145             <span class="keyword">end</span>
+0146             <span class="keyword">if</span> y&gt;480
+0147                 v(j,2)=480;
+0148             <span class="keyword">end</span>
+0149             line(j)=Frame(v(j,2),v(j,1),1);
+0150         <span class="keyword">end</span>
+0151     <span class="comment">% oœ wiod¹ca OY</span>
+0152     <span class="keyword">else</span>
+0153         ai=(dx-dy)*2;
+0154         bi=dx*2;
+0155         d=bi-dy;
+0156         <span class="comment">% pêtla po kolejnych y</span>
+0157         <span class="keyword">while</span> y~=int32(round(y2))
+0158             <span class="comment">% test wspó³czynnika</span>
+0159             <span class="keyword">if</span> d&gt;=0
+0160                 x=x+xi;
+0161                 y=y+yi;
+0162                 d=d+ai;
+0163             <span class="keyword">else</span>
+0164                 d=d+bi;
+0165                 y=y+yi;
+0166             <span class="keyword">end</span>
+0167             j=j+1;
+0168             v(j,1)=x;<span class="comment">%+X(i);</span>
+0169             v(j,2)=y;<span class="comment">%+Y(i);</span>
+0170             <span class="keyword">if</span> x&lt;1
+0171                 v(j,1)=1;
+0172             <span class="keyword">end</span>
+0173             <span class="keyword">if</span> x&gt;640
+0174                 v(j,1)=640;
+0175             <span class="keyword">end</span>
+0176             <span class="keyword">if</span> y&lt;1
+0177                 v(j,2)=1;
+0178             <span class="keyword">end</span>
+0179             <span class="keyword">if</span> y&gt;480
+0180                 v(j,2)=480;
+0181             <span class="keyword">end</span>
+0182             line(j)=Frame(v(j,2),v(j,1),1);
+0183         <span class="keyword">end</span>
+0184     <span class="keyword">end</span>
+0185     <span class="keyword">if</span> exist(<span class="string">'pl'</span>,<span class="string">'var'</span>)
+0186         <span class="comment">%plot(line(1:j));</span>
+0187     <span class="keyword">else</span>
+0188         <span class="comment">%pl=plot(line(1:j));</span>
+0189         <span class="comment">%hold on;</span>
+0190     <span class="keyword">end</span>
+0191     <span class="comment">%max(line)</span>
+0192     <span class="comment">%hf = imtool( Frame./(max(max(max(Frame)))/20) );</span>
+0193     <span class="comment">%ha = get(hf,'CurrentAxes');</span>
+0194     <span class="comment">%hold(ha,'on');</span>
+0195     <span class="comment">%hp=plot(ha,X,Y,'-xr');</span>
+0196     <span class="comment">%hs=scatter(ha,v(1:j,1),v(1:j,2),'filled','MarkerFaceColor','r');</span>
+0197     <span class="comment">%hs=scatter(ha,X(i),Y(i),'filled','MarkerFaceColor','b');</span>
+0198     <span class="comment">%hs=scatter(ha,x1,y1,'filled','MarkerFaceColor','m');</span>
+0199     <span class="comment">%hs=scatter(ha,x2,y2,'filled','MarkerFaceColor','c');</span>
+0200     quality=max(line(1:j))-min(line(1:j));
+0201     k=k+1;
+0202     c=<span class="string">'r'</span>;
+0203     data(k)=struct(<span class="string">'v'</span>,v,<span class="string">'j'</span>,j,<span class="string">'X'</span>,X,<span class="string">'Y'</span>,Y,<span class="string">'line'</span>,line,<span class="string">'quality'</span>,quality,<span class="string">'color'</span>,c,<span class="string">'inColorIndex'</span>,i);
+0204     <span class="comment">%waitfor(hf);</span>
+0205 <span class="keyword">end</span>
+0206 
+0207 r=658;
+0208 g=532;
+0209 b=458;
+0210 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,b);
+0211 
+0212 v=zeros(80,2);
+0213 line=zeros(80,1);
+0214 
+0215 <span class="keyword">for</span> i=selectedPoints<span class="comment">%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu</span>
+0216     j=0;
+0217     d=30;<span class="comment">%odleg³oœæ od zadanego punktu do brzegu otoczenia</span>
+0218     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));<span class="comment">%wpó³czynnik kierunkowy stycznej do ramki w punkcie</span>
+0219     <span class="keyword">if</span> atand(a1)&gt;0
+0220         a=tand(atand(a1)-90);<span class="comment">%wsp kierunkowy prostej prostopad³ej do stycznej do ramki w punkcie</span>
+0221     <span class="keyword">else</span>
+0222         a=tand(atand(a1)+90);<span class="comment">%wsp kierunkowy prostej prostopad³ej do stycznej do ramki w punkcie</span>
+0223     <span class="keyword">end</span>
+0224     b0=Y(i)-a*X(i);<span class="comment">%prosta na której szukamy wartoœci jest w postaci y=ax+b</span>
+0225     b=b0;
+0226     <span class="comment">%y=a*X(i)+b0</span>
+0227     <span class="comment">%Y(i)</span>
+0228     <span class="comment">%b=b0-Y(i);%przesuniecie uk³adu wsp</span>
+0229     <span class="comment">%do znalezienia pixeli na odcinku pos³u¿y algorytm Bresenhama</span>
+0230     <span class="comment">%delta=(2*a*b)^2-4*(1+a^2)*(b^2-d^2);</span>
+0231     delta=(((a^2)+2*a*b-2*X(i)-2*Y(i)*a)^2)-4*(1+(a^2))*((b^2)+(X(i)^2)+(Y(i)^2)-2*Y(i)*b-(d^2));
+0232     <span class="keyword">if</span> delta&gt;0
+0233         <span class="comment">%x1=(-(2*a*b)-(delta)^0.5)/(2*(1+a^2))+X(i);</span>
+0234         <span class="comment">%y1=a*x1+b0;</span>
+0235         <span class="comment">%x2=(-(2*a*b)+(delta)^0.5)/(2*(1+a^2))+X(i);</span>
+0236         <span class="comment">%y2=a*x2+b0;</span>
+0237         x1=(-(a^2+2*a*b-2*X(i)-2*Y(i)*a)-delta^0.5)/(2*(1+a^2));
+0238         y1=a*x1+b;
+0239         x2=2*X(i)-x1;
+0240         y2=2*Y(i)-y1;
+0241     <span class="keyword">else</span>
+0242         <span class="comment">%b=b0-X(i)*a;</span>
+0243         <span class="comment">%delta=(-2*b/a^2)^2-4*(1+1/a^2)*(b^2/a^2-d^2);</span>
+0244         <span class="comment">%y1=(2*b/a^2-(delta)^0.5)/(2*(1+1/a^2))+Y(i);</span>
+0245         <span class="comment">%x1=(y1-b0)/a;</span>
+0246         <span class="comment">%y2=(2*b/a^2+(delta)^0.5)/(2*(1+1/a^2))+Y(i);</span>
+0247         <span class="comment">%x2=(y2-b0)/a;</span>
+0248         delta=((-2*b)/(a^2)-2*Y(i))^2-4*(1+1/a^2)*((b^2)/(a^2)+Y(i)^2-d^2);
+0249         <span class="keyword">if</span> delta&gt;0
+0250             y1=(-((-2*b)/(a^2)-2*Y(i))-delta^0.5)/(2*(1+(1/(a^2))));
+0251             x1=(y1-b)/a;
+0252             x2=2*X(i)-x1;
+0253             y2=2*Y(i)-y1;
+0254         <span class="keyword">else</span>
+0255             x1=(Y(i)+d-b)/a;
+0256             y1=a*x1+b;
+0257             x2=2*X(i)-x1;
+0258             y2=2*Y(i)-y1;
+0259         <span class="keyword">end</span>
+0260     <span class="keyword">end</span>
+0261     <span class="comment">%y=a*x1+b0</span>
+0262     <span class="comment">%y1</span>
+0263     <span class="comment">%y=a*x2+b0</span>
+0264     <span class="comment">%y2</span>
+0265     <span class="comment">%((X(i)-x1)^2+(Y(i)-y1)^2)^0.5</span>
+0266     <span class="comment">%((X(i)-x2)^2+(Y(i)-y2)^2)^0.5</span>
+0267     
+0268     <span class="comment">%x1=int32(round(x1));</span>
+0269     <span class="comment">%y1=int32(round(y1));</span>
+0270     <span class="comment">%x2=int32(round(x2));</span>
+0271     <span class="comment">%y2=int32(round(y2));</span>
+0272     x=int32(round(x1));
+0273     y=int32(round(y1));
+0274     <span class="comment">% ustalenie kierunku rysowania</span>
+0275 
+0276     <span class="keyword">if</span> x1&lt;x2
+0277         xi=int32(1);
+0278         dx=int32(x2-x1);
+0279     <span class="keyword">else</span>
+0280         xi=int32(-1);
+0281         dx=int32(x1-x2);
+0282     <span class="keyword">end</span>
+0283     <span class="comment">% ustalenie kierunku rysowania</span>
+0284     <span class="keyword">if</span> y1&lt;y2
+0285         yi=int32(1);
+0286         dy=int32(y2-y1);
+0287     <span class="keyword">else</span>
+0288         yi=int32(-1);
+0289         dy=int32(y1-y2);
+0290     <span class="keyword">end</span>
+0291     <span class="comment">% pierwszy piksel</span>
+0292     j=j+1;
+0293     v(j,1)=x;<span class="comment">%+X(i);</span>
+0294     v(j,2)=y;<span class="comment">%+Y(i);</span>
+0295     <span class="keyword">if</span> x&lt;1
+0296         v(j,1)=1;
+0297     <span class="keyword">end</span>
+0298     <span class="keyword">if</span> x&gt;640
+0299         v(j,1)=640;
+0300     <span class="keyword">end</span>
+0301     <span class="keyword">if</span> y&lt;1
+0302         v(j,2)=1;
+0303     <span class="keyword">end</span>
+0304     <span class="keyword">if</span> y&gt;480
+0305         v(j,2)=480;
+0306     <span class="keyword">end</span>
+0307     <span class="comment">%j</span>
+0308     line(j)=Frame(v(j,2),v(j,1),3);
+0309     <span class="comment">% oœ wiod¹ca OX</span>
+0310     <span class="keyword">if</span> dx&gt;dy
+0311         ai=(dy-dx)*2;
+0312         bi=dy*2;
+0313         d=bi-dx;
+0314         <span class="comment">% pêtla po kolejnych x</span>
+0315         <span class="keyword">while</span> x~=int32(round(x2))
+0316             <span class="comment">% test wspó³czynnika</span>
+0317             <span class="keyword">if</span> d&gt;=0
+0318                 x=x+xi;
+0319                 y=y+yi;
+0320                 d=d+ai;
+0321             <span class="keyword">else</span>
+0322                 d=d+bi;
+0323                 x=x+xi;
+0324             <span class="keyword">end</span>
+0325             j=j+1;
+0326             v(j,1)=x;<span class="comment">%+X(i);</span>
+0327             v(j,2)=y;<span class="comment">%+Y(i);</span>
+0328             <span class="keyword">if</span> x&lt;1
+0329                 v(j,1)=1;
+0330             <span class="keyword">end</span>
+0331             <span class="keyword">if</span> x&gt;640
+0332                 v(j,1)=640;
+0333             <span class="keyword">end</span>
+0334             <span class="keyword">if</span> y&lt;1
+0335                 v(j,2)=1;
+0336             <span class="keyword">end</span>
+0337             <span class="keyword">if</span> y&gt;480
+0338                 v(j,2)=480;
+0339             <span class="keyword">end</span>
+0340             line(j)=Frame(v(j,2),v(j,1),3);
+0341         <span class="keyword">end</span>
+0342     <span class="comment">% oœ wiod¹ca OY</span>
+0343     <span class="keyword">else</span>
+0344         ai=(dx-dy)*2;
+0345         bi=dx*2;
+0346         d=bi-dy;
+0347         <span class="comment">% pêtla po kolejnych y</span>
+0348         <span class="keyword">while</span> y~=int32(round(y2))
+0349             <span class="comment">% test wspó³czynnika</span>
+0350             <span class="keyword">if</span> d&gt;=0
+0351                 x=x+xi;
+0352                 y=y+yi;
+0353                 d=d+ai;
+0354             <span class="keyword">else</span>
+0355                 d=d+bi;
+0356                 y=y+yi;
+0357             <span class="keyword">end</span>
+0358             j=j+1;
+0359             v(j,1)=x;<span class="comment">%+X(i);</span>
+0360             v(j,2)=y;<span class="comment">%+Y(i);</span>
+0361             <span class="keyword">if</span> x&lt;1
+0362                 v(j,1)=1;
+0363             <span class="keyword">end</span>
+0364             <span class="keyword">if</span> x&gt;640
+0365                 v(j,1)=640;
+0366             <span class="keyword">end</span>
+0367             <span class="keyword">if</span> y&lt;1
+0368                 v(j,2)=1;
+0369             <span class="keyword">end</span>
+0370             <span class="keyword">if</span> y&gt;480
+0371                 v(j,2)=480;
+0372             <span class="keyword">end</span>
+0373             line(j)=Frame(v(j,2),v(j,1),3);
+0374         <span class="keyword">end</span>
+0375     <span class="keyword">end</span>
+0376     <span class="comment">%plot(line(1:j))</span>
+0377     <span class="comment">%max(line)</span>
+0378     <span class="comment">%hf = imtool( Frame./(max(max(max(Frame)))/20) );</span>
+0379     <span class="comment">%ha = get(hf,'CurrentAxes');</span>
+0380     <span class="comment">%hold(ha,'on');</span>
+0381     <span class="comment">%hp=plot(ha,X,Y,'-xb');</span>
+0382     <span class="comment">%hs=scatter(ha,v(1:j,1),v(1:j,2),'filled','MarkerFaceColor','b');</span>
+0383     <span class="comment">%hs=scatter(ha,X(i),Y(i),'filled','MarkerFaceColor','m');</span>
+0384     <span class="comment">%hs=scatter(ha,x1,y1,'filled','MarkerFaceColor','r');</span>
+0385     <span class="comment">%hs=scatter(ha,x2,y2,'filled','MarkerFaceColor','c');</span>
+0386     quality=max(line(1:j))-min(line(1:j));
+0387     k=k+1;
+0388     c=<span class="string">'b'</span>;
+0389     data(k)=struct(<span class="string">'v'</span>,v,<span class="string">'j'</span>,j,<span class="string">'X'</span>,X,<span class="string">'Y'</span>,Y,<span class="string">'line'</span>,line,<span class="string">'quality'</span>,quality,<span class="string">'color'</span>,c,<span class="string">'inColorIndex'</span>,i);
+0390     <span class="comment">%waitfor(hf);</span>
+0391 <span class="keyword">end</span>
+0392 
+0393 vq=zeros(k,1);
+0394 <span class="keyword">for</span> i=1:k
+0395     vq(i)=data(i).quality;
+0396 <span class="keyword">end</span>
+0397 [Q,I]=sort(vq,<span class="string">'descend'</span>);
+0398 hf = imtool( Frame./(max(max(max(Frame)))/20) );
+0399 ha = get(hf,<span class="string">'CurrentAxes'</span>);
+0400 hold(ha,<span class="string">'on'</span>);
+0401 hp=plot(ha,X,Y,<span class="string">'-xb'</span>);
+0402 r=658;
+0403 g=532;
+0404 b=458;
+0405 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,r);
+0406 hp=plot(ha,X,Y,<span class="string">'-xr'</span>);
+0407 ib=0;
+0408 ir=0;
+0409 <span class="keyword">for</span> i=1:25
+0410     hs=scatter(ha,data(I(i)).v(1:data(I(i)).j,1),data(I(i)).v(1:data(I(i)).j,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,data(I(i)).color);
+0411     point=<a href="FindShadowAndLightBorder.html" class="code" title="function [ point ] = FindShadowAndLightBorder( line )">FindShadowAndLightBorder</a>(data(I(i)).line(1:data(I(i)).j));
+0412     hs=scatter(ha,data(I(i)).v(point,1),data(I(i)).v(point,2),<span class="string">'filled'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'c'</span>);
+0413     
+0414     x = data(I(i)).v(point,1); y = data(I(i)).v(point,2);<span class="comment">% scatter(x,y);</span>
+0415     <span class="comment">%a = selectedPoints(I(i)); b = num2str(a); c = cellstr(b);</span>
+0416     a = data(I(i)).inColorIndex; b = num2str(a); c = cellstr(b);
+0417     dx = 1.1; dy = 0.1; <span class="comment">% displacement so the text does not overlay the data points</span>
+0418 
+0419     <span class="comment">%text(x+dx, y+dy, c,'fontsize',18,'color',[0,1,0], 'Parent', ha);</span>
+0420     
+0421     <span class="keyword">if</span> data(I(i)).color==<span class="string">'r'</span>
+0422         ir=ir+1;
+0423         pointsr(ir,1)=data(I(i)).v(point,1);
+0424         pointsr(ir,2)=data(I(i)).v(point,2);
+0425 
+0426         text(x+dx, y+dy, c,<span class="string">'fontsize'</span>,18,<span class="string">'color'</span>,[1,1,0], <span class="string">'Parent'</span>, ha);
+0427     <span class="keyword">else</span>
+0428         ib=ib+1;
+0429         pointsb(ib,1)=data(I(i)).v(point,1);
+0430         pointsb(ib,2)=data(I(i)).v(point,2);
+0431         
+0432         text(x+dx, y+dy, c,<span class="string">'fontsize'</span>,18,<span class="string">'color'</span>,[0,1,1], <span class="string">'Parent'</span>, ha);
+0433     <span class="keyword">end</span>
+0434 <span class="keyword">end</span>
+0435 
+0436 <span class="keyword">end</span>
+0437</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

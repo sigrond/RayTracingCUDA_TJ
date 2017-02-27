@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BrightInDimOut</title>
+  <meta name="keywords" content="BrightInDimOut">
+  <meta name="description" content="BRIGHTINDIMOUT ile jest punktów jasnych w œrodku kszta³tu, a ile ciemnych">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>BrightInDimOut
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>BRIGHTINDIMOUT ile jest punktów jasnych w œrodku kszta³tu, a ile ciemnych</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ Bright, Dim ] = BrightInDimOut( Frame, X, Y ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">BRIGHTINDIMOUT ile jest punktów jasnych w œrodku kszta³tu, a ile ciemnych
+na zewn¹trz
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ Bright, Dim ] = BrightInDimOut( Frame, X, Y )</a>
+0002 <span class="comment">%BRIGHTINDIMOUT ile jest punktów jasnych w œrodku kszta³tu, a ile ciemnych</span>
+0003 <span class="comment">%na zewn¹trz</span>
+0004 <span class="comment">%   Detailed explanation goes here</span>
+0005 Bw1 = roipoly(Frame,X,Y);
+0006 f=Frame./max(max(Frame));
+0007 fge=f&gt;0.105;
+0008 FB=fge.*Bw1;
+0009 Bright=sum(sum(FB,2),1);
+0010 
+0011 Bw2=~Bw1;
+0012 fle=f&lt;0.105;
+0013 FD=fle.*Bw2;
+0014 Dim=sum(sum(FD,2),1);
+0015 
+0016 <span class="keyword">end</span>
+0017</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

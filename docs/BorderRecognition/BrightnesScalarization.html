@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of BrightnesScalarization</title>
+  <meta name="keywords" content="BrightnesScalarization">
+  <meta name="description" content="BrightnesScalarization funkcja skalaryzujaca jasnoœæ na zewn¹trz i">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>BrightnesScalarization
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>BrightnesScalarization funkcja skalaryzujaca jasnoœæ na zewn¹trz i</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ score ] = BrightnesScalarization( Frame,a1,a2, Args ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">BrightnesScalarization funkcja skalaryzujaca jasnoœæ na zewn¹trz i
+wewn¹trz
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderRecognition.html" class="code" title="function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )">BorderRecognition</a>	BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ score ] = BrightnesScalarization( Frame,a1,a2, Args )</a>
+0002 <span class="comment">%BrightnesScalarization funkcja skalaryzujaca jasnoœæ na zewn¹trz i</span>
+0003 <span class="comment">%wewn¹trz</span>
+0004 <span class="comment">%   Detailed explanation goes here</span>
+0005 r=658;
+0006 g=532;
+0007 b=458;
+0008 
+0009 Px=Args(1);
+0010 Py=Args(2);
+0011 Pz=Args(3);
+0012 ShX=Args(4);
+0013 ShY=Args(5);
+0014 lCCD=Args(6);
+0015 
+0016 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,r);
+0017 
+0018 alpha=a1;<span class="comment">%0.105;</span>
+0019 
+0020 Bw1 = roipoly(Frame(:,:,1),X,Y);
+0021 f=Frame(:,:,1)./max(max(Frame(:,:,1)));
+0022 fge=f&gt;alpha;
+0023 FBr=fge.*Bw1;
+0024 <span class="comment">%Bright=sum(sum(FB,2),1);</span>
+0025 Bw2=~Bw1;
+0026 fle=f&lt;alpha;
+0027 FDr=fle.*Bw2;
+0028 <span class="comment">%Dim=sum(sum(FD,2),1);</span>
+0029 
+0030 <span class="comment">%[Br, Dr]=BrightInDimOut(Frame(:,:,1),X,Y);</span>
+0031 
+0032 [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,b);
+0033 <span class="comment">%[Bb, Db]=BrightInDimOut(Frame(:,:,3),X,Y);</span>
+0034 
+0035 alpha2=a2;<span class="comment">%0.017;</span>
+0036 
+0037 Bw1 = roipoly(Frame(:,:,1),X,Y);
+0038 f=Frame(:,:,3)./max(max(Frame(:,:,3)));
+0039 fge=f&gt;alpha2;
+0040 FBb=fge.*Bw1;
+0041 Bw2=~Bw1;
+0042 fle=f&lt;alpha2;
+0043 FDb=fle.*Bw2;
+0044 
+0045 FB=FBr|FBb;
+0046 FD=FDr&amp;FDb;
+0047 
+0048 B=sum(sum(FB,2),1);
+0049 D=sum(sum(FD,2),1);
+0050 
+0051 a=2;
+0052 b=1;
+0053 score=-(a*B+b*D);
+0054 
+0055 <span class="keyword">end</span>
+0056</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

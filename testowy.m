@@ -1,0 +1,1 @@
+[status,result] = system('./client .socket','-echo'); %KOD DO C

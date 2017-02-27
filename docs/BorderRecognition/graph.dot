@@ -1,0 +1,39 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  BorderFunction -> Calculate_m;
+  BorderFunction -> RayTracing;
+  BorderFunction -> SetSystem;
+  BorderFunction -> effective_aperture;
+  BorderRecognition -> BorderFunction;
+  BorderRecognition -> BrightnesScalarization;
+  BorderRecognition -> FindBorderPoints;
+  BorderRecognition -> MeanSquaredDistance;
+  BorderRecognition -> ThresholdValue;
+  BrightnesScalarization -> BorderFunction;
+  FindBorderPoints -> BorderFunction;
+  FindBorderPoints -> FindShadowAndLightBorder;
+  MeanSquaredDistance -> BorderDistance;
+  MeanSquaredDistance -> BorderFunction;
+  PikeReader -> Calculate_m;
+  PikeReader -> RayTracing;
+  PikeReader -> SetSystem;
+  SetSystem -> effective_aperture;
+  effective_aperture -> Calculate_m;
+  quickstart -> BorderRecognition;
+
+  BorderDistance [URL="BorderDistance.html"];
+  BorderFunction [URL="BorderFunction.html"];
+  BorderRecognition [URL="BorderRecognition.html"];
+  BrightInDimOut [URL="BrightInDimOut.html"];
+  BrightnesScalarization [URL="BrightnesScalarization.html"];
+  Calculate_m [URL="Calculate_m.html"];
+  FindBorderPoints [URL="FindBorderPoints.html"];
+  FindShadowAndLightBorder [URL="FindShadowAndLightBorder.html"];
+  MeanSquaredDistance [URL="MeanSquaredDistance.html"];
+  PikeReader [URL="PikeReader.html"];
+  RayTracing [URL="RayTracing.html"];
+  SetSystem [URL="SetSystem.html"];
+  ThresholdValue [URL="ThresholdValue.html"];
+  effective_aperture [URL="effective_aperture.html"];
+  quickstart [URL="quickstart.html"];
+}

@@ -1,0 +1,4 @@
+set pointsize 0.2
+plot "irm" lt 3 title "irm", "irmp" lt 1 title "irm", "irms" lt 2 title "irms" 
+set output
+

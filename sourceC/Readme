@@ -1,0 +1,61 @@
+I. KOMPILACJA
+Przed kompilacja nalezy sie upewnic ze zostala ustalona dobrze sciezka do kompilatora ICPC. Mozna to zrobic tylko dla aktualnego terminala wpisujac polecenie:
+
+source /opt/intel/bin/compilervars.sh intel64
+
+Zeby sprawdzic czy dziala wystarczy zobaczyc czy dostepna jest komenda 'icpc'
+Kompilacje wykonujemy przy pomocy programu make, w pierwszej kolejnosci nalezy wpisac 'make clean' co spowoduje usuniecie starego pliku wykonywalnego, a nastepnie 'make'.
+W katalogu ze zrodlami powinien pojawic sie plik 'mrfin'.
+
+make clean
+make
+
+W przypadku domyslnej kompilacji, w konsoli matlaba beda wyswietlaly sie czasy wykonywania poszczegolnych funkcji, mozna skompilowac program bez tej opcji poleceniami:
+make clean
+make mrfin_omp_notiming
+
+
+II. WSPOLPRACA Z MATLABEM
+
+Program 'mrfin' wymienia informacje z Matlabem poprzez pliki binarne. W chwili uruchamiania matlabowego MRfina wykonywany jest skrypt save_workspace.m, ktory powoduje utworzenie binarnych plikow z danymi potrzebnymi do obliczeń. Tworzone sa pliki o nazwach:
+- 'setupMatlab' (wymiary macierzy iss, ipp, mTp, mTs, Diagragma, hccd_max_G, hcc_max_R)
+- 'iss' (macierz iss)
+- 'ipp' (macierz ipp)
+- 'mTp' (macierz theta.mTp)
+- 'mTs' (macierz theta.mTs)
+Nalezy zwrocic uwage, ze wszystkie informacje w plikach o w/w nazwach beda nadpisane przy uruchomieniu matlabowego MRfin.
+
+
+Po pojawieniu sie okna matlabowego MRfin, nalezy ustawic odpowiednio wszystkie parametry, nacisniecie 'Calc' powoduje wywolanie skryptu 'save_setup.m', ktory to zapisuje do pliku binarnego 'setup' nastepujace wartosci zmiennych:
+- 'mr' (moze byc liczba zespolona)
+- 'mg' (moze byc liczba zespolona)
+- 'Rmin' (tylko rzeczywisty)
+- 'Rmax' (tylko rzeczywisty)
+- 'Rstep' (tylko rzeczywisty)
+- 'Scale' (tylko rzeczywisty)
+- 'ShiftR' (tylko rzeczywisty)
+- 'ShiftG' (tylko rzeczywisty)
+- ShiftMred (moze byc zespolony, dana niewykorzystywana, bo powoduje uaktualnienie mr, ktore to jest wczytywane do programu)
+- Frame_begin (typu int32)
+- Frame_Step (typu int32)
+- Frame_end (typu int32)
+Dodatkowo w tym miejscu wczytywana jest długość fal ze zmiennych handles.Wr.wavelength oraz handles.Wg.wavelength.
+Wspolczynnik zalamania czytany jest bezposrednio z "okienka" matlabowego, zatem nie trzeba modyfikowac C zeby np dodawac nowe ciecze.
+
+Liczba watkow OMP wykorzystywana w obliczeniach ustawiana jest przez zmienna srodowiskowa w konsoli w ktorej POZNIEJ bedzie odpalony matlab:
+export OMP_NUM_THREADS=N          (gdzie N jest liczba watkow)
+W przypadku niezdefiniowania wartosci tej zmiennej, domyslnie ustawiana jest ona na liczbe procesorow widocznych w systemie.
+
+W matlabowym MRfin.m zdefiniowalem stala handles.C, ustawienie jej na 1 powoduje liczenie programem z C, ustawienie na 0 liczy standardowym matlabowym MRfinem.
+
+
+III. INNE UWAGI
+Program do pracy (NIE tylko do kompilacji) wymaga obecnosci icpc (podczas pracy korzysta z bibliotek). Dlatego tez zalecalbym wklejenie komendy:
+source /opt/intel/bin/compilervars.sh intel64
+do ktoregos z plikow ustawiajacych wlasnosci terminala/shella np ~/.profile lub ~/.bashrc oraz ustawienie terminala w trybie "login shell".
+Najlatwiejszym sposobem sprawdzenia czy plik z ustawieniami zostal poprawnie zaladowany jest proba wywolania komendy 'icpc' w terminalu.
+
+
+
+
+

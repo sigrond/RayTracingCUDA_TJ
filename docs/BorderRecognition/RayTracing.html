@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of RayTracing</title>
+  <meta name="keywords" content="RayTracing">
+  <meta name="description" content="The function &quot;P = RayTrace( P2,S )&quot; - conducts rays through lens system">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>RayTracing
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>The function &quot;P = RayTrace( P2,S )&quot; - conducts rays through lens system</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function P = RayTrace( P2,S ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> The function &quot;P = RayTrace( P2,S )&quot; - conducts rays through lens system
+
+ P2 - point on the surface of the first diaphragm
+ S  - structure contains the parameters of the lens
+ P  - coordinates of successive intersection ray with  surfaces
+
+ Calculation of the position of the sphere's center</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li><li><a href="PikeReader.html" class="code" title="function varargout = PikeReader(varargin)">PikeReader</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V2 = findAlpha( n, v, p,m2 )</a></li><li><a href="#_sub2" class="code">function rc = SphereCross( r, V,R )</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function P = RayTrace( P2,S )</a>
+0002 <span class="comment">% The function &quot;P = RayTrace( P2,S )&quot; - conducts rays through lens system</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% P2 - point on the surface of the first diaphragm</span>
+0005 <span class="comment">% S  - structure contains the parameters of the lens</span>
+0006 <span class="comment">% P  - coordinates of successive intersection ray with  surfaces</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Calculation of the position of the sphere's center</span>
+0009 S.Cs1  = S.l1 - S.R(1) + S.g;         
+0010 S.Cs2  = S.Cs1 + S.ll + 2*S.R(2);
+0011 
+0012 P1 = S.Pk;   <span class="comment">% droplet coordinates</span>
+0013 
+0014 v = (P2 - P1)/norm(P2 - P1); <span class="comment">% direction vector of the line</span>
+0015 <span class="comment">% looking for the point of intersection of the line and lenses</span>
+0016 <span class="comment">%</span>
+0017 t = (S.l1 - P2(1))/v(1); 
+0018 P3 = P2 + t*v;                            <span class="comment">% Point in the plane parallel to the flat surface of the lens</span>
+0019 
+0020 <span class="keyword">if</span> norm([P3(<span class="keyword">end</span>,2),P3(<span class="keyword">end</span>,3)]) &gt; (S.efD/2)    <span class="comment">% verification whether  the point inside the aperture of the lens or not</span>
+0021     
+0022      <span class="comment">% perescitywajem koordinaty</span>
+0023     Kp = norm(P3(1,2:3))/(S.efD/2);
+0024     P3(2:3) = P3(2:3)/Kp;
+0025   v = (P3 - P1)/norm(P3 - P1); <span class="comment">% direction vector of the line</span>
+0026    
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="comment">%</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% if norm(P3(2:3)) &gt; (S.efD/2)    % verification whether  the point inside the aperture of the lens or not</span>
+0032 <span class="comment">%      P = [P1; P2; [NaN,NaN,NaN]];</span>
+0033 <span class="comment">%      return</span>
+0034 <span class="comment">% end</span>
+0035 <span class="comment">% normal vector to the surface</span>
+0036 n =[ 1, 0, 0 ];
+0037 <span class="comment">% Nachodim ugol mezdu normalju i vektorom padenia i stroim nowyj</span>
+0038 <span class="comment">% prelomlennyj wektor</span>
+0039 v3 = <a href="#_sub1" class="code" title="subfunction V2 = findAlpha( n, v, p,m2 )">findAlpha</a>( n, v,1,S.m2 );
+0040 <span class="comment">%------ For intensity calculation</span>
+0041 P(8,1:3) = acosd(dot(n,v));
+0042 <span class="comment">% Isczem pereseczenie so sferoj</span>
+0043 rc = <a href="#_sub2" class="code" title="subfunction rc = SphereCross( r, V,R )">SphereCross</a>( [ P3(1) - S.Cs1, P3(2), P3(3) ], v3',S.R(1) );
+0044 <span class="comment">% Proweriajem popal li lucz w linzu</span>
+0045 <span class="keyword">if</span> isnan( rc ) <span class="comment">% lucz nie peresek sferu</span>
+0046     P = [P1; P2; P3;[NaN,NaN,NaN]];
+0047     <span class="keyword">return</span>
+0048 <span class="keyword">end</span>
+0049 
+0050 <span class="comment">% stroim normal w punktie pereseczenija</span>
+0051 ns = rc(1,:) / norm( rc(1,:) );
+0052 v4 = <a href="#_sub1" class="code" title="subfunction V2 = findAlpha( n, v, p,m2 )">findAlpha</a>( ns, v3',2,S.m2 );
+0053 <span class="comment">%------ For intensity calculation</span>
+0054 P(9,1:3) = acosd(dot(ns, v3'));
+0055 P4 = [ rc(1,1) + S.Cs1, rc(1,2), rc(1,3) ];
+0056 
+0057 <span class="keyword">if</span> norm(rc(1,2:3)) &gt; S.D/2 
+0058    P = [P1; P2; P3; P4;[NaN,NaN,NaN]];
+0059    <span class="keyword">return</span>
+0060    
+0061 <span class="keyword">end</span>
+0062  
+0063 <span class="comment">% isczem pereseczenie so wtoroj sferoj</span>
+0064 <span class="comment">% l - rasstojanie mezdu linzami</span>
+0065 
+0066 <span class="comment">% centr sledujusczej sfery nachoditsia na rasstojanii 2*R+l</span>
+0067 <span class="comment">% znaczit wektor nado pereniesti na rasstojanie 2*R+l po osi x. Tojest</span>
+0068 <span class="comment">% perenosim toczku s kotoroj on wychodit</span>
+0069 
+0070 
+0071 rc1 = <a href="#_sub2" class="code" title="subfunction rc = SphereCross( r, V,R )">SphereCross</a>( [P4(1)-S.Cs2,P4(2),P4(3)], v4',S.R(2) );
+0072 <span class="keyword">if</span> isnan( rc1 ) <span class="comment">% lucz nie peresek sferu</span>
+0073     P = [P1; P2; P3; P4;[NaN,NaN,NaN]];
+0074     <span class="keyword">return</span>
+0075 <span class="keyword">end</span>
+0076 
+0077 
+0078 P5 = rc1(2,:);
+0079 P5(1) = P5(1) + S.Cs2;
+0080 
+0081 <span class="keyword">if</span> norm(rc1(2,2:3)) &gt; S.D/2 <span class="comment">%lucz nie popal w linzu</span>
+0082     P = [P1; P2; P3; P5;[NaN,NaN,NaN]];
+0083     <span class="keyword">return</span>
+0084 <span class="keyword">end</span>
+0085 
+0086 <span class="comment">% stroim normal k etoj toczkie</span>
+0087 ns = rc1(2,:) / norm( rc1(2,:) );
+0088 
+0089 v5 = <a href="#_sub1" class="code" title="subfunction V2 = findAlpha( n, v, p,m2 )">findAlpha</a>( -ns, v4',1,S.m2 );
+0090 <span class="comment">%------ For intensity calculation</span>
+0091 P(10,1:3) = acosd(dot(-ns, v4'));
+0092 <span class="comment">% rc1(2,1) - toczka pereseczenija kogda sfera nachoditsia  w naczale</span>
+0093 <span class="comment">% koordinat</span>
+0094 <span class="comment">% x0 = rc1(2,1);</span>
+0095 <span class="comment">% x = x0+V4(1)*t;</span>
+0096 <span class="comment">% posledniaja toczka eto P5</span>
+0097 X = S.l1 + 2*S.g + S.ll;
+0098 t = ( X - P5(1) ) / v5( 1 );
+0099 
+0100 P6 = P5 + v5'*t;
+0101 
+0102 v6 = <a href="#_sub1" class="code" title="subfunction V2 = findAlpha( n, v, p,m2 )">findAlpha</a>( n, v5',2,S.m2 );
+0103 <span class="comment">%------ For intensity calculation</span>
+0104 P(11,1:3) = acosd(dot(n, v5'));
+0105 t = (S.lCCD - P6(1) ) / v6(1);
+0106 
+0107 P7 = P6 + v6'*t; 
+0108 
+0109 <span class="comment">% P  = [ P1; P2; P3; P4; P5; P6; P7];</span>
+0110 P(1,:)  =  P1;
+0111 P(2,:)  =  P2;
+0112 P(3,:)  =  P3;
+0113 P(4,:)  =  P4;
+0114 P(5,:)  =  P5;
+0115 P(6,:)  =  P6;
+0116 P(7,:)  =  P7;
+0117 <span class="comment">%</span>
+0118 <span class="comment">% ======= END OF MAIN FUNCTION ======================</span>
+0119     <a name="_sub1" href="#_subfunctions" class="code">function V2 = findAlpha( n, v, p,m2 )</a>
+0120      <span class="comment">%  funkcyja rasscitywajet nowyj naprawljausczij vektro dla</span>
+0121      <span class="comment">% priamoj</span>
+0122         al1 = acosd(dot(n,v));
+0123         <span class="comment">% refractive index of environment and lens respectively</span>
+0124         m1 = 1;
+0125 <span class="comment">%         m2 = Calculate_m(25,lambda, 'BK7');</span>
+0126         <span class="comment">% Snell's law</span>
+0127         <span class="keyword">if</span> p == 1
+0128             al2 = asind( m1 * sind( al1 ) / m2 );
+0129         <span class="keyword">else</span>
+0130             al2 = asind( m2 * sind( al1 ) / m1 );
+0131         <span class="keyword">end</span>
+0132         <span class="comment">% rasscitywajem ugol mezdu V1 i V2</span>
+0133         bet = al1 - al2;
+0134         <span class="comment">%</span>
+0135         <span class="comment">% Stroim prelomlennyj wektor</span>
+0136         <span class="comment">% stroim perpendikularnyj wektor</span>
+0137         S = cross( v, n );
+0138         <span class="keyword">if</span> norm(S) == 0 
+0139             <span class="comment">% wektor paralelnyj k normali net neobchodimossti scitat'</span>
+0140             <span class="comment">% sistemu urawnienij</span>
+0141             V2 = v';
+0142         <span class="keyword">else</span>
+0143             A = [ v; n; S ];
+0144             B = [ cosd( bet ); cosd( al2 ); 0 ];
+0145             V2 = A\B;
+0146         <span class="keyword">end</span>
+0147 <span class="comment">% ------------------------------------------------------------------------</span>
+0148 <a name="_sub2" href="#_subfunctions" class="code">function rc = SphereCross( r, V,R )</a>
+0149 <span class="comment">% Eta funkcyja nachodit toczki pereseczenia lucza so sferoj</span>
+0150 <span class="comment">%</span>
+0151 <span class="comment">% r  - koordinaty toczki iz kotoroj wychdit priamaja opredelennaja</span>
+0152 <span class="comment">% naprawliauscim wektorom V</span>
+0153 <span class="comment">% R - radius sfery</span>
+0154 <span class="comment">%</span>
+0155 A = sum(V.^2);
+0156 B = 2*dot(r,V);
+0157 C = sum(r.^2) - R^2;
+0158 D = B^2 -4 * A * C;
+0159 <span class="keyword">if</span> D &lt; 0 
+0160 rc = NaN;
+0161     <span class="keyword">return</span>
+0162 <span class="keyword">end</span>
+0163 t(1) = ( -B + sqrt( D ) ) / 2 / A ;
+0164 t(2) = ( -B - sqrt( D ) ) / 2 / A ;
+0165 rc(1,:) = r + V*t(1);
+0166 rc(2,:) = r + V*t(2);</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

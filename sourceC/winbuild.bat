@@ -1,0 +1,1 @@
+nvcc -Xcompiler "/openmp" -lWs2_32 MieAB.cpp MiePT.cpp ReferenceDistance.cpp GeneratePattern.cpp auxillary.cpp Calculate_m.cpp RunningRadius.cpp main.cpp cudaGenerate.cu cudaReferenceDistance.cu ccuda.cu mainFunction.cpp -o mymrfin --use-local-env --cl-version 2015

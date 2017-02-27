@@ -1,0 +1,2081 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of PikeReader</title>
+  <meta name="keywords" content="PikeReader">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>PikeReader
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = PikeReader(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>	This function -</li><li><a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>	The function "P = RayTrace( P2,S )" - conducts rays through lens system</li><li><a href="SetSystem.html" class="code" title="function S = SetSystem">SetSystem</a>	This function creates initial structure for objective and CCD</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function PikeReader_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = PikeReader_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function Frame = FrameRider(hObject,handles)</a></li><li><a href="#_sub4" class="code">function handles = Draw(hObject,handles)</a></li><li><a href="#_sub5" class="code">function handles = Sight(hObject,handles)</a></li><li><a href="#_sub6" class="code">function Br = BorderCreation(hObject,handles)</a></li><li><a href="#_sub7" class="code">function handles = DrawTheorImage(hObject,handles)</a></li><li><a href="#_sub8" class="code">function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)</a></li><li><a href="#_sub9" class="code">function pbLoad_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function chR_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function edR_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function edR_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function chG_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function edG_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function edG_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function chB_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function edB_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function edB_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function chAdjust_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function edAdjust_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function edAdjust_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function pbSumFrames_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function edSumFrameStep_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function edSumFrameStep_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub25" class="code">function chSumFrames_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub26" class="code">function chSight_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub27" class="code">function slFrames_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub28" class="code">function slFrames_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub29" class="code">function pmPart_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub30" class="code">function pmPart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub31" class="code">function rbR_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub32" class="code">function rbG_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub33" class="code">function rbB_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub34" class="code">function edPdrop_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub35" class="code">function edPdrop_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub36" class="code">function edCCD_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub37" class="code">function edCCD_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub38" class="code">function edAperture_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub39" class="code">function edAperture_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub40" class="code">function Fig1_WindowButtonMotionFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub41" class="code">function axes1_ButtonDownFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub42" class="code">function pbAngleCalc_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub43" class="code">function pbIntensCalc_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub44" class="code">function edLineSh_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub45" class="code">function edLineSh_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub46" class="code">function pbLoadParam_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub47" class="code">function pbSaveParam_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub48" class="code">function pbNA_Aprox_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub49" class="code">function muCI_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub50" class="code">function muCalcIm_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub51" class="code">function edFrStep_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub52" class="code">function edFrStep_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub53" class="code">function edFrameStep_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub54" class="code">function edFrameStep_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub55" class="code">function pbEditMask_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub56" class="code">function pbSetMask_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub57" class="code">function Untitled_1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub58" class="code">function muIntCon_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub59" class="code">function muCros_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub60" class="code">function muFitModel_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub61" class="code">function ChGPU_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = PikeReader(varargin)</a>
+0002 <span class="comment">%</span>
+0003 <span class="comment">%</span>
+0004 
+0005 <span class="comment">% Last Modified by GUIDE v2.5 19-Jul-2016 13:32:38</span>
+0006 
+0007 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0008 gui_Singleton = 1;
+0009 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0010                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0011                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction PikeReader_OpeningFcn(hObject, eventdata, handles, varargin)">PikeReader_OpeningFcn</a>, <span class="keyword">...</span>
+0012                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = PikeReader_OutputFcn(hObject, eventdata, handles)">PikeReader_OutputFcn</a>, <span class="keyword">...</span>
+0013                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0014                    <span class="string">'gui_Callback'</span>,   []);
+0015 <span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+0016     gui_State.gui_Callback = str2func(varargin{1});
+0017 <span class="keyword">end</span>
+0018 
+0019 <span class="keyword">if</span> nargout
+0020     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0021 <span class="keyword">else</span>
+0022     gui_mainfcn(gui_State, varargin{:});
+0023 <span class="keyword">end</span>
+0024 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0025 
+0026 
+0027 <span class="comment">% --- Executes just before PikeReader is made visible.</span>
+0028 <a name="_sub1" href="#_subfunctions" class="code">function PikeReader_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0029 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0030 <span class="comment">% hObject    handle to figure</span>
+0031 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0032 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0033 <span class="comment">% varargin   command line arguments to PikeReader (see VARARGIN)</span>
+0034 
+0035 <span class="comment">% Choose default command line output for PikeReader</span>
+0036 handles.output = hObject;
+0037 handles.fn = [];
+0038 handles.sF = [];
+0039 handles.hl = [];
+0040 handles.hImSh = []; <span class="comment">% handles to imshow object</span>
+0041 Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0042 handles.cF = Frame;
+0043 handles.S = <a href="SetSystem.html" class="code" title="function S = SetSystem">SetSystem</a>;    
+0044 handles.TshX = 0;
+0045 handles.shX  = 0;
+0046 handles.TshY = 0;
+0047 handles.shY  = 0;
+0048 handles.LW   = 0;
+0049 handles.shLW = 0;
+0050 <span class="comment">% handles for masks</span>
+0051 handles.BWR = [];
+0052 handles.BWG = [];
+0053 handles.BWB = [];
+0054 handles.BackgroundMaskR = [];
+0055 handles.BackgroundMaskG = [];
+0056 handles.BackgroundMaskB = [];
+0057 <span class="comment">% handles for mask borders</span>
+0058 handles.R_position = [];
+0059 handles.G_position = [];
+0060 handles.B_position = [];
+0061 handles.BackgroundMask_positionR = [];
+0062 handles.BackgroundMask_positionG = [];
+0063 handles.BackgroundMask_positionB = [];
+0064 
+0065 handles.GPU=1;
+0066 
+0067 set(handles.edAperture,<span class="string">'string'</span>,num2str(handles.S.efD));
+0068 set(handles.edPdrop,<span class="string">'string'</span>,num2str(handles.S.Pk));
+0069 set(handles.edCCD,<span class="string">'string'</span>,[num2str(handles.S.lCCD),<span class="string">', 0'</span>,<span class="string">', 0'</span>]);
+0070 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0071 <span class="comment">% Update handles structure</span>
+0072 guidata(hObject, handles);
+0073 
+0074 <span class="comment">% UIWAIT makes PikeReader wait for user response (see UIRESUME)</span>
+0075 <span class="comment">% uiwait(handles.Fig1);</span>
+0076 
+0077 
+0078 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0079 <a name="_sub2" href="#_subfunctions" class="code">function varargout = PikeReader_OutputFcn(hObject, eventdata, handles) </a>
+0080 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0081 <span class="comment">% hObject    handle to figure</span>
+0082 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0083 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0084 
+0085 <span class="comment">% Get default command line output from handles structure</span>
+0086 varargout{1} = handles.output;
+0087 <span class="comment">%% My functions</span>
+0088 <span class="comment">%=============== My functions =========================================</span>
+0089 <a name="_sub3" href="#_subfunctions" class="code">function Frame = FrameRider(hObject,handles)</a>
+0090 <span class="comment">% reads frame from movie -&gt;</span>
+0091 <span class="keyword">if</span> isempty( handles.fn )
+0092 <span class="comment">%     In case when movie is not loaded</span>
+0093      Frame = zeros(480,640,3);   
+0094 <span class="keyword">else</span>
+0095      mov = AviReadPike_Split( handles.fn,handles.nom );
+0096      <span class="comment">%munlock('avimex_Split');</span>
+0097      <span class="comment">%clear('avimex_Split');</span>
+0098      <span class="comment">%clear mex;</span>
+0099      <span class="comment">%clear functions;</span>
+0100      Frame =  single(squeeze( mov ));
+0101      <span class="comment">%drawnow;</span>
+0102      <span class="comment">%pause(0.1);</span>
+0103 <span class="keyword">end</span>
+0104 <span class="comment">% ---------------------------------------------------------------------</span>
+0105 <a name="_sub4" href="#_subfunctions" class="code">function handles = Draw(hObject,handles)</a>
+0106  
+0107         <span class="comment">%  draws image</span>
+0108     <span class="keyword">if</span> get(handles.chSumFrames,<span class="string">'value'</span>)
+0109         <span class="comment">% get sum frames</span>
+0110         <span class="keyword">if</span> ~isempty(handles.sF)
+0111             temp = handles.sF;
+0112         <span class="keyword">else</span>
+0113             <span class="comment">% if there isn't sum of frame, then draws current frame instead</span>
+0114             h = errordlg(<span class="string">'Sum of Frames not found'</span>,<span class="string">'Sum Error'</span>); uiwait(h);
+0115             temp = handles.cF;
+0116             set(handles.chSumFrames,<span class="string">'value'</span>,0)
+0117         <span class="keyword">end</span>
+0118     <span class="keyword">else</span>
+0119         <span class="comment">% get current frame</span>
+0120         temp = handles.cF;
+0121     <span class="keyword">end</span>
+0122     Frame =  zeros(size(temp));
+0123     <span class="comment">% Choosing the channel of observation</span>
+0124     <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+0125         Frame(:,:,1) = temp(:,:,1);
+0126     <span class="keyword">end</span>
+0127     <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+0128         Frame(:,:,2) = temp(:,:,2);
+0129     <span class="keyword">end</span>
+0130     <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+0131         Frame(:,:,3) = temp(:,:,3);
+0132     <span class="keyword">end</span>
+0133     <span class="comment">% Correction of the level of intensity</span>
+0134     <span class="keyword">if</span> get(handles.chAdjust,<span class="string">'value'</span>)
+0135         Frame = Frame.*str2double( get(handles.edAdjust,<span class="string">'string'</span>));
+0136     <span class="keyword">end</span>
+0137     <span class="comment">% If there is no path, then show the empty frame</span>
+0138     <span class="keyword">if</span> isempty( handles.hImSh )
+0139         <span class="keyword">if</span> isempty( handles.fn )
+0140            handles.hImSh = imshow( handles.cF);
+0141         <span class="keyword">else</span>
+0142            handles.hImSh = imshow(uint16(Frame));
+0143         <span class="keyword">end</span>
+0144         <span class="keyword">if</span> isempty(handles.hl)
+0145             hold on;
+0146             <span class="comment">% first channel</span>
+0147             handles.hl(1) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,[0.9,0.9,0.9] ); <span class="comment">% The red channel</span>
+0148             <span class="comment">% additional vertical lines</span>
+0149             handles.hl(2) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,[0.9,0.9,0.9] );
+0150             handles.hl(3) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,[0.9,0.9,0.9] );
+0151             <span class="comment">% second channel</span>
+0152             handles.hl(4) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'r'</span> );
+0153             handles.hl(5) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'r'</span> );
+0154             handles.hl(6) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'r'</span> );
+0155             <span class="comment">% third channel</span>
+0156             handles.hl(7) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'g'</span> );
+0157             handles.hl(8) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'g'</span> );
+0158             handles.hl(9) = plot( [0, 0],[0, 0],<span class="string">'color'</span>,<span class="string">'g'</span> );
+0159             hold off;
+0160             guidata(hObject, handles);
+0161         <span class="keyword">end</span>
+0162     <span class="keyword">else</span>
+0163         <span class="keyword">if</span> isempty( handles.fn )
+0164            set(handles.hImSh,<span class="string">'Cdata'</span>,handles.cF);
+0165         <span class="keyword">else</span>
+0166            set(handles.hImSh,<span class="string">'Cdata'</span>,uint16(Frame));
+0167         <span class="keyword">end</span>
+0168     <span class="keyword">end</span>
+0169     <span class="comment">% If sight checkbox is active then draw theoretical image</span>
+0170     <span class="keyword">if</span> get(handles.chSight,<span class="string">'value'</span>)
+0171        
+0172         <span class="comment">% setting the wavelength value</span>
+0173         <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+0174             handles.S.lambda = str2double(get(handles.edR,<span class="string">'string'</span>));
+0175             handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+0176             handles.ChKey = 1;
+0177             guidata(hObject,handles);
+0178                 handles = <a href="#_sub5" class="code" title="subfunction handles = Sight(hObject,handles)">Sight</a>(hObject,handles);
+0179         <span class="keyword">else</span>
+0180             set(handles.hl(1),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0181             set(handles.hl(2),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0182             set(handles.hl(3),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0183         <span class="keyword">end</span>
+0184         <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+0185             handles.S.lambda = str2double(get(handles.edG,<span class="string">'string'</span>));
+0186             handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+0187              handles.ChKey = 2;
+0188              guidata(hObject,handles);
+0189                 handles = <a href="#_sub5" class="code" title="subfunction handles = Sight(hObject,handles)">Sight</a>(hObject,handles);
+0190                
+0191         <span class="keyword">else</span>
+0192             set(handles.hl(4),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0193             set(handles.hl(5),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0194             set(handles.hl(6),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0195         <span class="keyword">end</span>
+0196         <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+0197             handles.S.lambda = str2double(get(handles.edB,<span class="string">'string'</span>));
+0198              handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+0199              handles.ChKey = 3;
+0200             guidata(hObject,handles);
+0201                 handles = <a href="#_sub5" class="code" title="subfunction handles = Sight(hObject,handles)">Sight</a>(hObject,handles);
+0202         <span class="keyword">else</span>
+0203             set(handles.hl(7),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0204             set(handles.hl(8),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0205             set(handles.hl(9),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0206         <span class="keyword">end</span>
+0207         guidata(hObject,handles)
+0208     <span class="keyword">end</span>
+0209 <span class="comment">% ---------------------------------------------------------------------</span>
+0210 <a name="_sub5" href="#_subfunctions" class="code">function handles = Sight(hObject,handles)</a>
+0211  
+0212  <span class="comment">% setting the droplet's position</span>
+0213  handles.S.Pk = str2num(get(handles.edPdrop,<span class="string">'string'</span>));
+0214  <span class="comment">% setting the CCD's position</span>
+0215  vel = str2num(get(handles.edCCD,<span class="string">'string'</span>));
+0216   handles.S.lCCD = vel(1);
+0217   handles.shX = vel(2);
+0218   handles.shY = vel(3);
+0219   <span class="comment">% setting the effective aperture</span>
+0220   handles.S.efD = str2double(get(handles.edAperture,<span class="string">'string'</span>));
+0221   <span class="comment">% setting the position of additional line</span>
+0222   handles.shLW = str2double(get(handles.edLineSh,<span class="string">'string'</span>));
+0223   handles.S.CCDH = handles.S.CCDPH * handles.S.PixSize;  <span class="comment">% height of CCD</span>
+0224   handles.S.CCDW = handles.S.CCDPW * handles.S.PixSize;  <span class="comment">% width  of CCD</span>
+0225   <span class="comment">% setting the distance between center of the trap and  first lens</span>
+0226 
+0227 handles = <a href="#_sub7" class="code" title="subfunction handles = DrawTheorImage(hObject,handles)">DrawTheorImage</a>(hObject,handles);
+0228 guidata(hObject,handles);
+0229 <span class="comment">%-------------------------------------------------------------------------</span>
+0230 <a name="_sub6" href="#_subfunctions" class="code">function Br = BorderCreation(hObject,handles)</a>
+0231 <span class="comment">% This function creates border points. The position of border points depends on geometry</span>
+0232 <span class="comment">% of trap and droplet's position.</span>
+0233 <span class="comment">% Trap center coincides with the center of</span>
+0234 <span class="comment">% the coordinate system</span>
+0235 <span class="comment">%</span>
+0236 Br = zeros(4*handles.S.N,3);       <span class="comment">% vector of border points</span>
+0237 <span class="comment">% calculation of position for the 4 outer points</span>
+0238 alpha = asin(handles.S.dW/2/handles.S.R_midl_El);
+0239 [X(1),Y(1)] = pol2cart(alpha,handles.S.R_midl_El);
+0240 [X(2),Y(2)] = pol2cart(-alpha,handles.S.R_midl_El);
+0241 Z(1) = -handles.S.dH/2;
+0242 Z(2) = handles.S.dH/2;
+0243 P(1,:) = [X(1),Y(1),Z(1)];
+0244 P(2,:) = [X(1),Y(1),Z(2)];
+0245 P(3,:) = [X(2),Y(2),Z(2)];
+0246 P(4,:) = [X(2),Y(2),Z(1)];
+0247 
+0248 V = P(4,:) - handles.S.Pk; <span class="comment">% left (or right) border</span>
+0249 V = V/norm(V);
+0250 A = V(1)^2 + V(2)^2;
+0251 B = 2*(V(1)*handles.S.Pk(1)+V(2)*handles.S.Pk(2));
+0252 C = handles.S.Pk(1)^2 + handles.S.Pk(2)^2 - (handles.S.R_dis_Ring)^2;
+0253 D = B^2-4*A*C;
+0254 t = (-B+sqrt(D) )/2/A;
+0255 P(5,:) = [ handles.S.Pk(1)+V(1)*t handles.S.Pk(2)+V(2)*t -handles.S.dH/2];
+0256 
+0257 V = P(1,:) - handles.S.Pk; <span class="comment">% left (or right) border</span>
+0258 V = V/norm(V);
+0259 A = V(1)^2 + V(2)^2;
+0260 B = 2*(V(1)*handles.S.Pk(1)+V(2)*handles.S.Pk(2));
+0261 C = handles.S.Pk(1)^2 + handles.S.Pk(2)^2 - (handles.S.R_dis_Ring)^2;
+0262 D = B^2-4*A*C;
+0263 t = (-B+sqrt(D) )/2/A;
+0264 P(6,:) = [ handles.S.Pk(1)+V(1)*t handles.S.Pk(2)+V(2)*t -handles.S.dH/2];
+0265 
+0266 P(7,1:2) = P(6,1:2);
+0267 P(7,3)   = handles.S.dH/2;
+0268 
+0269 P(8,1:2) = P(5,1:2);
+0270 P(8,3)   = handles.S.dH/2;
+0271 <span class="comment">%</span>
+0272 Br(1:handles.S.N,1) = ones(1,handles.S.N)*P(1,1);
+0273 Br(1:handles.S.N,2) = ones(1,handles.S.N)*P(1,2);
+0274 Br(1:handles.S.N,3) = linspace(P(2,3),P(1,3),handles.S.N);
+0275 V1 = P(6,:); <span class="comment">% directing vector from origin to point 6</span>
+0276 V2 = P(5,:); <span class="comment">% directing vector from origin to point 5</span>
+0277 Bt1 = acos( dot( V1(1:2) ,[1,0])/norm( V1(1:2) ));
+0278 Bt2 = acos( dot(V2(1:2),[1,0])/norm(V2(1:2)));
+0279 VBt = linspace(Bt1,-Bt2,handles.S.N);
+0280 <span class="comment">%</span>
+0281 [X,Y] = pol2cart(VBt,handles.S.R_dis_Ring);
+0282 
+0283 Br((handles.S.N+1):2*handles.S.N,1) = X;
+0284 Br((handles.S.N+1):2*handles.S.N,2) = Y;
+0285 Br((handles.S.N+1):2*handles.S.N,3) = -ones(1,handles.S.N)*handles.S.dH/2;
+0286 
+0287 Br((2*handles.S.N+1):3*handles.S.N,1) = ones(1,handles.S.N)*P(4,1);
+0288 Br((2*handles.S.N+1):3*handles.S.N,2) = ones(1,handles.S.N)*P(4,2);
+0289 Br((2*handles.S.N+1):3*handles.S.N,3) = linspace(P(4,3),P(3,3),handles.S.N);
+0290 
+0291 VBt = linspace(-Bt2,Bt1,handles.S.N);
+0292 <span class="comment">%</span>
+0293 [X,Y] = pol2cart(VBt,handles.S.R_dis_Ring);
+0294 Br((3*handles.S.N+1):4*handles.S.N,1) = X;
+0295 Br((3*handles.S.N+1):4*handles.S.N,2) = Y;
+0296 Br((3*handles.S.N+1):4*handles.S.N,3) = ones(1,handles.S.N)*handles.S.dH/2;
+0297 <span class="comment">%-------------------------------------------------------------------------</span>
+0298 <a name="_sub7" href="#_subfunctions" class="code">function handles = DrawTheorImage(hObject,handles)</a>
+0299 <span class="comment">% generation of border points</span>
+0300 handles.Br = <a href="#_sub6" class="code" title="subfunction Br = BorderCreation(hObject,handles)">BorderCreation</a>(hObject,handles);
+0301 <span class="comment">% ray tracing calculation</span>
+0302 <span class="keyword">for</span> i = 1:size(handles.Br,1)
+0303        Pd = [ handles.Br(i,1), handles.Br(i,2), handles.Br(i,3) ]; <span class="comment">% Points on the diaphragm plane</span>
+0304        P = <a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>(Pd,handles.S);
+0305 <span class="comment">%              if size(P,1) == 7</span>
+0306                  W1(i) = P(7,2);
+0307                  Hi1(i) = P(7,3);
+0308 <span class="comment">%              else</span>
+0309               <span class="comment">% Terminate the rays that don't hit the CCD element</span>
+0310 <span class="comment">%                  W1(i) = NaN;</span>
+0311 <span class="comment">%                  Hi1(i) = NaN;</span>
+0312 <span class="comment">%              end</span>
+0313  <span class="keyword">end</span>
+0314 <span class="comment">% Recalculation meters to pixels</span>
+0315 <span class="comment">% shifting the  origin to middle of the image.</span>
+0316 <span class="comment">% The center of image isn't placed  on [0,0] point, but on [240,320] point</span>
+0317  handles.R1(1,:) = (handles.S.CCDW/2 + W1)/handles.S.PixSize;  <span class="comment">% [ Pix ]</span>
+0318  handles.R1(2,:) = (handles.S.CCDH/2 + Hi1)/handles.S.PixSize; <span class="comment">% [ Pix ]</span>
+0319   
+0320 <span class="comment">% drawing the additional symetrical lines</span>
+0321 handles.N = 20;
+0322 handles.LH = linspace(-handles.S.dH/2,handles.S.dH/2,handles.N);
+0323 handles.L = zeros(2,handles.N);
+0324 
+0325 <span class="keyword">for</span> ii = 1:handles.N
+0326  Pd = [ handles.S.ld, handles.LW + handles.shLW, handles.LH(ii) ];
+0327          P1 = <a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>(Pd,handles.S);
+0328          handles.L(1,ii)= (handles.S.CCDW/2 + P1(7,2))/handles.S.PixSize;
+0329          handles.L(2,ii)= (handles.S.CCDH/2 + P1(7,3))/handles.S.PixSize;
+0330          
+0331  Pd = [ handles.S.ld, handles.LW - handles.shLW, handles.LH(ii) ];
+0332          P1 = <a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>(Pd,handles.S);
+0333          handles.L(3,ii)= (handles.S.CCDW/2 + P1(7,2))/handles.S.PixSize;
+0334          handles.L(4,ii)= (handles.S.CCDH/2 + P1(7,3))/handles.S.PixSize;        
+0335 <span class="keyword">end</span>
+0336 <span class="keyword">switch</span> handles.ChKey
+0337     <span class="keyword">case</span> 1 <span class="comment">% Red channel</span>
+0338          set(handles.hl(1),<span class="string">'xdata'</span>,handles.R1(1,:) +  handles.shX,<span class="keyword">...</span>
+0339                            <span class="string">'ydata'</span>,handles.R1(2,:) + handles.shY );
+0340          set(handles.hl(2),<span class="string">'xdata'</span>,handles.L(1,:) + handles.shX,<span class="keyword">...</span>
+0341                            <span class="string">'ydata'</span>,handles.L(2,:)+ handles.shY);
+0342          set(handles.hl(3),<span class="string">'xdata'</span>,handles.L(3,:) + handles.shX,<span class="keyword">...</span>
+0343                            <span class="string">'ydata'</span>,handles.L(4,:)+ handles.shY);
+0344     <span class="keyword">case</span> 2
+0345          set(handles.hl(4),<span class="string">'xdata'</span>,handles.R1(1,:) +  handles.shX,<span class="keyword">...</span>
+0346                            <span class="string">'ydata'</span>,handles.R1(2,:) + handles.shY );
+0347          set(handles.hl(5),<span class="string">'xdata'</span>,handles.L(1,:) + handles.shX,<span class="keyword">...</span>
+0348                            <span class="string">'ydata'</span>,handles.L(2,:)+ handles.shY);
+0349          set(handles.hl(6),<span class="string">'xdata'</span>,handles.L(3,:) + handles.shX,<span class="keyword">...</span>
+0350                            <span class="string">'ydata'</span>,handles.L(4,:)+ handles.shY);
+0351     <span class="keyword">case</span> 3
+0352          set(handles.hl(7),<span class="string">'xdata'</span>,handles.R1(1,:) +  handles.shX,<span class="keyword">...</span>
+0353                            <span class="string">'ydata'</span>,handles.R1(2,:) + handles.shY );
+0354          set(handles.hl(8),<span class="string">'xdata'</span>,handles.L(1,:) + handles.shX,<span class="keyword">...</span>
+0355                            <span class="string">'ydata'</span>,handles.L(2,:)+ handles.shY);
+0356          set(handles.hl(9),<span class="string">'xdata'</span>,handles.L(3,:) + handles.shX,<span class="keyword">...</span>
+0357                            <span class="string">'ydata'</span>,handles.L(4,:)+ handles.shY);
+0358     
+0359 <span class="keyword">end</span>
+0360 
+0361 guidata(hObject,handles)
+0362 <span class="comment">%----------------------------------------------------------------------</span>
+0363 <a name="_sub8" href="#_subfunctions" class="code">function [IC,THETA,PHI] =  IC_Calculation(hObject,handles)</a>
+0364 <span class="comment">% The IC_Calculation function, calculates</span>
+0365 <span class="comment">% intensity correction matrix for experimental data.</span>
+0366 <span class="comment">%% Creation of electrode border</span>
+0367 <span class="comment">%% FIXME: could be sped up!!! with GPU</span>
+0368 <span class="comment">%handles.S.N = 3e3; % Number of points per side</span>
+0369 handles.S.N = 25000; <span class="comment">%5e2 ; % Number of points per side</span>
+0370 
+0371 <span class="comment">%KA1=zeros(20,20);</span>
+0372 <span class="comment">%KA2=zeros(20,20);</span>
+0373 <span class="comment">%KA3=zeros(20,20);</span>
+0374 <span class="comment">%KA4=zeros(20,20);</span>
+0375 <span class="comment">%KA5=zeros(20,20);</span>
+0376 <span class="comment">%KA6=zeros(20,20);</span>
+0377 
+0378 <span class="comment">%handles.GPU=0;</span>
+0379 <span class="keyword">if</span> handles.GPU==1
+0380     Br = single(<a href="#_sub6" class="code" title="subfunction Br = BorderCreation(hObject,handles)">BorderCreation</a>(hObject,handles));
+0381     Vb = (1 + handles.S.N ) : handles.S.N * 2;
+0382     IC = single(zeros(480,640));
+0383     PX = single(zeros(4,480,640));
+0384     tic;
+0385     <span class="comment">%pojawia siê dziwny crash matlaba dla koloru niebieskiego</span>
+0386     <span class="comment">%na SPICA'y nie uda³o mi siê go odtworzyæ</span>
+0387     <span class="comment">%zakomentowana linijka ze zmienionym zakresem nie powoduje tego b³êdu</span>
+0388     <span class="comment">%nie wiem dlaczego tak siê dzieje, ale mo¿e byæ to bug w matlabie</span>
+0389     <span class="comment">%edit: b³¹d by³ zwi¹zany z nie sprawdzaniem, czy promieñ nie wyszed³</span>
+0390     <span class="comment">%poza macierz</span>
+0391     [IC,PX]=RayTracingCUDA(Br(Vb(1,:),1), Br(Vb(1,:),2), Br(:,3),handles);
+0392     toc
+0393     <span class="comment">%[IC,PX]=RayTracingCUDA(Br(Vb(1,100:110),1), Br(Vb(1,100:110),2),Br(100:110,3),handles);</span>
+0394     <span class="comment">%max(IC);</span>
+0395     ICNNT=IC;
+0396 
+0397     <span class="comment">%IC = IC./max(IC(:));</span>
+0398     
+0399     imtool(IC);
+0400     figure;
+0401     mesh(double(IC));
+0402     
+0403     <span class="comment">%PXX=PX(1,1:10,1:10)./PX(4,1:10,1:10)</span>
+0404     PXX=PX(1,:,:)./PX(4,:,:);
+0405     PXX=squeeze(PXX);
+0406     <span class="comment">%size(PXX)</span>
+0407     <span class="comment">%imtool(PXX);</span>
+0408     PXY=PX(2,:,:)./PX(4,:,:);
+0409     PXY=squeeze(PXY);
+0410     <span class="comment">%imtool(PXY);</span>
+0411     PXZ=PX(3,:,:)./PX(4,:,:);
+0412     PXZ=squeeze(PXZ);
+0413     <span class="comment">%imtool(PXZ);</span>
+0414 
+0415     <span class="comment">%[THETA,PHI,R] = cart2sph(PX(1,:,:)./PX(4,:,:),PX(2,:,:)./PX(4,:,:),PX(3,:,:)./PX(4,:,:));</span>
+0416     <span class="comment">%[THETA,PHI,R] = cart2sph(PXX,PXY,PXZ);</span>
+0417     THETA=PXY;
+0418     PHI=PXX;
+0419     <span class="comment">%imtool(THETA);</span>
+0420     <span class="comment">%imtool(PHI);</span>
+0421     <span class="comment">%imtool(R);</span>
+0422  <span class="comment">%   ICT=IC;</span>
+0423   <span class="comment">%  THETAT=THETA;</span>
+0424    <span class="comment">% PHIT=PHI;</span>
+0425 <span class="comment">%    RT=R;</span>
+0426    <span class="comment">% PXXT=PXX;</span>
+0427     <span class="comment">%PXYT=PXY;</span>
+0428     <span class="comment">%PXZT=PXZ;</span>
+0429     <span class="comment">%save('compT.mat','ICT','THETAT','PHIT','RT','PXXT','PXYT','PXZT','ICNNT');</span>
+0430 <span class="keyword">else</span>
+0431 handles.S.N = 3e3; <span class="comment">% Number of points per side</span>
+0432 Br = single(<a href="#_sub6" class="code" title="subfunction Br = BorderCreation(hObject,handles)">BorderCreation</a>(hObject,handles));
+0433 <span class="comment">% get only the part of border points</span>
+0434 Vb = (1 + handles.S.N ) : handles.S.N * 2; <span class="comment">% Indexes for bottom electrode</span>
+0435 
+0436 IC = single(zeros(480,640));   <span class="comment">% Declaration of correction matrix</span>
+0437 PX = single(zeros(480,640,4)); <span class="comment">% Declaration of pixel position matrix</span>
+0438                        <span class="comment">% PX(X,Y,Nom); Where Nom is a number of rays that</span>
+0439                        <span class="comment">% walk into cell</span>
+0440 hwb = waitbar(0,<span class="string">'Computation of intensity matrix ...'</span>);
+0441 s = <span class="string">'Time estimation...'</span>;
+0442 <span class="keyword">for</span> i = 1 : length(Vb)    <span class="comment">% The movment across Z axis</span>
+0443     waitbar(i/length(Vb),hwb,s);
+0444     tic;
+0445     <span class="keyword">for</span> j = 1 : length(Vb) <span class="comment">% The movement across curved border</span>
+0446         Pd = [ Br(Vb(j),1), Br(Vb(j),2), Br(i,3) ]; <span class="comment">% toczka na kraju diafragmy</span>
+0447         P = <a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>(Pd,handles.S);
+0448               <span class="comment">% shifting of mask position according experimental data</span>
+0449                  W  =  handles.shX + ( handles.S.CCDW/2 +P(7,2))/handles.S.PixSize; 
+0450                  Hi =  handles.shY + (handles.S.CCDH/2 +P(7,3))/handles.S.PixSize;
+0451                <span class="comment">% Recording position of rays and a number of rays that</span>
+0452                <span class="comment">% walk into the cell</span>
+0453                
+0454                  PX(round(Hi),round(W),1) = PX(round(Hi),round(W),1) + P(2,1);
+0455                  PX(round(Hi),round(W),2) = PX(round(Hi),round(W),2) + P(2,2);
+0456                  PX(round(Hi),round(W),3) = PX(round(Hi),round(W),3) + P(2,3);
+0457                  PX(round(Hi),round(W),4) = PX(round(Hi),round(W),4) + 1;
+0458          <span class="comment">% The calculation of energy loss,  caused by reflection on lens surfaces</span>
+0459          <span class="comment">% and rising distance</span>
+0460              Ka1 =   cosd(P(8,1))/( 1e-2*(norm(P(1,:)-P(2,:)) + norm(P(2,:)-P(3,:))) )^2;
+0461              <span class="comment">%KA1(i,j)=Ka1;</span>
+0462              Ka2 =   Ka1*cosd(P(9,1))/(1e-2*(norm(P(3,:)-P(4,:))))^2;
+0463              <span class="comment">%KA2(i,j)=Ka2;</span>
+0464              Ka3 =   Ka2*cosd(P(10,1))/(1e-2*(norm(P(4,:)-P(5,:))))^2;
+0465              <span class="comment">%KA3(i,j)=Ka3;</span>
+0466              Ka4 =   Ka3*cosd(P(11,1))^2/(1e-2*(norm(P(5,:)-P(6,:)) + norm(P(6,:)-P(7,:))))^2;
+0467              <span class="comment">%KA4(i,j)=Ka4;</span>
+0468              <span class="comment">%KA5(i,j)=1./Ka4;</span>
+0469              <span class="comment">%KA6(i,j)=1/Ka4;</span>
+0470           IC(round(Hi),round(W)) = 1./Ka4 + IC(round(Hi),round(W));
+0471 
+0472     <span class="keyword">end</span>
+0473     t = toc;
+0474    s = sprintf(<span class="string">'Remaining time %2.3f hour'</span>,(t*length(Vb)-t*i)/3600) ;
+0475 <span class="keyword">end</span>
+0476 close(hwb)
+0477 <span class="comment">% Normalisation of Intesity matrix</span>
+0478 <span class="comment">%ICNNG=IC;</span>
+0479 IC = IC./max(IC(:));
+0480 <span class="comment">% Angles calculation</span>
+0481 [THETA,PHI,R] = cart2sph(PX(:,:,1)./PX(:,:,4),PX(:,:,2)./PX(:,:,4),PX(:,:,3)./PX(:,:,4));
+0482 
+0483 <span class="comment">%PXX=PX(:,:,1)./PX(:,:,4);</span>
+0484 <span class="comment">%PXXG=squeeze(PXX);</span>
+0485 <span class="comment">%PXY=PX(:,:,2)./PX(:,:,4);</span>
+0486 <span class="comment">%PXYG=squeeze(PXY);</span>
+0487 <span class="comment">%PXZ=PX(:,:,3)./PX(:,:,4);</span>
+0488 <span class="comment">%PXZG=squeeze(PXZ);</span>
+0489 <span class="comment">%ICG=IC;</span>
+0490 <span class="comment">%THETAG=THETA;</span>
+0491 <span class="comment">%PHIG=PHI;</span>
+0492 <span class="comment">%RG=R;</span>
+0493 <span class="comment">%save('compG20.mat','ICG','THETAG','PHIG','RG','PXXG','PXYG','PXZG','ICNNG');%,'KA1','KA2','KA3','KA4','KA5','KA6');</span>
+0494 <span class="keyword">end</span>
+0495 <span class="comment">%f=figure;</span>
+0496 <span class="comment">%imtool(IC);</span>
+0497 <span class="comment">%THETA</span>
+0498 <span class="comment">%--------------------------------------------------------------------------</span>
+0499 
+0500 <span class="comment">%=============== End of  My functions =================================</span>
+0501 
+0502 
+0503 <span class="comment">% --- Executes on button press in pbLoad.</span>
+0504 <a name="_sub9" href="#_subfunctions" class="code">function pbLoad_Callback(hObject, eventdata, handles)</a>
+0505 <span class="comment">% pbLoad_Callback - wczytuje film *.avi</span>
+0506 <span class="comment">%I:\!From Justice\0.1ml\Splited</span>
+0507 [handles.f,handles.dir] = uigetfile( {<span class="string">'*.avi'</span>;<span class="string">'*.*'</span>},<span class="string">'Load files'</span>,<span class="string">'F:\'</span>,<span class="string">'MultiSelect'</span>,<span class="string">'on'</span> );
+0508 <span class="comment">% wyœwietlamy na panelu nazwe filmu</span>
+0509     <span class="keyword">if</span> ischar( handles.f )
+0510         set( handles.up1, <span class="string">'title'</span>, handles.f );
+0511         handles.avi_title = handles.f;
+0512         handles.fn = [handles.dir handles.f];
+0513         inf = aviinfo(handles.fn);
+0514         <span class="keyword">if</span> inf.NumFrames &lt;= inf.FileSize/(640*480*2+8)
+0515             handles.N_frames = inf.NumFrames; <span class="comment">% total number of frames</span>
+0516         <span class="keyword">else</span>
+0517             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
+0518         <span class="keyword">end</span>
+0519         set(handles.slFrames,<span class="string">'max'</span>,handles.N_frames,<span class="string">'min'</span>,1,<span class="string">'value'</span>,1,<span class="keyword">...</span>
+0520             <span class="string">'sliderstep'</span>,[1/handles.N_frames 10/handles.N_frames],<span class="string">'enable'</span>,<span class="string">'on'</span>);
+0521         S = sprintf(<span class="string">'Current frame: %d; Total number of frame %d'</span>,1, handles.N_frames);
+0522         set(handles.upFrames,<span class="string">'Title'</span>,S);
+0523         set(handles.pmPart,<span class="string">'string'</span>,<span class="string">'1'</span>)
+0524     <span class="keyword">elseif</span> iscell( handles.f )
+0525         s = sprintf(<span class="string">'%s in %3.1f parts'</span>,handles.f{1},size(handles.f,2) );
+0526         set( handles.up1,<span class="string">'title'</span>,s );
+0527 
+0528          handles.N_frames =0;
+0529          <span class="keyword">for</span> j = 1:length(handles.f)
+0530              handles.fn = [handles.dir handles.f{j}];
+0531              inf = aviinfo(handles.fn);
+0532              handles.N_frames = handles.N_frames + inf.NumFrames; <span class="comment">% total number of frames</span>
+0533          <span class="keyword">end</span>
+0534             handles.fn = [handles.dir handles.f{1}];
+0535             inf = aviinfo(handles.fn);
+0536             set(handles.slFrames,<span class="string">'max'</span>,inf.NumFrames,<span class="string">'min'</span>,1,<span class="string">'value'</span>,1,<span class="keyword">...</span>
+0537             <span class="string">'sliderstep'</span>,[1/inf.NumFrames 10/inf.NumFrames],<span class="string">'enable'</span>,<span class="string">'on'</span>);
+0538         S = sprintf(<span class="string">'Current frame: %d; Total number of frame %d'</span>,1, handles.N_frames);
+0539         set(handles.upFrames,<span class="string">'Title'</span>,S);
+0540         set(handles.pmPart,<span class="string">'string'</span>,num2str( (1:length(handles.f))' ));
+0541     <span class="keyword">elseif</span> handles.f == 0
+0542         set( handles.up1,<span class="string">'title'</span>,<span class="string">'No files...'</span> );
+0543         set(handles.slFrames,<span class="string">'enable'</span>,<span class="string">'off'</span>);
+0544         S = sprintf(<span class="string">'Current frame: %d; Total number of frame %d'</span>,0, 0);
+0545         set(handles.upFrames,<span class="string">'Title'</span>,S);
+0546         <span class="keyword">return</span>
+0547     <span class="keyword">end</span>
+0548 handles.nom = 1;
+0549 Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0550 handles.cF = Frame;
+0551 guidata(hObject,handles);
+0552 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0553 <span class="comment">% --- Executes on button press in chR.</span>
+0554 <a name="_sub10" href="#_subfunctions" class="code">function chR_Callback(hObject, eventdata, handles)</a>
+0555 <span class="comment">% hObject    handle to chR (see GCBO)</span>
+0556 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0557 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0558 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0559 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of chR</span>
+0560 
+0561 
+0562 
+0563 <a name="_sub11" href="#_subfunctions" class="code">function edR_Callback(hObject, eventdata, handles)</a>
+0564 <span class="comment">% hObject    handle to edR (see GCBO)</span>
+0565 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0566 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0567 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0568 <span class="comment">% Hints: get(hObject,'String') returns contents of edR as text</span>
+0569 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edR as a double</span>
+0570 
+0571 
+0572 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0573 <a name="_sub12" href="#_subfunctions" class="code">function edR_CreateFcn(hObject, eventdata, handles)</a>
+0574 <span class="comment">% hObject    handle to edR (see GCBO)</span>
+0575 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0576 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0577 
+0578 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0579 <span class="comment">%       See ISPC and COMPUTER.</span>
+0580 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0581     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0582 <span class="keyword">end</span>
+0583 
+0584 
+0585 <span class="comment">% --- Executes on button press in chG.</span>
+0586 <a name="_sub13" href="#_subfunctions" class="code">function chG_Callback(hObject, eventdata, handles)</a>
+0587 <span class="comment">% hObject    handle to chG (see GCBO)</span>
+0588 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0589 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0590 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0591 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of chG</span>
+0592 
+0593 
+0594 
+0595 <a name="_sub14" href="#_subfunctions" class="code">function edG_Callback(hObject, eventdata, handles)</a>
+0596 <span class="comment">% hObject    handle to edG (see GCBO)</span>
+0597 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0598 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0599 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0600 <span class="comment">% Hints: get(hObject,'String') returns contents of edG as text</span>
+0601 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edG as a double</span>
+0602 
+0603 
+0604 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0605 <a name="_sub15" href="#_subfunctions" class="code">function edG_CreateFcn(hObject, eventdata, handles)</a>
+0606 <span class="comment">% hObject    handle to edG (see GCBO)</span>
+0607 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0608 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0609 
+0610 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0611 <span class="comment">%       See ISPC and COMPUTER.</span>
+0612 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0613     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0614 <span class="keyword">end</span>
+0615 
+0616 
+0617 <span class="comment">% --- Executes on button press in chB.</span>
+0618 <a name="_sub16" href="#_subfunctions" class="code">function chB_Callback(hObject, eventdata, handles)</a>
+0619 <span class="comment">% hObject    handle to chB (see GCBO)</span>
+0620 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0621 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0622 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0623 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of chB</span>
+0624 
+0625 
+0626 
+0627 <a name="_sub17" href="#_subfunctions" class="code">function edB_Callback(hObject, eventdata, handles)</a>
+0628 <span class="comment">% hObject    handle to edB (see GCBO)</span>
+0629 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0630 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0631 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0632 <span class="comment">% Hints: get(hObject,'String') returns contents of edB as text</span>
+0633 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edB as a double</span>
+0634 
+0635 
+0636 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0637 <a name="_sub18" href="#_subfunctions" class="code">function edB_CreateFcn(hObject, eventdata, handles)</a>
+0638 <span class="comment">% hObject    handle to edB (see GCBO)</span>
+0639 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0640 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0641 
+0642 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0643 <span class="comment">%       See ISPC and COMPUTER.</span>
+0644 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0645     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0646 <span class="keyword">end</span>
+0647 
+0648 
+0649 <span class="comment">% --- Executes on button press in chAdjust.</span>
+0650 <a name="_sub19" href="#_subfunctions" class="code">function chAdjust_Callback(hObject, eventdata, handles)</a>
+0651 <span class="comment">% hObject    handle to chAdjust (see GCBO)</span>
+0652 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0653 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0654 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0655 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of chAdjust</span>
+0656 
+0657 
+0658 
+0659 <a name="_sub20" href="#_subfunctions" class="code">function edAdjust_Callback(hObject, eventdata, handles)</a>
+0660 <span class="comment">% hObject    handle to edAdjust (see GCBO)</span>
+0661 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0662 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0663 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0664 <span class="comment">% Hints: get(hObject,'String') returns contents of edAdjust as text</span>
+0665 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edAdjust as a double</span>
+0666 
+0667 
+0668 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0669 <a name="_sub21" href="#_subfunctions" class="code">function edAdjust_CreateFcn(hObject, eventdata, handles)</a>
+0670 <span class="comment">% hObject    handle to edAdjust (see GCBO)</span>
+0671 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0672 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0673 
+0674 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0675 <span class="comment">%       See ISPC and COMPUTER.</span>
+0676 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0677     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0678 <span class="keyword">end</span>
+0679 
+0680 
+0681 <span class="comment">% --- Executes on button press in pbSumFrames.</span>
+0682 <a name="_sub22" href="#_subfunctions" class="code">function pbSumFrames_Callback(hObject, eventdata, handles)</a>
+0683 <span class="comment">% this function calculates sum of frames</span>
+0684 <span class="comment">%</span>
+0685 handles.nom = 1;
+0686 Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0687 handles.sF = zeros( size( Frame ) );
+0688 
+0689 count_step = str2double( get(handles.edSumFrameStep,<span class="string">'string'</span>) );
+0690 wb = waitbar(0,<span class="string">'Processing'</span>);
+0691 <span class="keyword">if</span> iscell( handles.f )
+0692     Nom = size( handles.f, 2 );
+0693     <span class="keyword">for</span> ii = 1 : Nom
+0694         waitbar(ii/Nom,wb,[<span class="string">'Processing segment number '</span> num2str(ii) <span class="string">' from '</span> num2str(Nom)]);
+0695         path = [handles.dir handles.f{ii}];
+0696         inf = aviinfo( path );
+0697         <span class="keyword">for</span> j = 1:count_step:inf.NumFrames
+0698             handles.nom = j;
+0699             Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0700             handles.sF = handles.sF + Frame;
+0701         <span class="keyword">end</span>
+0702     <span class="keyword">end</span>
+0703 <span class="keyword">elseif</span> ischar( handles.f )
+0704     path = [ handles.dir handles.f ];
+0705     inf = aviinfo( path );
+0706     <span class="keyword">for</span> j = 1:count_step:inf.NumFrames-1
+0707         waitbar(j/inf.NumFrames,wb,<span class="string">'Processing...'</span>);        
+0708         handles.nom = j;
+0709         Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0710         handles.sF = handles.sF + Frame;
+0711     <span class="keyword">end</span>
+0712 <span class="keyword">end</span>
+0713 close(wb);  
+0714 guidata( hObject, handles );
+0715 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>( hObject, handles );
+0716 
+0717 
+0718 <a name="_sub23" href="#_subfunctions" class="code">function edSumFrameStep_Callback(hObject, eventdata, handles)</a>
+0719 <span class="comment">% hObject    handle to edSumFrameStep (see GCBO)</span>
+0720 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0721 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0722 
+0723 <span class="comment">% Hints: get(hObject,'String') returns contents of edSumFrameStep as text</span>
+0724 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edSumFrameStep as a double</span>
+0725 
+0726 
+0727 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0728 <a name="_sub24" href="#_subfunctions" class="code">function edSumFrameStep_CreateFcn(hObject, eventdata, handles)</a>
+0729 <span class="comment">% hObject    handle to edSumFrameStep (see GCBO)</span>
+0730 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0731 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0732 
+0733 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0734 <span class="comment">%       See ISPC and COMPUTER.</span>
+0735 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0736     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0737 <span class="keyword">end</span>
+0738 
+0739 
+0740 <span class="comment">% --- Executes on button press in chSumFrames.</span>
+0741 <a name="_sub25" href="#_subfunctions" class="code">function chSumFrames_Callback(hObject, eventdata, handles)</a>
+0742 <span class="comment">% hObject    handle to chSumFrames (see GCBO)</span>
+0743 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0744 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0745 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0746 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of chSumFrames</span>
+0747 
+0748 
+0749 <span class="comment">% --- Executes on button press in chSight.</span>
+0750 <a name="_sub26" href="#_subfunctions" class="code">function chSight_Callback(hObject, eventdata, handles)</a>
+0751 <span class="comment">% hObject    handle to chSight (see GCBO)</span>
+0752 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0753 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0754 
+0755 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0756 <span class="keyword">if</span> get(hObject,<span class="string">'value'</span>)~=1
+0757       set(handles.hl(1),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0758             set(handles.hl(2),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0759             set(handles.hl(3),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0760             set(handles.hl(4),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0761             set(handles.hl(5),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0762             set(handles.hl(6),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0763             set(handles.hl(7),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0764             set(handles.hl(8),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0765             set(handles.hl(9),<span class="string">'xdata'</span>,[0,0],<span class="string">'ydata'</span>,[0,0]);
+0766 <span class="keyword">end</span>
+0767     
+0768 
+0769 <span class="comment">% --- Executes on slider movement.</span>
+0770 <a name="_sub27" href="#_subfunctions" class="code">function slFrames_Callback(hObject, eventdata, handles)</a>
+0771 <span class="comment">% hObject    handle to slFrames (see GCBO)</span>
+0772 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0773 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0774     handles.nom  = round(get(handles.slFrames,<span class="string">'value'</span>));
+0775     set(handles.upFrames,<span class="string">'title'</span>,num2str(handles.nom));
+0776     Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0777     handles.cF = Frame;
+0778     guidata(hObject, handles);
+0779     handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0780     S = sprintf(<span class="string">'Current frame: %d; Total number of frame %d'</span>,handles.nom, handles.N_frames);
+0781         set(handles.upFrames,<span class="string">'Title'</span>,S);
+0782 
+0783 <span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+0784 <span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+0785 
+0786 
+0787 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0788 <a name="_sub28" href="#_subfunctions" class="code">function slFrames_CreateFcn(hObject, eventdata, handles)</a>
+0789 <span class="comment">% hObject    handle to slFrames (see GCBO)</span>
+0790 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0791 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0792 
+0793 <span class="comment">% Hint: slider controls usually have a light gray background.</span>
+0794 <span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0795     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0796 <span class="keyword">end</span>
+0797 
+0798 
+0799 <span class="comment">% --- Executes on selection change in pmPart.</span>
+0800 <a name="_sub29" href="#_subfunctions" class="code">function pmPart_Callback(hObject, eventdata, handles)</a>
+0801 <span class="comment">% hObject    handle to pmPart (see GCBO)</span>
+0802 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0803 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0804     vel = get(handles.pmPart,<span class="string">'value'</span>);
+0805     handles.fn = [handles.dir handles.f{vel}];
+0806     inf = aviinfo(handles.fn);
+0807     set(handles.slFrames,<span class="string">'max'</span>,inf.NumFrames,<span class="string">'min'</span>,1,<span class="string">'value'</span>,1,<span class="keyword">...</span>
+0808         <span class="string">'sliderstep'</span>,[1/inf.NumFrames 10/inf.NumFrames]);
+0809     handles.nom = 1;
+0810     Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+0811     handles.cF = Frame;
+0812     handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0813     S = sprintf(<span class="string">'Current frame: %d; Total number of frame %d'</span>,handles.nom, handles.N_frames);
+0814     set(handles.upFrames,<span class="string">'Title'</span>,S);
+0815     guidata(hObject,handles);
+0816 <span class="comment">% Hints: contents = get(hObject,'String') returns pmPart contents as cell array</span>
+0817 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from pmPart</span>
+0818 
+0819 
+0820 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0821 <a name="_sub30" href="#_subfunctions" class="code">function pmPart_CreateFcn(hObject, eventdata, handles)</a>
+0822 <span class="comment">% hObject    handle to pmPart (see GCBO)</span>
+0823 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0824 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0825 
+0826 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0827 <span class="comment">%       See ISPC and COMPUTER.</span>
+0828 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0829     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0830 <span class="keyword">end</span>
+0831 
+0832 
+0833 <span class="comment">% --- Executes on button press in rbR.</span>
+0834 <a name="_sub31" href="#_subfunctions" class="code">function rbR_Callback(hObject, eventdata, handles)</a>
+0835 <span class="comment">% hObject    handle to rbR (see GCBO)</span>
+0836 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0837 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0838 set(handles.rbG,<span class="string">'value'</span>,0);
+0839 set(handles.rbB,<span class="string">'value'</span>,0);
+0840 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0841 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of rbR</span>
+0842 
+0843 
+0844 <span class="comment">% --- Executes on button press in rbG.</span>
+0845 <a name="_sub32" href="#_subfunctions" class="code">function rbG_Callback(hObject, eventdata, handles)</a>
+0846 <span class="comment">% hObject    handle to rbG (see GCBO)</span>
+0847 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0848 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0849 set(handles.rbB,<span class="string">'value'</span>,0);
+0850 set(handles.rbR,<span class="string">'value'</span>,0);
+0851 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0852 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of rbG</span>
+0853 
+0854 
+0855 <span class="comment">% --- Executes on button press in rbB.</span>
+0856 <a name="_sub33" href="#_subfunctions" class="code">function rbB_Callback(hObject, eventdata, handles)</a>
+0857 <span class="comment">% hObject    handle to rbB (see GCBO)</span>
+0858 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0859 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0860 set(handles.rbG,<span class="string">'value'</span>,0);
+0861 set(handles.rbR,<span class="string">'value'</span>,0);
+0862 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0863 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of rbB</span>
+0864 
+0865 
+0866 
+0867 <a name="_sub34" href="#_subfunctions" class="code">function edPdrop_Callback(hObject, eventdata, handles)</a>
+0868 <span class="comment">% hObject    handle to edPdrop (see GCBO)</span>
+0869 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0870 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0871 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0872 <span class="comment">% Hints: get(hObject,'String') returns contents of edPdrop as text</span>
+0873 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edPdrop as a double</span>
+0874 
+0875 
+0876 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0877 <a name="_sub35" href="#_subfunctions" class="code">function edPdrop_CreateFcn(hObject, eventdata, handles)</a>
+0878 <span class="comment">% hObject    handle to edPdrop (see GCBO)</span>
+0879 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0880 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0881 
+0882 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0883 <span class="comment">%       See ISPC and COMPUTER.</span>
+0884 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0885     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0886 <span class="keyword">end</span>
+0887 
+0888 
+0889 
+0890 <a name="_sub36" href="#_subfunctions" class="code">function edCCD_Callback(hObject, eventdata, handles)</a>
+0891 <span class="comment">% hObject    handle to edCCD (see GCBO)</span>
+0892 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0893 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0894 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0895 <span class="comment">% Hints: get(hObject,'String') returns contents of edCCD as text</span>
+0896 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edCCD as a double</span>
+0897 
+0898 
+0899 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0900 <a name="_sub37" href="#_subfunctions" class="code">function edCCD_CreateFcn(hObject, eventdata, handles)</a>
+0901 <span class="comment">% hObject    handle to edCCD (see GCBO)</span>
+0902 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0903 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0904 
+0905 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0906 <span class="comment">%       See ISPC and COMPUTER.</span>
+0907 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0908     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0909 <span class="keyword">end</span>
+0910 
+0911 
+0912 
+0913 <a name="_sub38" href="#_subfunctions" class="code">function edAperture_Callback(hObject, eventdata, handles)</a>
+0914 <span class="comment">% hObject    handle to edAperture (see GCBO)</span>
+0915 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0916 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0917  handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+0918 
+0919 <span class="comment">% Hints: get(hObject,'String') returns contents of edAperture as text</span>
+0920 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edAperture as a double</span>
+0921 
+0922 
+0923 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0924 <a name="_sub39" href="#_subfunctions" class="code">function edAperture_CreateFcn(hObject, eventdata, handles)</a>
+0925 <span class="comment">% hObject    handle to edAperture (see GCBO)</span>
+0926 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0927 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0928 
+0929 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0930 <span class="comment">%       See ISPC and COMPUTER.</span>
+0931 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0932     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0933 <span class="keyword">end</span>
+0934 
+0935 
+0936 <span class="comment">% --- Executes on mouse motion over figure - except title and menu.</span>
+0937 <a name="_sub40" href="#_subfunctions" class="code">function Fig1_WindowButtonMotionFcn(hObject, eventdata, handles)</a>
+0938 <span class="comment">% hObject    handle to Fig1 (see GCBO)</span>
+0939 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0940 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0941 <span class="comment">% get(hObject,'CurrentPoint')</span>
+0942 
+0943 
+0944 <span class="comment">% --- Executes on mouse press over axes background.</span>
+0945 <a name="_sub41" href="#_subfunctions" class="code">function axes1_ButtonDownFcn(hObject, eventdata, handles)</a>
+0946 <span class="comment">% hObject    handle to axes1 (see GCBO)</span>
+0947 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0948 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0949 
+0950 <span class="comment">% get(hObject,'CurrentPoint')</span>
+0951 
+0952 
+0953 <span class="comment">% --- Executes on button press in pbAngleCalc.</span>
+0954 <a name="_sub42" href="#_subfunctions" class="code">function pbAngleCalc_Callback(hObject, eventdata, handles)</a>
+0955 <span class="comment">% This function calculates correct angles distribution for the image with</span>
+0956 <span class="comment">% aberration.</span>
+0957 <span class="comment">%    handles = AnglesCalculator(handles);</span>
+0958 <span class="comment">%    guidata(hObject,handles);</span>
+0959 
+0960 
+0961 
+0962 <span class="comment">% --- Executes on button press in pbIntensCalc.</span>
+0963 <a name="_sub43" href="#_subfunctions" class="code">function pbIntensCalc_Callback(hObject, eventdata, handles)</a>
+0964 <span class="comment">% hObject    handle to pbIntensCalc (see GCBO)</span>
+0965 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0966 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0967 handles.NP = 700; <span class="comment">% Number of angle points</span>
+0968 step=single(64);
+0969 ipR=zeros(0,<span class="string">'int32'</span>);
+0970 ipG=zeros(0,<span class="string">'int32'</span>);
+0971 ipB=zeros(0,<span class="string">'int32'</span>);
+0972 ICR_N=zeros(0,<span class="string">'single'</span>);
+0973 ICG_N=zeros(0,<span class="string">'single'</span>);
+0974 ICB_N=zeros(0,<span class="string">'single'</span>);
+0975 I_S_R=zeros(0,<span class="string">'int32'</span>);
+0976 I_S_G=zeros(0,<span class="string">'int32'</span>);
+0977 I_S_B=zeros(0,<span class="string">'int32'</span>);
+0978 ThetaR_S=zeros(1,<span class="string">'single'</span>);
+0979 ThetaG_S=zeros(1,<span class="string">'single'</span>);
+0980 ThetaB_S=zeros(1,<span class="string">'single'</span>);
+0981 <span class="comment">% Movie length estimation</span>
+0982  count_step = str2double( get(handles.edFrameStep,<span class="string">'string'</span>));
+0983  handles.N_frames = 0;
+0984 <span class="keyword">if</span> iscell( handles.f ) <span class="comment">% In case of multi select function is enabled</span>
+0985     Nom = size( handles.f, 2 );
+0986     <span class="keyword">for</span> ii = 1 : Nom  <span class="comment">% Number of moves parts</span>
+0987         path = [handles.dir handles.f{ii}];
+0988         inf = aviinfo( path );
+0989 <span class="comment">%    we should remember that quality of the last frame is not good</span>
+0990         handles.N_frames = handles.N_frames + length(1:count_step:inf.NumFrames-1);
+0991     <span class="keyword">end</span>
+0992 <span class="keyword">elseif</span> ischar( handles.f ) <span class="comment">% The single file is chosen</span>
+0993     path = [ handles.dir handles.f ];
+0994     inf = aviinfo( path );
+0995     handles.N_frames = length(1:count_step:inf.NumFrames-1);
+0996     
+0997 <span class="keyword">end</span>
+0998 <span class="comment">% According to chosen checkbox:</span>
+0999  
+1000 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1001     ipR = find(handles.BWR'); <span class="comment">% Searching for a good pixels related to the mask</span>
+1002     ThR=handles.THETA_R';
+1003     ThetaR = 180*ThR(ipR)/pi;   <span class="comment">% There is a problem with beam direction.</span>
+1004                                             <span class="comment">% We have to add 90 degree or 270 according to beam direction.</span>
+1005     [ThetaR_S,I_S_R] = sort(ThetaR);        <span class="comment">% It is better to work with sorted ( ordered ) data</span>
+1006     I_S_R=single(I_S_R);
+1007     <span class="comment">% Reduction of points</span>
+1008     
+1009     deltaT_R = ( ThetaR_S(end)-ThetaR_S(1) ) / handles.NP; <span class="comment">% Angle's step</span>
+1010     I_Red = single(zeros( handles.N_frames, handles.NP )); <span class="comment">% Creation of empty matrix for intensity recording</span>
+1011     nThetaR = single(zeros( 1,handles.NP ));          <span class="comment">% Angles vector</span>
+1012     icr=handles.ICR';
+1013     ICR_N = icr(ipR);                 <span class="comment">% Correction</span>
+1014     Lvl1ValR=min(min(ICR_N));
+1015     <span class="comment">%ICR_N=ICR_N-(Lvl1ValR-1);</span>
+1016 <span class="comment">%     ICR_N=ICR_N./Lvl1ValR;</span>
+1017     <span class="comment">%ICR_N = ICR_N./max(ICR_N(:));             % Normalised intensity correction vector</span>
+1018     
+1019 <span class="keyword">end</span>
+1020 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1021     ipG = find(handles.BWG');
+1022     ThG=handles.THETA_G';
+1023     ThetaG = 180*ThG(ipG)/pi;          <span class="comment">% There is a problem with beam direction.</span>
+1024                                                    <span class="comment">% We have to add 90 degree or 270 according to beam direction.</span>
+1025     [ThetaG_S,I_S_G] = sort(ThetaG);               <span class="comment">% It is better to work with sorted ( ordered ) data</span>
+1026     I_S_G=single(I_S_G);
+1027     <span class="comment">% Reduction of points</span>
+1028     
+1029     deltaT_G = ( ThetaG_S(end)-ThetaG_S(1) ) / handles.NP; <span class="comment">% Angle's step</span>
+1030     I_Green = zeros(handles.N_frames,handles.NP);   <span class="comment">% Creation of empty matrix for intensity recording</span>
+1031     
+1032     nThetaG = single(zeros( 1,handles.NP )); 
+1033     icg=handles.ICG';
+1034     ICG_N = icg(ipG);
+1035     Lvl1ValG=min(min(ICG_N));
+1036     <span class="comment">%ICG_N=ICG_N-(Lvl1ValG-1);</span>
+1037 <span class="comment">%     ICG_N=ICG_N./Lvl1ValG;</span>
+1038     <span class="comment">%ICG_N = ICG_N./max(ICG_N(:));                  % Normalised intensity correction vector</span>
+1039     
+1040 <span class="keyword">end</span>
+1041 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1042     ipB = find(handles.BWB');
+1043     ThB=handles.THETA_B';
+1044     ThetaB = 180*ThB(ipB)/pi;  <span class="comment">% There is a problem with beam direction.</span>
+1045                                            <span class="comment">% We have to add 90 degree or 270 according to beam direction.</span>
+1046     [ThetaB_S,I_S_B] = sort(ThetaB);               <span class="comment">% It is better to work with sorted ( ordered ) data</span>
+1047     I_S_B=single(I_S_B);
+1048     <span class="comment">% Reduction of points</span>
+1049     
+1050     deltaT_B = ( ThetaB_S(end)-ThetaB_S(1) ) / handles.NP; <span class="comment">% Angle's step</span>
+1051     I_Blue = zeros(handles.N_frames,handles.NP); <span class="comment">% Creation of empty matrix for intensity recording</span>
+1052     nThetaB = single(zeros( 1,handles.NP ));
+1053     icb=handles.ICB';
+1054     ICB_N = icb( ipB );
+1055     Lvl1ValB=min(min(ICB_N));
+1056     <span class="comment">%ICB_N=ICB_N-(Lvl1ValB-1);</span>
+1057 <span class="comment">%     ICB_N=ICB_N./Lvl1ValB;</span>
+1058     <span class="comment">%ICB_N = ICB_N./max( ICB_N(:) );</span>
+1059                                         
+1060 <span class="keyword">end</span>
+1061 <span class="comment">%</span>
+1062 <span class="comment">% Preparing to read the data from the move file</span>
+1063 <span class="comment">%</span>
+1064 <span class="comment">% Calculation of reduction coefficient:</span>
+1065 
+1066 wb_s = <span class="string">'Time estimation...'</span>;
+1067 wb = waitbar( 0, wb_s );
+1068 <span class="keyword">if</span> iscell( handles.f ) <span class="comment">% In case of multi select function is enabled</span>
+1069     Nom = size( handles.f, 2 );
+1070     count = 1;
+1071   <span class="comment">%% FIXME: could be sped up!!! with GPU</span>
+1072   ite=0;
+1073   <span class="comment">%itb=1;</span>
+1074   ats=tic;
+1075     <span class="keyword">for</span> ii = 1 : Nom  <span class="comment">% Number of moves parts</span>
+1076         waitbar(ii/Nom,wb,wb_s);
+1077         tts=tic;
+1078         path = [handles.dir handles.f{ii}];
+1079         inf = aviinfo( path );
+1080         
+1081         <span class="keyword">if</span> handles.GPU==1
+1082         <span class="comment">%handles.fn=handles.f{ii};</span>
+1083         handles.fn=path;
+1084         itb=ite+1;
+1085         ite=ite+inf.NumFrames;
+1086         handles.Prev=16;
+1087      <span class="comment">%I_RedM=zeros(700,inf.NumFrames,'single');</span>
+1088 [I_Red,I_Green,I_Blue,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+1089 <span class="comment">%[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(inf.NumFrames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));</span>
+1090     I_Red(itb:ite,:)=I_RedM';
+1091     I_Green(itb:ite,:)=I_GreenM';
+1092     I_Blue(itb:ite,:)=I_BlueM';
+1093     nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
+1094      nThetaG(:)=ThetaG_S(int32(linspace(1,length(ThetaG_S),700)));
+1095      nThetaB(:)=ThetaB_S(int32(linspace(1,length(ThetaB_S),700)));
+1096      tt=toc(tts)
+1097         <span class="keyword">else</span>
+1098          
+1099        for1 = tic;
+1100         <span class="keyword">for</span> j = 1:count_step:inf.NumFrames <span class="comment">% Numbers of frames</span>
+1101             handles.nom = j;
+1102             Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+1103        <span class="comment">%  The red channel is chosen</span>
+1104             <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1105                 Red = Frame(:,:,1);
+1106                   Ir = Red(ipR)./ICR_N; <span class="comment">% Reading and correcting intensity vector</span>
+1107                   <span class="keyword">if</span> handles.GPU==1
+1108                     Ir = MovingAverage(Ir, I_S_R, step);
+1109                     [nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));
+1110                   <span class="keyword">else</span>
+1111                   nom = 1;
+1112                 <span class="comment">% Reduction of number of points</span>
+1113                   <span class="keyword">while</span> (ThetaR_S(1)+deltaT_R*nom) &lt;= ThetaR_S(end)
+1114                       ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) &lt;= ThetaR_S ) ) &amp; ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) &gt;= ThetaR_S )  ) );
+1115                      
+1116                       <span class="keyword">if</span> max(ind)&gt;0
+1117                           nThetaR(nom) = mean(ThetaR_S(ind));
+1118                           I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+1119                       <span class="keyword">else</span>
+1120                           nThetaR(nom) = nThetaR(nom-1);
+1121                           I_Red(count,nom) = I_Red(count,nom-1);
+1122                       <span class="keyword">end</span>
+1123                       nom = nom + 1;
+1124                       
+1125                   <span class="keyword">end</span>
+1126                   <span class="keyword">end</span>
+1127             <span class="keyword">end</span>
+1128             
+1129         <span class="comment">%  The green channel is chosen</span>
+1130             <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1131                 Green = Frame(:,:,2);
+1132                   Ig = Green(ipG)./ICG_N; <span class="comment">% Reading and correcting intensity vector</span>
+1133                   <span class="keyword">if</span> handles.GPU==1
+1134                     Ig = MovingAverage(Ig, I_S_G, step);
+1135                     [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ig, single(1:length(Ig)));
+1136                   <span class="keyword">else</span>
+1137                   nom = 1;
+1138                 <span class="comment">% Reduction of number of points</span>
+1139                   <span class="keyword">while</span> (ThetaG_S(1)+deltaT_G*nom) &lt;= ThetaG_S(end)
+1140                       ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) &lt;= ThetaG_S ) ) &amp; ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) &gt;= ThetaG_S )  ) );
+1141                       <span class="keyword">if</span> max(ind)&gt;0
+1142                           nThetaG(nom) = mean(ThetaG_S(ind));
+1143                           I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+1144                       <span class="keyword">else</span>
+1145                           nThetaG(nom) = nThetaG(nom-1);
+1146                           I_Green(count,nom) = I_Green(count,nom-1);
+1147                       <span class="keyword">end</span>
+1148                      
+1149                       nom = nom + 1;
+1150                   <span class="keyword">end</span>
+1151                   <span class="keyword">end</span>
+1152             <span class="keyword">end</span>
+1153             
+1154         <span class="comment">%  The blue channel is chosen</span>
+1155             <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1156                 Blue = Frame(:,:,3);
+1157                   Ib = Blue(ipB)./ICB_N; <span class="comment">% Reading and correcting intensity vector</span>
+1158                   <span class="keyword">if</span> handles.GPU==1
+1159                     Ib = MovingAverage(Ib, I_S_B,step);
+1160                     [nThetaB(:), I_Blue(count,:)]=ReducedMean(ThetaB_S, deltaT_B, Ib, single(1:length(Ib)));
+1161                   <span class="keyword">else</span>
+1162                   nom = 1;
+1163                 <span class="comment">% Reduction of number of points</span>
+1164                   <span class="keyword">while</span> (ThetaB_S(1)+deltaT_B*nom) &lt;= ThetaB_S(end)
+1165                       ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) &lt;= ThetaB_S ) ) &amp; ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) &gt;= ThetaB_S )  ) );
+1166                       <span class="keyword">if</span> max(ind)&gt;0
+1167                           nThetaB(nom) = mean(ThetaB_S(ind));
+1168                           I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+1169                       <span class="keyword">else</span>
+1170                           nThetaB(nom) = nThetaB(nom-1);
+1171                           I_Blue(count,nom) = I_Blue(count,nom-1);
+1172                       <span class="keyword">end</span>
+1173                       nom = nom + 1;
+1174                   <span class="keyword">end</span>
+1175                   <span class="keyword">end</span>
+1176             <span class="keyword">end</span>
+1177              count = count+1;
+1178         <span class="keyword">end</span>
+1179         tt = toc(for1);
+1180         <span class="keyword">end</span>
+1181        
+1182         wb_s = sprintf(<span class="string">'Processing segment number %1.0f from %1.0f \n Remaining time: %s .'</span>,<span class="keyword">...</span>
+1183                        ii,Nom,datestr(datenum(0,0,0,0,0,(tt*(Nom-ii))),<span class="string">'HH:MM:SS'</span>));
+1184     <span class="keyword">end</span>
+1185     toc(ats)
+1186      
+1187 <span class="keyword">elseif</span> ischar( handles.f ) <span class="comment">% The single file is chosen</span>
+1188      path  = [ handles.dir handles.f ];
+1189      
+1190      <span class="keyword">if</span> handles.GPU==1
+1191      tic;
+1192      <span class="keyword">if</span> inf.NumFrames &lt;= inf.FileSize/(640*480*2+8)
+1193             handles.N_frames = inf.NumFrames; <span class="comment">% total number of frames</span>
+1194         <span class="keyword">else</span>
+1195             handles.N_frames = double(int32((inf.FileSize-64564)/(640*480*2+8))-2);
+1196      <span class="keyword">end</span>
+1197 handles.Prev=1;<span class="comment">%%numer klatki do podgl¹du</span>
+1198 handles.SubBg=1;<span class="comment">%%czy odejmujemy t³o</span>
+1199 [I_RedM,I_GreenM,I_BlueM,prevF,prevR,prevRC,prevRS]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));
+1200 <span class="comment">%[I_RedM,I_GreenM,I_BlueM]=IntensCalc(handles,int32(count_step),int32(handles.N_frames),int32(ipR),int32(ipG),int32(ipB),ICR_N,ICG_N,ICB_N,int32(I_S_R),int32(I_S_G),int32(I_S_B));</span>
+1201 I_Red=I_RedM';
+1202     I_Green=I_GreenM';
+1203     I_Blue=I_BlueM';     
+1204 toc
+1205      nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
+1206      nThetaG(:)=ThetaG_S(int32(linspace(1,length(ThetaG_S),700)));
+1207      nThetaB(:)=ThetaB_S(int32(linspace(1,length(ThetaB_S),700)));
+1208      <span class="keyword">else</span>
+1209 
+1210      count = 1;
+1211      <span class="keyword">for</span> j = 1:count_step:inf.NumFrames-1
+1212          waitbar(j/inf.NumFrames,wb,wb_s);
+1213          tic;
+1214          handles.nom = j;
+1215          Frame = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+1216          <span class="comment">%  The red channel is chosen</span>
+1217          <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1218              Red = Frame(:,:,1)';
+1219              Ir = Red(ipR)./ICR_N; <span class="comment">% Reading and correcting intensity vector</span>
+1220              
+1221              <span class="keyword">if</span> handles.GPU==1
+1222                  Ir = MovingAverage(Ir, I_S_R, step);
+1223                  I_Red(count,:)=Ir(int32(linspace(1,length(Ir),700)));
+1224                  nThetaR(:)=ThetaR_S(int32(linspace(1,length(ThetaR_S),700)));
+1225                  <span class="comment">%[nThetaR(:), I_Red(count,:)]=ReducedMean(ThetaR_S, deltaT_R, Ir, single(1:length(Ir)));</span>
+1226              <span class="keyword">else</span>
+1227              
+1228              nom = 1;
+1229              <span class="comment">% Reduction of number of points</span>
+1230              <span class="keyword">while</span> (ThetaR_S(1)+deltaT_R*nom) &lt;= ThetaR_S(end)
+1231                  ind = ( ( ( (ThetaR_S(1)+deltaT_R*nom) &lt;= ThetaR_S ) ) &amp; ( ( (ThetaR_S(1)+deltaT_R*(nom+1) ) &gt;= ThetaR_S )  ) );
+1232                  <span class="keyword">if</span> max(ind)&gt;0
+1233                      nThetaR(nom) = mean(ThetaR_S(ind));
+1234                      I_Red(count,nom) = mean( Ir( I_S_R(ind) ) );
+1235                  <span class="keyword">else</span>
+1236                      nThetaR(nom) = nThetaR(nom-1);
+1237                      I_Red(count,nom) = I_Red(count,nom-1);
+1238                  <span class="keyword">end</span>
+1239                  nom = nom + 1;
+1240              <span class="keyword">end</span>
+1241              
+1242              <span class="keyword">end</span>
+1243          <span class="keyword">end</span>
+1244          
+1245          <span class="comment">%  The green channel is chosen</span>
+1246          <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1247              Green = Frame(:,:,2);
+1248              Ig = Green(ipG)./ICG_N; <span class="comment">% Reading and correcting intensity vector</span>
+1249              <span class="keyword">if</span> handles.GPU==1
+1250                  Ig = MovingAverage(Ig, I_S_G, step);
+1251                  [nThetaG(:), I_Green(count,:)]=ReducedMean(ThetaG_S, deltaT_G, Ig, single(1:length(Ig)));
+1252              <span class="keyword">else</span>
+1253              nom = 1;
+1254              <span class="comment">% Reduction of number of points</span>
+1255              <span class="keyword">while</span> (ThetaG_S(1)+deltaT_G*nom) &lt;= ThetaG_S(end)
+1256                  ind = ( ( ( (ThetaG_S(1)+deltaT_G*nom) &lt;= ThetaG_S ) ) &amp; ( ( (ThetaG_S(1)+deltaT_G*(nom+1) ) &gt;= ThetaG_S )  ) );
+1257                  <span class="keyword">if</span> max(ind)&gt;0
+1258                      nThetaG(nom) = mean(ThetaG_S(ind));
+1259                      I_Green(count,nom) = mean( Ig( I_S_G(ind) ) );
+1260                  <span class="keyword">else</span>
+1261                      nThetaG(nom) = nThetaG(nom-1);
+1262                      I_Green(count,nom) = I_Green(count,nom-1);
+1263                  <span class="keyword">end</span>
+1264                  nom = nom + 1;
+1265              <span class="keyword">end</span>
+1266              <span class="keyword">end</span>
+1267          <span class="keyword">end</span>
+1268          
+1269          <span class="comment">%  The blue channel is chosen</span>
+1270          <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1271              Blue = Frame(:,:,3);
+1272              Ib = Blue(ipB)./ICB_N; <span class="comment">% Reading and correcting intensity vector</span>
+1273              <span class="keyword">if</span> handles.GPU==1
+1274                  Ib = MovingAverage(Ib, I_S_B,step);
+1275                  [nThetaB(:), I_Blue(count,:)]=ReducedMean(ThetaB_S, deltaT_B, Ib, single(1:length(Ib)));
+1276              <span class="keyword">else</span>
+1277              nom = 1;
+1278              <span class="comment">% Reduction of number of points</span>
+1279              <span class="keyword">while</span> (ThetaB_S(1)+deltaT_B*nom) &lt;= ThetaB_S(end)
+1280                  ind = ( ( ( (ThetaB_S(1)+deltaT_B*nom) &lt;= ThetaB_S ) ) &amp; ( ( (ThetaB_S(1)+deltaT_B*(nom+1) ) &gt;= ThetaB_S )  ) );
+1281                  <span class="keyword">if</span> max(ind)&gt;0
+1282                      nThetaB(nom) = mean(ThetaB_S(ind));
+1283                      I_Blue(count,nom) = mean( Ib( I_S_B(ind) ) );
+1284                  <span class="keyword">else</span>
+1285                      nThetaB(nom) = nThetaB(nom-1);
+1286                      I_Blue(count,nom) = I_Blue(count,nom-1);
+1287                  <span class="keyword">end</span>
+1288                  nom = nom + 1;
+1289              <span class="keyword">end</span>
+1290              <span class="keyword">end</span>
+1291          <span class="keyword">end</span>
+1292          tt = toc;
+1293          wb_s = sprintf(<span class="string">'Processing frame number %1.0f from %1.0f \n Remaining time: %s .'</span>,<span class="keyword">...</span>
+1294              j,inf.NumFrames-1,datestr(datenum(0,0,0,0,0,(tt*((inf.NumFrames-j)/count_step))),<span class="string">'HH:MM:SS'</span>));
+1295          
+1296              count = count + 1;
+1297      <span class="keyword">end</span>
+1298      <span class="keyword">end</span>
+1299      
+1300 <span class="keyword">end</span>
+1301 
+1302 
+1303      <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1304          assignin(<span class="string">'base'</span>,<span class="string">'I_R'</span>,I_Red);
+1305          assignin(<span class="string">'base'</span>,<span class="string">'ThetaR'</span>,nThetaR);
+1306      <span class="keyword">end</span>
+1307      <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1308          assignin(<span class="string">'base'</span>,<span class="string">'I_G'</span>,I_Green);
+1309          assignin(<span class="string">'base'</span>,<span class="string">'ThetaG'</span>,nThetaG);
+1310      <span class="keyword">end</span>
+1311      <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1312          assignin(<span class="string">'base'</span>,<span class="string">'I_B'</span>,I_Blue);
+1313          assignin(<span class="string">'base'</span>,<span class="string">'ThetaB'</span>,nThetaB);
+1314      <span class="keyword">end</span>
+1315      close(wb);
+1316    guidata(hObject,handles);
+1317 
+1318 
+1319 <a name="_sub44" href="#_subfunctions" class="code">function edLineSh_Callback(hObject, eventdata, handles)</a>
+1320 <span class="comment">% hObject    handle to edLineSh (see GCBO)</span>
+1321 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1322 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1323 handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+1324 <span class="comment">% Hints: get(hObject,'String') returns contents of edLineSh as text</span>
+1325 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edLineSh as a double</span>
+1326 
+1327 
+1328 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+1329 <a name="_sub45" href="#_subfunctions" class="code">function edLineSh_CreateFcn(hObject, eventdata, handles)</a>
+1330 <span class="comment">% hObject    handle to edLineSh (see GCBO)</span>
+1331 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1332 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+1333 
+1334 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+1335 <span class="comment">%       See ISPC and COMPUTER.</span>
+1336 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+1337     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+1338 <span class="keyword">end</span>
+1339 
+1340 
+1341 <span class="comment">% --- Executes on button press in pbLoadParam.</span>
+1342 <a name="_sub46" href="#_subfunctions" class="code">function pbLoadParam_Callback(hObject, eventdata, handles)</a>
+1343 <span class="comment">% hObject    handle to pbLoadParam (see GCBO)</span>
+1344 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1345 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1346 <span class="keyword">try</span>
+1347 Save = evalin(<span class="string">'base'</span>,<span class="string">'Save'</span>);
+1348 <span class="keyword">catch</span> 
+1349     h = errordlg(<span class="string">'Load Parameters into Workspace'</span>); uiwait(h);
+1350     <span class="keyword">return</span>
+1351 <span class="keyword">end</span>
+1352 <span class="comment">% loading checkbox structure</span>
+1353     set(handles.chR,<span class="string">'value'</span>,Save.chR_value);
+1354     set(handles.chG,<span class="string">'value'</span>,Save.chG_value);
+1355     set(handles.chB,<span class="string">'value'</span>,Save.chB_value);  
+1356   <span class="comment">%---</span>
+1357     set(handles.chSight,<span class="string">'value'</span>,Save.chSight);
+1358     set(handles.chAdjust,<span class="string">'value'</span>,Save.chAdjust);
+1359 <span class="comment">% Loading lambda edit boxes</span>
+1360     set(handles.edR,<span class="string">'string'</span>,Save.edR);
+1361     set(handles.edG,<span class="string">'string'</span>,Save.edG);
+1362     set(handles.edB,<span class="string">'string'</span>,Save.edB);
+1363 <span class="comment">% Loading position paramiters</span>
+1364     set(handles.edPdrop,<span class="string">'string'</span>,Save.Pk);
+1365     set(handles.edCCD,<span class="string">'string'</span>,Save.edCCD);
+1366     set(handles.edAperture,<span class="string">'string'</span>,Save.edAperture);
+1367     set(handles.edLineSh,<span class="string">'string'</span>,Save.shLW);
+1368 <span class="comment">%   set(handles.ed_Sh_l1,'string',Save.ed_Sh_l1); wyrzucone okienko</span>
+1369 <span class="comment">% Loading frame step and Adjust box</span>
+1370     set(handles.edAdjust,<span class="string">'string'</span>,Save.edAdjust);
+1371     set(handles.edSumFrameStep,<span class="string">'string'</span>,Save.edSumFrameStep);
+1372     set(handles.edFrameStep,<span class="string">'string'</span>,Save.edFrameStep);
+1373 <span class="comment">% Loading angles, masks and Theta/Phi structure</span>
+1374     
+1375 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1376     handles.BWR = Save.BWR; <span class="comment">% masks --</span>
+1377     handles.R_position = Save.R_position; <span class="comment">% border of masks --</span>
+1378     handles.ICR = Save.ICR; <span class="comment">% Correction matrices</span>
+1379     handles.THETA_R = Save.THETA_R; <span class="comment">% Angles matrix</span>
+1380     handles.PHI_R   = Save.PHI_R;
+1381 <span class="keyword">end</span>
+1382 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1383     handles.BWG = Save.BWG;
+1384     handles.G_position = Save.G_position;
+1385     handles.ICG = Save.ICG;
+1386     handles.THETA_G = Save.THETA_G;
+1387     handles.PHI_G   = Save.PHI_G;
+1388 <span class="keyword">end</span>
+1389 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1390     handles.BWB = Save.BWB;
+1391     handles.B_position = Save.B_position;
+1392     handles.ICB = Save.ICB;
+1393     handles.THETA_B = Save.THETA_B;
+1394     handles.PHI_B   = Save.PHI_B;
+1395 <span class="keyword">end</span>
+1396     handles = <a href="#_sub4" class="code" title="subfunction handles = Draw(hObject,handles)">Draw</a>(hObject,handles);
+1397 
+1398 
+1399 <span class="comment">% --- Executes on button press in pbSaveParam.</span>
+1400 <a name="_sub47" href="#_subfunctions" class="code">function pbSaveParam_Callback(hObject, eventdata, handles)</a>
+1401 <span class="comment">% hObject    handle to pbSaveParam (see GCBO)</span>
+1402 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1403 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1404 <span class="comment">%</span>
+1405 <span class="comment">% Saving checkbox structure</span>
+1406     Save.chR_value = get(handles.chR,<span class="string">'value'</span>);
+1407     Save.chG_value = get(handles.chG,<span class="string">'value'</span>);
+1408     Save.chB_value = get(handles.chB,<span class="string">'value'</span>);
+1409 <span class="comment">%---</span>
+1410     Save.chAdjust  = get(handles.chAdjust,<span class="string">'value'</span>);
+1411     Save.chSight   = get(handles.chSight,<span class="string">'value'</span>);
+1412 <span class="comment">% Saving lambda edit boxes</span>
+1413     Save.edR = get(handles.edR,<span class="string">'string'</span>);
+1414     Save.edG = get(handles.edG,<span class="string">'string'</span>);
+1415     Save.edB = get(handles.edB,<span class="string">'string'</span>);
+1416 <span class="comment">% Saving position paramiters</span>
+1417     Save.Pk    = get(handles.edPdrop,<span class="string">'string'</span>);
+1418     Save.edCCD = get(handles.edCCD,<span class="string">'string'</span>);
+1419     Save.edAperture = get(handles.edAperture,<span class="string">'string'</span>);
+1420     Save.shLW     = get(handles.edLineSh,<span class="string">'string'</span>);
+1421 <span class="comment">% Saving Frame step and Adjust box</span>
+1422     Save.edAdjust = get(handles.edAdjust,<span class="string">'string'</span>);
+1423     Save.edSumFrameStep = get(handles.edSumFrameStep,<span class="string">'string'</span>);
+1424     Save.edFrameStep = get(handles.edFrameStep,<span class="string">'string'</span>);
+1425 <span class="comment">% Saving angles and masks</span>
+1426 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1427     Save.BWR = handles.BWR; <span class="comment">%  main masks</span>
+1428     Save.BackgroundMaskR = handles.BackgroundMaskR; <span class="comment">% background masks</span>
+1429     Save.R_position = handles.R_position; <span class="comment">%  border of masks</span>
+1430     Save.BackgroundMask_positionR = handles.BackgroundMask_positionR;
+1431     Save.ICR = handles.ICR; <span class="comment">% correction matrices</span>
+1432     Save.THETA_R = handles.THETA_R; <span class="comment">% Angles matrix</span>
+1433     Save.PHI_R   = handles.PHI_R;
+1434 <span class="keyword">end</span>
+1435 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1436     Save.BWG = handles.BWG;
+1437     Save.BackgroundMaskG = handles.BackgroundMaskG;
+1438     Save.G_position = handles.G_position;
+1439     Save.BackgroundMask_positionG = handles.BackgroundMask_positionG;
+1440     Save.ICG = handles.ICG;
+1441     Save.THETA_G = handles.THETA_G;
+1442     Save.PHI_G   = handles.PHI_G;
+1443 <span class="keyword">end</span>
+1444 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>) 
+1445     Save.BWB = handles.BWB;
+1446     Save.BackgroundMaskB = handles.BackgroundMaskB;
+1447     Save.B_position = handles.B_position;
+1448     Save.BackgroundMask_positionB = handles.BackgroundMask_positionB;
+1449     Save.ICB = handles.ICB;
+1450     Save.THETA_B = handles.THETA_B;
+1451     Save.PHI_B   = handles.PHI_B;
+1452 <span class="keyword">end</span>
+1453 <span class="comment">% handles.dir;</span>
+1454 savePath = [ handles.dir handles.f(1,1:end-4) <span class="string">'Params.mat'</span>];
+1455     <span class="keyword">if</span> exist(savePath)
+1456     <span class="comment">% File exist!</span>
+1457        button = questdlg(<span class="string">'File already exists!'</span>,<span class="string">'Warning!!!'</span>,<span class="string">'Rewrite'</span>,<span class="string">'NO'</span>,<span class="string">'Cancel'</span>,<span class="string">'Cancel'</span>);
+1458        <span class="keyword">switch</span> button
+1459            <span class="keyword">case</span> <span class="string">'Rewrite'</span>
+1460                save(savePath,<span class="string">'Save'</span>);
+1461                sprintf(<span class="string">'Parameters has been saved to:\n %s'</span>,savePath)
+1462            <span class="keyword">case</span> <span class="string">'NO'</span>
+1463              [file,path] = uiputfile([handles.f(1,1:end-4) <span class="string">'Params_1.mat'</span>],<span class="string">'Save file name'</span>, savePath);  
+1464              <span class="keyword">if</span> file == 0
+1465                  <span class="keyword">return</span>;
+1466              <span class="keyword">end</span>;
+1467                savePath =[path,file];
+1468                save(savePath,<span class="string">'Save'</span>);
+1469                sprintf(<span class="string">'Parameters has been saved to the directory:\n %s'</span>,savePath)
+1470            <span class="keyword">otherwise</span>
+1471            
+1472        <span class="keyword">end</span>
+1473     <span class="keyword">else</span>
+1474     <span class="comment">% File dose not exist.</span>
+1475         save(savePath,<span class="string">'Save'</span>);
+1476         sprintf(<span class="string">'Parameters has been saved to :\n %s'</span>,savePath)
+1477     <span class="keyword">end</span>
+1478     assignin(<span class="string">'base'</span>,<span class="string">'Save'</span>,Save);
+1479 
+1480 
+1481 <span class="comment">% --- Executes on button press in pbNA_Aprox.</span>
+1482 <a name="_sub48" href="#_subfunctions" class="code">function pbNA_Aprox_Callback(hObject, eventdata, handles)</a>
+1483 <span class="comment">% hObject    handle to pbNA_Aprox (see GCBO)</span>
+1484 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1485 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1486 Bw2 = roipoly(handles.cF(:,:,1),handles.R1(1,:)+ handles.TshX + handles.shX,handles.R1(2,:)+ handles.TshY + handles.shY);
+1487 Ap = sum(sum(Bw2,2)~=0);  <span class="comment">% The aperture (diameter) size in [pix]</span>
+1488 Apm = Ap*handles.S.PixSize; <span class="comment">% The aperture (diameter) size in [mm]</span>
+1489 Phi = atan(handles.S.dH/2/handles.S.R_dis_Ring);
+1490 LCCD = Apm/tan(Phi)/2; <span class="comment">% The distance from lens to CCD element</span>
+1491 <span class="comment">% compound of masks</span>
+1492 id = find(sum(handles.Bw,1)); <span class="comment">% id - non-zero pixels</span>
+1493 NA_Theta = atan((id-320+ handles.TshX + handles.shX)*handles.S.PixSize/LCCD);
+1494 I = zeros( handles.N_frames, length(NA_Theta) );
+1495 nom = 1;
+1496  wb = waitbar(0,<span class="string">'Angle Calculation'</span>);
+1497  t=0;
+1498 <span class="keyword">for</span> i = 1 : length( handles.f ) <span class="comment">% cycle by pieces of movie</span>
+1499     handles.fn = [handles.dir handles.f{i}];
+1500     inf = aviinfo(handles.fn);
+1501     <span class="keyword">for</span> j = 1 : inf.NumFrames
+1502         s = sprintf(<span class="string">'Processing %d-th frame. \n Estimated time -&gt; %f[min]; time left %f'</span>,<span class="keyword">...</span>
+1503                      j,handles.N_frames*t/60,(handles.N_frames-nom)*t/60);
+1504         waitbar(i/length( handles.f ),wb,s);
+1505         <span class="comment">%  Choosing the channel</span>
+1506         handles.nom = j;
+1507         handles.cF = <a href="#_sub3" class="code" title="subfunction Frame = FrameRider(hObject,handles)">FrameRider</a>(hObject,handles);
+1508         <span class="keyword">if</span> get(handles.rbR,<span class="string">'value'</span>)
+1509             Frame = handles.cF(:,:,1);
+1510         <span class="keyword">end</span>
+1511         <span class="keyword">if</span> get(handles.rbG,<span class="string">'value'</span>)
+1512             Frame = handles.cF(:,:,2);
+1513         <span class="keyword">end</span>
+1514         <span class="keyword">if</span> get(handles.rbB,<span class="string">'value'</span>)
+1515             Frame = handles.cF(:,:,3);
+1516         <span class="keyword">end</span>
+1517        tic; 
+1518      Temp =  mean(Frame.*handles.Bw,1);
+1519       I(nom,:) =Temp(id);
+1520       t = toc;
+1521       nom = nom + 1;
+1522     <span class="keyword">end</span>
+1523 <span class="keyword">end</span>
+1524 close(wb);
+1525 assignin(<span class="string">'base'</span>,<span class="string">'I_NA'</span>,I);
+1526 assignin(<span class="string">'base'</span>,<span class="string">'Theta_NA'</span>,NA_Theta)
+1527 
+1528 
+1529 <span class="comment">% --------------------------------------------------------------------</span>
+1530 <a name="_sub49" href="#_subfunctions" class="code">function muCI_Callback(hObject, eventdata, handles)</a>
+1531 <span class="comment">% hObject    handle to muCI (see GCBO)</span>
+1532 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1533 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1534 
+1535 
+1536 <span class="comment">% --------------------------------------------------------------------</span>
+1537 <a name="_sub50" href="#_subfunctions" class="code">function muCalcIm_Callback(hObject, eventdata, handles)</a>
+1538 <span class="comment">% The function muCalcIm_Callback calculates the intensity matrix and angles</span>
+1539 <span class="comment">% matrix</span>
+1540     <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1541         handles.S.lambda = str2double(get(handles.edR,<span class="string">'string'</span>));
+1542         handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+1543         [handles.ICR,handles.THETA_R,handles.PHI_R] =  <a href="#_sub8" class="code" title="subfunction [IC,THETA,PHI] =  IC_Calculation(hObject,handles)">IC_Calculation</a>(hObject,handles);
+1544         <span class="comment">%size(handles.THETA_R)</span>
+1545     <span class="keyword">end</span>
+1546     <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1547         handles.S.lambda = str2double(get(handles.edG,<span class="string">'string'</span>));
+1548         handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+1549         [handles.ICG,handles.THETA_G,handles.PHI_G] =  <a href="#_sub8" class="code" title="subfunction [IC,THETA,PHI] =  IC_Calculation(hObject,handles)">IC_Calculation</a>(hObject,handles);
+1550     <span class="keyword">end</span>
+1551     <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1552         handles.S.lambda = str2double(get(handles.edB,<span class="string">'string'</span>));
+1553         handles.S.m2 = <a href="Calculate_m.html" class="code" title="function [ m ] = Calculate_m(Temperature,lambda, liquid)">Calculate_m</a>(25,handles.S.lambda, <span class="string">'BK7'</span>);
+1554         [handles.ICB,handles.THETA_B,handles.PHI_B] =  <a href="#_sub8" class="code" title="subfunction [IC,THETA,PHI] =  IC_Calculation(hObject,handles)">IC_Calculation</a>(hObject,handles);
+1555     <span class="keyword">end</span>
+1556 guidata(hObject,handles);
+1557 
+1558 
+1559 <a name="_sub51" href="#_subfunctions" class="code">function edFrStep_Callback(hObject, eventdata, handles)</a>
+1560 <span class="comment">% hObject    handle to edFrStep (see GCBO)</span>
+1561 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1562 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1563 
+1564 <span class="comment">% Hints: get(hObject,'String') returns contents of edFrStep as text</span>
+1565 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edFrStep as a double</span>
+1566 
+1567 
+1568 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+1569 <a name="_sub52" href="#_subfunctions" class="code">function edFrStep_CreateFcn(hObject, eventdata, handles)</a>
+1570 <span class="comment">% hObject    handle to edFrStep (see GCBO)</span>
+1571 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1572 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+1573 
+1574 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+1575 <span class="comment">%       See ISPC and COMPUTER.</span>
+1576 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+1577     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+1578 <span class="keyword">end</span>
+1579 
+1580 
+1581 
+1582 <a name="_sub53" href="#_subfunctions" class="code">function edFrameStep_Callback(hObject, eventdata, handles)</a>
+1583 <span class="comment">% hObject    handle to edFrameStep (see GCBO)</span>
+1584 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1585 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1586 
+1587 <span class="comment">% Hints: get(hObject,'String') returns contents of edFrameStep as text</span>
+1588 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edFrameStep as a double</span>
+1589 
+1590 
+1591 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+1592 <a name="_sub54" href="#_subfunctions" class="code">function edFrameStep_CreateFcn(hObject, eventdata, handles)</a>
+1593 <span class="comment">% hObject    handle to edFrameStep (see GCBO)</span>
+1594 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1595 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+1596 
+1597 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+1598 <span class="comment">%       See ISPC and COMPUTER.</span>
+1599 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+1600     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+1601 <span class="keyword">end</span>
+1602 
+1603 
+1604 <span class="comment">% --- Executes on button press in pbEditMask.</span>
+1605 <a name="_sub55" href="#_subfunctions" class="code">function pbEditMask_Callback(hObject, eventdata, handles)</a>
+1606 <span class="comment">% hObject    handle to pbEditMask (see GCBO)</span>
+1607 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1608 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1609 
+1610 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>) <span class="comment">% mask for red channel</span>
+1611     <span class="comment">% Prepearing image</span>
+1612     hf = imtool( handles.cF(:,:,1) );
+1613     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Red channel!'</span>)
+1614     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1615     hold(ha,<span class="string">'on'</span>);
+1616     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1617         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1618     <span class="comment">% Start to drawing matrix</span>
+1619     h = impoly(ha,handles.R_position); <span class="comment">% Create draggable, resizable polygon</span>
+1620     position = wait(h);
+1621     delete(hf);
+1622     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1623     <span class="comment">% mask from aperture</span>
+1624     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1625     <span class="comment">% compound of masks  for red channel</span>
+1626     handles.BWR = Bw1.*Bw2;
+1627     handles.R_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1628     guidata(hObject,handles);
+1629 <span class="keyword">end</span>
+1630 
+1631 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>) <span class="comment">% mask for green channel</span>
+1632     <span class="comment">% Prepearing image</span>
+1633     hf = imtool( handles.cF(:,:,2) );
+1634     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Green channel!'</span>)
+1635     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1636     hold(ha,<span class="string">'on'</span>);
+1637     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1638         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1639     <span class="comment">% Start to drawing matrix</span>
+1640     h = impoly(ha,handles.G_position); <span class="comment">% Create draggable, resizable polygon</span>
+1641     position = wait(h);
+1642     delete(hf);
+1643     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1644     <span class="comment">% mask from aperture</span>
+1645     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1646     <span class="comment">% compound of masks  for green channel</span>
+1647     handles.BWG = Bw1.*Bw2;
+1648     handles.G_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1649     guidata(hObject,handles);
+1650 <span class="keyword">end</span>
+1651 
+1652 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>) <span class="comment">% mask for blue channel</span>
+1653     <span class="comment">% Prepearing image</span>
+1654     hf = imtool( handles.cF(:,:,3) );
+1655     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Blue channel!'</span>)
+1656     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1657     hold(ha,<span class="string">'on'</span>);
+1658     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1659         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1660     <span class="comment">% Start to drawing matrix</span>
+1661     h = impoly(ha,handles.B_position); <span class="comment">% Create draggable, resizable polygon</span>
+1662     position = wait(h);
+1663     delete(hf);
+1664     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1665     <span class="comment">% mask from aperture</span>
+1666     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1667     <span class="comment">% compound of masks  for blue channel</span>
+1668     handles.BWB = Bw1.*Bw2;
+1669     handles.B_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1670     guidata(hObject,handles);
+1671 <span class="keyword">end</span>
+1672 <span class="comment">% ----------------- mask for background -------------------</span>
+1673 <span class="comment">% Prepearing image</span>
+1674 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>) <span class="comment">% mask for red channel background</span>
+1675     temp = handles.cF;
+1676     Frame =  zeros(size(temp));
+1677     Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) .* 10 ;
+1678     hf = imtool( Frame(:,:,1) );
+1679     <span class="comment">%hf = imshow( handles.cF );</span>
+1680     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for red background!'</span>)
+1681     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1682     hold(ha,<span class="string">'on'</span>);
+1683     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1684         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1685     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1686         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1687     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1688         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1689     <span class="comment">% Start drawing matrix</span>
+1690     <span class="keyword">if</span> isempty(handles.BackgroundMask_positionR)
+1691         h = impoly(ha);
+1692     <span class="keyword">else</span>
+1693         h = impoly(ha,handles.BackgroundMask_positionR); <span class="comment">% Create draggable, resizable polygon</span>
+1694     <span class="keyword">end</span>
+1695     position = wait(h);
+1696     delete(hf);
+1697     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1698     <span class="comment">% mask from aperture</span>
+1699     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1700     <span class="comment">% compound of masks  for red channel</span>
+1701     Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1702     Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1703     handles.BackgroundMaskR = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1704     handles.BackgroundMask_positionR = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1705     guidata(hObject,handles);
+1706 <span class="keyword">end</span>
+1707     <span class="comment">%</span>
+1708 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>) <span class="comment">% mask for green channel background</span>
+1709     temp = handles.cF;
+1710     Frame =  zeros(size(temp));
+1711     Frame(:,:,2)=temp(:,:,2) ./ max(max(temp(:,:,1))) .* 10;
+1712     hf = imtool( Frame(:,:,2) );
+1713     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for green background!'</span>)
+1714     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1715     hold(ha,<span class="string">'on'</span>);
+1716     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1717         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1718     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1719         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1720     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1721         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1722     <span class="comment">% Start drawing matrix</span>
+1723     <span class="keyword">if</span> isempty(handles.BackgroundMask_positionG)
+1724         h = impoly(ha);
+1725     <span class="keyword">else</span>
+1726         h = impoly(ha,handles.BackgroundMask_positionG); <span class="comment">% Create draggable, resizable polygon</span>
+1727     <span class="keyword">end</span>
+1728     position = wait(h);
+1729     delete(hf);
+1730     Bw1 = roipoly(handles.cF(:,:,2),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1731     <span class="comment">% mask from aperture</span>
+1732     Bw2 = roipoly(handles.cF(:,:,2),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1733     <span class="comment">% compound of masks  for green channel</span>
+1734     Bw3 = roipoly(handles.cF(:,:,2),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1735     Bw4 = roipoly(handles.cF(:,:,2),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1736     handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1737     handles.BackgroundMask_positionG = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1738     guidata(hObject,handles);
+1739 <span class="keyword">end</span>
+1740     <span class="comment">%</span>
+1741 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>) <span class="comment">% mask for blue channel background</span>
+1742     temp = handles.cF;
+1743     Frame =  zeros(size(temp));
+1744     Frame(:,:,3)=temp(:,:,3) ./ max(max(temp(:,:,1))) .* 10;
+1745     hf = imtool( Frame(:,:,3) );
+1746     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for blue background!'</span>)
+1747     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1748     hold(ha,<span class="string">'on'</span>);
+1749     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1750         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1751     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1752         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1753     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1754         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1755     <span class="comment">% Start drawing matrix</span>
+1756     <span class="keyword">if</span> isempty(handles.BackgroundMask_positionB)
+1757         h = impoly(ha);
+1758     <span class="keyword">else</span>
+1759         h = impoly(ha,handles.BackgroundMask_positionB); <span class="comment">% Create draggable, resizable polygon</span>
+1760     <span class="keyword">end</span>
+1761     position = wait(h);
+1762     delete(hf);
+1763     Bw1 = roipoly(handles.cF(:,:,3),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1764     <span class="comment">% mask from aperture</span>
+1765     Bw2 = roipoly(handles.cF(:,:,3),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1766     <span class="comment">% compound of masks  for blue channel</span>
+1767     Bw3 = roipoly(handles.cF(:,:,3),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1768     Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1769     handles.BackgroundMaskB = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1770     handles.BackgroundMask_positionB = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1771     guidata(hObject,handles);
+1772 <span class="keyword">end</span>
+1773 
+1774 <span class="comment">% --- Executes on button press in pbSetMask.</span>
+1775 
+1776  <a name="_sub56" href="#_subfunctions" class="code">function pbSetMask_Callback(hObject, eventdata, handles)</a>
+1777 <span class="comment">% hObject    handle to pbSetMask (see GCBO)</span>
+1778 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1779 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1780 handles.BackgroundMaskR=zeros(size( handles.cF(:,:,1) ));
+1781 handles.BackgroundMaskG=zeros(size( handles.cF(:,:,2) ));
+1782 handles.BackgroundMaskB=zeros(size( handles.cF(:,:,3) ));
+1783 <span class="comment">% Setting the mask</span>
+1784 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>) <span class="comment">% mask for red channel</span>
+1785     <span class="comment">% Prepearing image</span>
+1786     hf = imtool( handles.cF(:,:,1),[0 max(max(handles.cF(:,:,1)))/3] );
+1787     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Red channel!'</span>)
+1788     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1789     hold(ha,<span class="string">'on'</span>);
+1790     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1791         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1792     <span class="comment">% Start to drawing matrix</span>
+1793     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1794     position = wait(h);
+1795     delete(hf);
+1796     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1797     <span class="comment">% mask from aperture</span>
+1798     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1799     <span class="comment">% compound of masks  for red channel</span>
+1800     handles.BWR = Bw1.*Bw2;
+1801     handles.R_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1802     guidata(hObject,handles);
+1803 <span class="keyword">end</span>
+1804    
+1805 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>) <span class="comment">% mask for green channel</span>
+1806     <span class="comment">% Prepearing image</span>
+1807     hf = imtool( handles.cF(:,:,2),[0 max(max(handles.cF(:,:,2)))/3] );
+1808     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Green channel!'</span>)
+1809     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1810     hold(ha,<span class="string">'on'</span>);
+1811     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1812         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1813     <span class="comment">% Start to drawing matrix</span>
+1814     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1815     position = wait(h);
+1816     delete(hf);
+1817     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1818     <span class="comment">% mask from aperture</span>
+1819     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1820     <span class="comment">% compound of masks  for green channel</span>
+1821     handles.BWG = Bw1.*Bw2;
+1822     handles.G_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1823     guidata(hObject,handles);
+1824 <span class="keyword">end</span>
+1825 
+1826 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>) <span class="comment">% mask for blue channel</span>
+1827     <span class="comment">% Prepearing image</span>
+1828     hf = imtool( handles.cF(:,:,3),[0 max(max(handles.cF(:,:,3)))/3] );
+1829     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for Blue channel!'</span>)
+1830     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1831     hold(ha,<span class="string">'on'</span>);
+1832     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1833         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1834     <span class="comment">% Start to drawing matrix</span>
+1835     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1836     position = wait(h);
+1837     delete(hf);
+1838     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1839     <span class="comment">% mask from aperture</span>
+1840     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1841     <span class="comment">% compound of masks  for blue channel</span>
+1842     handles.BWB = Bw1.*Bw2;
+1843     handles.B_position = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1844     guidata(hObject,handles);
+1845 <span class="keyword">end</span>
+1846 
+1847 <span class="comment">% ----------------- mask for background -------------------</span>
+1848 <span class="comment">% Prepearing image</span>
+1849 <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>) <span class="comment">% mask for red channel background</span>
+1850     temp = handles.cF;
+1851     Frame =  zeros(size(temp));
+1852     Frame(:,:,1)=temp(:,:,1) ./ max(max(temp(:,:,1))) .* 10 ;
+1853     hf = imtool( Frame(:,:,1) );
+1854     <span class="comment">%hf = imshow( handles.cF );</span>
+1855     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for red background!'</span>)
+1856     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1857     hold(ha,<span class="string">'on'</span>);
+1858     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1859         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1860     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1861         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1862     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1863         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1864     <span class="comment">% Start drawing matrix</span>
+1865     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1866     position = wait(h);
+1867     delete(hf);
+1868     Bw1 = roipoly(handles.cF(:,:,1),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1869     <span class="comment">% mask from aperture</span>
+1870     Bw2 = roipoly(handles.cF(:,:,1),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1871     <span class="comment">% compound of masks  for red channel</span>
+1872     Bw3 = roipoly(handles.cF(:,:,1),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1873     Bw4 = roipoly(handles.cF(:,:,1),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1874     handles.BackgroundMaskR = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1875     handles.BackgroundMask_positionR = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1876     guidata(hObject,handles);
+1877 <span class="keyword">end</span>
+1878     <span class="comment">%</span>
+1879 <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>) <span class="comment">% mask for green channel background</span>
+1880     temp = handles.cF;
+1881     Frame =  zeros(size(temp));
+1882     Frame(:,:,2)=temp(:,:,2) ./ max(max(temp(:,:,1))) .* 10;
+1883     hf = imtool( Frame(:,:,2) );
+1884     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for green background!'</span>)
+1885     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1886     hold(ha,<span class="string">'on'</span>);
+1887     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1888         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1889     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1890         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1891     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1892         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1893     <span class="comment">% Start drawing matrix</span>
+1894     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1895     position = wait(h);
+1896     delete(hf);
+1897     Bw1 = roipoly(handles.cF(:,:,2),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1898     <span class="comment">% mask from aperture</span>
+1899     Bw2 = roipoly(handles.cF(:,:,2),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1900     <span class="comment">% compound of masks  for green channel</span>
+1901     Bw3 = roipoly(handles.cF(:,:,2),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1902     Bw4 = roipoly(handles.cF(:,:,2),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1903     handles.BackgroundMaskG = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1904     handles.BackgroundMask_positionG = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1905     guidata(hObject,handles);
+1906 <span class="keyword">end</span>
+1907     <span class="comment">%</span>
+1908 <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>) <span class="comment">% mask for blue channel background</span>
+1909     temp = handles.cF;
+1910     Frame =  zeros(size(temp));
+1911     Frame(:,:,3)=temp(:,:,3) ./ max(max(temp(:,:,1))) .* 10;
+1912     hf = imtool( Frame(:,:,3) );
+1913     set(hf,<span class="string">'name'</span>,<span class="string">'Set Mask for blue background!'</span>)
+1914     ha = get(hf,<span class="string">'CurrentAxes'</span>);
+1915     hold(ha,<span class="string">'on'</span>);
+1916     plot(ha,get(handles.hl(1),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1917         get(handles.hl(1),<span class="string">'ydata'</span>),<span class="string">'r'</span>);
+1918     plot(ha,get(handles.hl(4),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1919         get(handles.hl(4),<span class="string">'ydata'</span>),<span class="string">'g'</span>);
+1920     plot(ha,get(handles.hl(7),<span class="string">'xdata'</span>),<span class="keyword">...</span>
+1921         get(handles.hl(7),<span class="string">'ydata'</span>),<span class="string">'b'</span>);
+1922     <span class="comment">% Start drawing matrix</span>
+1923     h = impoly(ha); <span class="comment">% Create draggable, resizable polygon</span>
+1924     position = wait(h);
+1925     delete(hf);
+1926     Bw1 = roipoly(handles.cF(:,:,3),[position(:,1).' position(1,1)],[position(:,2).' position(1,2)]);
+1927     <span class="comment">% mask from aperture</span>
+1928     Bw2 = roipoly(handles.cF(:,:,3),get(handles.hl(1),<span class="string">'xdata'</span>),get(handles.hl(1),<span class="string">'ydata'</span>));
+1929     <span class="comment">% compound of masks  for blue channel</span>
+1930     Bw3 = roipoly(handles.cF(:,:,3),get(handles.hl(4),<span class="string">'xdata'</span>),get(handles.hl(4),<span class="string">'ydata'</span>));
+1931     Bw4 = roipoly(handles.cF(:,:,3),get(handles.hl(7),<span class="string">'xdata'</span>),get(handles.hl(7),<span class="string">'ydata'</span>));
+1932     handles.BackgroundMaskB = int8( Bw1 .* ~Bw2 .* ~Bw3 .* ~Bw4 );
+1933     handles.BackgroundMask_positionB = position; <span class="comment">% coord handles for mascksinates of mask</span>
+1934     guidata(hObject,handles);
+1935 <span class="keyword">end</span>
+1936 
+1937    
+1938    
+1939 
+1940 
+1941 
+1942 <span class="comment">% --------------------------------------------------------------------</span>
+1943 <a name="_sub57" href="#_subfunctions" class="code">function Untitled_1_Callback(hObject, eventdata, handles)</a>
+1944 <span class="comment">% hObject    handle to Untitled_1 (see GCBO)</span>
+1945 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1946 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1947 
+1948 
+1949 <span class="comment">% --------------------------------------------------------------------</span>
+1950 <a name="_sub58" href="#_subfunctions" class="code">function muIntCon_Callback(hObject, eventdata, handles)</a>
+1951 <span class="comment">% hObject    handle to muIntCon (see GCBO)</span>
+1952 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1953 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1954     <span class="keyword">if</span> get(handles.chR,<span class="string">'value'</span>)
+1955         Frame = handles.cF(:,:,1);
+1956         s=<span class="string">'Red Frame'</span>;
+1957          hf = imtool(Frame);
+1958     title(s);
+1959     figure;
+1960     mesh(Frame);
+1961     title(s);
+1962     <span class="keyword">end</span>
+1963     <span class="keyword">if</span> get(handles.chG,<span class="string">'value'</span>)
+1964         Frame = handles.cF(:,:,2);
+1965         s=<span class="string">'Green Frame'</span>;
+1966          hf = imtool(Frame);
+1967     title(s);
+1968     figure;
+1969     mesh(Frame);
+1970     title(s);
+1971     <span class="keyword">end</span>
+1972     <span class="keyword">if</span> get(handles.chB,<span class="string">'value'</span>)
+1973         Frame = handles.cF(:,:,3);
+1974         s=<span class="string">'Blue Frame'</span>;
+1975          hf = imtool(Frame);
+1976     title(s);
+1977     figure;
+1978     mesh(Frame);
+1979     title(s);
+1980     <span class="keyword">end</span>
+1981     
+1982 <span class="comment">% --------------------------------------------------------------------</span>
+1983 <a name="_sub59" href="#_subfunctions" class="code">function muCros_Callback(hObject, eventdata, handles)</a>
+1984 <span class="comment">% hObject    handle to muCros (see GCBO)</span>
+1985 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1986 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1987 
+1988 
+1989 <span class="comment">% --------------------------------------------------------------------</span>
+1990 <a name="_sub60" href="#_subfunctions" class="code">function muFitModel_Callback(hObject, eventdata, handles)</a>
+1991 <span class="comment">% hObject    handle to muFitModel (see GCBO)</span>
+1992 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+1993 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+1994 handles.S.N = 2e2;
+1995 Br = <a href="#_sub6" class="code" title="subfunction Br = BorderCreation(hObject,handles)">BorderCreation</a>(hObject,handles);
+1996 <span class="comment">% figure;</span>
+1997 <span class="comment">% get only the part of border points</span>
+1998 Vb = (1 + handles.S.N ) : handles.S.N * 2;
+1999 IM = zeros(480,640);
+2000 Dw = linspace(-handles.S.dW/2,handles.S.dW/2,handles.S.N);
+2001 Dh = linspace(-handles.S.dH/2,handles.S.dH/2,handles.S.N);
+2002 VH = linspace(handles.S.dH/2,-handles.S.dH/2,handles.S.N);
+2003 <span class="comment">%</span>
+2004 <span class="comment">% I0 = sind(linspace(0,4*360,5500)).^2;</span>
+2005 hwb = waitbar(0,<span class="string">'Computation of intensity matrix ...'</span>);
+2006 
+2007 InSurph = zeros(length(VH), length(Vb),3);
+2008 OutSurph = InSurph;
+2009 
+2010 <span class="keyword">for</span> i = 1 : length(VH)    <span class="comment">% The movement across Z axis</span>
+2011     waitbar(i/length(Dw),hwb)
+2012     <span class="keyword">for</span> j = 1 : length(Vb) <span class="comment">% The movement across curved border</span>
+2013         Pd = [ Br(Vb(j),1), Br(Vb(j),2), VH(i) ]; <span class="comment">% toczka na kraju diafragmy</span>
+2014         P = <a href="RayTracing.html" class="code" title="function P = RayTrace( P2,S )">RayTracing</a>(Pd,handles.S);
+2015          <span class="keyword">if</span> size(P,1) == 7
+2016             InSurph(i,j,:) = Pd;
+2017             OutSurph(i,j,:) = P(7,:);
+2018          <span class="keyword">end</span>
+2019     <span class="keyword">end</span>
+2020 <span class="keyword">end</span>
+2021 
+2022 close(hwb)
+2023 
+2024 
+2025 <span class="comment">% --- Executes on button press in ChGPU.</span>
+2026 <a name="_sub61" href="#_subfunctions" class="code">function ChGPU_Callback(hObject, eventdata, handles)</a>
+2027 <span class="comment">% hObject    handle to ChGPU (see GCBO)</span>
+2028 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+2029 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+2030 
+2031 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of ChGPU</span>
+2032 handles.GPU=get(hObject,<span class="string">'Value'</span>);
+2033 guidata(hObject,handles);</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

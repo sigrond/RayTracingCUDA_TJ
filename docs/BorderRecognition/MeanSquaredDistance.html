@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MeanSquaredDistance</title>
+  <meta name="keywords" content="MeanSquaredDistance">
+  <meta name="description" content="MEANSQUAREDDISTANCE Ta funkcja ma byæ minimalizowan¹ funkcj¹ celu">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- menu.html BorderRecognition -->
+<h1>MeanSquaredDistance
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>MEANSQUAREDDISTANCE Ta funkcja ma byæ minimalizowan¹ funkcj¹ celu</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args ) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MEANSQUAREDDISTANCE Ta funkcja ma byæ minimalizowan¹ funkcj¹ celu
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderDistance.html" class="code" title="function [ distance ] = BorderDistance( X,Y,Px,Py )">BorderDistance</a>	BORDERDISTANCE funkcja ma zwracaæ odleg³oœæ punktu od ramki</li><li><a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>	BorderFunction funkcja generuj¹ca ramkê</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BorderRecognition.html" class="code" title="function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )">BorderRecognition</a>	BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )</a>
+0002 <span class="comment">%MEANSQUAREDDISTANCE Ta funkcja ma byæ minimalizowan¹ funkcj¹ celu</span>
+0003 <span class="comment">%   Detailed explanation goes here</span>
+0004 r=658;
+0005 g=532;
+0006 b=458;
+0007 
+0008 Px=Args(1);
+0009 Py=Args(2);
+0010 Pz=Args(3);
+0011 ShX=Args(4);
+0012 ShY=Args(5);
+0013 lCCD=Args(6);
+0014 
+0015 distance=0;
+0016 
+0017 <span class="keyword">for</span> i=1:length(PositionR(:,1))
+0018     [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,r);
+0019     distance=distance+(<a href="BorderDistance.html" class="code" title="function [ distance ] = BorderDistance( X,Y,Px,Py )">BorderDistance</a>(X,Y,PositionR(i,1),PositionR(i,2)))^2;
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="keyword">for</span> i=1:length(PositionB(:,1))
+0023     [X Y]=<a href="BorderFunction.html" class="code" title="function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )">BorderFunction</a>(Px,Py,Pz,ShX,ShY,lCCD,b);
+0024     distance=distance+(<a href="BorderDistance.html" class="code" title="function [ distance ] = BorderDistance( X,Y,Px,Py )">BorderDistance</a>(X,Y,PositionB(i,1),PositionB(i,2)))^2;
+0025 <span class="keyword">end</span>
+0026 
+0027 distance=distance/((length(PositionR(:,1))+length(PositionB(:,1)))^2);
+0028 
+0029 <span class="keyword">if</span>(distance==NaN || distance==Inf || isnan(distance) || isinf(distance))
+0030     distance=10000;
+0031 <span class="keyword">end</span>
+0032 
+0033 <span class="keyword">end</span>
+0034</pre></div>
+<hr><address>Generated on Sat 07-Jan-2017 19:03:27 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

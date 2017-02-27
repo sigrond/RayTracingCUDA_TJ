@@ -1,0 +1,5 @@
+#!/bin/bash
+make clean
+make -j4 mrfin_cuda_timing_debug_gf680
+make -j4 client
+
