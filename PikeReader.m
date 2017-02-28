@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 28-Feb-2017 13:55:50
+% Last Modified by GUIDE v2.5 28-Feb-2017 15:41:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2097,3 +2097,12 @@ BR_settings
 
 
 
+
+
+% --- Executes on button press in pushbutton_MRfin.
+function pushbutton_MRfin_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_MRfin (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+pbSaveParam_Callback(hObject, eventdata, handles);
+MRfin
