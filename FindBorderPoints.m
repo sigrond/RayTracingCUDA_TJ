@@ -5,6 +5,16 @@ function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )
 r=658;
 g=532;
 b=458;
+
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
+
 Px=Args(1);
 Py=Args(2);
 Pz=Args(3);
@@ -207,6 +217,16 @@ end
 r=658;
 g=532;
 b=458;
+
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
+
 [X Y]=BorderFunction(Px,Py,Pz,ShX,ShY,lCCD,b);
 
 v=zeros(80,2);
@@ -402,6 +422,14 @@ hp=plot(ha,X,Y,'-xb');
 r=658;
 g=532;
 b=458;
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
 [X Y]=BorderFunction(Px,Py,Pz,ShX,ShY,lCCD,r);
 hp=plot(ha,X,Y,'-xr');
 ib=0;

@@ -4,6 +4,14 @@ function [ distance ] = MeanSquaredDistance( PositionR, PositionB, Args )
 r=658;
 g=532;
 b=458;
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
 
 Px=Args(1);
 Py=Args(2);

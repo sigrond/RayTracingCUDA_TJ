@@ -6,6 +6,14 @@ global efDr efDg efDb;
 r=658;
 g=532;
 b=458;
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
 
 handles.S=SetSystem;
 if(exist('lambda','var'))

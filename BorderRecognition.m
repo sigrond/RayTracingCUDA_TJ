@@ -16,6 +16,16 @@ myMaxTime=BrightTime;
 r=658;
 g=532;
 b=458;
+
+try
+    lambdas=evalin('base', 'lambdas');
+catch
+    lambdas=[r,g,b];
+end
+r=lambdas(1);
+g=lambdas(2);
+b=lambdas(3);
+
 global efDr efDg efDb;
 
 handles.S=SetSystem;
@@ -74,9 +84,7 @@ t1=0;
 
 %Position=position;
 
-r=658;
-g=532;
-b=458;
+
 
 [X Y]=BorderFunction(0,0,0,0,0,82,r);
 hp=plot(ha,X,Y,'-xr');

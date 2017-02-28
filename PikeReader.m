@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 27-Feb-2017 20:21:01
+% Last Modified by GUIDE v2.5 28-Feb-2017 13:55:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2065,6 +2065,10 @@ if ~isempty(handles.sF)
 else
     temp = handles.cF;
 end
+
+temptlambdas=[str2double(get(handles.edR,'string')),str2double(get(handles.edG,'string')),str2double(get(handles.edB,'string'))];
+assignin('base', 'lambdas', temptlambdas);
+
 Pk=handles.S.Pk;
 PCCD=[handles.shX, handles.shY, handles.S.lCCD];
 [ Pk, PCCD ]=BorderRecognition(temp, [Pk PCCD])
@@ -2079,6 +2083,17 @@ set(handles.edCCD,'string',num2str([handles.S.lCCD, handles.shX, handles.shY]));
 handles = Draw(hObject,handles);
 guidata(hObject,handles);
 
+
+
+
+
+
+% --- Executes on button press in pushbutton_BR_settings.
+function pushbutton_BR_settings_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_BR_settings (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+BR_settings
 
 
 
