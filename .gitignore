@@ -46,7 +46,7 @@ Temporary Items
 
 # Matlab
 *.asv
-*.mat
+#*.mat
 
 *.odt
 #*.exe
