@@ -49,7 +49,7 @@ Temporary Items
 *.mat
 
 *.odt
-*.exe
+#*.exe
 *.log
 
 NewSession*
