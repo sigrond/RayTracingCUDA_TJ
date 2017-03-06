@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 01-Mar-2017 13:58:02
+% Last Modified by GUIDE v2.5 06-Mar-2017 21:14:52
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -43,6 +43,59 @@ else
 end
 % End initialization code - DO NOT EDIT
 
+function Dict=make_dictionary(name, Dict, n, v)
+%Dict=struct();
+Dict=setfield(Dict,n,v);
+save(sprintf('Lang_%s.mat',name),'Dict');
+
+function handles=LoadLang(hObject, handles)
+handles.lang_list={'PL','ENG'};
+filename=sprintf('Lang_%s.mat',handles.Lang);
+try
+    load(filename);
+    handles.Dict=Dict;
+catch
+    disp(sprintf('Dictionary not found!\n Creating empty!\n'));
+    Dict=struct();
+    save(sprintf('%s',filename),'Dict');
+    return;
+end
+for i=1:numel(handles.named_object_list)
+    if isfield(handles.Dict,handles.named_object_list(i).code_name) && ~strcmp('',handles.Dict.(handles.named_object_list(i).code_name))
+        handles.named_object_list(i).name=getfield(handles.Dict,handles.named_object_list(i).code_name);
+        if isfield(handles.named_object_list(i).object,'Title')
+            set(handles.named_object_list(i).object,'Title',handles.named_object_list(i).name);
+        elseif isfield(handles.named_object_list(i).object,'Label')
+            set(handles.named_object_list(i).object,'Label',handles.named_object_list(i).name);
+        elseif isfield(handles.named_object_list(i).object,'String')
+            set(handles.named_object_list(i).object,'String',handles.named_object_list(i).name);
+        else
+            try
+                setfield(handles.named_object_list(i).object,'Title',handles.named_object_list(i).name);
+            catch
+            
+            try
+                setfield(handles.named_object_list(i).object,'Label',handles.named_object_list(i).name);
+            catch
+            try
+                setfield(handles.named_object_list(i).object,'String',handles.named_object_list(i).name);
+            catch
+            
+            disp(handles.named_object_list(i).code_name);
+            disp(sprintf('no Title or Label!\n'));
+            end
+            end
+            end
+        end
+    else
+        handles.named_object_list(i).code_name
+        v=''
+        handles.Dict=make_dictionary(handles.Lang,handles.Dict,handles.named_object_list(i).code_name,v);
+    end
+end
+guidata(hObject, handles);
+
+
 
 % --- Executes just before BR_settings is made visible.
 function BR_settings_OpeningFcn(hObject, eventdata, handles, varargin)
@@ -58,7 +111,11 @@ handles.output = hObject;
 handles.BP=1;
 handles.Op=1;
 handles.VFch=0;
+try
 load('BR_settings.mat');
+catch
+    disp(sprintf('Open BR_settings.mat exception!\n'));
+end
 if ~exist('BP','var');
     BP=1;
 end
@@ -71,10 +128,18 @@ end
 if ~exist('BrightTime','var');
     BrightTime=10;
 end
-handles.BrightTime=BrightTime;
 if ~exist('OptTime','var');
     OptTime=300;
 end
+if ~exist('BPoints','var');
+    BPoints=12;
+end
+if ~exist('Lang','var');
+    Lang='PL';
+end
+handles.Lang=Lang;
+handles=LoadLang(hObject, handles);
+handles.BrightTime=BrightTime;
 handles.OptTime=OptTime;
 handles.BP=BP;
 switch BP
@@ -102,13 +167,28 @@ switch Op
 end
 handles.VFch=VFch;
 set(handles.viewfinderchb,'Value',VFch);
-if ~exist('BPoints','var');
-    BPoints=12;
-end
+
 handles.BPoints=BPoints;
 set(handles.edit1,'String',BPoints);
 set(handles.edit_BrightTime,'String',BrightTime);
 set(handles.edit_OptTime,'String',OptTime);
+
+if ~isfield(handles,'named_object_list')
+    handles.named_object_list=struct('object',{},'code_name',{},'name',{});
+end
+
+if strcmp(handles.Lang,'PL')
+    set(handles.PL,'checked','on');
+else
+    set(handles.PL,'checked','off');
+end
+if strcmp(handles.Lang,'ENG')
+    set(handles.ENG,'checked','on');
+else
+    set(handles.ENG,'checked','off');
+end
+
+handles.named_object_list
         
 
 % Update handles structure
@@ -140,7 +220,8 @@ BPoints=handles.BPoints;
 VFch=handles.VFch;
 BrightTime=handles.BrightTime;
 OptTime=handles.OptTime;
-save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime');
+Lang=handles.Lang;
+save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang');
 
 
 % --- Executes on button press in pbload.
@@ -393,3 +474,216 @@ handles.Op=7;
 guidata(hObject, handles);
 
 
+% --- Executes during object creation, after setting all properties.
+function uibuttongroup1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to uibuttongroup1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','uibuttongroup1','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+if ~isfield(handles,'named_object_list')
+    handles.named_object_list=struct('object',{},'code_name',{},'name',{});
+end
+guidata(hObject, handles);
+
+
+% --------------------------------------------------------------------
+function lang_Callback(hObject, eventdata, handles)
+% hObject    handle to lang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function PL_Callback(hObject, eventdata, handles)
+% hObject    handle to PL (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.Lang='PL';
+handles=LoadLang(hObject, handles);
+for i=1:numel(handles.lang_handles_list)
+    set(handles.lang_handles_list(i).object,'checked','off');
+end
+set(handles.PL,'checked','on');
+guidata(hObject, handles);
+
+
+
+% --------------------------------------------------------------------
+function ENG_Callback(hObject, eventdata, handles)
+% hObject    handle to ENG (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.Lang='ENG';
+handles=LoadLang(hObject, handles);
+for i=1:numel(handles.lang_handles_list)
+    set(handles.lang_handles_list(i).object,'checked','off');
+end
+set(handles.ENG,'checked','on');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function lang_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to lang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.lang_handles_list=struct('object',{},'name',{});
+if ~isfield(handles,'named_object_list')
+    handles.named_object_list=struct('object',{},'code_name',{},'name',{});
+end
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','lang','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function PL_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to PL (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.lang_handles_list(end+1)=struct('object',hObject,'name','PL');
+
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function ENG_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ENG (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.lang_handles_list(end+1)=struct('object',hObject,'name','ENG');
+
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function uibuttongroup2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to uibuttongroup2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','uibuttongroup2','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function text2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','text2','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton1','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton2','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function text3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','text3','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function text4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','text4','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton3','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton4','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton5','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton6','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton_SD_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton_SD (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton_SD','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function viewfinderchb_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to viewfinderchb (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','viewfinderchb','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function pbsave_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pbsave (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','pbsave','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function pbload_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pbload (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','pbload','name','');
+guidata(hObject, handles);
