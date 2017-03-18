@@ -29,7 +29,12 @@ k=0;
 v=zeros(80,2);
 line=zeros(80,1);
 
-selectedPoints=[3:2:10 15:8:40 41:2:50 51:8:80];
+load('BR_settings.mat','SPoints');
+if exist('SPoints','var');
+    selectedPoints=SPoints;
+else
+    selectedPoints=[3:2:10 15:8:40 41:2:50 51:8:80];
+end
 
 for i=selectedPoints%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
     j=0;

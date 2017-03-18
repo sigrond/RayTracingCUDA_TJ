@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 06-Mar-2017 21:14:52
+% Last Modified by GUIDE v2.5 18-Mar-2017 19:11:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -137,6 +137,10 @@ end
 if ~exist('Lang','var');
     Lang='PL';
 end
+if ~exist('SPoints','var');
+    SPoints=[3:2:10 15:8:40 41:2:50 51:8:80];
+end
+handles.SPoints=SPoints;
 handles.Lang=Lang;
 handles=LoadLang(hObject, handles);
 handles.BrightTime=BrightTime;
@@ -172,6 +176,7 @@ handles.BPoints=BPoints;
 set(handles.edit1,'String',BPoints);
 set(handles.edit_BrightTime,'String',BrightTime);
 set(handles.edit_OptTime,'String',OptTime);
+set(handles.edit4,'String',num2str(SPoints));
 
 if ~isfield(handles,'named_object_list')
     handles.named_object_list=struct('object',{},'code_name',{},'name',{});
@@ -188,7 +193,7 @@ else
     set(handles.ENG,'checked','off');
 end
 
-handles.named_object_list
+%handles.named_object_list
         
 
 % Update handles structure
@@ -221,7 +226,8 @@ VFch=handles.VFch;
 BrightTime=handles.BrightTime;
 OptTime=handles.OptTime;
 Lang=handles.Lang;
-save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang');
+SPoints=handles.SPoints;
+save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang','SPoints');
 
 
 % --- Executes on button press in pbload.
@@ -263,6 +269,8 @@ handles.BrightTime=BrightTime;
 set(handles.edit_BrightTime,'String',BrightTime);
 handles.OptTime=OptTime;
 set(handles.edit_OptTime,'String',OptTime);
+handles.SPoints=SPoints;
+set(handles.edit4,'String',SPoints);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -687,3 +695,28 @@ function pbload_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 handles.named_object_list(end+1)=struct('object',hObject,'code_name','pbload','name','');
 guidata(hObject, handles);
+
+
+
+function edit4_Callback(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit4 as text
+%        str2double(get(hObject,'String')) returns contents of edit4 as a double
+handles.SPoints=str2num(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
