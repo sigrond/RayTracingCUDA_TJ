@@ -2,7 +2,7 @@ function varargout = PikeReader(varargin)
 %  
 % 
 
-% Last Modified by GUIDE v2.5 28-Feb-2017 15:41:56
+% Last Modified by GUIDE v2.5 28-Mar-2017 13:16:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -40,7 +40,16 @@ handles.hl = [];
 handles.hImSh = []; % handles to imshow object
 Frame = FrameRider(hObject,handles);
 handles.cF = Frame;
-handles.S = SetSystem;    
+
+SystemChoices = {'Bigger Chamber', 'Smaller Chamber'};
+[Selection,ok] = listdlg('PromptString','System Selection','SelectionMode','single','ListString',SystemChoices);
+switch Selection
+    case 1
+        handles.S=SetSystem_Big;    
+        
+    case 2
+        handles.S=SetSystem_Small;
+end
 handles.TshX = 0;
 handles.shX  = 0;
 handles.TshY = 0;
@@ -1961,12 +1970,6 @@ if get(handles.chB,'value') % mask for blue channel background
 end
  
 
-% --------------------------------------------------------------------
-function Untitled_1_Callback(hObject, eventdata, handles)
-% hObject    handle to Untitled_1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
 
 % --------------------------------------------------------------------
 function muIntCon_Callback(hObject, eventdata, handles)
@@ -2055,9 +2058,9 @@ handles.GPU=get(hObject,'Value');
 guidata(hObject,handles);
 
 
-% --- Executes on button press in pushbutton_Auto_Find.
-function pushbutton_Auto_Find_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_Auto_Find (see GCBO)
+% --- Executes on button press in pb_Find.
+function pb_Find_Callback(hObject, eventdata, handles)
+% hObject    handle to pb_Find (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if ~isempty(handles.sF)
@@ -2085,24 +2088,185 @@ guidata(hObject,handles);
 
 
 
-
-
-
-% --- Executes on button press in pushbutton_BR_settings.
-function pushbutton_BR_settings_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_BR_settings (see GCBO)
+% --- Executes on button press in pb_BR_settings.
+function pb_BR_settings_Callback(hObject, eventdata, handles)
+% hObject    handle to pb_BR_settings (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 BR_settings
 
 
 
-
-
-% --- Executes on button press in pushbutton_MRfin.
-function pushbutton_MRfin_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton_MRfin (see GCBO)
+% --- Executes on button press in pb_MRfin.
+function pb_MRfin_Callback(hObject, eventdata, handles)
+% hObject    handle to pb_MRfin (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 pbSaveParam_Callback(hObject, eventdata, handles);
 MRfin
+
+
+% --- Executes on selection change in pmPol_R.
+function pmPol_R_Callback(hObject, eventdata, handles)
+% hObject    handle to pmPol_R (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmPol_R contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmPol_R
+
+
+% --- Executes during object creation, after setting all properties.
+function pmPol_R_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmPol_R (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in pmDir_R.
+function pmDir_R_Callback(hObject, eventdata, handles)
+% hObject    handle to pmDir_R (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmDir_R contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmDir_R
+
+
+% --- Executes during object creation, after setting all properties.
+function pmDir_R_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmDir_R (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in pmPol_G.
+function pmPol_G_Callback(hObject, eventdata, handles)
+% hObject    handle to pmPol_G (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmPol_G contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmPol_G
+
+
+% --- Executes during object creation, after setting all properties.
+function pmPol_G_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmPol_G (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in pmDir_G.
+function pmDir_G_Callback(hObject, eventdata, handles)
+% hObject    handle to pmDir_G (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmDir_G contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmDir_G
+
+
+% --- Executes during object creation, after setting all properties.
+function pmDir_G_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmDir_G (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in pmPol_B.
+function pmPol_B_Callback(hObject, eventdata, handles)
+% hObject    handle to pmPol_B (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmPol_B contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmPol_B
+
+
+% --- Executes during object creation, after setting all properties.
+function pmPol_B_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmPol_B (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in pmDir_B.
+function pmDir_B_Callback(hObject, eventdata, handles)
+% hObject    handle to pmDir_B (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pmDir_B contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pmDir_B
+
+
+% --- Executes during object creation, after setting all properties.
+function pmDir_B_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pmDir_B (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --------------------------------------------------------------------
+function mu_SetupSelection_Callback(hObject, eventdata, handles)
+% hObject    handle to mu_SetupSelection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function smu_DJSetup_Callback(hObject, eventdata, handles)
+% hObject    handle to smu_DJSetup (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function smu_MWSetup_Callback(hObject, eventdata, handles)
+% hObject    handle to smu_MWSetup (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function mu_Tools_Callback(hObject, eventdata, handles)
+% hObject    handle to mu_Tools (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
