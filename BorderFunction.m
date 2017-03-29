@@ -1,7 +1,7 @@
 function [ X Y ] = BorderFunction( PkX,PkY,PkZ,shX,shY,lCCD,lambda )
 %BorderFunction funkcja generuj¹ca ramkê
 %   Detailed explanation goes here
-global efDr efDg efDb;
+global efDr efDg efDb GSystem;
 
 r=658;
 g=532;
@@ -15,7 +15,8 @@ r=lambdas(1);
 g=lambdas(2);
 b=lambdas(3);
 
-handles.S=SetSystem;
+%handles.S=SetSystem;
+handles.S=GSystem;
 if(exist('lambda','var'))
     handles.S.lambda=lambda;
     if lambda==r

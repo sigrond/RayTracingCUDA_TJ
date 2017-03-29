@@ -1,4 +1,4 @@
-function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point )
+function [ Pk, PCCD ] = BorderRecognition( Frame, initial_point, System )
 %BORDERRECOGNITION Procedura dobierania parametrów ramki do filmu
 %   Detailed explanation goes here
 
@@ -9,6 +9,7 @@ if(exist('initial_point','var'))
 else
     initial_point=[0,0,0,0,0,82];
 end
+
 
 load('BR_settings.mat','BP','Op','VFch','BrightTime','OptTime');
 myMaxTime=BrightTime;
@@ -26,9 +27,13 @@ r=lambdas(1);
 g=lambdas(2);
 b=lambdas(3);
 
-global efDr efDg efDb;
-
-handles.S=SetSystem;
+global efDr efDg efDb GSystem;
+if exist('System', 'var')
+    handles.S=System;
+else
+    handles.S=SetSystem;
+end
+GSystem=handles.S;
 efDr  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,r,25);
 efDg  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,g,25);
 efDb  = effective_aperture(handles.S.D/2,handles.S.tc,handles.S.l1,b,25);

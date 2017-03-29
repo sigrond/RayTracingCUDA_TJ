@@ -2074,7 +2074,7 @@ assignin('base', 'lambdas', temptlambdas);
 
 Pk=handles.S.Pk;
 PCCD=[handles.shX, handles.shY, handles.S.lCCD];
-[ Pk, PCCD ]=BorderRecognition(temp, [Pk PCCD])
+[ Pk, PCCD ]=BorderRecognition(temp, [Pk PCCD], handles.S)
 handles.S.Pk=Pk;
 handles.shX=PCCD(1);
 handles.shY=PCCD(2);
