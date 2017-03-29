@@ -29,14 +29,19 @@ k=0;
 v=zeros(80,2);
 line=zeros(80,1);
 
-load('BR_settings.mat','SPoints');
-if exist('SPoints','var');
-    selectedPoints=SPoints;
+load('BR_settings.mat','SPointsR','SPointsB');
+if exist('SPointsR','var');
+    selectedPointsR=SPointsR;
 else
-    selectedPoints=[3:2:10 15:8:40 41:2:50 51:8:80];
+    selectedPointsR=[3:2:10 15:8:40 41:2:50 51:8:80];
+end
+if exist('SPointsB','var');
+    selectedPointsB=SPointsB;
+else
+    selectedPointsB=[3:2:10 15:8:40 41:2:50 51:8:80];
 end
 
-for i=selectedPoints%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
+for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
     j=0;
     d=30;%odleg³oœæ od zadanego punktu do brzegu otoczenia
     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));%wpó³czynnik kierunkowy stycznej do ramki w punkcie
@@ -237,7 +242,7 @@ b=lambdas(3);
 v=zeros(80,2);
 line=zeros(80,1);
 
-for i=selectedPoints%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
+for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
     j=0;
     d=30;%odleg³oœæ od zadanego punktu do brzegu otoczenia
     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));%wpó³czynnik kierunkowy stycznej do ramki w punkcie
