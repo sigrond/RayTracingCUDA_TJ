@@ -59,7 +59,7 @@ if BP==2
 
     hf = imtool( Frame./(max(max(max(Frame)))/20) );
 end
-if BP==1
+if BP==1 || BP==3
     [a1 a2]=ThresholdValue(Frame);
     %hf = imtool( (Frame(:,:,1)./max(max(Frame(:,:,1)))>a1)|(Frame(:,:,3)./max(max(Frame(:,:,3)))>a2) );
     tmpF=Frame;
@@ -290,7 +290,7 @@ elseif 0
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
-elseif BP==2
+elseif BP==2 && Op==1
     t1=tic;
     options = optimset('Display','iter','OutputFcn',@myoutfun,'Diagnostics','on','MaxFunEvals',1200,'HessUpdate','bfgs','TolFun',1e-9,'TolX',1e-9,'TypicalX',[1e-1,1,1,1,1,1e-1]);
     [Args, f,exitflag,output]=fminunc(@(x)MeanSquaredDistance(positionr,positionb,x),initial_point,options);
@@ -299,15 +299,27 @@ elseif BP==2
     toc(t1)
     
     t1=tic;
-    options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
+    options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9, 'DiffMinChange', 1e-2);
     [Args, f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(positionr,positionb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
-elseif Op~=3
+elseif Op~=3 && BP==1
     t1=tic;
     options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
     [Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
+    Pk=[Args(1),Args(2),Args(3)];
+    PCCD=[Args(4),Args(5),Args(6)];
+    toc(t1)
+elseif Op~=3 && BP==3
+    t1=tic;
+    %options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
+    %[Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
+    
+    hybridopts = optimset('Display','iter');
+    options=optimset('Diagnostics','on','Display','iter');
+    [Args, f,exitflag,output]=simulannealbnd(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,[-0.6,-0.6,-0.6,-1.5,-1.5,initial_point(6)-3],[0.6,0.6,0.6,1.5,1.5,initial_point(6)+9],saoptimset(options,'HybridFcn',{@patternsearch,hybridopts},'PlotFcns',@saplotfun));
+    
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
@@ -315,6 +327,9 @@ end
 myMaxTime=OptTime;
 
 if Op~=3
+    if ~exist('Args','var')
+        Args=initial_point;
+    end
     [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
     delete(hp);
     hp=plot(ha,X,Y,'-xr');
@@ -322,12 +337,12 @@ if Op~=3
     delete(hpb);
     hpb=plot(ha,X,Y,'-xb');
 
-    output
+%    output
 
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
 end
-if BP==1 && Op~=3
+if (BP==1 || BP==3) && Op~=3
     [pointsr, pointsb]=FindBorderPoints(Frame, [Pk,PCCD]);
 elseif BP==2
     pointsr(:,1)=positionr(:,1);
