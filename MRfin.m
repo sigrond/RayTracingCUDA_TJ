@@ -106,7 +106,7 @@ try
     set( handles.edFrame_End,'string', num2str( size( handles.Ipp,1 ) ) );
     set( handles.edFrame_Step,'string', '100' );
 catch
-    s = sprintf('Ipp Iss not found \nin Base Workspace');
+    s = sprintf('Ipp, Iss or theta not found in Base Workspace');
     he = warndlg( s );
     uiwait( he );
 end
@@ -124,10 +124,12 @@ end
 try
     handles.setup = evalin('base','setup');
 catch
-    s = sprintf('Setup not found \nin Base Workspace')
+    s = sprintf('Setup not found in Base Workspace')
     he = warndlg( s );
     uiwait( he );
 end
+
+% Old data coresponds to the following 'waves' structures:
 handles.Wr.wavelength = 654.25;
 handles.Wr.theta = 0;
 handles.Wr.polarization = 0;
@@ -136,10 +138,7 @@ handles.Wg.wavelength = 532.07;
 handles.Wg.polarization = 1;
 handles.Wg.theta = pi;
 
-
-
-
-
+% Angles and running radii vectors preparation accordingly to edboxes
     handles.Tp = atan( tan( handles.theta.mTp - pi / 2 ) *...
         str2num( get( handles.edScale,'string' ) ) ) + pi/2 +...
         deg2rad( str2num( get( handles.edShift_R,'string' ) ) );
@@ -151,6 +150,7 @@ handles.Wg.theta = pi;
     handles.rrs = ( running_radius(abs(handles.Ts-pi/2),...
         handles.setup.hccd_max_G, handles.setup.Diafragma, handles.Wg.wavelength ) ).^2;
 
+% Same with refractive indices
 handles.mr = Calculate_m(25,handles.Wr.wavelength,'EG');
 handles.mg = Calculate_m(25,handles.Wg.wavelength,'EG');
 
@@ -158,8 +158,11 @@ handles.mg = Calculate_m(25,handles.Wg.wavelength,'EG');
 handles.mr2 = Calculate_m(25,handles.Wr.wavelength,'EG');
 handles.mg2 = Calculate_m(25,handles.Wg.wavelength,'EG');
 
+% Predefined sizes range and frame step
 handles.r = 1e3:20:15e3;
 handles.ind = 1:100:size( handles.Ipp,1 );
+
+% Displaying updated refractive indices and file name
 set(handles.te_m_red,'string',['m_r = ' num2str( handles.mr )]);
 set(handles.te_m_green,'string',['m_g = ' num2str( handles.mg )]);
 

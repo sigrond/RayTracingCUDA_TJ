@@ -1,6 +1,6 @@
 function S = SetSystem_Small
 %  This function creates initial structure for objective and CCD
-%  parameters.
+%  parameters for smaller chamber - MW & JA & GD & JS experiment..
 %  All lengths are in [ mm ]
 %  The origin of the coordinate system is in the center of the trap.
 %
@@ -51,5 +51,17 @@ S.CCDW = S.CCDPW * S.PixSize;  % width  of CCD
 % Base droplet position 
 S.Pk   = [0,0,0]; % Position of droplet relativ to the origin of coordinate system
 
-
+% 'Waves' structure
+% red
+S.Wr.wavelength = 658; % laser diode
+S.Wr.theta = 0; % right to left versus the camera
+S.Wr.polarization = 1; % p aka H
+% green
+S.Wg.wavelength = 458; % blue Ar+ laser leak into green channel
+S.Wg.polarization = 0; % s aka V
+S.Wg.theta = pi; %  left to right versus the camera
+% blue
+S.Wb.wavelength = 458; % blue Ar+ laser
+S.Wb.polarization = 0; % s aka V
+S.Wb.theta = pi; % left to right versus the camera
 

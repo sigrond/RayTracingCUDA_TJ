@@ -1,0 +1,5 @@
+>> QE_B=Angular_QE_Asym2Sig(ThetaB);
+>> IBcorrection=meshgrid(QE_B,1:3327);
+>> I_B2=I_B./IBcorrection;
+>> figure;imagesc(I_B2);
+>> figure;imagesc(I_B);

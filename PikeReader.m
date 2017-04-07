@@ -73,9 +73,23 @@ handles.BackgroundMask_positionB = [];
 
 handles.GPU=1;
 
+% set edboxes as predefined in SetSystem
 % set(handles.edAperture,'string',num2str(handles.S.efD));
 set(handles.edPdrop,'string',num2str(handles.S.Pk));
 set(handles.edCCD,'string',[num2str(handles.S.lCCD),', 0',', 0']);
+
+set(handles.edR,'string',num2str(handles.S.Wr.wavelength));
+set(handles.edG,'string',num2str(handles.S.Wg.wavelength));
+set(handles.edB,'string',num2str(handles.S.Wb.wavelength));
+
+set(handles.pmPol_R,'Value',handles.S.Wr.polarization+1);
+set(handles.pmPol_G,'Value',handles.S.Wg.polarization+1);
+set(handles.pmPol_B,'Value',handles.S.Wb.polarization+1);
+
+set(handles.pmDir_R,'Value',handles.S.Wr.theta/pi+1);
+set(handles.pmDir_G,'Value',handles.S.Wg.theta/pi+1);
+set(handles.pmDir_B,'Value',handles.S.Wb.theta/pi+1);
+
 handles = Draw(hObject,handles);
 % Update handles structure
 guidata(hObject, handles);
@@ -2114,7 +2128,9 @@ function pmPol_R_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmPol_R contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmPol_R
-
+EntryNumber = get( handles.pmPol_R,'Value' );
+handles.S.Wr.polarization = EntryNumber-1;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmPol_R_CreateFcn(hObject, eventdata, handles)
@@ -2137,7 +2153,9 @@ function pmDir_R_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmDir_R contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmDir_R
-
+EntryNumber = get( handles.pmDir_R,'Value' );
+handles.S.Wr.theta = (EntryNumber-1)*pi;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmDir_R_CreateFcn(hObject, eventdata, handles)
@@ -2160,7 +2178,9 @@ function pmPol_G_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmPol_G contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmPol_G
-
+EntryNumber = get( handles.pmPol_G,'Value' );
+handles.S.Wg.polarization = EntryNumber-1;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmPol_G_CreateFcn(hObject, eventdata, handles)
@@ -2183,7 +2203,9 @@ function pmDir_G_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmDir_G contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmDir_G
-
+EntryNumber = get( handles.pmDir_G,'Value' );
+handles.S.Wg.theta = (EntryNumber-1)*pi;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmDir_G_CreateFcn(hObject, eventdata, handles)
@@ -2206,7 +2228,9 @@ function pmPol_B_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmPol_B contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmPol_B
-
+EntryNumber = get( handles.pmPol_B,'Value' );
+handles.S.Wb.polarization = EntryNumber-1;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmPol_B_CreateFcn(hObject, eventdata, handles)
@@ -2229,7 +2253,9 @@ function pmDir_B_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns pmDir_B contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from pmDir_B
-
+EntryNumber = get( handles.pmDir_B,'Value' );
+handles.S.Wb.theta = (EntryNumber-1)*pi;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function pmDir_B_CreateFcn(hObject, eventdata, handles)

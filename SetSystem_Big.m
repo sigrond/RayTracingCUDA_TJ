@@ -1,6 +1,6 @@
 function S = SetSystem_Big
 %  This function creates initial structure for objective and CCD
-%  parameters.
+%  parameters for larger chamber - DJ experiment.
 %  All lengths are in [ mm ]
 %  The origin of the coordinate system is in the center of the trap.
 %
@@ -50,6 +50,18 @@ S.CCDH = S.CCDPH * S.PixSize;  % height of CCD
 S.CCDW = S.CCDPW * S.PixSize;  % width  of CCD
 % Base droplet position 
 S.Pk   = [0,0,0]; % Position of droplet relativ to the origin of coordinate system
-
+% 'Waves' structure
+% red
+S.Wr.wavelength = 659.7; % caseless laser diode
+S.Wr.theta = 0; % right to left versus the camera
+S.Wr.polarization = 0; % s aka V
+% green
+S.Wg.wavelength = 513; % green laser diode
+S.Wg.polarization = 1; % p aka H
+S.Wg.theta = pi; %  left to right versus the camera
+% blue
+S.Wb.wavelength = 513; % green laser diode leak into blue channel
+S.Wb.polarization = 1; % p aka H
+S.Wb.theta = pi; % left to right versus the camera
 
 
