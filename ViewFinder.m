@@ -292,6 +292,17 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+Pk=handles.Pk;
+PCCD=handles.PCCD;
+%ka¿da klatka identyfikowana jest unikalnym hashem
+evalin('base','sha1hasher=System.Security.Cryptography.SHA1Managed');
+%f=reshape(char(Frame),480*640*3,1);
+%assignin('base', 'f', f);
+sha1= uint8(evalin('base','sha1hasher.ComputeHash(uint8(f))'));
+%display as hex:
+hc=dec2hex(sha1);
+Frame=evalin('base','Frame');
+save(sprintf('TD%s.mat',num2str(hc)),'Frame','Pk','PCCD');
 
 
 % --- Executes on button press in FPkx.

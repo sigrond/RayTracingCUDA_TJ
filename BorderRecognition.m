@@ -441,7 +441,18 @@ elseif Op==7
     drawnow
 end
 toc(t1)
+Pk=[Args(1),Args(2),Args(3)];
+PCCD=[Args(4),Args(5),Args(6)];
+%ka¿da klatka identyfikowana jest unikalnym hashem
+evalin('base','sha1hasher=System.Security.Cryptography.SHA1Managed');
+f=reshape(char(Frame),480*640*3,1);
+assignin('base', 'f', f);
+sha1= uint8(evalin('base','sha1hasher.ComputeHash(uint8(f))'));
+%display as hex:
+hc=dec2hex(sha1);
+save(sprintf('TD%s.mat',num2str(hc)),'Frame','Pk','PCCD');
 if VFch==1
+    assignin('base', 'Frame', Frame);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     if exist('pointsr','var')
