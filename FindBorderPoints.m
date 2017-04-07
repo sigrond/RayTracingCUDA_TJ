@@ -29,7 +29,7 @@ k=0;
 v=zeros(80,2);
 line=zeros(80,1);
 
-load('BR_settings.mat','SPointsR','SPointsB');
+load('BR_settings.mat','SPointsR','SPointsB','FitFresnel');
 if exist('SPointsR','var');
     selectedPointsR=SPointsR;
 else
@@ -39,6 +39,9 @@ if exist('SPointsB','var');
     selectedPointsB=SPointsB;
 else
     selectedPointsB=[3:2:10 15:8:40 41:2:50 51:8:80];
+end
+if ~exist('FitFresnel','var');
+    FitFresnel=0;
 end
 
 for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
@@ -220,6 +223,37 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
     quality=max(line(1:j))-min(line(1:j));
     k=k+1;
     c='r';
+    %point=FindShadowAndLightBorder(line(1:j));
+    %dist=BorderDistance(X,Y,v(point,1),v(point,2));
+    %quality=-dist;
+    if FitFresnel
+        %point=FindShadowAndLightBorder(line(1:j));
+        %dist=BorderDistance(X,Y,v(point,1),v(point,2));
+        %quality=-dist;
+        %x(1) - skala wartoœci
+        %x(2) - przesuniêcie argumentów
+        %x(3) - gêstoœæ argumentów
+        %x(4) - przesuniêcie wartoœci
+        xdata=1:j;
+        ydata=line(1:j)-min(line(1:j));
+        ydata=ydata./max(ydata);
+        %fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
+        fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
+        x0=[2 25 8 0];
+        lb=[0 1 -16 -1];
+        ub=[2 j 16 1];
+        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics','on','Display','final-detailed','ScaleProblem','jacobian','TolFun',1e-16));
+        meanx=mean(ydata);
+        %relativeError=sqrt(resnorm)/meanx*100;
+        relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
+        figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+        plot(xdata,ydata')
+        hold on
+        mp=plot(xdata,fun(x,xdata));
+        hold off;
+        point=FindShadowAndLightBorder(line(1:j));
+        quality=1/abs(point-x(2));
+    end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);
 end
@@ -416,6 +450,34 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
     quality=max(line(1:j))-min(line(1:j));
     k=k+1;
     c='b';
+    if FitFresnel
+        %point=FindShadowAndLightBorder(line(1:j));
+        %dist=BorderDistance(X,Y,v(point,1),v(point,2));
+        %quality=-dist;
+        %x(1) - skala wartoœci
+        %x(2) - przesuniêcie argumentów
+        %x(3) - gêstoœæ argumentów
+        %x(4) - przesuniêcie wartoœci
+        xdata=1:j;
+        ydata=line(1:j)-min(line(1:j));
+        ydata=ydata./max(ydata);
+        %fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
+        fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
+        x0=[2 25 -8 0];
+        lb=[0 1 -16 -1];
+        ub=[2 j 16 1];
+        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics','on','Display','final-detailed','ScaleProblem','jacobian','TolFun',1e-16));
+        meanx=mean(ydata);
+        %relativeError=sqrt(resnorm)/meanx*100;
+        relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
+        figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+        plot(xdata,ydata')
+        hold on
+        mp=plot(xdata,fun(x,xdata));
+        hold off;
+        point=FindShadowAndLightBorder(line(1:j));
+        quality=1/abs(point-x(2));
+    end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);
 end
