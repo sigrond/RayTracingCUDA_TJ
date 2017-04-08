@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 05-Apr-2017 18:02:43
+% Last Modified by GUIDE v2.5 08-Apr-2017 12:10:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,17 +74,17 @@ for i=1:numel(handles.named_object_list)
                 setfield(handles.named_object_list(i).object,'Title',handles.named_object_list(i).name);
             catch
             
-            try
-                setfield(handles.named_object_list(i).object,'Label',handles.named_object_list(i).name);
-            catch
-            try
-                setfield(handles.named_object_list(i).object,'String',handles.named_object_list(i).name);
-            catch
-            
-            disp(handles.named_object_list(i).code_name);
-            disp(sprintf('no Title or Label!\n'));
-            end
-            end
+                try
+                    setfield(handles.named_object_list(i).object,'Label',handles.named_object_list(i).name);
+                catch
+                    try
+                        setfield(handles.named_object_list(i).object,'String',handles.named_object_list(i).name);
+                    catch
+
+                        disp(handles.named_object_list(i).code_name);
+                        disp(sprintf('no Title or Label!\n'));
+                    end
+                end
             end
         end
     else
@@ -95,7 +95,12 @@ for i=1:numel(handles.named_object_list)
 end
 guidata(hObject, handles);
 
-
+function mystr = iffchb(myvalue)
+    if myvalue
+        mystr='on';
+    else
+        mystr='off';
+    end
 
 % --- Executes just before BR_settings is made visible.
 function BR_settings_OpeningFcn(hObject, eventdata, handles, varargin)
@@ -146,6 +151,15 @@ end
 if ~exist('FitFresnel','var');
     FitFresnel=0;
 end
+if ~exist('DisplayedWindows','var')
+    DisplayedWindows.BrightnesWindow=1;
+    DisplayedWindows.SPointsWindow=1;
+    DisplayedWindows.OptimInfo=1;
+    DisplayedWindows.SimAnealingWindow=1;
+    DisplayedWindows.FresnelFitPlots=1;
+    DisplayedWindows.FinalOptWindow=1;
+end
+handles.DisplayedWindows=DisplayedWindows;
 handles.FitFresnel=FitFresnel;
 handles.SPointsR=SPointsR;
 handles.SPointsB=SPointsB;
@@ -205,6 +219,14 @@ else
     set(handles.ENG,'checked','off');
 end
 
+
+set(handles.BrightnesWindow,'checked',iffchb(DisplayedWindows.BrightnesWindow));
+set(handles.SPointsWindow,'checked',iffchb(DisplayedWindows.SPointsWindow));
+set(handles.OptimInfo,'checked',iffchb(DisplayedWindows.OptimInfo));
+set(handles.SimAnealingWindow,'checked',iffchb(DisplayedWindows.SimAnealingWindow));
+set(handles.FresnelFitPlots,'checked',iffchb(DisplayedWindows.FresnelFitPlots));
+set(handles.FinalOptWindow,'checked',iffchb(DisplayedWindows.FinalOptWindow));
+
 %handles.named_object_list
         
 
@@ -242,7 +264,8 @@ Lang=handles.Lang;
 SPointsR=handles.SPointsR;
 SPointsB=handles.SPointsB;
 FitFresnel=handles.FitFresnel;
-save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang','SPointsR','SPointsB','FitFresnel');
+DisplayedWindows=handles.DisplayedWindows;
+save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang','SPointsR','SPointsB','FitFresnel','DisplayedWindows');
 
 
 % --- Executes on button press in pbload.
@@ -290,6 +313,14 @@ handles.SPointsR=SPointsR;
 set(handles.edit4,'String',num2str(SPointsR));
 handles.SPointsB=SPointsB;
 set(handles.edit5,'String',num2str(SPointsB));
+
+handles.DisplayedWindows=DisplayedWindows;
+set(handles.BrightnesWindow,'checked',iffchb(DisplayedWindows.BrightnesWindow));
+set(handles.SPointsWindow,'checked',iffchb(DisplayedWindows.SPointsWindow));
+set(handles.OptimInfo,'checked',iffchb(DisplayedWindows.OptimInfo));
+set(handles.SimAnealingWindow,'checked',iffchb(DisplayedWindows.SimAnealingWindow));
+set(handles.FresnelFitPlots,'checked',iffchb(DisplayedWindows.FresnelFitPlots));
+set(handles.FinalOptWindow,'checked',iffchb(DisplayedWindows.FinalOptWindow));
 
 % Update handles structure
 guidata(hObject, handles);
@@ -826,9 +857,12 @@ function BrightnesWindow_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(handles.BrightnesWindow.Checked, 'on')
     set(handles.BrightnesWindow,'Checked','off');
+    handles.DisplayedWindows.BrightnesWindow=0;
 else
     set(handles.BrightnesWindow,'Checked','on');
+    handles.DisplayedWindows.BrightnesWindow=1;
 end
+guidata(hObject, handles);
 
 
 % --------------------------------------------------------------------
@@ -836,6 +870,14 @@ function SPointsWindow_Callback(hObject, eventdata, handles)
 % hObject    handle to SPointsWindow (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if strcmp(handles.SPointsWindow.Checked, 'on')
+    set(handles.SPointsWindow,'Checked','off');
+    handles.DisplayedWindows.SPointsWindow=0;
+else
+    set(handles.SPointsWindow,'Checked','on');
+    handles.DisplayedWindows.SPointsWindow=1;
+end
+guidata(hObject, handles);
 
 
 % --------------------------------------------------------------------
@@ -843,6 +885,14 @@ function OptimInfo_Callback(hObject, eventdata, handles)
 % hObject    handle to OptimInfo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if strcmp(handles.OptimInfo.Checked, 'on')
+    set(handles.OptimInfo,'Checked','off');
+    handles.DisplayedWindows.OptimInfo=0;
+else
+    set(handles.OptimInfo,'Checked','on');
+    handles.DisplayedWindows.OptimInfo=1;
+end
+guidata(hObject, handles);
 
 
 % --------------------------------------------------------------------
@@ -850,6 +900,14 @@ function SimAnealingWindow_Callback(hObject, eventdata, handles)
 % hObject    handle to SimAnealingWindow (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if strcmp(handles.SimAnealingWindow.Checked, 'on')
+    set(handles.SimAnealingWindow,'Checked','off');
+    handles.DisplayedWindows.SimAnealingWindow=0;
+else
+    set(handles.SimAnealingWindow,'Checked','on');
+    handles.DisplayedWindows.SimAnealingWindow=1;
+end
+guidata(hObject, handles);
 
 
 % --------------------------------------------------------------------
@@ -857,6 +915,14 @@ function FresnelFitPlots_Callback(hObject, eventdata, handles)
 % hObject    handle to FresnelFitPlots (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if strcmp(handles.FresnelFitPlots.Checked, 'on')
+    set(handles.FresnelFitPlots,'Checked','off');
+    handles.DisplayedWindows.FresnelFitPlots=0;
+else
+    set(handles.FresnelFitPlots,'Checked','on');
+    handles.DisplayedWindows.FresnelFitPlots=1;
+end
+guidata(hObject, handles);
 
 
 % --------------------------------------------------------------------
@@ -864,3 +930,11 @@ function FinalOptWindow_Callback(hObject, eventdata, handles)
 % hObject    handle to FinalOptWindow (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if strcmp(handles.FinalOptWindow.Checked, 'on')
+    set(handles.FinalOptWindow,'Checked','off');
+    handles.DisplayedWindows.FinalOptWindow=0;
+else
+    set(handles.FinalOptWindow,'Checked','on');
+    handles.DisplayedWindows.FinalOptWindow=1;
+end
+guidata(hObject, handles);

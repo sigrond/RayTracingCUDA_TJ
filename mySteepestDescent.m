@@ -40,22 +40,16 @@ while M>1e-6 && toc(t1)<OptTime
         r=658;
         g=532;
         b=458;
-        try
-            lambdas=evalin('base', 'lambdas');
-        catch
-            lambdas=[r,g,b];
-        end
-        r=lambdas(1);
-        g=lambdas(2);
-        b=lambdas(3);
         [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
-        delete(hp);
-        hp=plot(ha,X,Y,'-xr');
-        [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),b);
-        delete(hpb);
-        hpb=plot(ha,X,Y,'-xb');
-        set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
-        drawnow
+        if ha~=-1;
+            delete(hp);
+            hp=plot(ha,X,Y,'-xr');
+            [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),b);
+            delete(hpb);
+            hpb=plot(ha,X,Y,'-xb');
+            set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
+            drawnow
+        end
     end
     prevI=I;
     if cumM>1

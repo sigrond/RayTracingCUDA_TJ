@@ -29,7 +29,7 @@ k=0;
 v=zeros(80,2);
 line=zeros(80,1);
 
-load('BR_settings.mat','SPointsR','SPointsB','FitFresnel');
+load('BR_settings.mat','SPointsR','SPointsB','FitFresnel','DisplayedWindows');
 if exist('SPointsR','var');
     selectedPointsR=SPointsR;
 else
@@ -42,6 +42,21 @@ else
 end
 if ~exist('FitFresnel','var');
     FitFresnel=0;
+end
+if ~exist('DisplayedWindows','var')
+    DisplayedWindows.BrightnesWindow=1;
+    DisplayedWindows.SPointsWindow=1;
+    DisplayedWindows.OptimInfo=1;
+    DisplayedWindows.SimAnealingWindow=1;
+    DisplayedWindows.FresnelFitPlots=1;
+    DisplayedWindows.FinalOptWindow=1;
+end
+if DisplayedWindows.OptimInfo
+    showDisplay='iter';
+    showDiagnostics='on';
+else
+    showDisplay='off';
+    showDiagnostics='off';
 end
 
 for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
@@ -242,15 +257,17 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         x0=[2 25 8 0];
         lb=[0 1 -16 -1];
         ub=[2 j 16 1];
-        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics','on','Display','final-detailed','ScaleProblem','jacobian','TolFun',1e-16));
+        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
         relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
-        figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
-        plot(xdata,ydata')
-        hold on
-        mp=plot(xdata,fun(x,xdata));
-        hold off;
+        if DisplayedWindows.FresnelFitPlots
+            figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+            plot(xdata,ydata')
+            hold on
+            mp=plot(xdata,fun(x,xdata));
+            hold off;
+        end
         point=FindShadowAndLightBorder(line(1:j));
         quality=1/abs(point-x(2));
     end
@@ -466,15 +483,17 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         x0=[2 25 -8 0];
         lb=[0 1 -16 -1];
         ub=[2 j 16 1];
-        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics','on','Display','final-detailed','ScaleProblem','jacobian','TolFun',1e-16));
+        [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
         relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
-        figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
-        plot(xdata,ydata')
-        hold on
-        mp=plot(xdata,fun(x,xdata));
-        hold off;
+        if DisplayedWindows.FresnelFitPlots
+            figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+            plot(xdata,ydata')
+            hold on
+            mp=plot(xdata,fun(x,xdata));
+            hold off;
+        end
         point=FindShadowAndLightBorder(line(1:j));
         quality=1/abs(point-x(2));
     end
@@ -487,10 +506,12 @@ for i=1:k
     vq(i)=data(i).quality;
 end
 [Q,I]=sort(vq,'descend');
-hf = imtool( Frame./(max(max(max(Frame)))/20) );
-ha = get(hf,'CurrentAxes');
-hold(ha,'on');
-hp=plot(ha,X,Y,'-xb');
+if DisplayedWindows.SPointsWindow
+    hf = imtool( Frame./(max(max(max(Frame)))/20) );
+    ha = get(hf,'CurrentAxes');
+    hold(ha,'on');
+    hp=plot(ha,X,Y,'-xb');
+end
 r=658;
 g=532;
 b=458;
@@ -503,14 +524,20 @@ r=lambdas(1);
 g=lambdas(2);
 b=lambdas(3);
 [X Y]=BorderFunction(Px,Py,Pz,ShX,ShY,lCCD,r);
-hp=plot(ha,X,Y,'-xr');
+if DisplayedWindows.SPointsWindow
+    hp=plot(ha,X,Y,'-xr');
+end
 ib=0;
 ir=0;
 load('BR_settings.mat','BPoints');
 for i=1:BPoints%12
-    hs=scatter(ha,data(I(i)).v(1:data(I(i)).j,1),data(I(i)).v(1:data(I(i)).j,2),'filled','MarkerFaceColor',data(I(i)).color);
+    if DisplayedWindows.SPointsWindow
+        hs=scatter(ha,data(I(i)).v(1:data(I(i)).j,1),data(I(i)).v(1:data(I(i)).j,2),'filled','MarkerFaceColor',data(I(i)).color);
+    end
     point=FindShadowAndLightBorder(data(I(i)).line(1:data(I(i)).j));
-    hs=scatter(ha,data(I(i)).v(point,1),data(I(i)).v(point,2),'filled','MarkerFaceColor','c');
+    if DisplayedWindows.SPointsWindow
+        hs=scatter(ha,data(I(i)).v(point,1),data(I(i)).v(point,2),'filled','MarkerFaceColor','c');
+    end
     
     x = data(I(i)).v(point,1); y = data(I(i)).v(point,2);% scatter(x,y);
     %a = selectedPoints(I(i)); b = num2str(a); c = cellstr(b);
@@ -523,14 +550,16 @@ for i=1:BPoints%12
         ir=ir+1;
         pointsr(ir,1)=data(I(i)).v(point,1);
         pointsr(ir,2)=data(I(i)).v(point,2);
-
-        text(x+dx, y+dy, c,'fontsize',18,'color',[1,1,0], 'Parent', ha);
+        if DisplayedWindows.SPointsWindow
+            text(x+dx, y+dy, c,'fontsize',18,'color',[1,1,0], 'Parent', ha);
+        end
     else
         ib=ib+1;
         pointsb(ib,1)=data(I(i)).v(point,1);
         pointsb(ib,2)=data(I(i)).v(point,2);
-        
-        text(x+dx, y+dy, c,'fontsize',18,'color',[0,1,1], 'Parent', ha);
+        if DisplayedWindows.SPointsWindow
+            text(x+dx, y+dy, c,'fontsize',18,'color',[0,1,1], 'Parent', ha);
+        end
     end
 end
 
