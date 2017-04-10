@@ -399,6 +399,8 @@ if (BP==1 || BP==3) && Op~=3
         delete(h);
         delete(hf);
     end
+    t0=tic;
+    t1=tic;
 elseif BP==2
     pointsr(:,1)=positionr(:,1);
     pointsr(:,2)=positionr(:,2);
