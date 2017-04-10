@@ -535,6 +535,9 @@ end
 ib=0;
 ir=0;
 load('BR_settings.mat','BPoints');
+if BPoints>size(Q,1)
+    BPoints=size(Q,1);
+end
 for i=1:BPoints%12
     if DisplayedWindows.SPointsWindow
         hs=scatter(ha,data(I(i)).v(1:data(I(i)).j,1),data(I(i)).v(1:data(I(i)).j,2),'filled','MarkerFaceColor',data(I(i)).color);

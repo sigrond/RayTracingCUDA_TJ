@@ -420,6 +420,7 @@ if Op~=3 && (DisplayedWindows.FinalOptWindow || VFch)
     hpb=plot(ha,X,Y,'-xb');
 end
 
+t0=tic;
 t1=tic;
 if Op==1
 
