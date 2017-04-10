@@ -11,7 +11,7 @@ else
 end
 
 
-load('BR_settings.mat','BP','Op','VFch','BrightTime','OptTime','DisplayedWindows');
+load('BR_settings.mat','BP','Op','VFch','BrightTime','OptTime','DisplayedWindows','ManualPointCorrection');
 myMaxTime=BrightTime;
 
 r=658;
@@ -328,7 +328,7 @@ elseif BP==2 && Op==1
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
-elseif Op~=3 && BP==1
+elseif Op~=3 && BP==1%fminsearch funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     if DisplayedWindows.BrightnesWindow
         options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
@@ -340,7 +340,7 @@ elseif Op~=3 && BP==1
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
-elseif Op~=3 && BP==3
+elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     %options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
     %[Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
@@ -377,8 +377,28 @@ if Op~=3 && DisplayedWindows.BrightnesWindow
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
 end
+%wybieranie punktów brzegowych
 if (BP==1 || BP==3) && Op~=3
     [pointsr, pointsb]=FindBorderPoints(Frame, [Pk,PCCD]);
+    %rêczne korygowanie wybranych punktów brzegowych
+    if ManualPointCorrection
+        hf = imtool( Frame(:,:,1), [ min(min(Frame(:,:,1))) max(max(Frame(:,:,1))) ]);
+        set(hf,'name','Modify border points selection in red chanel!');
+        ha = get(hf,'CurrentAxes');
+        hold(ha,'on');
+        h = impoly(ha,pointsr);
+        pointsr = wait(h);
+        delete(h);
+        delete(hf);
+        hf = imtool( Frame(:,:,3), [ min(min(Frame(:,:,3))) max(max(Frame(:,:,3))) ]);
+        set(hf,'name','Modify border points selection in blue chanel!');
+        ha = get(hf,'CurrentAxes');
+        hold(ha,'on');
+        h = impoly(ha,pointsb);
+        pointsb = wait(h);
+        delete(h);
+        delete(hf);
+    end
 elseif BP==2
     pointsr(:,1)=positionr(:,1);
     pointsr(:,2)=positionr(:,2);

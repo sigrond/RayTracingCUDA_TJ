@@ -252,24 +252,26 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         xdata=1:j;
         ydata=line(1:j)-min(line(1:j));
         ydata=ydata./max(ydata);
-        %fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
-        fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
-        x0=[2 25 8 0];
-        lb=[0 1 -16 -1];
+        fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
+        %fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
+        x0=[1 25 8 0];
+        lb=[-2 1 1e-6 -1];
         ub=[2 j 16 1];
         [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
-        relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
+        relativeError=sqrt(norm(residual,2))/(meanx)*100;
+        point=FindShadowAndLightBorder(line(1:j));
+        quality=-abs(point-x(2))-100*(sqrt(resnorm)>=1);
         if DisplayedWindows.FresnelFitPlots
-            figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+            figure('Name',sprintf('Fresnel fit: %d, quality: %f, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,quality,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
             plot(xdata,ydata')
             hold on
             mp=plot(xdata,fun(x,xdata));
             hold off;
+            drawnow
         end
-        point=FindShadowAndLightBorder(line(1:j));
-        quality=1/abs(point-x(2));
+        
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);
@@ -478,24 +480,27 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         xdata=1:j;
         ydata=line(1:j)-min(line(1:j));
         ydata=ydata./max(ydata);
-        %fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
-        fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
-        x0=[2 25 -8 0];
-        lb=[0 1 -16 -1];
+        fun=@(x,xdata)x(1)*fresnelc((xdata-x(2))/x(3))-x(4);
+        %fun=@(x,xdata)x(1)*myDiffractionFunction((xdata-x(2))/x(3))-x(4);
+        x0=[-1 25 8 0];
+        lb=[-2 1 1e-6 -1];
         ub=[2 j 16 1];
         [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
-        relativeError=sqrt(norm(residual,Inf))/(meanx)*100;
+        relativeError=sqrt(norm(residual,2))/(meanx)*100;
+        point=FindShadowAndLightBorder(line(1:j));
+        %quality=1/(abs(point-x(2)))*(sqrt(resnorm)<1);
+        quality=-abs(point-x(2))-100*(sqrt(resnorm)>=1);
         if DisplayedWindows.FresnelFitPlots
-            figure('Name',sprintf('Fresnel fit: %d, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
+            figure('Name',sprintf('Fresnel fit: %d, quality: %f, b³¹d wzglêdny: %f%% residuum norm: %e, x: %e %f %e %e',i,quality,relativeError,sqrt(resnorm),x(1),x(2),x(3),x(4)))
             plot(xdata,ydata')
             hold on
             mp=plot(xdata,fun(x,xdata));
             hold off;
+            drawnow
         end
-        point=FindShadowAndLightBorder(line(1:j));
-        quality=1/abs(point-x(2));
+        
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);

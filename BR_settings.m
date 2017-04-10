@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 08-Apr-2017 12:10:38
+% Last Modified by GUIDE v2.5 10-Apr-2017 18:01:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -159,6 +159,10 @@ if ~exist('DisplayedWindows','var')
     DisplayedWindows.FresnelFitPlots=1;
     DisplayedWindows.FinalOptWindow=1;
 end
+if ~exist('ManualPointCorrection','var');
+    ManualPointCorrection=0;
+end
+handles.ManualPointCorrection=ManualPointCorrection;
 handles.DisplayedWindows=DisplayedWindows;
 handles.FitFresnel=FitFresnel;
 handles.SPointsR=SPointsR;
@@ -227,6 +231,8 @@ set(handles.SimAnealingWindow,'checked',iffchb(DisplayedWindows.SimAnealingWindo
 set(handles.FresnelFitPlots,'checked',iffchb(DisplayedWindows.FresnelFitPlots));
 set(handles.FinalOptWindow,'checked',iffchb(DisplayedWindows.FinalOptWindow));
 
+set(handles.checkboxManualPointCorrection,'Value',ManualPointCorrection);
+
 %handles.named_object_list
         
 
@@ -265,7 +271,8 @@ SPointsR=handles.SPointsR;
 SPointsB=handles.SPointsB;
 FitFresnel=handles.FitFresnel;
 DisplayedWindows=handles.DisplayedWindows;
-save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang','SPointsR','SPointsB','FitFresnel','DisplayedWindows');
+ManualPointCorrection=handles.ManualPointCorrection;
+save('BR_settings.mat','BP','Op','BPoints','VFch','BrightTime','OptTime','Lang','SPointsR','SPointsB','FitFresnel','DisplayedWindows','ManualPointCorrection');
 
 
 % --- Executes on button press in pbload.
@@ -937,4 +944,45 @@ else
     set(handles.FinalOptWindow,'Checked','on');
     handles.DisplayedWindows.FinalOptWindow=1;
 end
+guidata(hObject, handles);
+
+
+
+function edit6_Callback(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit6 as text
+%        str2double(get(hObject,'String')) returns contents of edit6 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton6.
+function pushbutton6_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in checkboxManualPointCorrection.
+function checkboxManualPointCorrection_Callback(hObject, eventdata, handles)
+% hObject    handle to checkboxManualPointCorrection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkboxManualPointCorrection
+handles.ManualPointCorrection=get(hObject,'Value');
 guidata(hObject, handles);
