@@ -2,6 +2,9 @@ function [ pointsr, pointsb ] = FindBorderPoints( Frame, Args )
 %FindBorderPoints znajdowanie brzegu obrazu rozproszeniowego zgodnie z
 %teori¹ na podstawie przybli¿onych parametrów ramki
 %   Detailed explanation goes here
+
+t3=tic;
+
 r=658;
 g=532;
 b=458;
@@ -29,7 +32,7 @@ k=0;
 v=zeros(80,2);
 line=zeros(80,1);
 
-load('BR_settings.mat','SPointsR','SPointsB','FitFresnel','DisplayedWindows');
+load('BR_settings.mat','SPointsR','SPointsB','FitFresnel','DisplayedWindows','BrightTime','OptTime');
 if exist('SPointsR','var');
     selectedPointsR=SPointsR;
 else
@@ -59,7 +62,15 @@ else
     showDiagnostics='off';
 end
 
+global wb;
+
+allTime=BrightTime+OptTime+10*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
+timeLeft=allTime-BrightTime;
+waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+
+
 for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
+    t4=tic;
     j=0;
     d=30;%odleg³oœæ od zadanego punktu do brzegu otoczenia
     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));%wpó³czynnik kierunkowy stycznej do ramki w punkcie
@@ -274,6 +285,9 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
+    tp1=toc(t4);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for red border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
     %waitfor(hf);
 end
 
@@ -296,6 +310,7 @@ v=zeros(80,2);
 line=zeros(80,1);
 
 for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
+    t4=tic;
     j=0;
     d=30;%odleg³oœæ od zadanego punktu do brzegu otoczenia
     a1=(Y(i-1)-Y(i+1))/(X(i-1)-X(i+1));%wpó³czynnik kierunkowy stycznej do ramki w punkcie
@@ -504,6 +519,9 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);
+    tp1=toc(t4);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for blue border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 end
 
 vq=zeros(k,1);
@@ -570,6 +588,9 @@ for i=1:BPoints%12
         end
     end
 end
+
+fpt=toc(t3);
+mfpt=fpt/(size(SPointsR,2)+size(SPointsB,2));
 
 end
 

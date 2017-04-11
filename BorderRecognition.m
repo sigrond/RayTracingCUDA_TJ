@@ -11,7 +11,7 @@ else
 end
 
 
-load('BR_settings.mat','BP','Op','VFch','BrightTime','OptTime','DisplayedWindows','ManualPointCorrection');
+load('BR_settings.mat','BP','Op','VFch','BrightTime','OptTime','DisplayedWindows','ManualPointCorrection','SPointsR','SPointsB','FitFresnel');
 myMaxTime=BrightTime;
 
 r=658;
@@ -27,7 +27,7 @@ r=lambdas(1);
 g=lambdas(2);
 b=lambdas(3);
 
-global efDr efDg efDb GSystem;
+global efDr efDg efDb GSystem wb;
 if exist('System', 'var')
     handles.S=System;
 else
@@ -55,6 +55,7 @@ else
     showDiagnostics='off';
 end
 
+%rêczne wybieranie punktów brzegowych
 if BP==2
     %hf = imtool( Frame./(max(max(max(Frame)))/20) );
     hf = imtool( Frame(:,:,1), [ min(min(Frame(:,:,1))) max(max(Frame(:,:,1))) ]);
@@ -81,6 +82,8 @@ if BP==2
 
     hf = imtool( Frame./(max(max(max(Frame)))/20) );
 end
+%znalezienie i wyœwietlenie obrazu binarnego do optymalizacji po funkcji
+%skalaryzuj¹cej jasnoœci
 if BP==1 || BP==3
     [a1 a2]=ThresholdValue(Frame);
     %hf = imtool( (Frame(:,:,1)./max(max(Frame(:,:,1)))>a1)|(Frame(:,:,3)./max(max(Frame(:,:,3)))>a2) );
@@ -95,6 +98,7 @@ end
 ha = get(hf,'CurrentAxes');
 hold(ha,'on');
 
+%narysowanie rêcznie wybranych punktów brzegowych
 if BP==2
     hs=scatter(ha,positionr(:,1),positionr(:,2),'filled','MarkerFaceColor','m');
 
@@ -107,12 +111,18 @@ t1=0;
 %Position=position;
 
 
-
+%wstêpne narysowanie ramek
 [X Y]=BorderFunction(0,0,0,0,0,82,r);
 hp=plot(ha,X,Y,'-xr');
 [X Y]=BorderFunction(0,0,0,0,0,82,b);
 hpb=plot(ha,X,Y,'-xb');
 
+allTime=BrightTime+OptTime+10*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
+timeLeft=allTime;
+wb=waitbar(0,sprintf('Progress: 0%% Estimated time left: %f s / %d s \n Brightnes scalarisation optimization...',allTime,allTime));
+t5=tic;
+
+%funkcja wyœwietlania
 function stop = myoutfun(x, optimValues, state)
 stop = false;
 [X Y]=BorderFunction(x(1),x(2),x(3),x(4),x(5),x(6),r);
@@ -125,6 +135,10 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
 drawnow
+tp1=toc(t5);
+timeLeft=timeLeft-tp1;
+waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Local optimizer..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+t5=tic;
 %display(Br+Bb+Dr+Db);
 if(toc(t0)>OptTime)
     stop=true;
@@ -134,6 +148,7 @@ if(toc(t1)>myMaxTime)
 end
 end
 
+%funkcja wyœwietlania i rysowania wykresu dla symulowanego wy¿arzania
 function stop = saplotfun(options,optimvalues,flag)
     stop = false;
 x=optimvalues.x;
@@ -147,6 +162,10 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
 drawnow
+tp1=toc(t5);
+timeLeft=timeLeft-tp1;
+waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Simulated Anealing..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+t5=tic;
 %display(Br+Bb+Dr+Db);
 if(toc(t0)>OptTime)
     stop=true;
@@ -184,6 +203,10 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),x(1),Args(5),x(2)))
 drawnow
+tp1=toc(t5);
+timeLeft=timeLeft-tp1;
+waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n X-Z optimization..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+t5=tic;
 %display(Br+Bb+Dr+Db);
 if mod(optimValues.iteration,1000)==0 || strcmp(state,'done')
     map2dXZ=zeros(20,20);
@@ -224,6 +247,10 @@ hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),x(1),x(2)))
 drawnow
 %display(Br+Bb+Dr+Db);
+tp1=toc(t5);
+timeLeft=timeLeft-tp1;
+waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Y-Z optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+t5=tic;
 if mod(optimValues.iteration,1000)==0 || strcmp(state,'done')
     map2dYZ=zeros(20,20);
     y=zeros(20);
@@ -250,12 +277,14 @@ if(toc(t1)>300)
 end
 end
 
+%funkcja wyœwietlania dla algorytmu genetycznego
 function [state, options,optchanged] = mygaoutputfcn(options,state,flag)
 optchanged = false;
 
 switch flag
  case 'init'
         disp('Starting the algorithm');
+        t5=tic;
     case {'iter','interrupt'}
         %disp('Iterating ...')
         ibest = state.Best(end);
@@ -273,10 +302,16 @@ switch flag
         hpb=plot(ha,X,Y,'-xb');
         set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
         drawnow
+        tp1=toc(t5);
+        timeLeft=timeLeft-tp1;
+        waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Genetic Algorithm...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+        t5=tic;
     case 'done'
         disp('Performing final task');
 end
 end
+
+t5=tic;
 
 if 0
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
@@ -314,20 +349,25 @@ elseif 0
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
     toc(t1)
-elseif BP==2 && Op==1
+elseif BP==2 && Op==1 %dwueatpowa optymalizacja dla rêcznie wybranych punktów
     t1=tic;
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'Diagnostics',showDiagnostics,'MaxFunEvals',1200,'HessUpdate','bfgs','TolFun',1e-9,'TolX',1e-9,'TypicalX',[1e-1,1,1,1,1,1e-1]);
     [Args, f,exitflag,output]=fminunc(@(x)MeanSquaredDistance(positionr,positionb,x),initial_point,options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    toc(t1)
+    tp1=toc(t1)
+    
+    timeLeft=timeLeft-tp1;
+    waitbar(tp1/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of 1 of 2 step optimization...',tp1/allTime*100,timeLeft,allTime));
     
     t1=tic;
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9, 'DiffMinChange', 1e-2);
     [Args, f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(positionr,positionb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    toc(t1)
+    tp1=toc(t1)
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of 2 of 2 step optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op~=3 && BP==1%fminsearch funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     if DisplayedWindows.BrightnesWindow
@@ -339,7 +379,9 @@ elseif Op~=3 && BP==1%fminsearch funkcji skalaryzuj¹cej po jasnoœci
     [Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    toc(t1)
+    tp1=toc(t1)
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of fminsearch brightnes scalarization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     %options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
@@ -357,7 +399,9 @@ elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    toc(t1)
+    tp1=toc(t1)
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Simulated anealing by brightnes scalarization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 end
 myMaxTime=OptTime;
 
@@ -379,6 +423,7 @@ if Op~=3 && DisplayedWindows.BrightnesWindow
 end
 %wybieranie punktów brzegowych
 if (BP==1 || BP==3) && Op~=3
+    t0=tic;
     [pointsr, pointsb]=FindBorderPoints(Frame, [Pk,PCCD]);
     %rêczne korygowanie wybranych punktów brzegowych
     if ManualPointCorrection
@@ -399,6 +444,9 @@ if (BP==1 || BP==3) && Op~=3
         delete(h);
         delete(hf);
     end
+    tp1=toc(t0);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of border points selection',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
     t0=tic;
     t1=tic;
 elseif BP==2
@@ -422,22 +470,31 @@ end
 
 t0=tic;
 t1=tic;
+t5=tic;
 if Op==1
 
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'Diagnostics',showDiagnostics,'MaxFunEvals',1200,'HessUpdate','bfgs','TolFun',1e-9,'TolX',1e-9,'TypicalX',[1e-1,1,1,1,1,1e-1]);
     [Args, f,exitflag,output]=fminunc(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    toc(t1)
+    tp1=toc(t1)
+    
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Gradient optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 
     t1=tic;
 
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',2400,'MaxFunEvals',4800,'TolFun',1e-9,'TolX',1e-9);
     [Args, f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Non-gradient optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op==2
 
     [Args, f,exitflag,output]=ga(@(x)MeanSquaredDistance(pointsr,pointsb,x),6,[1,0,0,0,0,0;0,1,0,0,0,0;0,0,1,0,0,0;0,0,0,1,0,0;0,0,0,0,1,0;0,0,0,0,0,1],[1,1,1,1.5,1.5,Args(6)+3],[],[],[-1,-1,-1,-1.5,-1.5,Args(6)-3],[1,1,1,1.5,1.5,Args(6)+3],[],gaoptimset('Display',showDisplay,'OutputFcn',@mygaoutputfcn,'TimeLimit',OptTime));
-
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Genetic Algorithm optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op==3
     if exist('myNeuralNetworkFunction','file')
         Args = myNeuralNetworkFunction(reshape(Frame,480*640*3,1));
@@ -462,6 +519,9 @@ elseif Op==4
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun3,'MaxIter',4800,'MaxFunEvals',9600,'TolFun',1e-20,'TolX',1e-20);
     [Args([5,6]), f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(pointsr,pointsb,[Args(1),Args(2),Args(3),Args(4),x(1),x(2)]),[Args(5),Args(6)],options);
     
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op==5
     [Args, f,exitflag,output]=lsqnonlin(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],[],[],optimset('Algorithm','trust-region-reflective','Diagnostics',showDiagnostics,'Display',showDisplay,'OutputFcn',@myoutfun));
     [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
@@ -474,6 +534,9 @@ elseif Op==5
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op==6
     if ~DisplayedWindows.FinalOptWindow && VFch==0
         ha=-1;
@@ -489,6 +552,9 @@ elseif Op==6
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of My Steepest Descent optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 elseif Op==7
     hybridopts = optimset('Display',showDisplay);
     options=optimset('Diagnostics','on','Display',showDisplay);
@@ -508,6 +574,9 @@ elseif Op==7
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
+    tp1=toc(t1);
+    timeLeft=timeLeft-tp1;
+    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Simulated Anealing optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
 end
 toc(t1)
 Pk=[Args(1),Args(2),Args(3)];
@@ -531,7 +600,7 @@ end
 Pk=[Args(1),Args(2),Args(3)];
 PCCD=[Args(4),Args(5),Args(6)];
 
-
+close(wb);
 toc(t0)
 end
 
