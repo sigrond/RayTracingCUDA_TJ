@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 10-Apr-2017 18:01:04
+% Last Modified by GUIDE v2.5 12-Apr-2017 12:40:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -234,7 +234,82 @@ set(handles.FinalOptWindow,'checked',iffchb(DisplayedWindows.FinalOptWindow));
 set(handles.checkboxManualPointCorrection,'Value',ManualPointCorrection);
 
 %handles.named_object_list
-        
+
+%[f,p]=matlab.codetools.requiredFilesAndProducts('BorderRecognition.m');
+p=ver;
+for i=1:size(p,2)
+    tmpOpt(i)=strcmp(p(i).Name,'Optimization Toolbox');
+    tmpSym(i)=strcmp(p(i).Name,'Symbolic Math Toolbox');
+    tmpIma(i)=strcmp(p(i).Name,'Image Processing Toolbox');
+    tmpGlo(i)=strcmp(p(i).Name,'Global Optimization Toolbox');
+    tmpCur(i)=strcmp(p(i).Name,'Curve Fitting Toolbox');
+    tmpSim(i)=strcmp(p(i).Name,'Simulink Control Design');
+    tmpSta(i)=strcmp(p(i).Name,'Statistics and Machine Learning Toolbox');
+    tmpCom(i)=strcmp(p(i).Name,'Computer Vision System Toolbox');
+end
+if ~any(tmpOpt)
+    set(handles.text_Optimization_Toolbox,'ForegroundColor','red');
+    set(handles.radiobutton3,'Enable','off');
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+    set(handles.OptimInfo,'Checked','off');
+    handles.DisplayedWindows.OptimInfo=0;
+    set(handles.OptimInfo,'Enable','off');
+end
+if ~any(tmpSym)
+    set(handles.text_Symbolic_Math_Toolbox,'ForegroundColor','red');
+    %bêdzie brakowaæ ca³ki fresnela
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+end
+if ~any(tmpIma)
+    set(handles.text_Image_Processing_Toolbox,'ForegroundColor','red');
+    set(handles.radiobutton2,'Enable','off');
+    handles.ManualPointCorrection=0;
+    set(handles.checkboxManualPointCorrection,'checked','off');
+    set(handles.checkboxManualPointCorrection,'Enable','off');
+    set(handles.BrightnesWindow,'Checked','off');
+    handles.DisplayedWindows.BrightnesWindow=0;
+    set(handles.BrightnesWindow,'Enable','off');
+    set(handles.SPointsWindow,'Checked','off');
+    handles.DisplayedWindows.SPointsWindow=0;
+    set(handles.SPointsWindow,'Enable','off');
+    set(handles.FinalOptWindow,'Checked','off');
+    handles.DisplayedWindows.FinalOptWindow=0;
+    set(handles.FinalOptWindow,'Enable','off');
+end
+if ~any(tmpGlo)
+    set(handles.text_Global_Optimization_Toolbox,'ForegroundColor','red');
+    set(handles.radiobutton4,'Enable','off');
+    set(handles.radiobutton_BR_sel_sim_ane,'Enable','off');
+    set(handles.radiobutton_SA,'Enable','off');
+end
+if ~any(tmpCur)
+    set(handles.text_Curve_Fitting_Toolbox,'ForegroundColor','red');
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+end
+if ~any(tmpSim)
+    set(handles.text_Simulink_Control_Design,'ForegroundColor','red');
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+end
+if ~any(tmpSta)
+    set(handles.text_Statistics_and_Machine_Learning_Toolbox,'ForegroundColor','red');
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+end
+if ~any(tmpCom)
+    set(handles.text_Computer_Vision_System_Toolbox,'ForegroundColor','red');
+    handles.FitFresnel=0;
+    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'Enable','off');
+end
 
 % Update handles structure
 guidata(hObject, handles);
@@ -986,3 +1061,10 @@ function checkboxManualPointCorrection_Callback(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of checkboxManualPointCorrection
 handles.ManualPointCorrection=get(hObject,'Value');
 guidata(hObject, handles);
+
+
+% --- Executes on button press in pushbutton_Continue.
+function pushbutton_Continue_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_Continue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
