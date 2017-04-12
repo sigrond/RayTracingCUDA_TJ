@@ -288,27 +288,27 @@ if ~any(tmpGlo)
 end
 if ~any(tmpCur)
     set(handles.text_Curve_Fitting_Toolbox,'ForegroundColor','red');
-    handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'value',0);
-    set(handles.checkbox_FitFresnel,'Enable','off');
+    %handles.FitFresnel=0;
+    %set(handles.checkbox_FitFresnel,'value',0);
+    %set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpSim)
     set(handles.text_Simulink_Control_Design,'ForegroundColor','red');
-    handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'value',0);
-    set(handles.checkbox_FitFresnel,'Enable','off');
+    %handles.FitFresnel=0;
+    %set(handles.checkbox_FitFresnel,'value',0);
+    %set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpSta)
     set(handles.text_Statistics_and_Machine_Learning_Toolbox,'ForegroundColor','red');
-    handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'value',0);
-    set(handles.checkbox_FitFresnel,'Enable','off');
+    %handles.FitFresnel=0;
+    %set(handles.checkbox_FitFresnel,'value',0);
+    %set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpCom)
     set(handles.text_Computer_Vision_System_Toolbox,'ForegroundColor','red');
-    handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'value',0);
-    set(handles.checkbox_FitFresnel,'Enable','off');
+    %handles.FitFresnel=0;
+    %set(handles.checkbox_FitFresnel,'value',0);
+    %set(handles.checkbox_FitFresnel,'Enable','off');
 end
 
 % Update handles structure
