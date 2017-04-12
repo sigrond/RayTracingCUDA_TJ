@@ -251,7 +251,7 @@ if ~any(tmpOpt)
     set(handles.text_Optimization_Toolbox,'ForegroundColor','red');
     set(handles.radiobutton3,'Enable','off');
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
     set(handles.OptimInfo,'Checked','off');
     handles.DisplayedWindows.OptimInfo=0;
@@ -261,7 +261,7 @@ if ~any(tmpSym)
     set(handles.text_Symbolic_Math_Toolbox,'ForegroundColor','red');
     %bêdzie brakowaæ ca³ki fresnela
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpIma)
@@ -289,25 +289,25 @@ end
 if ~any(tmpCur)
     set(handles.text_Curve_Fitting_Toolbox,'ForegroundColor','red');
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpSim)
     set(handles.text_Simulink_Control_Design,'ForegroundColor','red');
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpSta)
     set(handles.text_Statistics_and_Machine_Learning_Toolbox,'ForegroundColor','red');
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
 if ~any(tmpCom)
     set(handles.text_Computer_Vision_System_Toolbox,'ForegroundColor','red');
     handles.FitFresnel=0;
-    set(handles.checkbox_FitFresnel,'checked','off');
+    set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
 
