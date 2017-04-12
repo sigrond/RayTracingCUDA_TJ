@@ -388,7 +388,11 @@ elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     %[Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
     
     hybridopts = optimset('Display',showDisplay);
-    options=optimset('Diagnostics',showDiagnostics,'Display',showDisplay);
+    if DisplayedWindows.OptimInfo
+        options=optimset('Diagnostics',showDiagnostics,'Display',showDisplay);
+    else
+        options=optimset();
+    end
     if DisplayedWindows.BrightnesWindow
         saoptions=saoptimset(options,'HybridFcn',{@patternsearch,hybridopts},'PlotFcns',@saplotfun);
     else
