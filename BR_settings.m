@@ -247,7 +247,7 @@ for i=1:size(p,2)
     tmpSta(i)=strcmp(p(i).Name,'Statistics and Machine Learning Toolbox');
     tmpCom(i)=strcmp(p(i).Name,'Computer Vision System Toolbox');
 end
-if ~any(tmpOpt)
+if ~any(tmpOpt) || ~license('test','Optimization_Toolbox')
     set(handles.text_Optimization_Toolbox,'ForegroundColor','red');
     set(handles.radiobutton3,'Enable','off');
     handles.FitFresnel=0;
@@ -257,14 +257,14 @@ if ~any(tmpOpt)
     handles.DisplayedWindows.OptimInfo=0;
     set(handles.OptimInfo,'Enable','off');
 end
-if ~any(tmpSym)
+if ~any(tmpSym) || ~license('test','Symbolic_Toolbox')
     set(handles.text_Symbolic_Math_Toolbox,'ForegroundColor','red');
     %bêdzie brakowaæ ca³ki fresnela
     handles.FitFresnel=0;
     set(handles.checkbox_FitFresnel,'value',0);
     set(handles.checkbox_FitFresnel,'Enable','off');
 end
-if ~any(tmpIma)
+if ~any(tmpIma) || ~license('test','Image_Toolbox')
     set(handles.text_Image_Processing_Toolbox,'ForegroundColor','red');
     set(handles.radiobutton2,'Enable','off');
     handles.ManualPointCorrection=0;
@@ -286,7 +286,7 @@ if ~any(tmpGlo)
     set(handles.radiobutton_BR_sel_sim_ane,'Enable','off');
     set(handles.radiobutton_SA,'Enable','off');
 end
-if ~any(tmpCur)
+if ~any(tmpCur) || ~license('test','Curve_Fitting_Toolbox')
     set(handles.text_Curve_Fitting_Toolbox,'ForegroundColor','red');
     %handles.FitFresnel=0;
     %set(handles.checkbox_FitFresnel,'value',0);
@@ -298,7 +298,7 @@ if ~any(tmpSim)
     %set(handles.checkbox_FitFresnel,'value',0);
     %set(handles.checkbox_FitFresnel,'Enable','off');
 end
-if ~any(tmpSta)
+if ~any(tmpSta) || ~license('test','Statistics_Toolbox')
     set(handles.text_Statistics_and_Machine_Learning_Toolbox,'ForegroundColor','red');
     %handles.FitFresnel=0;
     %set(handles.checkbox_FitFresnel,'value',0);
