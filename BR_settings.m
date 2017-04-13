@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 12-Apr-2017 12:40:46
+% Last Modified by GUIDE v2.5 13-Apr-2017 20:58:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1068,3 +1068,48 @@ function pushbutton_Continue_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_Continue (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes during object creation, after setting all properties.
+function radiobutton_BR_sel_sim_ane_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to radiobutton_BR_sel_sim_ane (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','radiobutton_BR_sel_sim_ane','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function checkbox_FitFresnel_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to checkbox_FitFresnel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','checkbox_FitFresnel','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function checkboxManualPointCorrection_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to checkboxManualPointCorrection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','checkboxManualPointCorrection','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function text9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','text9','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function text10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to text10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','text10','name','');
+guidata(hObject, handles);
