@@ -1327,17 +1327,27 @@ end
 
 
      if get(handles.chR,'value')
-         assignin('base','I_R',I_Red);
+         ThetaR1=Angular_QE_Asym2Sig(nThetaR);
+         IRcorrection=meshgrid(ThetaR1,1:size(I_Red,1));
+         I_R2=I_Red./IRcorrection;
+         assignin('base','I_R',I_R2);
          assignin('base','ThetaR',nThetaR);
      end
      if get(handles.chG,'value')
-         assignin('base','I_G',I_Green);
+         ThetaG1=Angular_QE_Asym2Sig(nThetaG);
+         IGcorrection=meshgrid(ThetaG1,1:size(I_Green,1));
+         I_G2=I_Green./IGcorrection;
+         assignin('base','I_G',I_G2);
          assignin('base','ThetaG',nThetaG);
      end
      if get(handles.chB,'value')
-         assignin('base','I_B',I_Blue);
+         ThetaB1=Angular_QE_Asym2Sig(nThetaB);
+         IBcorrection=meshgrid(ThetaB1,1:size(I_Blue,1));
+         I_B2=I_Blue./IBcorrection;
+         assignin('base','I_B',I_B2);
          assignin('base','ThetaB',nThetaB);
      end
+     msgbox(sprintf('Theta[RvGvB]1=Angular_QE_Asym2Sig(nTheta[RvGvB]);\nI[RvGvB]correction=meshgrid(Theta[RvGvB]1,1:size(I_[RvGvB],1));\nI_[RvGvB]2=I_[RvGvB]./I[RvGvB]correction;\n & etc. Already done!!! You dont need to do it again!'));
      close(wb);
    guidata(hObject,handles);
 
