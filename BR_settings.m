@@ -280,7 +280,7 @@ if ~any(tmpIma) || ~license('test','Image_Toolbox')
     handles.DisplayedWindows.FinalOptWindow=0;
     set(handles.FinalOptWindow,'Enable','off');
 end
-if ~any(tmpGlo)
+if ~any(tmpGlo) || ~license('test','gads_toolbox')
     set(handles.text_Global_Optimization_Toolbox,'ForegroundColor','red');
     set(handles.radiobutton4,'Enable','off');
     set(handles.radiobutton_BR_sel_sim_ane,'Enable','off');
