@@ -579,20 +579,25 @@ for i=1:BPoints%12
     
     if data(I(i)).color=='r'
         ir=ir+1;
-        pointsr(ir,1)=data(I(i)).v(point,1);
-        pointsr(ir,2)=data(I(i)).v(point,2);
+        %pointsr(ir,1)=data(I(i)).v(point,1);
+        %pointsr(ir,2)=data(I(i)).v(point,2);
+        tmppointsr(I(i),:)=data(I(i)).v(point,:);
         if DisplayedWindows.SPointsWindow
             text(x+dx, y+dy, c,'fontsize',18,'color',[1,1,0], 'Parent', ha);
         end
     else
         ib=ib+1;
-        pointsb(ib,1)=data(I(i)).v(point,1);
-        pointsb(ib,2)=data(I(i)).v(point,2);
+        %pointsb(ib,1)=data(I(i)).v(point,1);
+        %pointsb(ib,2)=data(I(i)).v(point,2);
+        tmppointsb(I(i),:)=data(I(i)).v(point,:);
         if DisplayedWindows.SPointsWindow
             text(x+dx, y+dy, c,'fontsize',18,'color',[0,1,1], 'Parent', ha);
         end
     end
 end
+
+pointsr=tmppointsr(any(tmppointsr,2),:);
+pointsb=tmppointsb(any(tmppointsb,2),:);
 
 fpt=toc(t3);
 mfpt=fpt/(size(SPointsR,2)+size(SPointsB,2));
