@@ -22,7 +22,7 @@ function varargout = BR_settings(varargin)
 
 % Edit the above text to modify the response to help BR_settings
 
-% Last Modified by GUIDE v2.5 13-Apr-2017 20:58:25
+% Last Modified by GUIDE v2.5 14-Apr-2017 14:44:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1113,4 +1113,85 @@ function text10_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 handles.named_object_list(end+1)=struct('object',hObject,'code_name','text10','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function Windows_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Windows (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','Windows','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object deletion, before destroying properties.
+function BrightnesWindow_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to BrightnesWindow (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','BrightnesWindow','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function SPointsWindow_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to SPointsWindow (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','SPointsWindow','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function OptimInfo_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to OptimInfo (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','OptimInfo','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function SimAnealingWindow_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to SimAnealingWindow (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','SimAnealingWindow','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function FresnelFitPlots_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FresnelFitPlots (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','FresnelFitPlots','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function FinalOptWindow_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FinalOptWindow (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','FinalOptWindow','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function uipanel1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to uipanel1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','uipanel1','name','');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function pushbutton_Continue_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pushbutton_Continue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.named_object_list(end+1)=struct('object',hObject,'code_name','pushbutton_Continue','name','');
 guidata(hObject, handles);
