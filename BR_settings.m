@@ -256,6 +256,7 @@ if ~any(tmpOpt) || ~license('test','Optimization_Toolbox')
     set(handles.OptimInfo,'Checked','off');
     handles.DisplayedWindows.OptimInfo=0;
     set(handles.OptimInfo,'Enable','off');
+    warning('In this MATLAB instance You dont have Optimization Toolbox and some operations may fail!');
 end
 if ~any(tmpSym) || ~license('test','Symbolic_Toolbox')
     set(handles.text_Symbolic_Math_Toolbox,'ForegroundColor','red');
