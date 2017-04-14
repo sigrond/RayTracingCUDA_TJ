@@ -27,7 +27,7 @@ r=lambdas(1);
 g=lambdas(2);
 b=lambdas(3);
 
-global efDr efDg efDb GSystem wb;
+global efDr efDg efDb GSystem mainProgressBar;
 if exist('System', 'var')
     handles.S=System;
 else
@@ -117,9 +117,16 @@ hp=plot(ha,X,Y,'-xr');
 [X Y]=BorderFunction(0,0,0,0,0,82,b);
 hpb=plot(ha,X,Y,'-xb');
 
-allTime=BrightTime+OptTime+10*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
-timeLeft=allTime;
-wb=waitbar(0,sprintf('Progress: 0%% Estimated time left: %f s / %d s \n Brightnes scalarisation optimization...',allTime,allTime));
+mainProgressBar.topTimer=tic;
+mainProgressBar.timeMEM=0;
+mainProgressBar.allTime=BrightTime+OptTime+10*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
+mainProgressBar.timeLeft=mainProgressBar.allTime;
+mainProgressBar.extraMsg='Brightnes scalarisation optimization...';
+mainProgressBar.wb=waitbar(0,...
+    sprintf('Progress: 0%% Estimated time left: %f s / %d s \n %s',...
+        mainProgressBar.allTime,...
+        mainProgressBar.allTime,...
+        mainProgressBar.extraMsg));
 t5=tic;
 
 %funkcja wyœwietlania
@@ -135,10 +142,8 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
 drawnow
-tp1=toc(t5);
-timeLeft=timeLeft-tp1;
-waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Local optimizer..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-t5=tic;
+mainProgressBar.extraMsg='Local optimizer...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 %display(Br+Bb+Dr+Db);
 if(toc(t0)>OptTime)
     stop=true;
@@ -162,10 +167,8 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
 drawnow
-tp1=toc(t5);
-timeLeft=timeLeft-tp1;
-waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Simulated Anealing..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-t5=tic;
+mainProgressBar.extraMsg='Simulated Anealing...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 %display(Br+Bb+Dr+Db);
 if(toc(t0)>OptTime)
     stop=true;
@@ -203,10 +206,8 @@ delete(hpb);
 hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),x(1),Args(5),x(2)))
 drawnow
-tp1=toc(t5);
-timeLeft=timeLeft-tp1;
-waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n X-Z optimization..',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-t5=tic;
+mainProgressBar.extraMsg='X-Z optimization...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 %display(Br+Bb+Dr+Db);
 if mod(optimValues.iteration,1000)==0 || strcmp(state,'done')
     map2dXZ=zeros(20,20);
@@ -247,10 +248,8 @@ hpb=plot(ha,X,Y,'-xb');
 set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),x(1),x(2)))
 drawnow
 %display(Br+Bb+Dr+Db);
-tp1=toc(t5);
-timeLeft=timeLeft-tp1;
-waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Y-Z optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-t5=tic;
+mainProgressBar.extraMsg='Y-Z optimization...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 if mod(optimValues.iteration,1000)==0 || strcmp(state,'done')
     map2dYZ=zeros(20,20);
     y=zeros(20);
@@ -302,10 +301,8 @@ switch flag
         hpb=plot(ha,X,Y,'-xb');
         set(hf,'name',sprintf('%f %f %f %f %f %f',x(1),x(2),x(3),x(4),x(5),x(6)))
         drawnow
-        tp1=toc(t5);
-        timeLeft=timeLeft-tp1;
-        waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Genetic Algorithm...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-        t5=tic;
+        mainProgressBar.extraMsg='Genetic Algorithm...';
+        mainProgressBar = myWaitBarUpdate( mainProgressBar );
     case 'done'
         disp('Performing final task');
 end
@@ -355,19 +352,14 @@ elseif BP==2 && Op==1 %dwueatpowa optymalizacja dla rêcznie wybranych punktów
     [Args, f,exitflag,output]=fminunc(@(x)MeanSquaredDistance(positionr,positionb,x),initial_point,options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    tp1=toc(t1)
-    
-    timeLeft=timeLeft-tp1;
-    waitbar(tp1/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of 1 of 2 step optimization...',tp1/allTime*100,timeLeft,allTime));
-    
-    t1=tic;
+    mainProgressBar.extraMsg='End of 1 of 2 step optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9, 'DiffMinChange', 1e-2);
     [Args, f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(positionr,positionb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    tp1=toc(t1)
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of 2 of 2 step optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of 2 of 2 step optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op~=3 && BP==1%fminsearch funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     if DisplayedWindows.BrightnesWindow
@@ -379,9 +371,8 @@ elseif Op~=3 && BP==1%fminsearch funkcji skalaryzuj¹cej po jasnoœci
     [Args, f,exitflag,output]=fminsearch(@(x)BrightnesScalarization(Frame,a1,a2,x),initial_point,options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    tp1=toc(t1)
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of fminsearch brightnes scalarization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of fminsearch brightnes scalarization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     t1=tic;
     %options = optimset('Display','iter','OutputFcn',@myoutfun,'MaxIter',1200,'TolFun',1e-9,'TolX',1e-9);
@@ -403,9 +394,8 @@ elseif Op~=3 && BP==3%symulowane wy¿arzanie funkcji skalaryzuj¹cej po jasnoœci
     
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    tp1=toc(t1)
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Simulated anealing by brightnes scalarization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of Simulated anealing by brightnes scalarization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 end
 myMaxTime=OptTime;
 
@@ -431,6 +421,7 @@ if (BP==1 || BP==3) && Op~=3
     [pointsr, pointsb]=FindBorderPoints(Frame, [Pk,PCCD]);
     %rêczne korygowanie wybranych punktów brzegowych
     if ManualPointCorrection
+        mainProgressBar.timeMEM=toc(mainProgressBar.topTimer);
         hf = imtool( Frame(:,:,1), [ min(min(Frame(:,:,1))) max(max(Frame(:,:,1))) ]);
         set(hf,'name','Modify border points selection in red chanel!');
         ha = get(hf,'CurrentAxes');
@@ -447,12 +438,12 @@ if (BP==1 || BP==3) && Op~=3
         pointsb = wait(h);
         delete(h);
         delete(hf);
+        mainProgressBar.topTimer=tic;
     end
-    tp1=toc(t0);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of border points selection',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
     t0=tic;
     t1=tic;
+    mainProgressBar.extraMsg='End of border points selection...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif BP==2
     pointsr(:,1)=positionr(:,1);
     pointsr(:,2)=positionr(:,2);
@@ -481,24 +472,19 @@ if Op==1
     [Args, f,exitflag,output]=fminunc(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
     Pk=[Args(1),Args(2),Args(3)];
     PCCD=[Args(4),Args(5),Args(6)];
-    tp1=toc(t1)
-    
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Gradient optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
-
+    mainProgressBar.extraMsg='End of Gradient optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
     t1=tic;
 
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun,'MaxIter',2400,'MaxFunEvals',4800,'TolFun',1e-9,'TolX',1e-9);
     [Args, f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],options);
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Non-gradient optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of Non-gradient optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op==2
 
     [Args, f,exitflag,output]=ga(@(x)MeanSquaredDistance(pointsr,pointsb,x),6,[1,0,0,0,0,0;0,1,0,0,0,0;0,0,1,0,0,0;0,0,0,1,0,0;0,0,0,0,1,0;0,0,0,0,0,1],[1,1,1,1.5,1.5,Args(6)+3],[],[],[-1,-1,-1,-1.5,-1.5,Args(6)-3],[1,1,1,1.5,1.5,Args(6)+3],[],gaoptimset('Display',showDisplay,'OutputFcn',@mygaoutputfcn,'TimeLimit',OptTime));
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Genetic Algorithm optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of Genetic Algorithm optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op==3
     if exist('myNeuralNetworkFunction','file')
         Args = myNeuralNetworkFunction(reshape(Frame,480*640*3,1));
@@ -523,9 +509,8 @@ elseif Op==4
     options = optimset('Display',showDisplay,'OutputFcn',@myoutfun3,'MaxIter',4800,'MaxFunEvals',9600,'TolFun',1e-20,'TolX',1e-20);
     [Args([5,6]), f,exitflag,output]=fminsearch(@(x)MeanSquaredDistance(pointsr,pointsb,[Args(1),Args(2),Args(3),Args(4),x(1),x(2)]),[Args(5),Args(6)],options);
     
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of in pairs optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op==5
     [Args, f,exitflag,output]=lsqnonlin(@(x)MeanSquaredDistance(pointsr,pointsb,x),[Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)],[],[],optimset('Algorithm','trust-region-reflective','Diagnostics',showDiagnostics,'Display',showDisplay,'OutputFcn',@myoutfun));
     [X Y]=BorderFunction(Args(1),Args(2),Args(3),Args(4),Args(5),Args(6),r);
@@ -538,9 +523,8 @@ elseif Op==5
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of least squeres optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op==6
     if ~DisplayedWindows.FinalOptWindow && VFch==0
         ha=-1;
@@ -556,9 +540,8 @@ elseif Op==6
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of My Steepest Descent optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of My Steepest Descent optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 elseif Op==7
     hybridopts = optimset('Display',showDisplay);
     options=optimset('Diagnostics','on','Display',showDisplay);
@@ -578,9 +561,8 @@ elseif Op==7
         set(hf,'name',sprintf('%f %f %f %f %f %f',Args(1),Args(2),Args(3),Args(4),Args(5),Args(6)))
         drawnow
     end
-    tp1=toc(t1);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n End of Simulated Anealing optimization...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='End of Simulated Anealing optimization...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 end
 toc(t1)
 Pk=[Args(1),Args(2),Args(3)];
@@ -605,7 +587,7 @@ end
 Pk=[Args(1),Args(2),Args(3)];
 PCCD=[Args(4),Args(5),Args(6)];
 
-close(wb);
+close(mainProgressBar.wb);
 toc(t0)
 end
 

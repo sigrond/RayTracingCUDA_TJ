@@ -62,11 +62,10 @@ else
     showDiagnostics='off';
 end
 
-global wb;
+global mainProgressBar;
 
-allTime=BrightTime+OptTime+10*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
-timeLeft=allTime-BrightTime;
-waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+mainProgressBar.extraMsg='Looking for border points...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 
 
 for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których szukamy brzegu
@@ -268,7 +267,9 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         x0=[1 25 8 0];
         lb=[-2 1 1e-6 -1];
         ub=[2 j 16 1];
+        mainProgressBar = myWaitBarUpdate( mainProgressBar );
         [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
+        mainProgressBar = myWaitBarUpdate( mainProgressBar );
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
         relativeError=sqrt(norm(residual,2))/(meanx)*100;
@@ -286,8 +287,11 @@ for i=selectedPointsR%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     tp1=toc(t4);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for red border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    if i==selectedPointsR(1)
+        mainProgressBar.allTime=toc(mainProgressBar.topTimer)+OptTime+tp1*(size(SPointsR,2)+size(SPointsB,2))*FitFresnel;
+    end
+    mainProgressBar.extraMsg='Looking for red border points...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
     %waitfor(hf);
 end
 
@@ -500,7 +504,9 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
         x0=[-1 25 8 0];
         lb=[-2 1 1e-6 -1];
         ub=[2 j 16 1];
+        mainProgressBar = myWaitBarUpdate( mainProgressBar );
         [x,resnorm,residual,exitflag,output] = lsqcurvefit(fun,x0,xdata,ydata',lb,ub,optimoptions('lsqcurvefit','Diagnostics',showDiagnostics,'Display',showDisplay,'ScaleProblem','jacobian','TolFun',1e-16));
+        mainProgressBar = myWaitBarUpdate( mainProgressBar );
         meanx=mean(ydata);
         %relativeError=sqrt(resnorm)/meanx*100;
         relativeError=sqrt(norm(residual,2))/(meanx)*100;
@@ -519,9 +525,8 @@ for i=selectedPointsB%2:4:80%wybrane indeksy punktów na ramce w pobli¿u których 
     end
     data(k)=struct('v',v,'j',j,'X',X,'Y',Y,'line',line,'quality',quality,'color',c,'inColorIndex',i);
     %waitfor(hf);
-    tp1=toc(t4);
-    timeLeft=timeLeft-tp1;
-    waitbar((allTime-timeLeft)/allTime,wb,sprintf('Progress: %f%% Estimated time left: %f s / %d s \n Looking for blue border points...',(allTime-timeLeft)/allTime*100,timeLeft,allTime));
+    mainProgressBar.extraMsg='Looking for blue border points...';
+    mainProgressBar = myWaitBarUpdate( mainProgressBar );
 end
 
 vq=zeros(k,1);
@@ -591,6 +596,10 @@ end
 
 fpt=toc(t3);
 mfpt=fpt/(size(SPointsR,2)+size(SPointsB,2));
+
+mainProgressBar.allTime=toc(mainProgressBar.topTimer)+OptTime;
+mainProgressBar.extraMsg='Border Points selected...';
+mainProgressBar = myWaitBarUpdate( mainProgressBar );
 
 end
 
