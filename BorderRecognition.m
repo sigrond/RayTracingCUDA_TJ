@@ -587,7 +587,8 @@ Pk=[Args(1),Args(2),Args(3)];
 PCCD=[Args(4),Args(5),Args(6)];
 %ka¿da klatka identyfikowana jest unikalnym hashem
 evalin('base','sha1hasher=System.Security.Cryptography.SHA1Managed');
-f=reshape(char(Frame),480*640*3,1);
+%f=reshape(char(Frame),480*640*3,1);
+f=typecast(reshape(Frame,480*640*3,1),'uint8');
 assignin('base', 'f', f);
 sha1= uint8(evalin('base','sha1hasher.ComputeHash(uint8(f))'));
 %display as hex:
